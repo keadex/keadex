@@ -1,0 +1,15 @@
+{
+  "name": "keadex-docs",
+  "description": "Desktop application to draw, manage and share the architectures of software systems.",
+  "version": "0.1.0-alpha.1",
+  "private": false,
+  "license": "MIT",
+  "dependencies": {
+    "@docusaurus/core": "^2.0.0-alpha.70",
+    "@docusaurus/preset-classic": "^2.0.0-alpha.70",
+    "@mdx-js/react": "^1.6.21",
+    "clsx": "^1.1.1",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4"
+  }
+}

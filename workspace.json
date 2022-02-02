@@ -7,18 +7,38 @@
       "projectType": "application",
       "targets": {
         "dev": {
-            "executor": "@nrwl/workspace:run-script",
-            "options": {
-                "script": "tauri dev"
-            }
+          "executor": "@nrwl/workspace:run-script",
+          "options": {
+            "script": "tauri dev"
+          }
         },
         "info": {
           "executor": "@nrwl/workspace:run-script",
           "options": {
-              "script": "tauri info"
+            "script": "tauri info"
           }
+        }
       }
-    }
+    },
+    "keadex-docs": {
+      "projectType": "application",
+      "root": "apps/keadex-docs",
+      "sourceRoot": "apps/keadex-docs/src",
+      "targets": {
+        "build": {
+          "executor": "@nx-plus/docusaurus:browser",
+          "options": {
+            "outputPath": "dist/apps/keadex-docs"
+          }
+        },
+        "serve": {
+          "executor": "@nx-plus/docusaurus:dev-server",
+          "options": {
+            "port": 3000
+          }
+        }
+      },
+      "tags": []
     }
   }
 }

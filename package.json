@@ -20,6 +20,7 @@
     "@nrwl/linter": "13.7.1",
     "@nrwl/tao": "13.7.1",
     "@nrwl/workspace": "13.7.1",
+    "@nx-plus/docusaurus": "^12.2.0",
     "@types/jest": "27.0.2",
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "~5.10.0",
@@ -33,5 +34,8 @@
     "ts-jest": "27.0.5",
     "typescript": "~4.5.2"
   },
-  "workspaces": ["apps/*", "libs/*"]
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ]
 }
