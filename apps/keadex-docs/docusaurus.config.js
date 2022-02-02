@@ -10,17 +10,22 @@ module.exports = {
   projectName: 'docusaurus', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'My Site',
+      title: 'Keadex',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
       },
       items: [
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
-          label: 'Docs',
-          position: 'left',
+          label: "Docs",
+          position: "left",
+          items: [
+            {
+              label: "Keadex Mina",
+              to: "docs/keadex-mina/introduction",
+              activeBaseRegex: "docs/keadex-mina/*",
+            },
+          ]
         },
         { to: 'blog', label: 'Blog', position: 'left' },
         {
