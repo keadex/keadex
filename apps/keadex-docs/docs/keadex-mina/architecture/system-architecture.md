@@ -1,8 +1,8 @@
 ---
-id: architecture
-title: Architecture
-sidebar_label: Architecture
-slug: /keadex-mina/architecture
+id: system-architecture
+title: System Architecture
+sidebar_label: System Architecture
+slug: /keadex-mina/system-architecture
 displayed_sidebar: keadexMinaSidebar
 ---
 
