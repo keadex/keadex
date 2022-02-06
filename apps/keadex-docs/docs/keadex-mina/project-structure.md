@@ -50,6 +50,8 @@ The ``` library ``` folder contains the following files:
   - ``` components.json ```: stored *component* entities.
 - ```mina.json ```: settings of the project (e.g. name, description, version, etc.).
 
+
+
 ## Files Specifications
 
 ### diagram.puml
@@ -78,6 +80,7 @@ Even if you don't need to include the C4-PlantUML definitions (since Mina has it
 
 :::
 
+
 ### diagram.spec.json
 
 Mina stores in this file the diagram's settings and the rendering data used by the [rendering system](./architecture/rendering-system.md).<br/>
@@ -87,7 +90,6 @@ The diagram's spec file can be considered the extension of the PlantUML definiti
 {
   "name": "My first System Context diagram",
   "description": "This is an example of my first System Context diagram",
-  "lastUpdate": "2022-07-23T00:00:01",
   "entities": [
     {
       "id": "softwareSystem1",
@@ -120,20 +122,48 @@ The diagram's spec file can be considered the extension of the PlantUML definiti
 | Attribute | Type | Optional | Description |
 | --- | :---: | :---: | ----------- |
 | ``` name ``` | string | No | Name of the diagram. |
-| ``` description ``` | string | No | Description of the diagram. |
-| ``` lastUpdate ``` | string | No | ISO 8601 simplificated date time string representing the date time of the last update. |
+| ``` description ``` | string | Yes | Description of the diagram. |
 | ``` entities ``` | Entity[] | Yes | Entities included in the diagram. |
 
-#### Object Types
+
+### persons.json
+
+Stored *person* entities used by Mina to provide capabilities like: search & import of a *person*, list of the diagrams referencing a *person*. 
+
+```json title="/library/persons.json"
+[
+  {
+    "id": "developer",
+    "name": "Developer",
+    "description": "This is an example of a person entity.",
+    "location": "INTERNAL",
+    "notes": "Other notes not visible in the diagram."
+  }
+]
+```
+
+#### JSON Specification
+
+| Attribute | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| *root* | Person[] | Yes | Stored persons. |
+
+
+### Object Types
 
 | Name | Attribute(s) | Type | Optional | Description |
 | --- | --- | :---: | :---: | ----------- |
-| Entity | ``` id ``` | string | No | identification of the entity. |
+| Entity | ``` id ``` | string | No | Unique identifier of the entity. |
 | | ``` type ``` | string | No | Type of entity. Options: ``` PERSON ```, ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` RELATIONSHIP ``` |
 | | ``` position ``` | Position | No | Canvas-relative position of the entity.  |
-| | ``` size ``` | Size \| float | No | Size of the entity. In case of ``` RELATIONSHIP ```, it is a number representing the length of the arrow. |
+| | ``` size ``` | Size \| float | No | Size of the entity. In case of ```"type": "RELATIONSHIP"```, it is a number representing the length of the arrow. |
 | | ``` externalDiagramId ``` | string | Yes | Id of the diagram linked to the entity. It is used, for example, to allow navigations between diagrams. |
 | Position | ``` x ``` | float | No | Location on the y (vertical) axis of the canvas. |
 | | ``` y ``` | float | No | Location on the x (horizontal) axis of the canvas. |
 | Size | ``` width ``` | float | No | Width of the entity. |
 | | ``` height ``` | float | No | Height of the entity. |
+| Person | ``` id ``` | string | No | Unique identifier of the person. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
+| | ``` name ``` | string | No | Name of the person. It corresponds to the ``` name ``` defined in the ``` .puml ``` file. |
+| | ``` description ``` | string | Yes | Description of the person. It corresponds to the ``` description ``` defined in the ``` .puml ``` file. |
+| | ``` location ``` | string | Yes | Location of the person: internal or external to the organization. Options: ``` INTERNAL ```, ``` EXTERNAL ```. Default: ``` INTERNAL ```. |
+| | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the person. |
