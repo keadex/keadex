@@ -25,6 +25,7 @@ displayed_sidebar: keadexMinaSidebar
   |_ software-systems.json
   |_ containers.json
   |_ components.json
+  |_ boundaries.json
 |_ mina.json
 ```
 
@@ -48,11 +49,33 @@ The ``` library ``` folder contains the following files:
   - ``` software-systems.json ```: stored *software system* entities.
   - ``` containers.json ```: stored *container* entities.
   - ``` components.json ```: stored *component* entities.
+  - ``` boundaries.json ```: stored *boundary* entities.
 - ```mina.json ```: settings of the project (e.g. name, description, version, etc.).
 
 
 
 ## Files Specifications
+
+### mina.json
+
+Settings of the project.
+
+```json title="/mina.json"
+{
+  "name": "My first project",
+  "description": "This is my first amazing project built with Mina!",
+  "version": "1.0.0"
+}
+```
+
+#### JSON Specification
+
+| Attribute | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| ``` name ``` | string | No | Name of the project. |
+| ``` description ``` | string | Yes | Description of the project. |
+| ``` version ``` | string | Yes | Version of the project. |
+
 
 ### diagram.puml
 
@@ -133,9 +156,9 @@ Stored *person* entities used by Mina to provide capabilities like: search & imp
 ```json title="/library/persons.json"
 [
   {
-    "id": "developer",
-    "name": "Developer",
-    "description": "This is an example of a person entity.",
+    "id": "personalBankingCustomer",
+    "name": "Personal Banking Customer",
+    "description": "A customer of the bank, with personal bank accounts.",
     "location": "INTERNAL",
     "notes": "Other notes not visible in the diagram."
   }
@@ -149,12 +172,106 @@ Stored *person* entities used by Mina to provide capabilities like: search & imp
 | *root* | Person[] | Yes | Stored persons. |
 
 
+### software-systems.json
+
+Stored *software system* entities used by Mina to provide capabilities like: search & import of a *software system*, list of the diagrams referencing a *software system*. 
+
+```json title="/library/software-systems.json"
+[
+  {
+    "id": "internetBankingSystem",
+    "name": "Internet Banking System",
+    "description": "Allows customer to view information about their bank accounts, and make payments.",
+    "location": "INTERNAL",
+    "notes": "Other notes not visible in the diagram."
+  }
+]
+```
+
+#### JSON Specification
+
+| Attribute | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| *root* | SoftwareSystem[] | Yes | Stored software systems. |
+
+
+### containers.json
+
+Stored *container* entities used by Mina to provide capabilities like: search & import of a *container*, list of the diagrams referencing a *container*. 
+
+```json title="/library/containers.json"
+[
+  {
+    "id": "backend",
+    "name": "Backend",
+    "description": "Provides Internet banking functionalities via REST APIs",
+    "technology": "Spring",
+    "type": "STANDARD",
+    "notes": "Other notes not visible in the diagram."
+  }
+]
+```
+
+#### JSON Specification
+
+| Attribute | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| *root* | Container[] | Yes | Stored containers. |
+
+
+### components.json
+
+Stored *component* entities used by Mina to provide capabilities like: search & import of a *component*, list of the diagrams referencing a *component*. 
+
+```json title="/library/components.json"
+[
+  {
+    "id": "signinController",
+    "name": "Sign In Controller",
+    "description": "Allows users to sign in to the Internet Banking System.",
+    "technology": "React",
+    "notes": "Other notes not visible in the diagram."
+  }
+]
+```
+
+#### JSON Specification
+
+| Attribute | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| *root* | Component[] | Yes | Stored components. |
+
+
+### boundaries.json
+
+Stored *boundary* entities used by Mina to provide capabilities like: search & import of a *boundary*, list of the diagrams referencing a *boundary*. 
+
+```json title="/library/boundaries.json"
+[
+  {
+    "id": "backendBoundary",
+    "name": "Backend",
+    "type": "STANDARD",
+    "entityIds": [
+      "signinController"
+    ]
+  }
+]
+```
+
+#### JSON Specification
+
+| Attribute | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| *root* | Boundary[] | Yes | Stored boundaries. |
+
+
 ### Object Types
 
 | Name | Attribute(s) | Type | Optional | Description |
 | --- | --- | :---: | :---: | ----------- |
 | Entity | ``` id ``` | string | No | Unique identifier of the entity. |
-| | ``` type ``` | string | No | Type of entity. Options: ``` PERSON ```, ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` RELATIONSHIP ``` |
+| | ``` type ``` | string | No | Type of entity. Options: ``` PERSON ```, ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` RELATIONSHIP ```, ``` BOUNDARY ``` |
 | | ``` position ``` | Position | No | Canvas-relative position of the entity.  |
 | | ``` size ``` | Size \| float | No | Size of the entity. In case of ```"type": "RELATIONSHIP"```, it is a number representing the length of the arrow. |
 | | ``` externalDiagramId ``` | string | Yes | Id of the diagram linked to the entity. It is used, for example, to allow navigations between diagrams. |
@@ -167,3 +284,23 @@ Stored *person* entities used by Mina to provide capabilities like: search & imp
 | | ``` description ``` | string | Yes | Description of the person. It corresponds to the ``` description ``` defined in the ``` .puml ``` file. |
 | | ``` location ``` | string | Yes | Location of the person: internal or external to the organization. Options: ``` INTERNAL ```, ``` EXTERNAL ```. Default: ``` INTERNAL ```. |
 | | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the person. |
+| SoftwareSystem | ``` id ``` | string | No | Unique identifier of the software system. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
+| | ``` name ``` | string | No | Name of the software system. It corresponds to the ``` name ``` defined in the ``` .puml ``` file. |
+| | ``` description ``` | string | Yes | Description of the software system. It corresponds to the ``` description ``` defined in the ``` .puml ``` file. |
+| | ``` location ``` | string | Yes | Location of the software system: internal or external to the organization. Options: ``` INTERNAL ```, ``` EXTERNAL ```. Default: ``` INTERNAL ```. |
+| | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
+| Container | ``` id ``` | string | No | Unique identifier of the container. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
+| | ``` name ``` | string | No | Name of the container. It corresponds to the ``` name ``` defined in the ``` .puml ``` file. |
+| | ``` description ``` | string | Yes | Description of the container. It corresponds to the ``` description ``` defined in the ``` .puml ``` file. |
+| | ``` technology ``` | string | No | Technology of the container.  It corresponds to the ``` technology ``` defined in the ``` .puml ``` file. |
+| | ``` type ``` | string | Yes | Type of the container: standard or database. Options: ``` STANDARD ```, ``` DATABASE ```. Default: ``` STANDARD ```. |
+| | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
+| Component | ``` id ``` | string | No | Unique identifier of the component. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
+| | ``` name ``` | string | No | Name of the component. It corresponds to the ``` name ``` defined in the ``` .puml ``` file. |
+| | ``` description ``` | string | Yes | Description of the component. It corresponds to the ``` description ``` defined in the ``` .puml ``` file. |
+| | ``` technology ``` | string | No | Technology of the component.  It corresponds to the ``` technology ``` defined in the ``` .puml ``` file. |
+| | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
+| Boundary | ``` id ``` | string | No | Unique identifier of the boundary. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
+| | ``` name ``` | string | No | Name of the boundary. It corresponds to the ``` name ``` defined in the ``` .puml ``` file. |
+| | ``` type ``` | string | No | Type of the boundary. Options: ``` PERSON ```, ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` RELATIONSHIP ``` |
+| | ``` entityIds ``` | string[] | Yes | Identifiers of the entities contained in the boundary. They correspond to the ``` entities ``` defined in the ``` .puml ``` file. |
