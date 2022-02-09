@@ -134,7 +134,20 @@ The diagram's spec file can be considered the extension of the PlantUML definiti
         "x": 0,
         "y": 1
       },
+      "rotation": 90,
       "size": 120
+    }
+  ],
+  "shapes": [
+    {
+      "id": "line1",
+      "type": "LINE",
+      "position": {
+        "x": 0,
+        "y": 1
+      },
+      "rotation": 90,
+      "size": 50
     }
   ]
 }
@@ -147,6 +160,7 @@ The diagram's spec file can be considered the extension of the PlantUML definiti
 | ``` name ``` | string | No | Name of the diagram. |
 | ``` description ``` | string | Yes | Description of the diagram. |
 | ``` entities ``` | Entity[] | Yes | Entities included in the diagram. |
+| ``` shapes ``` | Shape[] | Yes | Shapes included in the diagram. |
 
 
 ### persons.json
@@ -266,19 +280,27 @@ Stored *boundary* entities used by Mina to provide capabilities like: search & i
 | *root* | Boundary[] | Yes | Stored boundaries. |
 
 
-### Object Types
+
+## Object Types
 
 | Name | Attribute(s) | Type | Optional | Description |
 | --- | --- | :---: | :---: | ----------- |
 | Entity | ``` id ``` | string | No | Unique identifier of the entity. |
 | | ``` type ``` | string | No | Type of entity. Options: ``` PERSON ```, ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` RELATIONSHIP ```, ``` BOUNDARY ``` |
 | | ``` position ``` | Position | No | Canvas-relative position of the entity.  |
+| | ``` rotation ``` | float (degrees) | No | Rotation of the entity.  |
 | | ``` size ``` | Size \| float | No | Size of the entity. In case of ```"type": "RELATIONSHIP"```, it is a number representing the length of the arrow. |
 | | ``` externalDiagramId ``` | string | Yes | Id of the diagram linked to the entity. It is used, for example, to allow navigations between diagrams. |
+| Shape | ``` id ``` | string | No | Unique identifier of the shape. |
+| | ``` type ``` | string | No | Type of shape. Options: ``` LINE ```. |
+| | ``` position ``` | Position | No | Canvas-relative position of the shape.  |
+| | ``` rotation ``` | float (degrees) | No | Rotation of the shape.  |
+| | ``` size ``` | Size \| float | No | Size of the shape. In case of ```"type": "LINE"```, it is a number representing the length of the line. |
 | Position | ``` x ``` | float | No | Location on the y (vertical) axis of the canvas. |
 | | ``` y ``` | float | No | Location on the x (horizontal) axis of the canvas. |
-| Size | ``` width ``` | float | No | Width of the entity. |
-| | ``` height ``` | float | No | Height of the entity. |
+| | ``` z ``` | float | Yes | Z-order of the element. Default: ```1```. |
+| Size | ``` width ``` | float | No | Width of the element. |
+| | ``` height ``` | float | No | Height of the element. |
 | Person | ``` id ``` | string | No | Unique identifier of the person. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
 | | ``` name ``` | string | No | Name of the person. It corresponds to the ``` name ``` defined in the ``` .puml ``` file. |
 | | ``` description ``` | string | Yes | Description of the person. It corresponds to the ``` description ``` defined in the ``` .puml ``` file. |
@@ -302,5 +324,6 @@ Stored *boundary* entities used by Mina to provide capabilities like: search & i
 | | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
 | Boundary | ``` id ``` | string | No | Unique identifier of the boundary. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
 | | ``` name ``` | string | No | Name of the boundary. It corresponds to the ``` name ``` defined in the ``` .puml ``` file. |
-| | ``` type ``` | string | No | Type of the boundary. Options: ``` PERSON ```, ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` RELATIONSHIP ``` |
+| | ``` type ``` | string | No | Type of the boundary. Options: ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` CUSTOM ```. |
+| | ``` labelType ``` | string | No | Label of the ``` CUSTOM ``` boundary. Required only when ```"type": "CUSTOM"```. |
 | | ``` entityIds ``` | string[] | Yes | Identifiers of the entities contained in the boundary. They correspond to the ``` entities ``` defined in the ``` .puml ``` file. |
