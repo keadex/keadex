@@ -285,8 +285,8 @@ Stored *boundary* entities used by Mina to provide capabilities like: search & i
 
 | Name | Attribute(s) | Type | Optional | Description |
 | --- | --- | :---: | :---: | ----------- |
-| Entity | ``` id ``` | string | No | Unique identifier of the entity. |
-| | ``` type ``` | string | No | Type of entity. Options: ``` PERSON ```, ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` RELATIONSHIP ```, ``` BOUNDARY ``` |
+| Entity | ``` id ``` | string | No | Unique identifier of the entity. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
+| | ``` type ``` | string | No | Type of entity. It corresponds to the type defined in the ``` .puml ``` file. Options: ``` PERSON ```, ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` RELATIONSHIP ```, ``` BOUNDARY ``` |
 | | ``` position ``` | Position | No | Canvas-relative position of the entity.  |
 | | ``` rotation ``` | float (degrees) | No | Rotation of the entity.  |
 | | ``` size ``` | Size \| float | No | Size of the entity. In case of ```"type": "RELATIONSHIP"```, it is a number representing the length of the arrow. |
@@ -301,29 +301,29 @@ Stored *boundary* entities used by Mina to provide capabilities like: search & i
 | | ``` z ``` | float | Yes | Z-order of the element. Default: ```1```. |
 | Size | ``` width ``` | float | No | Width of the element. |
 | | ``` height ``` | float | No | Height of the element. |
-| Person | ``` id ``` | string | No | Unique identifier of the person. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
-| | ``` name ``` | string | No | Name of the person. It corresponds to the ``` name ``` defined in the ``` .puml ``` file. |
-| | ``` description ``` | string | Yes | Description of the person. It corresponds to the ``` description ``` defined in the ``` .puml ``` file. |
+| Person | ``` id ``` | string | No | Unique identifier of the person. |
+| | ``` name ``` | string | No | Name of the person. |
+| | ``` description ``` | string | Yes | Description of the person. |
 | | ``` location ``` | string | Yes | Location of the person: internal or external to the organization. Options: ``` INTERNAL ```, ``` EXTERNAL ```. Default: ``` INTERNAL ```. |
 | | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the person. |
-| SoftwareSystem | ``` id ``` | string | No | Unique identifier of the software system. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
-| | ``` name ``` | string | No | Name of the software system. It corresponds to the ``` name ``` defined in the ``` .puml ``` file. |
-| | ``` description ``` | string | Yes | Description of the software system. It corresponds to the ``` description ``` defined in the ``` .puml ``` file. |
+| SoftwareSystem | ``` id ``` | string | No | Unique identifier of the software system. |
+| | ``` name ``` | string | No | Name of the software system. |
+| | ``` description ``` | string | Yes | Description of the software system. |
 | | ``` location ``` | string | Yes | Location of the software system: internal or external to the organization. Options: ``` INTERNAL ```, ``` EXTERNAL ```. Default: ``` INTERNAL ```. |
 | | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
-| Container | ``` id ``` | string | No | Unique identifier of the container. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
-| | ``` name ``` | string | No | Name of the container. It corresponds to the ``` name ``` defined in the ``` .puml ``` file. |
-| | ``` description ``` | string | Yes | Description of the container. It corresponds to the ``` description ``` defined in the ``` .puml ``` file. |
-| | ``` technology ``` | string | No | Technology of the container.  It corresponds to the ``` technology ``` defined in the ``` .puml ``` file. |
+| Container | ``` id ``` | string | No | Unique identifier of the container. |
+| | ``` name ``` | string | No | Name of the container. |
+| | ``` description ``` | string | Yes | Description of the container. |
+| | ``` technology ``` | string | No | Technology of the container. |
 | | ``` type ``` | string | Yes | Type of the container: standard or database. Options: ``` STANDARD ```, ``` DATABASE ```. Default: ``` STANDARD ```. |
 | | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
-| Component | ``` id ``` | string | No | Unique identifier of the component. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
-| | ``` name ``` | string | No | Name of the component. It corresponds to the ``` name ``` defined in the ``` .puml ``` file. |
-| | ``` description ``` | string | Yes | Description of the component. It corresponds to the ``` description ``` defined in the ``` .puml ``` file. |
-| | ``` technology ``` | string | No | Technology of the component.  It corresponds to the ``` technology ``` defined in the ``` .puml ``` file. |
+| Component | ``` id ``` | string | No | Unique identifier of the component. |
+| | ``` name ``` | string | No | Name of the component. |
+| | ``` description ``` | string | Yes | Description of the component. |
+| | ``` technology ``` | string | No | Technology of the component. |
 | | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
-| Boundary | ``` id ``` | string | No | Unique identifier of the boundary. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
-| | ``` name ``` | string | No | Name of the boundary. It corresponds to the ``` name ``` defined in the ``` .puml ``` file. |
+| Boundary | ``` id ``` | string | No | Unique identifier of the boundary. |
+| | ``` name ``` | string | No | Name of the boundary. |
 | | ``` type ``` | string | No | Type of the boundary. Options: ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` CUSTOM ```. |
 | | ``` labelType ``` | string | No | Label of the ``` CUSTOM ``` boundary. Required only when ```"type": "CUSTOM"```. |
-| | ``` entityIds ``` | string[] | Yes | Identifiers of the entities contained in the boundary. They correspond to the ``` entities ``` defined in the ``` .puml ``` file. |
+| | ``` entityIds ``` | string[] | Yes | Identifiers of the entities contained in the boundary. |
