@@ -8,7 +8,7 @@ module.exports = {
         collapsible: true,
         collapsed: false,
         items: [
-          'keadex-mina/architecture/system-architecture',
+          'keadex-mina/architecture/data-synchronizer',
           'keadex-mina/architecture/rendering-system',
         ],
       },
