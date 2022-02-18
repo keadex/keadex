@@ -1,0 +1,29 @@
+[
+  {
+    "uuid": "c678555e-fdc9-4eb1-83b3-ba7cbd242e1e",
+    "alias": "backend",
+    "name": "Back-End",
+    "description": "Provides Internet banking functionalities via REST APIs",
+    "technology": "Spring",
+    "type": "STANDARD",
+    "notes": "Other notes not visible in the diagram."
+  },
+  {
+    "uuid": "752b642e-de89-4cc3-8f96-48e445c294fa",
+    "alias": "frontend",
+    "name": "Front-End",
+    "description": "User Interface of the Internet Banking System",
+    "technology": "React",
+    "type": "STANDARD",
+    "notes": "Other notes not visible in the diagram."
+  },
+  {
+    "uuid": "d44da7dc-ced1-4a55-b4f9-3d7952b2e6a7",
+    "alias": "internetBankingDatabase",
+    "name": "Database",
+    "description": "Contains customer data of the Internet Banking System",
+    "technology": "MongoDB",
+    "type": "DATABASE",
+    "notes": "Other notes not visible in the diagram."
+  }
+]

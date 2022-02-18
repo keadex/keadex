@@ -1,0 +1,18 @@
+[
+  {
+    "uuid": "5fa6c269-1b38-491f-a5a3-1c136e88a1a3",
+    "id": "internetBankingSystem",
+    "name": "Internet Banking System",
+    "description": "Allows customer to view information about their bank accounts, and make payments.",
+    "location": "INTERNAL",
+    "notes": "Other notes not visible in the diagram."
+  },
+  {
+    "uuid": "f5a9c9ab-e780-4c6f-b4a2-835762088e6b",
+    "id": "bigDataPlatform",
+    "name": "Big Data Platform",
+    "description": "Allows to analyze data.",
+    "location": "INTERNAL",
+    "notes": "Other notes not visible in the diagram."
+  }
+]
