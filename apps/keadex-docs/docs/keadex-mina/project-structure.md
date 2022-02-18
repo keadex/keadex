@@ -74,7 +74,7 @@ Settings of the project.
 
 #### JSON Specification
 
-| Attribute | Type | Optional | Description |
+| Attribute(s) | Type | Optional | Description |
 | --- | :---: | :---: | ----------- |
 | ``` name ``` | string | No | Name of the project. |
 | ``` description ``` | string | Yes | Description of the project. |
@@ -162,7 +162,7 @@ The diagram's spec file can be considered the extension of the PlantUML definiti
 
 #### JSON Specification
 
-| Attribute | Type | Optional | Description |
+| Attribute(s) | Type | Optional | Description |
 | --- | :---: | :---: | ----------- |
 | ``` uuid ``` | string | No | Uuid of the diagram. |
 | ``` name ``` | string | No | Name of the diagram. |
@@ -190,7 +190,7 @@ Stored *person* entities used by Mina to provide capabilities like: search & imp
 
 #### JSON Specification
 
-| Attribute | Type | Optional | Description |
+| Attribute(s) | Type | Optional | Description |
 | --- | :---: | :---: | ----------- |
 | *root* | Person[] | Yes | Stored persons. |
 
@@ -214,7 +214,7 @@ Stored *software system* entities used by Mina to provide capabilities like: sea
 
 #### JSON Specification
 
-| Attribute | Type | Optional | Description |
+| Attribute(s) | Type | Optional | Description |
 | --- | :---: | :---: | ----------- |
 | *root* | SoftwareSystem[] | Yes | Stored software systems. |
 
@@ -239,7 +239,7 @@ Stored *container* entities used by Mina to provide capabilities like: search & 
 
 #### JSON Specification
 
-| Attribute | Type | Optional | Description |
+| Attribute(s) | Type | Optional | Description |
 | --- | :---: | :---: | ----------- |
 | *root* | Container[] | Yes | Stored containers. |
 
@@ -263,7 +263,7 @@ Stored *component* entities used by Mina to provide capabilities like: search & 
 
 #### JSON Specification
 
-| Attribute | Type | Optional | Description |
+| Attribute(s) | Type | Optional | Description |
 | --- | :---: | :---: | ----------- |
 | *root* | Component[] | Yes | Stored components. |
 
@@ -291,7 +291,7 @@ Stored *boundary* entities used by Mina to provide capabilities like: search & i
 
 #### JSON Specification
 
-| Attribute | Type | Optional | Description |
+| Attribute(s) | Type | Optional | Description |
 | --- | :---: | :---: | ----------- |
 | *root* | Boundary[] | Yes | Stored boundaries. |
 
@@ -299,64 +299,101 @@ Stored *boundary* entities used by Mina to provide capabilities like: search & i
 
 ## Object Types
 
-| Name | Attribute(s) | Type | Optional | Description |
-| --- | --- | :---: | :---: | ----------- |
-| Entity | ``` alias ``` | string | No | Alias of the entity. It corresponds to the ``` alias ``` defined in the ``` .puml ``` file. |
-| | ``` type ``` | string | No | Type of entity. It corresponds to the type defined in the ``` .puml ``` file. Options: ``` PERSON ```, ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` RELATIONSHIP ```, ``` BOUNDARY ``` |
-| | ``` position ``` | Position | No | Canvas-relative position of the entity.  |
-| | ``` rotation ``` | float (degrees) | No | Rotation of the entity.  |
-| | ``` size ``` | Size \| float | No | Size of the entity. In case of ```"type": "RELATIONSHIP"```, it is a number representing the length of the arrow. |
-| | ``` from ``` | string | No when ```"type": "RELATIONSHIP"``` | Required only when ```"type": "RELATIONSHIP"```. It corresponds to the field ``` from ``` of the related relationship defined in the ``` .puml ``` file. |
-| | ``` to ``` | string | No when ```"type": "RELATIONSHIP"``` | Required only when ```"type": "RELATIONSHIP"```. It corresponds to the field ``` to ``` of the related relationship defined in the ``` .puml ``` file. |
-| | ``` label ``` | string | No when ```"type": "RELATIONSHIP"``` | Required only when ```"type": "RELATIONSHIP"```. It corresponds to the field ``` label ``` of the related relationship defined in the ``` .puml ``` file. |
-| | ``` linkedDiagramUuid ``` | string | Yes | Uuid of the diagram linked to the entity. It is used, for example, to allow navigations between diagrams. |
-| Shape | ``` uuid ``` | string | No | Uuid of the shape. |
-| | ``` type ``` | string | No | Type of shape. Options: ``` LINE ```. |
-| | ``` position ``` | Position | No | Canvas-relative position of the shape.  |
-| | ``` rotation ``` | float (degrees) | No | Rotation of the shape.  |
-| | ``` size ``` | Size \| float | No | Size of the shape. In case of ```"type": "LINE"```, it is a number representing the length of the line. |
-| Position | ``` x ``` | float | No | Location on the y (vertical) axis of the canvas. |
-| | ``` y ``` | float | No | Location on the x (horizontal) axis of the canvas. |
-| | ``` z ``` | float | Yes | Z-order of the element. Default: ```1```. |
-| Size | ``` width ``` | float | No | Width of the element. |
-| | ``` height ``` | float | No | Height of the element. |
-| Person | ``` uuid ``` | string | No | Uuid of the person. |
-| | ``` alias ``` | string | No | Alias of the person. |
-| | ``` name ``` | string | No | Name of the person. |
-| | ``` description ``` | string | Yes | Description of the Person. |
-| | ``` location ``` | string | Yes | Location of the person: internal or external to the organization. Options: ``` INTERNAL ```, ``` EXTERNAL ```. Default: ``` INTERNAL ```. |
-| | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the person. |
-| SoftwareSystem | ``` uuid ``` | string | No | Uuid of the Software System. |
-| | ``` alias ``` | string | No | Alias of the software system. |
-| | ``` name ``` | string | No | Name of the software system. |
-| | ``` description ``` | string | Yes | Description of the software system. |
-| | ``` location ``` | string | Yes | Location of the software system: internal or external to the organization. Options: ``` INTERNAL ```, ``` EXTERNAL ```. Default: ``` INTERNAL ```. |
-| | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
-| Container | ``` uuid ``` | string | No | Uuid of the Container. |
-| | ``` alias ``` | string | No | Alias of the container. |
-| | ``` name ``` | string | No | Name of the container. |
-| | ``` description ``` | string | Yes | Description of the container. |
-| | ``` technology ``` | string | No | Technology of the container. |
-| | ``` type ``` | string | Yes | Type of the container: standard or database. Options: ``` STANDARD ```, ``` DATABASE ```. Default: ``` STANDARD ```. |
-| | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
-| Component | ``` uuid ``` | string | No | Uuid of the Component. |
-| | ``` alias ``` | string | No | Alias of the component. |
-| | ``` name ``` | string | No | Name of the component. |
-| | ``` description ``` | string | Yes | Description of the component. |
-| | ``` technology ``` | string | No | Technology of the component. |
-| | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
-| Boundary | ``` uuid ``` | string | No | Uuid of the Boundary. |
-| | ``` alias ``` | string | No | Alias of the boundary. |
-| | ``` name ``` | string | No | Name of the boundary. |
-| | ``` type ``` | string | No | Type of the boundary. Options: ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` CUSTOM ```. |
-| | ``` labelType ``` | string | No | Label of the ``` CUSTOM ``` boundary. Required only when ```"type": "CUSTOM"```. |
-| | ``` personsUuids ``` | string[] | Yes | Uuids of the stored Persons inside the boundary. |
-| | ``` softwareSystemsUuids ``` | string[] | Yes | Uuids of stored the Software Systems inside the boundary. |
-| | ``` containersUuids ``` | string[] | Yes | Uuids of the stored Containers inside the boundary. |
-| | ``` componentsUuids ``` | string[] | Yes | Uuids of the stored Components inside the boundary. |
-| | ``` boundariesUuids ``` | string[] | Yes | Uuids of the stored Boundaries inside the boundary. |
-| | ``` relationships ``` | Relationship[] | Yes | Relationships inside the boundary. |
-| Relationship | ``` uuidFrom ``` | string | No | UUID of the source entity of the relationship. |
-| | ``` uuidTo ``` | string | No | UUID of the target entity of the relationship. |
-| | ``` label ``` | string | No | Label of the relationship. |
-| | ``` technology ``` | string | Yes | Technology of the relationship. |
+### Entity
+| Attribute(s) | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| ``` alias ``` | string | No | Alias of the entity. It corresponds to the ``` alias ``` defined in the ``` .puml ``` file. |
+| ``` type ``` | string | No | Type of entity. It corresponds to the type defined in the ``` .puml ``` file. Options: ``` PERSON ```, ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` RELATIONSHIP ```, ``` BOUNDARY ``` |
+| ``` position ``` | Position | No | Canvas-relative position of the entity.  |
+| ``` rotation ``` | float (degrees) | No | Rotation of the entity.  |
+| ``` size ``` | Size \| float | No | Size of the entity. In case of ```"type": "RELATIONSHIP"```, it is a number representing the length of the arrow. |
+| ``` from ``` | string | No when ```"type": "RELATIONSHIP"``` | Required only when ```"type": "RELATIONSHIP"```. It corresponds to the field ``` from ``` of the related relationship defined in the ``` .puml ``` file. |
+| ``` to ``` | string | No when ```"type": "RELATIONSHIP"``` | Required only when ```"type": "RELATIONSHIP"```. It corresponds to the field ``` to ``` of the related relationship defined in the ``` .puml ``` file. |
+| ``` label ``` | string | No when ```"type": "RELATIONSHIP"``` | Required only when ```"type": "RELATIONSHIP"```. It corresponds to the field ``` label ``` of the related relationship defined in the ``` .puml ``` file. |
+| ``` linkedDiagramUuid ``` | string | Yes | Uuid of the diagram linked to the entity. It is used, for example, to allow navigations between diagrams. |
+
+### Shape
+| Attribute(s) | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| ``` uuid ``` | string | No | Uuid of the shape. |
+| ``` type ``` | string | No | Type of shape. Options: ``` LINE ```. |
+| ``` position ``` | Position | No | Canvas-relative position of the shape.  |
+| ``` rotation ``` | float (degrees) | No | Rotation of the shape.  |
+| ``` size ``` | Size \| float | No | Size of the shape. In case of ```"type": "LINE"```, it is a number representing the length of the line. |
+
+### Position
+| Attribute(s) | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| ``` x ``` | float | No | Location on the y (vertical) axis of the canvas. |
+| ``` y ``` | float | No | Location on the x (horizontal) axis of the canvas. |
+| ``` z ``` | float | Yes | Z-order of the element. Default: ```1```. |
+
+### Size
+| Attribute(s) | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| ``` width ``` | float | No | Width of the element. |
+| ``` height ``` | float | No | Height of the element. |
+
+### Person
+| Attribute(s) | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| ``` uuid ``` | string | No | Uuid of the person. |
+| ``` alias ``` | string | No | Alias of the person. |
+| ``` name ``` | string | No | Name of the person. |
+| ``` description ``` | string | Yes | Description of the Person. |
+| ``` location ``` | string | Yes | Location of the person: internal or external to the organization. Options: ``` INTERNAL ```, ``` EXTERNAL ```. Default: ``` INTERNAL ```. |
+| ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the person. |
+
+### SoftwareSystem
+| Attribute(s) | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| ``` uuid ``` | string | No | Uuid of the Software System. |
+| ``` alias ``` | string | No | Alias of the software system. |
+| ``` name ``` | string | No | Name of the software system. |
+| ``` description ``` | string | Yes | Description of the software system. |
+| ``` location ``` | string | Yes | Location of the software system: internal or external to the organization. Options: ``` INTERNAL ```, ``` EXTERNAL ```. Default: ``` INTERNAL ```. |
+| ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
+
+### Container
+| Attribute(s) | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| ``` uuid ``` | string | No | Uuid of the Container. |
+| ``` alias ``` | string | No | Alias of the container. |
+| ``` name ``` | string | No | Name of the container. |
+| ``` description ``` | string | Yes | Description of the container. |
+| ``` technology ``` | string | No | Technology of the container. |
+| ``` type ``` | string | Yes | Type of the container: standard or database. Options: ``` STANDARD ```, ``` DATABASE ```. Default: ``` STANDARD ```. |
+| ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
+
+### Component
+| Attribute(s) | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| ``` uuid ``` | string | No | Uuid of the Component. |
+| ``` alias ``` | string | No | Alias of the component. |
+| ``` name ``` | string | No | Name of the component. |
+| ``` description ``` | string | Yes | Description of the component. |
+| ``` technology ``` | string | No | Technology of the component. |
+| ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
+
+### Boundary
+| Attribute(s) | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| ``` uuid ``` | string | No | Uuid of the Boundary. |
+| ``` alias ``` | string | No | Alias of the boundary. |
+| ``` name ``` | string | No | Name of the boundary. |
+| ``` type ``` | string | No | Type of the boundary. Options: ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` CUSTOM ```. |
+| ``` labelType ``` | string | No | Label of the ``` CUSTOM ``` boundary. Required only when ```"type": "CUSTOM"```. |
+| ``` personsUuids ``` | string[] | Yes | Uuids of the stored Persons inside the boundary. |
+| ``` softwareSystemsUuids ``` | string[] | Yes | Uuids of stored the Software Systems inside the boundary. |
+| ``` containersUuids ``` | string[] | Yes | Uuids of the stored Containers inside the boundary. |
+| ``` componentsUuids ``` | string[] | Yes | Uuids of the stored Components inside the boundary. |
+| ``` boundariesUuids ``` | string[] | Yes | Uuids of the stored Boundaries inside the boundary. |
+| ``` relationships ``` | Relationship[] | Yes | Relationships inside the boundary. |
+
+### Relationship
+| Attribute(s) | Type | Optional | Description |
+| --- | :---: | :---: | ----------- |
+| ``` uuidFrom ``` | string | No | UUID of the source entity of the relationship. |
+| ``` uuidTo ``` | string | No | UUID of the target entity of the relationship. |
+| ``` label ``` | string | No | Label of the relationship. |
+| ``` technology ``` | string | Yes | Technology of the relationship. |
