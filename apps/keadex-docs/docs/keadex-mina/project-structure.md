@@ -120,7 +120,7 @@ The diagram's spec file can be considered the extension of the PlantUML definiti
   "description": "This is an example of my first System Context diagram",
   "entities": [
     {
-      "id": "softwareSystem1",
+      "alias": "softwareSystem1",
       "type": "SOFTWARE_SYSTEM",
       "position": {
         "x": 0,
@@ -130,10 +130,12 @@ The diagram's spec file can be considered the extension of the PlantUML definiti
         "width": 180,
         "height": 120
       },
-      "externalDiagramUUID": "80d3e51a-2ec2-4a38-8de1-01dcd1655672"
+      "linkedDiagramUuid": "80d3e51a-2ec2-4a38-8de1-01dcd1655672"
     },
     {
-      "id": "relationship1",
+      "from": "softwareSystem1",
+      "to": "softwareSystem2",
+      "label": "uses",
       "type": "RELATIONSHIP",
       "position": {
         "x": 0,
@@ -145,7 +147,7 @@ The diagram's spec file can be considered the extension of the PlantUML definiti
   ],
   "shapes": [
     {
-      "id": "line1",
+      "uuid": "31a70e34-911f-462b-9c1b-98ac81af5c5a",
       "type": "LINE",
       "position": {
         "x": 0,
@@ -162,7 +164,7 @@ The diagram's spec file can be considered the extension of the PlantUML definiti
 
 | Attribute | Type | Optional | Description |
 | --- | :---: | :---: | ----------- |
-| ``` uuid ``` | string | No | Auto-generated UUID of the diagram. |
+| ``` uuid ``` | string | No | Uuid of the diagram. |
 | ``` name ``` | string | No | Name of the diagram. |
 | ``` description ``` | string | Yes | Description of the diagram. |
 | ``` entities ``` | Entity[] | Yes | Entities included in the diagram. |
@@ -176,7 +178,8 @@ Stored *person* entities used by Mina to provide capabilities like: search & imp
 ```json title="/library/persons.json"
 [
   {
-    "id": "personalBankingCustomer",
+    "uuid": "6874fc3c-93fe-4423-83d7-b1f205021e74",
+    "alias": "personalBankingCustomer",
     "name": "Personal Banking Customer",
     "description": "A customer of the bank, with personal bank accounts.",
     "location": "INTERNAL",
@@ -199,7 +202,8 @@ Stored *software system* entities used by Mina to provide capabilities like: sea
 ```json title="/library/software-systems.json"
 [
   {
-    "id": "internetBankingSystem",
+    "uuid": "961d8cb1-a50e-46b8-b193-5998f3b0b58a",
+    "alias": "internetBankingSystem",
     "name": "Internet Banking System",
     "description": "Allows customer to view information about their bank accounts, and make payments.",
     "location": "INTERNAL",
@@ -222,7 +226,8 @@ Stored *container* entities used by Mina to provide capabilities like: search & 
 ```json title="/library/containers.json"
 [
   {
-    "id": "backend",
+    "uuid": "36d11e62-7cf3-4373-9fe2-2444dfd6f531",
+    "alias": "backend",
     "name": "Backend",
     "description": "Provides Internet banking functionalities via REST APIs",
     "technology": "Spring",
@@ -246,7 +251,8 @@ Stored *component* entities used by Mina to provide capabilities like: search & 
 ```json title="/library/components.json"
 [
   {
-    "id": "signinController",
+    "uuid": "b6551a3a-9deb-4b46-a92c-943be471c89f",
+    "alias": "signinController",
     "name": "Sign In Controller",
     "description": "Allows users to sign in to the Internet Banking System.",
     "technology": "React",
@@ -269,46 +275,16 @@ Stored *boundary* entities used by Mina to provide capabilities like: search & i
 ```json title="/library/boundaries.json"
 [
   {
-    "id": "backendBoundary",
+    "uuid": "70223831-a10e-454d-a45e-9a1a54b50ff8",
+    "alias": "backendBoundary",
     "name": "Backend",
     "type": "STANDARD",
-    "entities": [
-      {
-        "id": "softwareSystem1",
-        "type": "SOFTWARE_SYSTEM",
-        "position": {
-          "x": 0,
-          "y": 1
-        },
-        "size": {
-          "width": 180,
-          "height": 120
-        },
-        "externalDiagramUUID": "80d3e51a-2ec2-4a38-8de1-01dcd1655672"
-      },
-      {
-        "id": "relationship1",
-        "type": "RELATIONSHIP",
-        "position": {
-          "x": 0,
-          "y": 1
-        },
-        "rotation": 90,
-        "size": 120
-      }
-    ],
-    "shapes": [
-      {
-        "id": "line1",
-        "type": "LINE",
-        "position": {
-          "x": 0,
-          "y": 1
-        },
-        "rotation": 90,
-        "size": 50
-      }
-    ]
+    "personsUuids": [],
+    "softwareSystemsUuids": [],
+    "containersUuids": [],
+    "componentsUuids": [],
+    "boundariesUuids": [],
+    "relationships": []
   }
 ]
 ```
@@ -325,13 +301,16 @@ Stored *boundary* entities used by Mina to provide capabilities like: search & i
 
 | Name | Attribute(s) | Type | Optional | Description |
 | --- | --- | :---: | :---: | ----------- |
-| Entity | ``` id ``` | string | No | Unique identifier of the entity. It corresponds to the ``` id ``` defined in the ``` .puml ``` file. |
+| Entity | ``` alias ``` | string | No | Alias of the entity. It corresponds to the ``` alias ``` defined in the ``` .puml ``` file. |
 | | ``` type ``` | string | No | Type of entity. It corresponds to the type defined in the ``` .puml ``` file. Options: ``` PERSON ```, ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` RELATIONSHIP ```, ``` BOUNDARY ``` |
 | | ``` position ``` | Position | No | Canvas-relative position of the entity.  |
 | | ``` rotation ``` | float (degrees) | No | Rotation of the entity.  |
 | | ``` size ``` | Size \| float | No | Size of the entity. In case of ```"type": "RELATIONSHIP"```, it is a number representing the length of the arrow. |
-| | ``` externalDiagramUUID ``` | string | Yes | UUID of the diagram linked to the entity. It is used, for example, to allow navigations between diagrams. |
-| Shape | ``` id ``` | string | No | Unique identifier of the shape. |
+| | ``` from ``` | string | No when ```"type": "RELATIONSHIP"``` | Required only when ```"type": "RELATIONSHIP"```. It corresponds to the field ``` from ``` of the related relationship defined in the ``` .puml ``` file. |
+| | ``` to ``` | string | No when ```"type": "RELATIONSHIP"``` | Required only when ```"type": "RELATIONSHIP"```. It corresponds to the field ``` to ``` of the related relationship defined in the ``` .puml ``` file. |
+| | ``` label ``` | string | No when ```"type": "RELATIONSHIP"``` | Required only when ```"type": "RELATIONSHIP"```. It corresponds to the field ``` label ``` of the related relationship defined in the ``` .puml ``` file. |
+| | ``` linkedDiagramUuid ``` | string | Yes | Uuid of the diagram linked to the entity. It is used, for example, to allow navigations between diagrams. |
+| Shape | ``` uuid ``` | string | No | Uuid of the shape. |
 | | ``` type ``` | string | No | Type of shape. Options: ``` LINE ```. |
 | | ``` position ``` | Position | No | Canvas-relative position of the shape.  |
 | | ``` rotation ``` | float (degrees) | No | Rotation of the shape.  |
@@ -341,30 +320,43 @@ Stored *boundary* entities used by Mina to provide capabilities like: search & i
 | | ``` z ``` | float | Yes | Z-order of the element. Default: ```1```. |
 | Size | ``` width ``` | float | No | Width of the element. |
 | | ``` height ``` | float | No | Height of the element. |
-| Person | ``` id ``` | string | No | Unique identifier of the person. |
+| Person | ``` uuid ``` | string | No | Uuid of the person. |
+| | ``` alias ``` | string | No | Alias of the person. |
 | | ``` name ``` | string | No | Name of the person. |
-| | ``` description ``` | string | Yes | Description of the person. |
+| | ``` description ``` | string | Yes | Description of the Person. |
 | | ``` location ``` | string | Yes | Location of the person: internal or external to the organization. Options: ``` INTERNAL ```, ``` EXTERNAL ```. Default: ``` INTERNAL ```. |
 | | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the person. |
-| SoftwareSystem | ``` id ``` | string | No | Unique identifier of the software system. |
+| SoftwareSystem | ``` uuid ``` | string | No | Uuid of the Software System. |
+| | ``` alias ``` | string | No | Alias of the software system. |
 | | ``` name ``` | string | No | Name of the software system. |
 | | ``` description ``` | string | Yes | Description of the software system. |
 | | ``` location ``` | string | Yes | Location of the software system: internal or external to the organization. Options: ``` INTERNAL ```, ``` EXTERNAL ```. Default: ``` INTERNAL ```. |
 | | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
-| Container | ``` id ``` | string | No | Unique identifier of the container. |
+| Container | ``` uuid ``` | string | No | Uuid of the Container. |
+| | ``` alias ``` | string | No | Alias of the container. |
 | | ``` name ``` | string | No | Name of the container. |
 | | ``` description ``` | string | Yes | Description of the container. |
 | | ``` technology ``` | string | No | Technology of the container. |
 | | ``` type ``` | string | Yes | Type of the container: standard or database. Options: ``` STANDARD ```, ``` DATABASE ```. Default: ``` STANDARD ```. |
 | | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
-| Component | ``` id ``` | string | No | Unique identifier of the component. |
+| Component | ``` uuid ``` | string | No | Uuid of the Component. |
+| | ``` alias ``` | string | No | Alias of the component. |
 | | ``` name ``` | string | No | Name of the component. |
 | | ``` description ``` | string | Yes | Description of the component. |
 | | ``` technology ``` | string | No | Technology of the component. |
 | | ``` notes ``` | string | Yes | Additional notes not included in the diagram but used for searching purposes or included in the exported documentation. Notes typically contain a more detailed description of the software system. |
-| Boundary | ``` id ``` | string | No | Unique identifier of the boundary. |
+| Boundary | ``` uuid ``` | string | No | Uuid of the Boundary. |
+| | ``` alias ``` | string | No | Alias of the boundary. |
 | | ``` name ``` | string | No | Name of the boundary. |
 | | ``` type ``` | string | No | Type of the boundary. Options: ``` SOFTWARE_SYSTEM ```, ``` CONTAINER ```, ``` COMPONENT ```, ``` CUSTOM ```. |
 | | ``` labelType ``` | string | No | Label of the ``` CUSTOM ``` boundary. Required only when ```"type": "CUSTOM"```. |
-| | ``` entities ``` | Entity[] | Yes | Entities inside the boundary. |
-| | ``` shapes ``` | Shapes[] | Yes | Shapes inside the boundary. |
+| | ``` personsUuids ``` | string[] | Yes | Uuids of the stored Persons inside the boundary. |
+| | ``` softwareSystemsUuids ``` | string[] | Yes | Uuids of stored the Software Systems inside the boundary. |
+| | ``` containersUuids ``` | string[] | Yes | Uuids of the stored Containers inside the boundary. |
+| | ``` componentsUuids ``` | string[] | Yes | Uuids of the stored Components inside the boundary. |
+| | ``` boundariesUuids ``` | string[] | Yes | Uuids of the stored Boundaries inside the boundary. |
+| | ``` relationships ``` | Relationship[] | Yes | Relationships inside the boundary. |
+| Relationship | ``` uuidFrom ``` | string | No | UUID of the source entity of the relationship. |
+| | ``` uuidTo ``` | string | No | UUID of the target entity of the relationship. |
+| | ``` label ``` | string | No | Label of the relationship. |
+| | ``` technology ``` | string | Yes | Technology of the relationship. |
