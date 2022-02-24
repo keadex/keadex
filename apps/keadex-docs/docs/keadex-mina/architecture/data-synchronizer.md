@@ -8,6 +8,9 @@ displayed_sidebar: keadexMinaSidebar
 
 # Data Synchronizer
 
+## Component Diagram
+![Example banner](/keadex-mina/diagrams/comp-diagram-data-sync.png)
+
 ## Dynamic Diagram
 
 ## Flows
