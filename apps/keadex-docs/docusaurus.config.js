@@ -7,12 +7,13 @@ require('dotenv').config({ path: path.join(__dirname, `.env.${process.env.NODE_E
 module.exports = {
   title: 'Keadex',
   url: process.env.PUBLIC_URL,
-  baseUrl: '/',
+  baseUrl: process.env.BASE_URL,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'keadex',
   projectName: 'kadex-docs',
+  onBrokenLinks: 'warn',
   themeConfig: {
     colorMode: {
       defaultMode: 'dark',
@@ -54,7 +55,7 @@ module.exports = {
     () => ({
       configureWebpack(config, isServer, utils, content) {
         const newEntry = "./apps/keadex-docs/src/index.tsx"
-        // if (typeof config.entry === "string"){
+        if (!isServer){
           // const appExposePath = config.entry.replace(config.entry.replace(/^.*[\\\/]/, ''), "App.js")
           return {
             entry: newEntry,
@@ -62,7 +63,7 @@ module.exports = {
               runtimeChunk: false
             },
             output: {
-              publicPath: `${process.env.PUBLIC_URL}/`
+              publicPath: `${process.env.PUBLIC_URL}${process.env.BASE_URL}`
             },
             plugins: [
               ...config.plugins,
@@ -95,9 +96,9 @@ module.exports = {
               }),
             ],
           }   
-        // }else{
-        //   return {}
-        // }
+        }else{
+          return {}
+        }
       },
     }),
   ],
