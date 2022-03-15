@@ -1,17 +1,21 @@
+const { ModuleFederationPlugin } = require("webpack").container;
+const deps = require("./package.json").dependencies;
+const docusaurusDeps = require("@docusaurus/core/package.json").dependencies;
+const path = require('path'); 
+require('dotenv').config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV}`)});
+
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
-  url: 'https://localhost:3001',
+  title: 'Keadex',
+  url: process.env.PUBLIC_URL,
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'keadex',
+  projectName: 'kadex-docs',
   themeConfig: {
-    forceDarkMode: false,
     colorMode: {
-      defaultMode: 'light',
+      defaultMode: 'dark',
       disableSwitch: true
     },
     navbar: {
@@ -38,18 +42,63 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+            'https://github.com/keadex/web-apps/edit/main/apps/keadex-docs',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
       },
     ],
+  ],
+  plugins: [
+    () => ({
+      configureWebpack(config, isServer, utils, content) {
+        const newEntry = "./apps/keadex-docs/src/index.tsx"
+        // if (typeof config.entry === "string"){
+          // const appExposePath = config.entry.replace(config.entry.replace(/^.*[\\\/]/, ''), "App.js")
+          return {
+            entry: newEntry,
+            optimization: {
+              runtimeChunk: false
+            },
+            output: {
+              publicPath: `${process.env.PUBLIC_URL}/`
+            },
+            plugins: [
+              ...config.plugins,
+              new ModuleFederationPlugin({
+                name: "keadexdocs",
+                filename: "remoteEntry.js",
+                exposes: {
+                  "./App": newEntry
+                },
+                shared: [
+                  {
+                    react: {
+                      singleton: true,
+                      requiredVersion: deps.react,
+                    },
+                    "react-dom": {
+                      singleton: true,
+                      requiredVersion: deps["react-dom"],
+                    },
+                    "react-router": {
+                      singleton: true,
+                      requiredVersion: docusaurusDeps["react-router"],
+                    },
+                    "react-router-dom": {
+                      singleton: true,
+                      requiredVersion: docusaurusDeps["react-router-dom"],
+                    },
+                  },
+                ],
+              }),
+            ],
+          }   
+        // }else{
+        //   return {}
+        // }
+      },
+    }),
   ],
 };

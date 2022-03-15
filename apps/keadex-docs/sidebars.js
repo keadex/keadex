@@ -12,8 +12,7 @@ module.exports = {
           'keadex-mina/architecture/rendering-system',
         ],
       },
-      'keadex-mina/project-structure',
-      'keadex-mina/getting-started'
+      'keadex-mina/project-structure'
     ],
   },
 };

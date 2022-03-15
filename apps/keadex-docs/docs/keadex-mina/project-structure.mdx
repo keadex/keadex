@@ -6,6 +6,12 @@ slug: /keadex-mina/project-structure
 displayed_sidebar: keadexMinaSidebar
 ---
 
+import { generateTitle } from './helper'
+
+<head>
+  <title>{generateTitle("Project Structure")}</title>
+</head>
+
 ## Project Specifications
 
 ```bash
@@ -99,7 +105,7 @@ Rel_R(api, db, "Reads/Writes")
 @enduml
 ```
 
-Mina supports the **PlantUML** syntax to code the diagrams. In addition, the [Mina Rendering System](./architecture/rendering-system.md) uses the [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) definitions to render the diagrams.<br/>
+Mina supports the **PlantUML** syntax to code the diagrams. In addition, the [Mina Rendering System](./architecture/rendering-system.mdx) uses the [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) definitions to render the diagrams.<br/>
 
 :::caution
 
@@ -110,7 +116,7 @@ Even if you don't need to include the C4-PlantUML definitions (since Mina has it
 
 ### diagram.spec.json
 
-Mina stores in this file the diagram's settings and the rendering data used by the [rendering system](./architecture/rendering-system.md).<br/>
+Mina stores in this file the diagram's settings and the rendering data used by the [rendering system](./architecture/rendering-system.mdx).<br/>
 The diagram's spec file can be considered the extension of the PlantUML definitions. Thanks to this Mina is able to provide capabilities like: navigations between diagrams, interactive diagrams, custom rendering result.
 
 ```json title="/diagrams/*/*/diagram.spec.json"
