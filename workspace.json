@@ -28,7 +28,7 @@
         "build": {
           "executor": "@nx-plus/docusaurus:browser",
           "options": {
-            "outputPath": "dist/apps/keadex-docs/microfrontend/keadex-docs"
+            "outputPath": "dist/apps/keadex-docs"
           }
         },
         "serve": {
