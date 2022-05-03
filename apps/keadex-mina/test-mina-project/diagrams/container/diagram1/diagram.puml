@@ -1,0 +1,16 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(personalBankingCustomer, "Personal Banking Customer", "A customer of the bank, with personal bank accounts.")
+System_Boundary(internetBankingSystem, "Internet Banking System") {
+  Container(frontEnd, "Front-End", "React", "User Interface of the Internet Banking System")
+  Container(backEnd, "Back-End", "Spring", "Provides Internet banking functionalities via REST APIs")
+}
+
+System_Ext(paymentGateway, "Payment Gateway", "External Payment Gateway.")
+
+Rel(personalBankingCustomer, frontEnd, "uses", "HTTPS")
+Rel(frontEnd, backEnd, "invokes", "REST")
+Rel(backEnd, paymentGateway, "invokes", "REST")
+
+@enduml

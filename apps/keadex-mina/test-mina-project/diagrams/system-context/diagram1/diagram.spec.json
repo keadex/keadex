@@ -1,0 +1,68 @@
+{
+  "uuid": "80d3e51a-2ec2-4a38-8de1-01dcd1655672",
+  "name": "My first System Context diagram",
+  "description": "This is an example of my first System Context diagram",
+  "entities": [
+    {
+      "alias": "personalBankingCustomer",
+      "type": "PERSON",
+      "position": {
+        "x": 0,
+        "y": 1
+      },
+      "size": {
+        "width": 180,
+        "height": 120
+      }
+    },
+    {
+      "alias": "internetBankingSystem",
+      "type": "SOFTWARE_SYSTEM",
+      "position": {
+        "x": 0,
+        "y": 1
+      },
+      "size": {
+        "width": 180,
+        "height": 120
+      },
+      "linkedDiagramUuid": "a0983aa0-e906-4cf1-873c-92164f78cead"
+    },
+    {
+      "from": "personalBankingCustomer",
+      "to": "internetBankingSystem",
+      "label": "uses",
+      "type": "RELATIONSHIP",
+      "position": {
+        "x": 0,
+        "y": 1
+      },
+      "rotation": 90,
+      "size": 120
+    },
+    {
+      "from": "internetBankingSystem",
+      "to": "paymentGateway",
+      "label": "invokes",
+      "type": "RELATIONSHIP",
+      "position": {
+        "x": 0,
+        "y": 1
+      },
+      "rotation": 90,
+      "size": 120
+    }
+  ],
+  "shapes": [
+    {
+      "uuid": "436cb24a-9f08-4eb6-8e5f-1dbe8f00f614",
+      "type": "LINE",
+      "position": {
+        "x": 0,
+        "y": 1
+      },
+      "rotation": 90,
+      "size": 50
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "uuid": "50d6e79e-f4f8-47aa-9fa1-25709b4320cd",
+    "alias": "internetBankingSystem",
+    "name": "Internet Banking System",
+    "type": "SOFTWARE_SYSTEM",
+    "containersUuids": [
+      "c678555e-fdc9-4eb1-83b3-ba7cbd242e1e",
+      "752b642e-de89-4cc3-8f96-48e445c294fa"
+    ],
+    "relationships": [
+      {
+        "uuidFrom": "c678555e-fdc9-4eb1-83b3-ba7cbd242e1e",
+        "uuidTo": "752b642e-de89-4cc3-8f96-48e445c294fa",
+        "label": "invokes",
+        "technology": "REST"
+      }
+    ]
+  }
+]
