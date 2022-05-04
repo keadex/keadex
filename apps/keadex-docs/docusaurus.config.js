@@ -8,6 +8,7 @@ module.exports = {
   title: 'Keadex',
   url: process.env.PUBLIC_URL,
   baseUrl: process.env.BASE_URL,
+  staticDirectories: ['static'],
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
@@ -41,7 +42,6 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
           editUrl:
             'https://github.com/keadex/web-apps/edit/main/apps/keadex-docs',
         },
