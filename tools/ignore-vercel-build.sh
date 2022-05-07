@@ -12,7 +12,7 @@ yarn add -D typescript@$TS_VERSION --prefer-offline -W
 yarn add -D nx@$NX_BIN_VERSION --prefer-offline -W
 
 # Run the affected command, comparing latest commit to the one before that
-npx nx affected:apps --plain --base=main~1 --head=main | grep $APP -q
+yarn nx affected:apps --plain --base HEAD~1 --head HEAD | grep $APP -q
 
 # Store result of the previous command (grep)
 IS_AFFECTED=$?
