@@ -18,9 +18,9 @@ yarn nx affected:apps --plain --base HEAD~1 --head HEAD | grep $APP -q
 IS_AFFECTED=$?
 
 if [ $IS_AFFECTED -eq 1 ]; then
-  echo "🛑 - " $APP_TO_CHECK "not affected. Build cancelled."
+  echo "🛑 -" $APP_TO_CHECK "not affected. Build cancelled."
   exit 0
 elif [ $IS_AFFECTED -eq 0 ]; then
-  echo "✅ - " $APP_TO_CHECK "affected. Build can proceed"
+  echo "✅ -" $APP_TO_CHECK "affected. Build can proceed"
   exit 1
 fi
