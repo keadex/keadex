@@ -4,10 +4,12 @@ APP=$APP_TO_CHECK
 # Determine version of Nx installed
 NX_VERSION=$(node -e "console.log(require('./package.json').devDependencies['@nrwl/workspace'])")
 TS_VERSION=$(node -e "console.log(require('./package.json').devDependencies['typescript'])")
+NX_BIN_VERSION=$(node -e "console.log(require('./package.json').devDependencies['nx'])")
 
 # Install @nrwl/workspace in order to run the affected command
-npm install -D @nrwl/workspace@$NX_VERSION --prefer-offline -W
-npm install -D typescript@$TS_VERSION --prefer-offline -W
+yarn install -D @nrwl/workspace@$NX_VERSION --prefer-offline -W
+yarn install -D typescript@$TS_VERSION --prefer-offline -W
+yarn install -D nx@$NX_BIN_VERSION --prefer-offline -W
 
 # Run the affected command, comparing latest commit to the one before that
 npx nx affected:apps --plain --base=main~1 --head=main | grep $APP -q
