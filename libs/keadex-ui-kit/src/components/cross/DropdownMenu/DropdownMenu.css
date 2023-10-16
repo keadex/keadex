@@ -1,0 +1,14 @@
+.dropdown-menu li > ul {
+  transform: translatex(100%) scale(0);
+}
+.dropdown-menu li:hover > ul {
+  transform: translatex(101%) scale(1);
+}
+
+.dropdown-menu li button:disabled {
+  @apply text-accent-primary opacity-75;
+}
+
+.dropdown-menu li button:hover:disabled {
+  @apply bg-transparent;
+}

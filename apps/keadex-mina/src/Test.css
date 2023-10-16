@@ -1,0 +1,32 @@
+.align-horizontally {
+  margin-left: 50%;
+  transform: translatex(-50%);
+}
+
+.test {
+  padding: 50px;
+  display: grid;
+}
+
+.input-updated {
+  border-width: 3px;
+  border-color: green;
+  background-color: #0080001f;
+}
+
+hr.rounded {
+  width: 100%;
+  border-top: 2px solid #213547;
+  border-bottom: 0;
+  border-radius: 5px;
+  margin: 40px 0 40px 0;
+}
+
+.test-delete-library-element > input {
+  width: 300px;
+}
+
+.test-delete-library-element > button {
+  width: 100px;
+  padding: 0;
+}

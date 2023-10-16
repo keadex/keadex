@@ -1,0 +1,175 @@
+@startuml(id=test)
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+
+'---- COMMENTS
+
+/'
+ss
+sss
+
+ciaos
+ss
+ddd
+'/
+
+'---- CONTEXT
+
+Person_Ext(alias1, "label1", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+Person_Ext(alias2, "label2", "description")
+
+SystemDb_Ext(alias3, "label3", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+SystemDb_Ext(alias4, "label4", "description")
+
+SystemQueue_Ext(alias5, "label5", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+SystemQueue_Ext(alias6, "label6", "description")
+
+Person(alias7, "label7", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+Person(alias8, "label8", "description")
+
+System_Ext(alias9, "label9", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+System_Ext(alias10, "label10", "description")
+
+SystemDb(alias11, "label11", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+SystemDb(alias12, "label12", "description")
+
+SystemQueue(alias13, "label13", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+SystemQueue(alias14, "label14", "description")
+
+System(alias15, "label15", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+System(alias16, "label16", "description")
+
+'---- CONTAINER & COMPONENT
+
+ContainerQueue_Ext(alias17, "label17", "technology", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+ContainerQueue_Ext(alias18, "label18")
+
+ContainerQueue(alias19, "label19", "technology", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+ContainerQueue(alias20, "label20")
+
+ContainerDb_Ext(alias21, "label21", "technology", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+ContainerDb_Ext(alias22, "label22")
+
+ContainerDb(alias23, "label23", "technology", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+ContainerDb(alias24, "label24")
+
+Container_Ext(alias25, "label25", "technology", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+Container_Ext(alias26, "label26")
+
+Container(alias27, "label27", "technology", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+Container(alias28, "label28")
+
+ComponentQueue_Ext(alias29, "label29", "technology", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+ComponentQueue_Ext(alias30, "label30")
+
+ComponentQueue(alias31, "label31", "technology", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+ComponentQueue(alias32, "label32")
+
+ComponentDb_Ext(alias33, "label33", "technology", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+ComponentDb_Ext(alias34, "label34")
+
+ComponentDb(alias35, "label35", "technology", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+ComponentDb(alias36, "label36")
+
+Component_Ext(alias37, "label37", "technology", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+Component_Ext(alias38, "label38")
+
+Component(alias39, "label39", "technology", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+Component(alias40, "label40")
+
+'---- BOUNDARIES
+
+Boundary(alias41, "label41"){
+}
+
+Boundary(alias44, "label44", $type="BOUNDARY TYPE", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com"){
+	'test
+
+	Container(alias45, "label45", "technology", "description")
+
+}
+
+Enterprise_Boundary(alias46, "label46"){
+}
+
+Enterprise_Boundary(alias49, "label49", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com"){
+	'test
+
+	Container(alias50, "label50", "technology", "description")
+
+}
+
+System_Boundary(alias51, "label51"){
+}
+
+System_Boundary(alias52, "label53", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com"){
+	'test
+
+	Container(alias53, "label53", "technology", "description")
+
+}
+
+Container_Boundary(alias54, "label54"){
+}
+
+Container_Boundary(alias55, "label55", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com"){
+	'test
+
+	Container(alias56, "label56", "technology", "description")
+	Container(alias65, "label65", "technology2", "description2")
+	Rel(alias56, alias65, "call", "REST", "call an API",)
+
+}
+
+'---- DYNAMIC REL
+
+Container(alias57, "label57", "technology", "description")
+
+Container(alias58, "label58", "technology", "description")
+
+BiRel_U(alias57, alias58, "talk with")
+
+Container(alias59, "label59", "technology", "description")
+
+Container(alias60, "label60", "technology", "description")
+
+Rel(alias59, alias60, "call", "REST", "call an API", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com")
+
+'---- DEPLOYMENT
+
+Deployment_Node(alias61, "label61"){
+	Container(alias62, "label62", "technology")
+
+}
+
+Deployment_Node_L(alias63, "label63", $type="type", "description", $sprite="sprite", $tags="v1.0&v1.1+v1.0+v1.1", $link="http://www.include.com"){
+	Container(alias64, "label64", "technology")
+
+}
+
+
+@enduml

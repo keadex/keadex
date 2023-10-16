@@ -1,0 +1,3 @@
+.tooltip-inner {
+  @apply !max-w-2xl;
+}

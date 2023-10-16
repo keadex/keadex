@@ -1,0 +1,11 @@
+.app-menu__parent--hidden > #slim-content {
+  @apply !pl-0;
+}
+
+#app-menu-sidenav ul li {
+  @apply container-link container-link-bg;
+}
+
+#app-menu-sidenav .react-resizable-handle-e {
+  @apply bottom-0 top-0 m-0 h-screen w-1 rotate-0;
+}

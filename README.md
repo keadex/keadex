@@ -1,8 +1,7 @@
 
 
-# Keadex Web Apps
-
-Monorepo containing Keadex's web based applications.
+# Keadex
+Monorepo, managed with [Nx](https://nx.dev/), containing Keadex's applications and libraries.
 
 ## Packages
 

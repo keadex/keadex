@@ -1,15 +1,22 @@
 {
+  "$schema": "../../../node_modules/@tauri-apps/cli/schema.json",
   "package": {
     "productName": "keadex-mina",
     "version": "0.1.0-alpha.1"
   },
   "build": {
-    "distDir": "../build",
-    "devPath": "http://localhost:3000",
-    "beforeDevCommand": "yarn start",
+    "distDir": "../dist",
+    "devPath": "http://localhost:5173",
+    "beforeDevCommand": "yarn dev",
     "beforeBuildCommand": "yarn build"
   },
   "tauri": {
+    "pattern": {
+      "use": "isolation",
+      "options": {
+        "dir": "../dist-isolation"
+      }
+    },
     "bundle": {
       "active": true,
       "targets": "all",
@@ -28,13 +35,11 @@
       "shortDescription": "",
       "longDescription": "",
       "deb": {
-        "depends": [],
-        "useBootstrapper": false
+        "depends": []
       },
       "macOS": {
         "frameworks": [],
         "minimumSystemVersion": "",
-        "useBootstrapper": false,
         "exceptionDomain": "",
         "signingIdentity": null,
         "entitlements": null
@@ -51,15 +56,6 @@
     "allowlist": {
       "all": true
     },
-    "windows": [
-      {
-        "title": "Keadex Mina",
-        "width": 800,
-        "height": 600,
-        "resizable": true,
-        "fullscreen": false
-      }
-    ],
     "security": {
       "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self' img-src: 'self'"
     }

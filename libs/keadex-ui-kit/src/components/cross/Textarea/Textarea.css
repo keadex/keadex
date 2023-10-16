@@ -1,0 +1,3 @@
+textarea {
+  @apply input__field;
+}

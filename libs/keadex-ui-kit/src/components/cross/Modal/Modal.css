@@ -1,0 +1,7 @@
+.modal__body {
+  @apply relative p-4;
+}
+
+.modal__footer {
+  @apply border-secondary flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-opacity-50 p-4 dark:border-opacity-50;
+}

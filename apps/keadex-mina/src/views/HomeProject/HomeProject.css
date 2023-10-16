@@ -1,0 +1,23 @@
+.home-project .ag-root-wrapper {
+  @apply border-none bg-transparent;
+}
+
+.home-project .ag-cell-value {
+  @apply cursor-pointer;
+}
+
+.home-project .ag-row-hover {
+  @apply bg-secondary !important;
+}
+
+.home-project .ag-row-hover:not(.ag-full-width-row)::before {
+  @apply invisible;
+}
+
+.home-project .ag-row-odd {
+  @apply bg-primary;
+}
+
+.home-project .ag-row-even {
+  @apply bg-primary;
+}

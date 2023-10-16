@@ -1,18 +1,22 @@
 [
   {
-    "uuid": "1ba7b6f9-1b12-4399-8986-a1c1b18c5eb1",
-    "id": "personalBankingCustomer",
-    "name": "Personal Banking Customer",
-    "description": "A customer of the bank, with personal bank accounts.",
-    "location": "INTERNAL",
-    "notes": "Other notes not visible in the diagram."
+    "base_data": {
+      "uuid": "1ba7b6f9-1b12-4399-8986-a1c1b18c5eb1",
+      "alias": "personalBankingCustomer",
+      "label": "Personal Banking Customer",
+      "description": "A customer of the bank, with personal bank accounts.",
+      "notes": "Other notes not visible in the diagram."
+    },
+    "person_type": "Person"
   },
   {
-    "uuid": "c060d104-4f93-40a4-8edb-0d8c9424180e",
-    "id": "frontEndDeveloper",
-    "name": "Front-End Developer",
-    "description": "Developer of the web front-end.",
-    "location": "INTERNAL",
-    "notes": "Other notes not visible in the diagram."
+    "base_data": {
+      "uuid": "c060d104-4f93-40a4-8edb-0d8c9424180e",
+      "alias": "frontEndDeveloper",
+      "label": "Front-End Developer",
+      "description": "Developer of the web front-end.",
+      "notes": "Other notes not visible in the diagram."
+    },
+    "person_type": "Person_Ext"
   }
 ]

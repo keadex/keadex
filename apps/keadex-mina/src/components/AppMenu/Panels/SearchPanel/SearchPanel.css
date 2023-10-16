@@ -1,0 +1,31 @@
+#search-results .accordion-button {
+  @apply bg-primary overflow-hidden text-ellipsis whitespace-pre px-2 py-1 text-sm;
+}
+
+#search-results .accordion-button:hover {
+  @apply bg-link;
+}
+
+#search-results .accordion-button[data-te-collapse-collapsed] {
+  @apply bg-dark-primary;
+}
+
+#search-results .accordion-button[data-te-collapse-collapsed]:hover {
+  @apply bg-link;
+}
+
+#search-results .accordion-icon {
+  @apply h-4 w-4;
+}
+
+#search-results .accordion-icon svg {
+  @apply h-4 w-4;
+}
+
+#search-results .accordion-body {
+  @apply bg-dark-primary overflow-hidden text-ellipsis whitespace-pre py-2 pl-5 pr-2 text-sm;
+}
+
+#search-results .search-highlighted {
+  @apply text-yellow-300;
+}

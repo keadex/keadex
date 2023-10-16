@@ -1,0 +1,27 @@
+.select__dropdown {
+  @apply bg-secondary relative m-0 min-w-[100px] scale-[0.8] opacity-0 shadow-[0_2px_5px_0_rgba(0,0,0,0.16),_0_2px_10px_0_rgba(0,0,0,0.12)] outline-none transition duration-200 data-[te-select-open]:scale-100 data-[te-select-open]:opacity-100 motion-reduce:transition-none !important;
+}
+
+.select__input {
+  @apply cursor-pointer;
+}
+
+.select__option {
+  @apply text-accent-primary data-[te-input-multiple-active]:bg-link hover:[&:not([data-te-select-option-disabled])]:bg-link data-[te-input-state-active]:bg-link flex w-full cursor-pointer select-none flex-row items-center justify-between truncate bg-transparent px-4 data-[te-select-option-disabled]:cursor-default data-[te-select-selected]:data-[te-select-option-disabled]:cursor-default data-[te-select-option-selected]:bg-black/[0.02] data-[te-select-selected]:data-[te-select-option-disabled]:bg-transparent data-[te-input-state-active]:text-white data-[te-select-option-disabled]:text-gray-400 data-[te-select-selected]:data-[te-select-option-disabled]:text-white group-data-[te-select-option-group-ref]/opt:pl-7 hover:[&:not([data-te-select-option-disabled])]:text-white !important;
+}
+
+.select__label-size-default {
+  @apply pt-[0.37rem] leading-[1.6] peer-focus:-translate-y-[1.1rem] data-[te-input-state-active]:-translate-y-[1.1rem] peer-data-[te-input-state-active]:-translate-y-[1.1rem] !important;
+}
+
+.select__label {
+  @apply text-accent-secondary peer-focus:text-link input__label pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate transition-all duration-200 ease-out peer-focus:scale-[0.9] data-[te-input-state-active]:scale-[0.9] peer-data-[te-input-state-active]:scale-[0.9] motion-reduce:transition-none !important;
+}
+
+.select__arrow {
+  @apply peer-data-[te-input-focused]:text-accent-secondary peer-focus:text-accent-secondary absolute right-3 h-6 w-5 cursor-pointer text-[0.8rem] group-data-[te-was-validated]/validation:peer-valid:text-green-600 group-data-[te-was-validated]/validation:peer-invalid:text-[rgb(220,76,100)];
+}
+
+[data-te-input-notch-ref] {
+  display: none !important;
+}

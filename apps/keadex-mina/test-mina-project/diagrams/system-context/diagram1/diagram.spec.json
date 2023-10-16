@@ -31,7 +31,6 @@
     {
       "from": "personalBankingCustomer",
       "to": "internetBankingSystem",
-      "label": "uses",
       "type": "RELATIONSHIP",
       "position": {
         "x": 0,
@@ -43,7 +42,6 @@
     {
       "from": "internetBankingSystem",
       "to": "paymentGateway",
-      "label": "invokes",
       "type": "RELATIONSHIP",
       "position": {
         "x": 0,

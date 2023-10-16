@@ -1,40 +1,46 @@
-import React from 'react'
-import logo from './logo.svg'
-import tauriCircles from './tauri.svg'
-import tauriWord from './wordmark.svg'
-import './App.css'
+import useEventEmitter from 'ahooks/lib/useEventEmitter'
+import React, { useEffect, useRef } from 'react'
+import { Provider } from 'react-redux'
+import { RouterProvider } from 'react-router-dom'
+import {
+  Button,
+  Collapse,
+  Dropdown,
+  Input,
+  Modal,
+  Select,
+  initTE,
+} from 'tw-elements'
+import AppEventContext, { AppEvent } from './context/AppEventContext'
+import router from './core/router/router'
+import store from './core/store/store'
+import './i18n'
+import './styles/index.css'
 
-function App() {
+export const App = React.memo(() => {
+  const teInitialized = useRef(false)
+  const event$ = useEventEmitter<AppEvent>()
+
+  useEffect(() => {
+    // setTimeout() needed due to tw-elements@1.0.0-beta2 bug:
+    //  - https://github.com/mdbootstrap/Tailwind-Elements/issues/1615
+    //  - https://github.com/mdbootstrap/Tailwind-Elements/issues/1685
+    setTimeout(() => {
+      if (!teInitialized.current) {
+        console.debug(`Tailwind Elements initialized`)
+        initTE({ Dropdown, Button, Modal, Input, Select, Collapse })
+      }
+      teInitialized.current = true
+    }, 1000)
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <div className="inline-logo">
-          <img src={tauriCircles} className="App-logo rotate" alt="logo" />
-          <img src={tauriWord} className="App-logo smaller" alt="logo" />
-        </div>
-        <a
-          className="App-link"
-          href="https://tauri.studio"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Tauri 4 Keadex
-        </a>
-        <img src={logo} className="App-logo rotate" alt="logo" />
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </header>
-    </div>
+    <Provider store={store}>
+      <AppEventContext.Provider value={event$}>
+        <RouterProvider router={router} />
+      </AppEventContext.Provider>
+    </Provider>
   )
-}
+})
 
 export default App

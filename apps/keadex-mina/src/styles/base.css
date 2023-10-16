@@ -1,0 +1,9 @@
+@import '@keadex/keadex-ui-kit/styles/base.css';
+
+body {
+  @apply select-none;
+}
+
+div[role='tooltip'] {
+  @apply !duration-[0ms];
+}

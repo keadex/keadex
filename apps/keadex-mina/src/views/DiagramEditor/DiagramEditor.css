@@ -1,0 +1,21 @@
+.Toastify__toast-container:has(.diagram-editor_toast--error) {
+  width: 100%;
+  left: 0;
+  white-space: pre;
+}
+
+.diagram-editor_toast--error {
+  @apply border-third border border-solid;
+}
+
+.diagram-editor_toast--error-body {
+  font-family: monospace;
+}
+
+#diagram-code-editor-box .react-resizable-handle-e {
+  @apply -right-0.5 bottom-0 top-0 z-[1] m-0 h-screen w-1 rotate-0;
+}
+
+#diagram-code-editor-box .react-resizable {
+  @apply h-full;
+}

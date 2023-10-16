@@ -1,0 +1,22 @@
+{
+  "name": "@keadex/c4-model-ui-kit",
+  "description": "Library of UI components for C4 model diagrams.",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "version": "0.0.1",
+  "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@keadex/keadex-utils": "^0.0.1",
+    "@types/fabric": "^4.5.15",
+    "change-case": "^4.1.2",
+    "fabric": "^5.2.4",
+    "pluralize": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/pluralize": "^0.0.30",
+    "autoprefixer": "^10.4.12",
+    "postcss": "^8.4.17",
+    "postcss-import": "^15.0.0",
+    "tailwindcss": "^3.3.2"
+  }
+}

@@ -1,0 +1,237 @@
+// This is the PlantUML PEG grammar which supports only the C4 Model elements defined
+// in the library https://github.com/plantuml-stdlib/C4-PlantUML (referenced also by
+// the official one https://github.com/plantuml/plantuml-stdlib/).
+//
+// Latest supported C4-PlantUML: 2.4.0
+//
+// This means that this grammar does not fully support the PlantUML syntax.
+//
+// This decision has been made to satisfy the goal of this project (which is to manage
+// only C4 Model diagrams), and at the same time to keep the grammar simple and light
+// (for the continuous parsing process).
+//
+// In addition, the decision of using PlantUML to code C4 Model diagrams has been made
+// because we don't want to create a new language, but use an existing one.
+// PlantUML is widely spread, with a great community and support, and fits very well for this purpose.
+//
+// Special thanks to https://github.com/Enteee/plantuml-parser/. This grammar is an simplified
+// version of https://github.com/Enteee/plantuml-parser/blob/master/src/plantuml.pegjs
+
+
+plantuml_file = { diagrams }
+
+diagrams = { 
+	(!"@startuml" ~ ANY)* ~ "@startuml" ~ ("(id=" ~ diagram_id ~ ")")? 
+		~ NEWLINE ~ uml ~ "@enduml" ~ NEWLINE? ~ (!"@startuml" ~ ANY)* 
+}
+
+diagram_id = { name }
+
+uml = { (uml_element | NEWLINE)+ }
+
+uml_element = {
+	include |
+	comment |
+	stdlib_c4_context |
+	stdlib_c4_container_component | 
+	stdlib_c4_boundary |
+	stdlib_c4_dynamic_rel |
+	stdlib_c4_deployment
+}
+
+
+//------ Include
+include = { "!include " ~ uri ~ ENDLINE }
+
+
+//------ Comment
+comment = { single_line_comment | multi_line_comment }
+
+single_line_comment = _{ "'" ~ single_line_comment_content ~ ENDLINE }
+
+single_line_comment_content = _{ (!NEWLINE ~ ANY)+ }
+
+multi_line_comment = _{ "/'" ~ multi_line_comment_content  ~ "'/" ~ ENDLINE }
+
+multi_line_comment_content = _{ (!("'/" | "'") ~ ENDLINE)* }
+
+
+//------ Stdlib C4 Context
+stdlib_c4_context = { 
+	stdlib_c4_context_types ~ "(" ~ WHITESPACE? 
+		~ stdlib_c4_alias ~ WHITESPACE? ~ "," ~ WHITESPACE?
+		~ stdlib_c4_label ~ WHITESPACE? ~ ","? ~ WHITESPACE? 
+		~ stdlib_c4_descr? ~ WHITESPACE? ~ ","? ~ WHITESPACE? 
+		~ stdlib_c4_sprite? ~ WHITESPACE? ~ ","? ~ WHITESPACE? 
+		~ stdlib_c4_tags? ~ WHITESPACE? ~ ","? ~ WHITESPACE? 
+		~ stdlib_c4_link? ~ ")" ~ ENDLINE 
+}
+
+stdlib_c4_context_types = { 
+	"Person_Ext" |
+	"SystemDb_Ext" |
+	"SystemQueue_Ext" |
+	"Person" |
+	"System_Ext" |
+	"SystemDb" |
+	"SystemQueue" |
+	"System"
+}
+
+
+//------ Stdlib C4 Container & Component
+stdlib_c4_container_component = { 
+	stdlib_c4_container_component_types ~ "(" ~ WHITESPACE? 
+		~ stdlib_c4_alias ~ WHITESPACE? ~ "," ~ WHITESPACE?
+		~ stdlib_c4_label ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_techn? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_descr? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_sprite? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_tags? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_link? ~ ")" ~ ENDLINE 
+}
+
+stdlib_c4_container_component_types = { 
+	"ContainerQueue_Ext" |
+  "ContainerQueue" |
+	"ContainerDb_Ext" |
+	"ContainerDb" |
+	"Container_Ext" |
+	"Container" |
+	"ComponentQueue_Ext" |
+	"ComponentQueue" |
+	"ComponentDb_Ext" |
+	"ComponentDb" |
+	"Component_Ext" |
+	"Component"
+}
+
+
+//------ Stdlib C4 Boundaries
+stdlib_c4_boundary = { 
+	(
+		"Boundary(" ~ WHITESPACE? 
+			~ stdlib_c4_alias ~ WHITESPACE? ~ "," ~ WHITESPACE?
+			~ stdlib_c4_label ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+			~ stdlib_c4_type? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+			~ stdlib_c4_tags? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+			~ stdlib_c4_link? ~ ")" ~ WHITESPACE? ~ "{" ~ NEWLINE+ 
+			~ (uml_element | NEWLINE)* ~ "}" ~ ENDLINE
+	) |
+	(
+		stdlib_c4_boundary_types ~ "(" ~ WHITESPACE? 
+			~ stdlib_c4_alias ~ WHITESPACE? ~ "," ~ WHITESPACE?
+			~ stdlib_c4_label ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+			~ stdlib_c4_tags? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+			~ stdlib_c4_link? ~ ")" ~ WHITESPACE? ~ "{" ~ NEWLINE+ 
+			~ (uml_element | NEWLINE)* ~ "}" ~ ENDLINE
+	)
+}
+
+stdlib_c4_boundary_types = {
+	"Enterprise_Boundary" |
+	"System_Boundary" |
+	"Container_Boundary"
+}
+
+
+//------ Stdlib C4 Dynamic Rel
+stdlib_c4_dynamic_rel = {
+	stdlib_c4_dynamic_rel_types ~ "(" ~ WHITESPACE? 
+		~ stdlib_c4_from ~ WHITESPACE? ~ "," ~ WHITESPACE?
+		~ stdlib_c4_to ~ WHITESPACE? ~ "," ~ WHITESPACE?
+    ~ stdlib_c4_label ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_techn? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_descr? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_sprite? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_tags? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_link? ~ ")" ~ ENDLINE
+}
+
+stdlib_c4_dynamic_rel_types = {
+	"Rel_Neighbor" |
+	"Rel_Back_Neighbor" |
+	"Rel_Back" |
+	"Rel_Down" |
+	"Rel_D" |
+	"Rel_Up" |
+	"Rel_U" |
+	"Rel_Left" |
+	"Rel_L" |
+	"Rel_Right" |
+	"Rel_R" |
+	"Rel" |
+	"BiRel_Neighbor" |
+	"BiRel_Down" |
+	"BiRel_D" |
+	"BiRel_Up" |
+	"BiRel_U" |
+	"BiRel_Left" |
+	"BiRel_L" |
+	"BiRel_Right" |
+	"BiRel_R" |
+	"BiRel"
+}
+
+
+//------ Stdlib C4 Deployment
+stdlib_c4_deployment = {        
+	stdlib_c4_deployment_types ~ "(" ~ WHITESPACE? 
+		~ stdlib_c4_alias ~ WHITESPACE? ~ "," ~ WHITESPACE?
+		~ stdlib_c4_label ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+    ~ stdlib_c4_type? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+  	~ stdlib_c4_descr? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_sprite? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_tags? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_link? ~ ")" ~ WHITESPACE? ~ "{" ~ NEWLINE+ 
+		~ (uml_element | NEWLINE)* ~ "}" ~ ENDLINE
+}
+
+stdlib_c4_deployment_types = {
+	"Deployment_Node_L" |
+  "Deployment_Node_R" |
+  "Deployment_Node" |
+  "Node_L" |
+  "Node_R" |
+  "Node"
+}
+
+
+//------ Shared
+name = { ( ASCII_ALPHANUMERIC | "." | "_" )+ }
+
+quoted_name = _{ "\"" ~ name ~ "\"" }
+
+uri = { (ASCII_ALPHANUMERIC | WHITESPACE | "-" | "_" | "/" | "\\" | "." | ":")+ }
+
+string = { (!("\"" | NEWLINE) ~ ANY)+ }
+
+quoted_string = _{ "\"" ~ string ~ "\"" }
+
+
+//------ Shared Stdlib C4
+stdlib_c4_alias = { name | quoted_name }
+
+stdlib_c4_label = { quoted_string }
+
+stdlib_c4_descr = { quoted_string }
+
+stdlib_c4_techn = { quoted_string }
+
+stdlib_c4_sprite = { "$sprite=" ~ quoted_string }
+
+stdlib_c4_tags = { "$tags=" ~ quoted_string }
+
+stdlib_c4_link = { "$link=" ~ "\"" ~ uri ~ "\"" }
+
+stdlib_c4_type = { ("$type=" ~ quoted_string) | quoted_string }
+
+stdlib_c4_from = { name | quoted_name }
+
+stdlib_c4_to = { name | quoted_name }
+
+
+//------ Meta
+WHITESPACE = _{ ( " " | "\t" ) }
+
+ENDLINE = _{ (!NEWLINE ~ ANY)* ~ NEWLINE } 

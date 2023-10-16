@@ -1,0 +1,17 @@
+@import 'react-toastify/dist/ReactToastify.css';
+
+body {
+  @apply text-accent-secondary;
+}
+
+:root {
+  --toastify-toast-width: 520px !important;
+}
+
+.container-link-bg {
+  @apply hover:bg-primary [&.active]:bg-primary py-2;
+}
+
+.container-link {
+  @apply hover:border-l-link cursor-pointer border-l-4 border-r-4 border-transparent;
+}
