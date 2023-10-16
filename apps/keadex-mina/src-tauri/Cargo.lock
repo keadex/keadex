@@ -1669,7 +1669,7 @@ dependencies = [
 
 [[package]]
 name = "keadex_mina"
-version = "0.1.0-alpha.1"
+version = "0.1.0-beta.1"
 dependencies = [
  "async-openai",
  "convert_case 0.6.0",
