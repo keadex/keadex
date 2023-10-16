@@ -184,6 +184,12 @@ const factory: WindowTitlebarMenuFactory<
     open('https://github.com/keadex/keadex/tree/main/apps/keadex-mina')
   }
 
+  const handleReportIssue = () => {
+    open(
+      'https://github.com/keadex/keadex/issues/new?assignees=&labels=keadex+mina&projects=&template=keadex-mina-bug.md&title=%5BKeadex+Mina+Bug%5D'
+    )
+  }
+
   const handleAbout = () => {
     data.showModal({
       id: 'aboutModal',
@@ -296,7 +302,7 @@ const factory: WindowTitlebarMenuFactory<
         isHeaderMenuItem: false,
         id: 'wbar_help_report_issue',
         label: t('common.action.report_issue').toString(),
-        onClick: undefined,
+        onClick: handleReportIssue,
       },
       {
         id: 'wbar_help_separator2',
