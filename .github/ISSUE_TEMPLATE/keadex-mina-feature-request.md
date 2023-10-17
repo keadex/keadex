@@ -1,5 +1,5 @@
 ---
-name: Keadex Mina Feature request
+name: Keadex Mina Feature Request
 about: Suggest an idea for this project
 title: "[Keadex Mina Feature Request]"
 labels: keadex mina
