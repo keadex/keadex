@@ -1,0 +1,29 @@
+{
+  "name": "keadex-mina",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/keadex-mina/src",
+  "projectType": "application",
+  "targets": {
+    "dev": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "tauri dev"
+      }
+    },
+    "info": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "tauri info"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/keadex-mina/**/*.{ts,tsx,js,jsx}"],
+        "eslintConfig": "apps/keadex-mina/.eslintrc.json",
+        "ignorePath": "apps/keadex-mina/.eslintignore"
+      }
+    }
+  }
+}

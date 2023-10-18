@@ -5,18 +5,18 @@
   "license": "MIT",
   "version": "0.0.1",
   "dependencies": {
-    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@keadex/keadex-utils": "^0.0.1",
-    "@types/fabric": "^4.5.15",
-    "change-case": "^4.1.2",
-    "fabric": "^5.2.4",
+    "@types/fabric": "^5.3.4",
+    "change-case": "^5.0.2",
+    "fabric": "^5.3.0",
     "pluralize": "^8.0.0"
   },
   "devDependencies": {
-    "@types/pluralize": "^0.0.30",
-    "autoprefixer": "^10.4.12",
-    "postcss": "^8.4.17",
-    "postcss-import": "^15.0.0",
-    "tailwindcss": "^3.3.2"
+    "@types/pluralize": "^0.0.31",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "postcss-import": "^15.1.0",
+    "tailwindcss": "^3.3.3"
   }
 }

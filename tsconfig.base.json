@@ -4,39 +4,23 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
-    "module": "esnext",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "module": "ESNext",
+    "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@keadex/keadex-ui-kit/cross": [
-        "libs/keadex-ui-kit/src/cross.ts"
-      ],
-      "@keadex/keadex-ui-kit/desktop": [
-        "libs/keadex-ui-kit/src/desktop.ts"
-      ],
-      "@keadex/keadex-ui-kit/web": [
-        "libs/keadex-ui-kit/src/web.ts"
-      ],
-      "@keadex/c4-model-ui-kit": [
-        "libs/c4-model-ui-kit/src/index.ts"
-      ],
-      "@keadex/keadex-utils": [
-        "libs/keadex-utils/src/index.ts"
-      ]
+      "@keadex/c4-model-ui-kit": ["libs/c4-model-ui-kit/src/index.ts"],
+      "@keadex/keadex-ui-kit/cross": ["libs/keadex-ui-kit/src/cross.ts"],
+      "@keadex/keadex-ui-kit/desktop": ["libs/keadex-ui-kit/src/desktop.ts"],
+      "@keadex/keadex-ui-kit/web": ["libs/keadex-ui-kit/src/web.ts"],
+      "@keadex/keadex-utils": ["libs/keadex-utils/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }
