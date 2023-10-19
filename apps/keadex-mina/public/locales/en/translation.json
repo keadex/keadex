@@ -62,7 +62,7 @@
     "version": "Version",
     "yes": "Yes",
     "action": {
-      "check_for_updates": "Check for Updates",
+      "check_for_updates": "Check for Updates...",
       "close_project": "Close Project",
       "link_existing_diagram": "Link an existing diagram",
       "link_to_diagram": "Link \"{{alias}}\" to...",
@@ -83,12 +83,14 @@
       "project_not_opened": "Project not opened: {{errorMessage}}"
     },
     "info": {
+      "coming_soon": "Coming Soon!",
+      "copied_to_clipboard": "Copied to clipboard!",
+      "diagram_exported": "Diagram exported in {{pathExportedDiagram}}",
       "done": "Done",
+      "limit_results": "More than {{count}} matches. This list could contain a subset of the results.",
       "no_diagrams": "No diagrams",
       "no_results": "No results",
-      "diagram_exported": "Diagram exported in {{pathExportedDiagram}}",
-      "limit_results": "More than {{count}} matches. This list could contain a subset of the results.",
-      "copied_to_clipboard": "Copied to clipboard!"
+      "youre_up_to_date": "You're up to date!"
     },
     "question": {
       "confirm_close_project": "Are you sure you want to close the project? Not saved changes will be lost.",

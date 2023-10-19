@@ -9,11 +9,11 @@ import { EventEmitter } from 'ahooks/lib/useEventEmitter'
 import { Location, NavigateFunction } from 'react-router-dom'
 
 export type WindowTitlebarMenuFactory<T, K> = (
-  t: TFunction<'translation', undefined, 'translation'>,
+  t: TFunction<'translation', undefined>,
   context: EventEmitter<T> | null,
   navigate: NavigateFunction,
   location: Location,
-  data: K
+  data: K,
 ) => DropdownMenuProps
 
 export interface WindowTitlebarProps {
@@ -31,7 +31,7 @@ export const WindowTitlebar = React.memo((props: WindowTitlebarProps) => {
           <WindowTitlebarButton
             {...rightButtonProps}
             key={rightButtonProps.id}
-          />
+          />,
         )
       }
     }
