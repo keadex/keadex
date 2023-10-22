@@ -11,8 +11,8 @@ jobs:
       is_mina_affected: ${{ steps.affected.outputs.is_mina_affected }}
 
     steps:
-      - uses: actions/checkout@v3
-        name: Checkout
+      - name: checkout
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       # -------------- START TO REMOVE
@@ -21,7 +21,8 @@ jobs:
       #     node-version: 18
       # - run: npm install --global yarn
       # -------------- END TO REMOVE
-      - uses: actions/setup-node@v3
+      - name: setup node
+        uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'yarn'
@@ -59,11 +60,15 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
-      - uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
+          cache: 'yarn'
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
       - name: install dependencies (ubuntu only)

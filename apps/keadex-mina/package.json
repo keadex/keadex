@@ -1,7 +1,7 @@
 {
   "name": "keadex-mina",
   "description": "Desktop application to draw, manage and share the architectures of software systems.",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-3",
   "private": false,
   "license": "MIT",
   "type": "module",
