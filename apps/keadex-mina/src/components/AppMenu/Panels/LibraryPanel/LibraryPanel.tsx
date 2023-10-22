@@ -5,19 +5,18 @@ import {
   c4ElementTypeHumanName,
   c4ElementTypePathName,
 } from '@keadex/c4-model-ui-kit'
-import ROUTES, { BASE_PATH_LIBRARY } from '../../../../core/router/routes'
+import { useSafeExit } from '@keadex/keadex-ui-kit/cross'
 import pluralize from 'pluralize'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { useSafeExit } from '@keadex/keadex-ui-kit/cross'
+import { useLocation } from 'react-router-dom'
+import ROUTES, { BASE_PATH_LIBRARY } from '../../../../core/router/routes'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface LibraryPanelProps {}
 
 export const LibraryPanel = React.memo((props: LibraryPanelProps) => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const location = useLocation()
   const { modal: modalSafeExit, safeExit } = useSafeExit(ROUTES)
 
@@ -34,7 +33,7 @@ export const LibraryPanel = React.memo((props: LibraryPanelProps) => {
           key={c4ElementType}
           onClick={() =>
             safeExit(
-              `${BASE_PATH_LIBRARY}${c4ElementTypePathName(c4ElementType)}`
+              `${BASE_PATH_LIBRARY}${c4ElementTypePathName(c4ElementType)}`,
             )
           }
         >

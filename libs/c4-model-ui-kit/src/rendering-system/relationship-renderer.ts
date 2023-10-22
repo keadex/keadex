@@ -11,7 +11,7 @@ export const renderRelationshipDiagramElement = (
   canvas: fabric.Canvas | undefined,
   relationship: Relationship,
   diagramSpec: DiagramSpec,
-  options?: RenderElementsOptions
+  options?: RenderElementsOptions,
 ): C4RelationshipComponent | undefined => {
   if (
     relationship.base_data &&
@@ -25,11 +25,11 @@ export const renderRelationshipDiagramElement = (
         relationship.from,
         relationship.to,
         { Relationship: relationship.relationship_type },
-        diagramSpec
-      )
+        diagramSpec,
+      ),
     )
     if ((!options || !options.skipAddToCanvas) && component)
-      canvas?.add(component, ...component.children)
+      canvas?.add(component, ...(component.children ?? []))
     return component
   }
   return

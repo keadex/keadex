@@ -4,7 +4,14 @@ import DiagramCodeView from './DiagramCodeView'
 
 describe('DiagramCodeView', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<DiagramCodeView />)
+    const { baseElement } = render(
+      <DiagramCodeView
+        diagramEditorToolbarCommands={null}
+        saveDiagram={function (): void {
+          console.log('Function not implemented.')
+        }}
+      />,
+    )
     expect(baseElement).toBeTruthy()
   })
 })

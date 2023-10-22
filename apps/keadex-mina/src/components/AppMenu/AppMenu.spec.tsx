@@ -4,7 +4,7 @@ import AppMenu from './AppMenu'
 
 describe('AppMenu', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<AppMenu />)
+    const { baseElement } = render(<AppMenu visible={false} />)
     expect(baseElement).toBeTruthy()
   })
 })

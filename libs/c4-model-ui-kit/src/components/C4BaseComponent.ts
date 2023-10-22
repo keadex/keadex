@@ -128,6 +128,7 @@ export class ExtendedPoint extends fabric.Point {
 
 export class VirtualGroupSelection extends fabric.ActiveSelection {}
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isC4Component = (object: any): object is IC4BaseComponent => {
   return 'getUpdatedSpecs' in object
 }
@@ -141,7 +142,7 @@ export class C4BaseComponent extends fabric.Group implements IC4BaseComponent {
     options?: fabric.IGroupOptions,
     parent?: C4BaseComponent,
     children?: C4BaseComponent[],
-    customOnMouseUp = false
+    customOnMouseUp = false,
   ) {
     super(objects, {
       data: {
@@ -219,7 +220,7 @@ export class C4BaseComponent extends fabric.Group implements IC4BaseComponent {
     canvas: fabric.Canvas | undefined,
     event: IEvent<Event>,
     selectedObject: fabric.Object,
-    contextMenuItems?: DropdownMenuItemProps[]
+    contextMenuItems?: DropdownMenuItemProps[],
   ) {
     if (canvas) {
       event.e.preventDefault()
@@ -228,6 +229,7 @@ export class C4BaseComponent extends fabric.Group implements IC4BaseComponent {
         case MOUSE_EVENTS.RIGHT_CLICK: {
           canvas.setActiveObject(selectedObject)
           canvas.renderAll()
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const contextTop: CanvasRenderingContext2D = (canvas as any)
             .contextTop
           const pointer = fabric.util.getPointer(event.e, contextTop.canvas)
@@ -242,7 +244,7 @@ export class C4BaseComponent extends fabric.Group implements IC4BaseComponent {
                   contextMenuItems ??
                   createBaseContextMenuItems(canvas, event, selectedObject),
               },
-            }
+            },
           )
           document.dispatchEvent(newEvent)
           break
@@ -258,7 +260,7 @@ export const createBaseContextMenuItems = (
   canvas: fabric.Canvas,
   event: IEvent<Event>,
   object: fabric.Object,
-  asSubMenu = true
+  asSubMenu = true,
 ): DropdownMenuItemProps[] => {
   const baseContextMenuItems = []
   const elementType = object.data?.rawDiagramElementSpec?.element_type
@@ -287,7 +289,7 @@ export const createBaseContextMenuItems = (
       {
         id: 'separatorCommon',
         isSepator: true,
-      }
+      },
     )
   }
 
@@ -315,7 +317,7 @@ export const createBaseContextMenuItems = (
       id: 'sendBackwards',
       label: 'Send Backwards',
       onClick: () => sendBackwards(object),
-    }
+    },
   )
   if (!asSubMenu) return baseContextMenuItems
   else
@@ -348,11 +350,11 @@ const sendBackwards = (object: fabric.Object) => {
     const parentOfVirtualGroup = object.parent
     const minZIndexOfSelectedGroup = getMinZIndex(
       object.canvas,
-      parentOfVirtualGroup?.children ?? []
+      parentOfVirtualGroup?.children ?? [],
     )
     const minZIndexOfParentChildren = getMinZIndex(
       object.canvas,
-      parentOfVirtualGroup?.parent?.children ?? []
+      parentOfVirtualGroup?.parent?.children ?? [],
     )
     if (
       minZIndexOfParentChildren === undefined ||
@@ -362,7 +364,7 @@ const sendBackwards = (object: fabric.Object) => {
       object.sendBackwards()
     } else {
       console.debug(
-        `cannot send backwards ${minZIndexOfSelectedGroup} ${minZIndexOfParentChildren}`
+        `cannot send backwards ${minZIndexOfSelectedGroup} ${minZIndexOfParentChildren}`,
       )
     }
   } else {
@@ -370,7 +372,7 @@ const sendBackwards = (object: fabric.Object) => {
     const minZIndexOfObject = getZIndexOfObject(object.canvas, object)
     const minZIndexOfParentChildren = getMinZIndex(
       object.canvas,
-      object.parent?.children ?? []
+      object.parent?.children ?? [],
     )
     if (
       minZIndexOfParentChildren === undefined ||
@@ -380,7 +382,7 @@ const sendBackwards = (object: fabric.Object) => {
       object.sendBackwards()
     } else {
       console.debug(
-        `cannot send backwards ${minZIndexOfObject} ${minZIndexOfParentChildren}`
+        `cannot send backwards ${minZIndexOfObject} ${minZIndexOfParentChildren}`,
       )
     }
   }
