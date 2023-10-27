@@ -1,7 +1,7 @@
 {
   "$schema": "../../../node_modules/@tauri-apps/cli/schema.json",
   "package": {
-    "productName": "keadex-mina",
+    "productName": "Keadex Mina",
     "version": "0.1.0-3"
   },
   "build": {
@@ -21,7 +21,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "io.keadex",
+      "identifier": "io.keadex.mina",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -63,7 +63,15 @@
       "all": true
     },
     "security": {
-      "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self' img-src: 'self'"
+      "csp": {
+        "default-src": "blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self'",
+        "font-src": "https://fonts.gstatic.com https://cdn.jsdelivr.net",
+        "img-src": "'self' asset: blob: data:",
+        "style-src": "'unsafe-inline' 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net",
+        "script-src": "https://cdn.jsdelivr.net",
+        "worker-src": "blob:"
+      },
+      "dangerousDisableAssetCspModification": ["style-src"]
     }
   }
 }
