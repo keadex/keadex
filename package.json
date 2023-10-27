@@ -3,16 +3,16 @@
   "version": "0.0.1-alpha.1",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve",
-    "build": "nx build",
-    "test": "nx test",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "install-keadex-mina": "cd apps/keadex-mina & yarn",
+    "install-isolated-packages": "yarn install-keadex-mina",
+    "postinstall": "yarn install-isolated-packages"
   },
   "private": true,
   "dependencies": {
     "core-js": "^3.33.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "regenerator-runtime": "0.14.0",
     "tslib": "^2.6.2"
   },
@@ -50,8 +50,10 @@
     "ts-node": "10.9.1",
     "typescript": "5.2.2"
   },
-  "workspaces": [
-    "apps/*",
-    "libs/*"
-  ]
+  "workspaces": {
+    "packages": [
+      "apps/!(keadex-docs)*",
+      "libs/*"
+    ]
+  }
 }
