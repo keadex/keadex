@@ -48,7 +48,7 @@ export const AISpeechBubble = React.memo((props: AISpeechBubbleProps) => {
     <div
       className={`${
         aiHidden ? 'scale-0 opacity-0' : 'scale-100 opacity-100'
-      } absolute bottom-0 left-0 right-0 text-center transition delay-150 duration-300 ease-in-out`}
+      } z-[5] absolute bottom-0 left-0 right-0 text-center transition delay-150 duration-300 ease-in-out`}
     >
       <IconButton
         className="absolute right-0 z-[1] -mt-3 mr-6 text-xl"
