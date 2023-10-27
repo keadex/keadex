@@ -17,7 +17,7 @@ tauri-build = { version = "1.5.0", features = ["isolation"] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.5.2", features = ["updater", "api-all", "isolation"] }
+tauri = { version = "1.5.2", features = [ "macos-private-api", "updater", "api-all", "isolation"] }
 log = { version = "0.4", features = ["serde"] }
 env_logger = "0.8.4"
 state = "0.6"
