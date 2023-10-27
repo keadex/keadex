@@ -1,5 +1,5 @@
 {
-  "name": "keadex-docs",
+  "name": "@keadex/keadex-docs",
   "description": "Documentation of Keadex, built with Docusaurus.",
   "version": "0.1.0-alpha.1",
   "private": false,
@@ -10,7 +10,7 @@
     "@mdx-js/react": "^2.3.0",
     "clsx": "^2.0.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^2.4.3",

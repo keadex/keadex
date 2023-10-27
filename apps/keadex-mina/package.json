@@ -1,5 +1,5 @@
 {
-  "name": "keadex-mina",
+  "name": "@keadex/keadex-mina",
   "description": "Desktop application to draw, manage and share the architectures of software systems.",
   "version": "0.1.0-3",
   "private": false,
