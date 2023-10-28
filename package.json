@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "commit": "git-cz",
-    "install-keadex-docs": "cd apps/keadex-docs & yarn",
+    "install-keadex-docs": "cd apps/keadex-docs; ls -l; yarn",
     "install-isolated-packages": "yarn install-keadex-docs",
     "postinstall": "yarn install-isolated-packages"
   },
