@@ -17,9 +17,10 @@ export type WindowTitlebarMenuFactory<T, K> = (
 ) => DropdownMenuProps
 
 export interface WindowTitlebarProps {
-  rightButtonsProps?: WindowTitlebarButtonProps[]
   icon: string
   menuProps: DropdownMenuProps
+  rightButtonsProps?: WindowTitlebarButtonProps[]
+  title?: string
 }
 
 export const WindowTitlebar = React.memo((props: WindowTitlebarProps) => {
@@ -43,6 +44,11 @@ export const WindowTitlebar = React.memo((props: WindowTitlebarProps) => {
       data-tauri-drag-region
       className="window-titlebar window__inner-border bg-dark-primary fixed left-0 right-0 top-0 z-10 flex h-8 w-full flex-row items-center border-l-0 border-r-0 border-t-0"
     >
+      {props.title && (
+        <span className="absolute w-full text-center opacity-20 pointer-events-none">
+          {props.title}
+        </span>
+      )}
       <div data-tauri-drag-region className="flex basis-3/4 items-center">
         <img src={props.icon} className="ml-2 h-5 w-5" alt="Keadex Mina icon" />
         <div className="ml-2 flex">

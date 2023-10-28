@@ -35,7 +35,7 @@ export const Layout = React.memo((props: LayoutProps) => {
   const project = useAppSelector((state) => state.project.value)
 
   const [rightButtons, setRightButtons] = useState<WindowTitlebarButtonProps[]>(
-    []
+    [],
   )
   const [resized, setResized] = useState(false)
   const [windowTitlebarMenu, setWindowTitlebarMenu] =
@@ -50,7 +50,7 @@ export const Layout = React.memo((props: LayoutProps) => {
         resized,
         setResized,
         unlistenRef,
-        setRightButtons
+        setRightButtons,
       )
     }
     const unlisten = unlistenRef.current
@@ -74,14 +74,14 @@ export const Layout = React.memo((props: LayoutProps) => {
                 hideModal,
                 dispatch,
                 currentProjectRoot: project?.project_settings.root,
-              }
+              },
             )
-          : emptyWindowTitlebarMenu
+          : emptyWindowTitlebarMenu,
       )
       setIsAppMenuVisible(
         ROUTES[location.pathname].isAppMenuVisible !== undefined
           ? ROUTES[location.pathname].isAppMenuVisible!
-          : false
+          : false,
       )
     } else {
       setWindowTitlebarMenu(emptyWindowTitlebarMenu)
@@ -107,6 +107,7 @@ export const Layout = React.memo((props: LayoutProps) => {
           rightButtonsProps={rightButtons}
           icon={icon}
           menuProps={windowTitlebarMenu}
+          title="Keadex Mina Beta"
         />
         <div className="absolute bottom-0 left-0 right-0 top-8 overflow-auto">
           <AppMenu visible={isAppMenuVisible}>
