@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       # -------------- START TO REMOVE
@@ -22,11 +22,14 @@ jobs:
       # - run: npm install --global yarn
       # -------------- END TO REMOVE
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'yarn'
       - uses: nrwl/nx-set-shas@v4
+      - name: Check
+        run: |
+          ls -l
       - run: yarn --frozen-lockfile
       - name: Affected
         run: |
