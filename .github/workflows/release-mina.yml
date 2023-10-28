@@ -27,16 +27,9 @@ jobs:
           node-version: 18
           cache: 'yarn'
       - uses: nrwl/nx-set-shas@v4
-      - name: Check
-        run: |
-          ls -l
       - run: yarn --frozen-lockfile
       - name: Affected
-        run: |
-          node --version
-          yarn --version
-          yarn nx --version
-          echo "affected=$(yarn --silent nx show projects --affected --json | jq -Rsa)" >> "$GITHUB_ENV"
+        run: echo "affected=$(yarn --silent nx show projects --affected --json | jq -Rsa)" >> "$GITHUB_ENV"
       # - name: Affected
       #   run: echo "affected=[\"keadex-battisti\"]" >> "$GITHUB_ENV"
       - name: Is affected
