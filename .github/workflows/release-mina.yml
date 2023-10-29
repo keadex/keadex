@@ -95,3 +95,9 @@ jobs:
         run: wget https://github.com/keadex/keadex/releases/latest/download/latest.json
       - name: check
         run: ls
+      - name: deploy to gist
+        uses: exuanbo/actions-deploy-gist@v1
+        with:
+          token: ${{ secrets.GIST_TOKEN }}
+          gist_id: 7f3ebbc2691dc83591c96a6662f37e94
+          file_path: latest.json
