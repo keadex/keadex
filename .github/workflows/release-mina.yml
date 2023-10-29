@@ -92,6 +92,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: download latest latest.json
-        run: wget https://github.com/keadex/keadex/releases/latest/latest.json
+        run: wget https://github.com/keadex/keadex/releases/latest/download/latest.json
       - name: check
         run: ls
