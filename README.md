@@ -6,5 +6,5 @@ Monorepo, managed with [Nx](https://nx.dev/), containing Keadex's applications a
 
 | Package     | Version       | Description                                                              |
 | ----------- | ------------- | ------------------------------------------------------------------------ |
-| Keadex Mina | 0.1.0-3       | Desktop application based on Tauri to build and manage C4 Model diagrams |
+| Keadex Mina | 0.1.0-4       | Desktop application based on Tauri to build and manage C4 Model diagrams |
 | Keadex Docs | 0.1.0-alpha.1 | Keadex documentation built with Docusaurus 2                             |
