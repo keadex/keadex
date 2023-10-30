@@ -80,7 +80,7 @@ export const DiagramCodeView = forwardRef(
 
     useEffect(() => {
       function handle(e: KeyboardEvent) {
-        if (e.ctrlKey && e.key === 's') {
+        if (e.key.toUpperCase() === 'S' && (e.ctrlKey || e.metaKey)) {
           e.preventDefault()
           saveDiagram()
         }
@@ -195,7 +195,7 @@ export const DiagramCodeView = forwardRef(
 
     function handleEditorChange(
       value: string | undefined,
-      ev: monaco.editor.IModelContentChangedEvent
+      ev: monaco.editor.IModelContentChangedEvent,
     ) {
       setEditorPosition(editorRef.current?.getPosition() ?? null)
 
@@ -266,7 +266,7 @@ export const DiagramCodeView = forwardRef(
           editor.executeEdits(
             'replaceLineContent',
             [editOperation],
-            currentSelection !== null ? [currentSelection] : []
+            currentSelection !== null ? [currentSelection] : [],
           )
           editor.pushUndoStop()
         }
@@ -290,7 +290,7 @@ export const DiagramCodeView = forwardRef(
                   toast.error(
                     t('common.error.internal', {
                       errorMessage: error.msg ?? error,
-                    })
+                    }),
                   )
                 })
             }}
@@ -318,7 +318,7 @@ export const DiagramCodeView = forwardRef(
             let result: DiagramPlantUML | undefined
             try {
               result = await deserializePlantUMLByString(
-                `@startuml\n${selectedPlantUMLLine}\n@enduml`
+                `@startuml\n${selectedPlantUMLLine}\n@enduml`,
               )
             } catch (e) {
               result = undefined
@@ -367,7 +367,7 @@ export const DiagramCodeView = forwardRef(
                       console.log(updatedPlantUML)
                       replaceLineContent(
                         cursorPosition.lineNumber,
-                        updatedPlantUML.replaceAll('\n', '')
+                        updatedPlantUML.replaceAll('\n', ''),
                       )
                       hideModal()
                     }}
@@ -403,7 +403,7 @@ export const DiagramCodeView = forwardRef(
         />
       </div>
     )
-  }
+  },
 )
 
 export default DiagramCodeView
