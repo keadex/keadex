@@ -1,46 +1,43 @@
-# Getting Started with Create React App
+<!-- <p align="center">
+  <a href="https://keadex.io/kealab#keadex-battisti" target="blank"><img src="https://keadex.io:2053/uploads/keadex_battisti_dark_ff71c03a21.png" width="350" alt="Keadex Battisti Logo" /></a>
+</p>
+<p align="center">Desktop app to easily code and organize at a scale <a href="https://c4model.com/" target="_blank">C4 Model</a> diagrams.</p>
+</br>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
 
-## Available Scripts
+![release workflow](https://github.com/keadex/keadex/actions/workflows/release-mina.yml/badge.svg)
+![GitHub](https://img.shields.io/github/license/keadex/keadex)
+![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=apps%2Fkeadex-mina%2Fpackage.json)
 
-In the project directory, you can run:
+</div> -->
 
-### `yarn start`
+# Keadex Mina
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+_Desktop app to easily code and organize at a scale C4 Model diagrams._
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+![release workflow](https://github.com/keadex/keadex/actions/workflows/release-mina.yml/badge.svg)
+![GitHub](https://img.shields.io/github/license/keadex/keadex)
+![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=apps%2Fkeadex-mina%2Fpackage.json)
 
-### `yarn test`
+## Quick Overview
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Keadex Mina** is a desktop application available for Linux, MacOS and Windows.
 
-### `yarn build`
+It is based on the **Diagram as Code** concept: you can diagram software architectures by using [C4 Model PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) code and adjust the rendered result.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Mina is designed to be used in large projects and provides features to organize your diagrams.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Download
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Download the latest version from the [Release](https://github.com/keadex/keadex/releases) section.
 
-### `yarn eject`
+## Documentation
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Discover all the features and details in the [Keadex Mina documentation](TODO).
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Useful Links
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [C4 Model](https://c4model.com/)
+- [PlantUML documentation](https://plantuml.com/)
+- [C4 Model PlantUML Syntax](https://github.com/plantuml-stdlib/C4-PlantUML)

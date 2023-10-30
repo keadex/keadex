@@ -1,7 +1,22 @@
-# keadex-ui-kit
+# Keadex UI Kit
 
-This library was generated with [Nx](https://nx.dev).
+![GitHub](https://img.shields.io/github/license/keadex/keadex)
+![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=libs%2Fkeadex-ui-kit%2Fpackage.json)
 
-## Running unit tests
+## Quick Overview
 
-Run `nx test keadex-ui-kit` to execute the unit tests via [Jest](https://jestjs.io).
+**Keadex UI Kit** is a Typescript library that contains:
+
+- React Components
+- Hooks
+- Styles
+- Contexts
+- Constants
+- Types
+- Utilities
+
+to create the UI of the Keadex applications.
+
+## Documentation
+
+If you are interested on the details of this package, please visit the [Keadex UI Kit documentation](TODO).

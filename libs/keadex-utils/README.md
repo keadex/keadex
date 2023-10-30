@@ -1,7 +1,12 @@
-# keadex-utils
+# Keadex UI Kit
 
-This library was generated with [Nx](https://nx.dev).
+![GitHub](https://img.shields.io/github/license/keadex/keadex)
+![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=libs%2Fkeadex-utils%2Fpackage.json)
 
-## Running unit tests
+## Quick Overview
 
-Run `nx test keadex-utils` to execute the unit tests via [Jest](https://jestjs.io).
+**Keadex Utils** is a library that provides general purpose Typescript utilities.
+
+## Documentation
+
+If you are interested on the details of this package, please visit the [Keadex Utils documentation](TODO).
