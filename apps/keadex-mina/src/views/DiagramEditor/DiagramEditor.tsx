@@ -25,7 +25,6 @@ import DiagramDesignView, {
   KeadexCanvasState,
 } from './DiagramDesignView/DiagramDesignView'
 import './DiagramEditor.css'
-import { objectsAreEqual } from '@keadex/keadex-utils'
 
 const TOAST_ERROR_DEFAULT_CONFIGS: ToastOptions = {
   className: 'diagram-editor_toast--error',
@@ -133,7 +132,7 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
 
   const isDiagramChanged = (
     prevDiagram: Diagram,
-    nextDiagram: Diagram
+    nextDiagram: Diagram,
   ): boolean => {
     return (
       prevDiagram.raw_plantuml !== nextDiagram.raw_plantuml ||
@@ -144,7 +143,7 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
   const handleOpenDiagram = async () => {
     const diagram = await loadDiagram(
       diagramEditorState.diagramName,
-      diagramEditorState.diagramType
+      diagramEditorState.diagramType,
     ).catch((error) => {
       toast.error(error.msg, TOAST_ERROR_DEFAULT_CONFIGS)
       setError(error)
@@ -154,11 +153,11 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
 
   const handleCloseDiagram = async (
     navigateToHome: boolean,
-    canvasState?: KeadexCanvasState
+    canvasState?: KeadexCanvasState,
   ) => {
     await closeDiagram(
       diagramEditorState.diagramName,
-      diagramEditorState.diagramType
+      diagramEditorState.diagramType,
     ).catch((error) => {
       toast.error(error.msg, TOAST_ERROR_DEFAULT_CONFIGS)
       setError(error)
@@ -199,13 +198,13 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
           diagram.diagram_name,
           diagram.diagram_type,
           updatedRawPlantUML,
-          updatedDiagramSpec
+          updatedDiagramSpec,
         )
           .then(async () => {
             setError(undefined)
             await handleCloseDiagram(
               true,
-              diagramDesignViewRef.current?.getCanvasState()
+              diagramDesignViewRef.current?.getCanvasState(),
             )
             await handleOpenDiagram()
           })
