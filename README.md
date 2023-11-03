@@ -5,9 +5,12 @@
 
 <div align="center">
 
+![GitHub](https://img.shields.io/github/license/keadex/keadex)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fkeadex.io&label=website&up_message=keadex.io)](https://keadex.io)
 [![Website](https://img.shields.io/website?up_message=Keadex&up_color=5662F6&url=https%3A%2F%2Fdiscord.gg%2F92XZ5DNa&label=Discord)](https://discord.gg/92XZ5DNa)
-![GitHub](https://img.shields.io/github/license/keadex/keadex)
+[![Static Badge](https://img.shields.io/badge/Linkedin-0A66C2?logo=linkedin)
+](https://www.linkedin.com/in/giacomosimmi/)
+[![Static Badge](https://img.shields.io/badge/Spotify-1DD05D?logo=spotify&color=09451F)](http://open.spotify.com/user/jacksimmi)
 
 </div>
 
