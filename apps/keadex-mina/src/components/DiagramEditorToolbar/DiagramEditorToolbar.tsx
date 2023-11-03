@@ -42,28 +42,28 @@ const styleButton =
 export const DiagramEditorToolbar = forwardRef(
   (
     props: DiagramEditorToolbarProps,
-    ref: Ref<DiagramEditorToolbarCommands>
+    ref: Ref<DiagramEditorToolbarCommands>,
   ) => {
     const { diagramCodeViewCommands, diagramDesignViewCommands } = props
 
     const AI_ENABLED = JSON.parse(import.meta.env.VITE_AI_ENABLED)
     const { t } = useTranslation()
     const { forceUpdate } = useForceUpdate()
-    const { modal, showModal, hideModal } = useModal()
+    const { modal } = useModal()
 
     useEffect(() => {
       const tooltipTriggerList = [].slice.call(
-        document.querySelectorAll('[data-te-toggle="tooltip"]')
+        document.querySelectorAll('[data-te-toggle="tooltip"]'),
       )
       tooltipTriggerList.map(
         (tooltipTriggerEl) =>
-          new Tooltip(tooltipTriggerEl, { trigger: 'hover' })
+          new Tooltip(tooltipTriggerEl, { trigger: 'hover' }),
       )
     }, [])
 
     useEffect(() => {
       const tooltipTriggerList = [].slice.call(
-        document.querySelectorAll('[data-te-toggle="tooltip"]')
+        document.querySelectorAll('[data-te-toggle="tooltip"]'),
       )
 
       tooltipTriggerList.forEach((tooltipTriggerEl) => {
@@ -231,7 +231,7 @@ export const DiagramEditorToolbar = forwardRef(
         </div>
       </div>
     )
-  }
+  },
 )
 
 export default DiagramEditorToolbar

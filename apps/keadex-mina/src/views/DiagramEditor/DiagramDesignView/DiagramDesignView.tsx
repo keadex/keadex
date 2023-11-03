@@ -85,7 +85,7 @@ export const DiagramDesignView = forwardRef(
       if (canvasState) {
         localCanvas.setZoom(canvasState.zoom)
         localCanvas.relativePan(
-          new fabric.Point(canvasState.pan.panX, canvasState.pan.panY)
+          new fabric.Point(canvasState.pan.panX, canvasState.pan.panY),
         )
       }
 
@@ -100,7 +100,11 @@ export const DiagramDesignView = forwardRef(
     }
 
     async function exportDiagram() {
-      if (diagram?.diagram_name && diagram.diagram_type && canvas.current) {
+      if (
+        currentRenderedDiagram.current?.diagram_name &&
+        currentRenderedDiagram.current.diagram_type &&
+        canvas.current
+      ) {
         const format = 'png' //TODO
         console.debug(`Exporting to ${format}`)
 
@@ -112,7 +116,7 @@ export const DiagramDesignView = forwardRef(
         // Calculate the bounding box of all the objects of the canvas in order to
         // export also the objects "outside" the canvas and not visible in the viewport
         let { width, height, left, top } = getBoundingBox(
-          canvas.current.getObjects()
+          canvas.current.getObjects(),
         )
         if (width && height && left && top) {
           width += MARGIN_EXPORTED_DIAGRAM
@@ -122,8 +126,8 @@ export const DiagramDesignView = forwardRef(
         }
 
         await exportDiagramToFile(
-          diagram.diagram_name,
-          diagram.diagram_type,
+          currentRenderedDiagram.current.diagram_name,
+          currentRenderedDiagram.current.diagram_type,
           canvas.current.toDataURL({
             format,
             enableRetinaScaling: true,
@@ -132,12 +136,12 @@ export const DiagramDesignView = forwardRef(
             left,
             top,
           }),
-          format
+          format,
         )
           .then((pathExportedDiagram) =>
             toast.success(
-              t('common.info.diagram_exported', { pathExportedDiagram })
-            )
+              t('common.info.diagram_exported', { pathExportedDiagram }),
+            ),
           )
           .catch((error: MinaError) => toast.success(error.msg))
 
@@ -155,16 +159,19 @@ export const DiagramDesignView = forwardRef(
 
       getUpdatedDiagramSpec: (): DiagramSpec | undefined => {
         if (
-          diagram &&
-          diagram.diagram_plantuml &&
-          diagram.diagram_spec &&
-          diagram.diagram_name &&
-          diagram.diagram_type
+          currentRenderedDiagram.current &&
+          currentRenderedDiagram.current.diagram_plantuml &&
+          currentRenderedDiagram.current.diagram_spec &&
+          currentRenderedDiagram.current.diagram_name &&
+          currentRenderedDiagram.current.diagram_type
         ) {
           const updatedSpecs = updateDiagramElementsSpecsFromCanvas(
-            canvas.current
+            canvas.current,
           )
-          return { ...diagram.diagram_spec, elements_specs: updatedSpecs }
+          return {
+            ...currentRenderedDiagram.current.diagram_spec,
+            elements_specs: updatedSpecs,
+          }
         }
       },
 
@@ -194,10 +201,10 @@ export const DiagramDesignView = forwardRef(
         if (canvasEl.current.parentElement)
           canvasEl.current.parentElement.style.display = 'none'
         canvas.current?.setWidth(
-          parentDivEl.current?.getBoundingClientRect().width
+          parentDivEl.current?.getBoundingClientRect().width,
         )
         canvas.current?.setHeight(
-          parentDivEl.current?.getBoundingClientRect().height
+          parentDivEl.current?.getBoundingClientRect().height,
         )
         if (canvasEl.current.parentElement)
           canvasEl.current.parentElement.style.display = 'flex'
@@ -219,7 +226,7 @@ export const DiagramDesignView = forwardRef(
         renderDiagram(
           canvas.current,
           diagramListener,
-          currentRenderedDiagram.current
+          currentRenderedDiagram.current,
         )
         isDiagramChanged.current = false
       }
@@ -233,7 +240,7 @@ export const DiagramDesignView = forwardRef(
         </div>
       </div>
     )
-  }
+  },
 )
 
 export default DiagramDesignView

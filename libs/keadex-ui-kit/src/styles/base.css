@@ -1,7 +1,9 @@
 @import 'react-toastify/dist/ReactToastify.css';
+@import '../fonts/roboto/roboto.css';
 
 body {
   @apply text-accent-secondary;
+  font-family: 'Roboto', sans-serif !important;
 }
 
 :root {

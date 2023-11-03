@@ -29,7 +29,7 @@ export const Home = React.memo((props: HomeProps) => {
       })
       .catch((error: MinaError) => {
         toast.error(
-          t('common.error.project_not_opened', { errorMessage: error.msg })
+          t('common.error.project_not_opened', { errorMessage: error.msg }),
         )
       })
   }
@@ -63,16 +63,10 @@ export const Home = React.memo((props: HomeProps) => {
       {modal}
       <div className="-mt-28 text-center">
         <img
-          src="mina-logo-white.svg"
-          width={150}
+          src="mina-logo-full.png"
+          width={650}
           alt="Keadex Mina Logo "
-          className="inline-block opacity-50 brightness-0 contrast-[.78]"
-        />
-        <img
-          src="mina-logo-text-white.svg"
-          width={450}
-          alt="Keadex Mina"
-          className="ml-4 inline-block opacity-50 brightness-0 contrast-[.78]"
+          className="inline-block pointer-events-none"
         />
       </div>
       <div className="mt-20 text-center text-5xl">

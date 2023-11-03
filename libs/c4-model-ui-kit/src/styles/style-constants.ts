@@ -22,7 +22,7 @@ export const ELEMENT = {
     BORDER_WIDTH: 1,
   },
   FONT: {
-    FAMILY: 'Calibri',
+    FAMILY: 'Roboto',
   },
 }
 

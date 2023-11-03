@@ -89,7 +89,7 @@ export const Layout = React.memo((props: LayoutProps) => {
   }, [location])
 
   return (
-    <div className="container max-w-none font-sans">
+    <div className="container max-w-none">
       {modal}
       <ContextMenu />
       <ToastContainer
