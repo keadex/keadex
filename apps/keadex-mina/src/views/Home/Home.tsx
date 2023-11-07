@@ -63,7 +63,7 @@ export const Home = React.memo((props: HomeProps) => {
       {modal}
       <div className="-mt-28 text-center">
         <img
-          src="mina-logo-full.png"
+          src="mina-logo-full.svg"
           width={650}
           alt="Keadex Mina Logo "
           className="inline-block pointer-events-none"

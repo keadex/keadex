@@ -1,7 +1,7 @@
 import { C4BaseComponent } from '../components/C4BaseComponent'
 export function addObjectsToGroupAndKeepScale(
   group: fabric.Group,
-  objects?: fabric.Object[]
+  objects?: fabric.Object[],
 ) {
   const previousScaleX = group.scaleX ?? 1
   const previousScaleY = group.scaleY ?? 1
@@ -20,7 +20,7 @@ export function addObjectsToGroupAndKeepScale(
 export function getBoundingBox(
   objects: fabric.Object[],
   absolutePosition = true,
-  transformMatrix?: any[]
+  transformMatrix?: unknown[],
 ): {
   left?: number
   right?: number
@@ -45,7 +45,7 @@ export function getBoundingBox(
       if (transformMatrix && localLeft && localTop) {
         const transformedPoint = fabric.util.transformPoint(
           new fabric.Point(localLeft, localTop),
-          transformMatrix
+          transformMatrix,
         )
         localLeft = transformedPoint.x
         localTop = transformedPoint.y
@@ -84,7 +84,7 @@ export function getBoundingBox(
 
 export function getZIndexOfObject(
   canvas: fabric.Canvas | undefined,
-  object: fabric.Object
+  object: fabric.Object,
 ): number | undefined {
   let zIndex = -1
   if (canvas) {
@@ -96,7 +96,7 @@ export function getZIndexOfObject(
 export function getMinZIndex(
   canvas: fabric.Canvas | undefined,
   objects: fabric.Object[],
-  initZIndex = Number.MAX_SAFE_INTEGER
+  initZIndex = Number.MAX_SAFE_INTEGER,
 ): number | undefined {
   let minZIndex = initZIndex
   objects.forEach((object) => {
@@ -123,14 +123,14 @@ export function filterVirtualGroups(objects?: fabric.Object[]): {
     // Merge in a unique array all the objects of all the virtual groups.
     virtualGroupsRoots.forEach((virtualGroupRoot) => {
       virtualGroupsWithChildren = virtualGroupsWithChildren.concat(
-        flatVirtualGroupChildren(virtualGroupRoot.children ?? [], true)
+        flatVirtualGroupChildren(virtualGroupRoot.children ?? [], true),
       )
     })
 
     // Remove from the given objects, all the virtual groups and their children.
     // In this way will be kept only objects not included in a virtual group.
     filteredObjects = objects.filter(
-      (object) => !virtualGroupsWithChildren.includes(object)
+      (object) => !virtualGroupsWithChildren.includes(object),
     )
   }
   return {
@@ -141,7 +141,7 @@ export function filterVirtualGroups(objects?: fabric.Object[]): {
 
 export function flatVirtualGroupChildren(
   children: fabric.Object[],
-  includeInvisible = true
+  includeInvisible = true,
 ) {
   let result: fabric.Object[] = []
   if (children) {
@@ -150,7 +150,7 @@ export function flatVirtualGroupChildren(
         result.push(object)
       if (object.children)
         result = result.concat(
-          flatVirtualGroupChildren(object.children, includeInvisible)
+          flatVirtualGroupChildren(object.children, includeInvisible),
         )
     })
   }
@@ -169,4 +169,8 @@ export function getCanvasPan(canvas?: fabric.Canvas): {
     panY = viewportTransform ? viewportTransform[5] : 0
   }
   return { panX, panY }
+}
+
+export function invalidateCanvasCache(canvas: fabric.Canvas) {
+  canvas.getObjects().forEach((object) => object.set('dirty', true))
 }

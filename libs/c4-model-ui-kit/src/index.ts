@@ -9,6 +9,7 @@ export {
   CONTAINER_TYPES,
   SYSTEM_TYPES,
 } from './constants/diagram'
+export { ELEMENT } from './styles/style-constants'
 
 // Rendering System
 export { renderDiagram } from './rendering-system/diagram-renderer'
@@ -52,6 +53,7 @@ export {
   getBoundingBox,
   getZIndexOfObject,
   getCanvasPan,
+  invalidateCanvasCache,
 } from './helper/fabric-helper'
 
 // Models

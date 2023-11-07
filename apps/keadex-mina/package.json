@@ -1,7 +1,7 @@
 {
   "name": "@keadex/keadex-mina",
   "description": "Desktop application to draw, manage and share the architectures of software systems.",
-  "version": "0.1.0-5",
+  "version": "0.1.0-6",
   "private": false,
   "license": "MIT",
   "type": "module",
@@ -17,6 +17,7 @@
     "@types/react-resizable": "^3.0.5",
     "ahooks": "^3.7.8",
     "fabric": "^5.3.0",
+    "fontfaceobserver": "^2.3.0",
     "i18next": "^23.5.1",
     "i18next-http-backend": "^2.2.2",
     "monaco-editor": "^0.44.0",
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.4",
+    "@types/fontfaceobserver": "^2.1.2",
     "@types/pluralize": "^0.0.31",
     "@types/react": "^18.2.28",
     "@types/react-dom": "^18.2.13",
