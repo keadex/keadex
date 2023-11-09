@@ -48,7 +48,7 @@ export interface LibraryElementProps {
   embedMode?: boolean
   onRowClick?: (
     e: React.MouseEvent<HTMLTableCellElement>,
-    data: TableData<ElementData>
+    data: TableData<ElementData>,
   ) => void
 }
 
@@ -125,23 +125,23 @@ export const LibraryElement = (props: LibraryElementProps) => {
                       openLibraryElement,
                       showModal,
                       hideModal,
-                      forceUpdate
+                      forceUpdate,
                     ).menuItemsProps
                   }
                 />
               ),
             }
-          })
+          }),
         )
         tableRef.current?.setPageSize(
           pageSize !== undefined
             ? pageSize
-            : element[elementLibraryConfigs.accessor].length
+            : element[elementLibraryConfigs.accessor].length,
         )
       })
       .catch((error: MinaError) => {
         toast.error(
-          t('common.error.internal', { errorMessage: error.msg ?? error })
+          t('common.error.internal', { errorMessage: error.msg ?? error }),
         )
       })
   }, [t, updatedCounter, c4ElementType, pageSize])
@@ -150,18 +150,18 @@ export const LibraryElement = (props: LibraryElementProps) => {
     mode: 'c' | 'u',
     libraryElement: LibraryElementType | undefined,
     project: Project | undefined,
-    enableEdit = false
+    enableEdit = false,
   ) {
     let title = ''
     switch (mode) {
       case 'c':
         title = `${t('common.new')} ${t(
-          `common.${elementLibraryConfigs.i18nKey}`
+          `common.${elementLibraryConfigs.i18nKey}`,
         )}`
         break
       case 'u':
         title = `${t('common.edit')} ${t(
-          `common.${elementLibraryConfigs.i18nKey}`
+          `common.${elementLibraryConfigs.i18nKey}`,
         )}`
         break
     }
@@ -187,7 +187,7 @@ export const LibraryElement = (props: LibraryElementProps) => {
       {modal}
       <div className="flex items-center">
         <div
-          className={`text-accent-primary inline-block text-2xl font-bold ${
+          className={`text-accent-primary inline-block text-2xl font-bold pointer-events-none ${
             embedMode ? 'hidden' : ''
           }`}
         >
@@ -207,7 +207,7 @@ export const LibraryElement = (props: LibraryElementProps) => {
               <FontAwesomeIcon icon={faPlus} />
             </span>
             <span className="ml-1">{`${t('common.create')} ${t(
-              `common.${elementLibraryConfigs.i18nKey}`
+              `common.${elementLibraryConfigs.i18nKey}`,
             )}`}</span>
           </Button>
         </div>
@@ -231,7 +231,7 @@ export const LibraryElement = (props: LibraryElementProps) => {
                 'u',
                 libraryElement as LibraryElementType,
                 project,
-                true
+                true,
               )
             }
           }}

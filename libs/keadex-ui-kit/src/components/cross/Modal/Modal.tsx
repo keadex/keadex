@@ -23,7 +23,7 @@ export interface ModalCommands {
 }
 
 export function renderButtons(
-  buttons?: ButtonProps[] | boolean
+  buttons?: ButtonProps[] | boolean,
 ): JSX.Element[] {
   const renderedButtons: JSX.Element[] = []
   if (typeof buttons !== 'boolean' && buttons) {
@@ -36,7 +36,7 @@ export function renderButtons(
           className={`${index !== 0 && array.length > 1 ? 'ml-3' : ''} ${
             buttonProps.className
           }`}
-        />
+        />,
       )
     })
   }
@@ -112,7 +112,7 @@ export const Modal = forwardRef(
             <div className="border-secondary flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-opacity-50 p-4">
               {/* Modal title*/}
               <h5
-                className="text-accent-primary text-xl font-medium leading-normal"
+                className="text-accent-primary text-xl font-medium leading-normal pointer-events-none"
                 id={`${modalId}Label`}
               >
                 {props.title}
@@ -144,7 +144,7 @@ export const Modal = forwardRef(
         </div>
       </div>
     )
-  }
+  },
 )
 
 export default Modal

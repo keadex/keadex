@@ -6,18 +6,17 @@ import {
   faMinus,
 } from '@fortawesome/free-solid-svg-icons'
 import { appWindow } from '@tauri-apps/api/window'
-import { UnlistenFn } from '@tauri-apps/api/event'
 
-function createButtons(
-  resized: boolean,
-  setResized: React.Dispatch<React.SetStateAction<boolean>>,
+export function createButtons(
   setRightButtons: React.Dispatch<
     React.SetStateAction<WindowTitlebarButtonProps[]>
-  >
+  >,
+  isOnResizedDisabled: React.MutableRefObject<boolean>,
 ) {
   const buttons: WindowTitlebarButtonProps[] = []
+  isOnResizedDisabled.current = true
   appWindow.isMaximized().then((isMaximized) => {
-    if (resized) setResized(false)
+    isOnResizedDisabled.current = false
     buttons.push({
       id: 'minimize-close',
       icon: faMinus,
@@ -47,24 +46,4 @@ function createButtons(
     })
     setRightButtons(buttons)
   })
-}
-
-export default (
-  resized: boolean,
-  setResized: React.Dispatch<React.SetStateAction<boolean>>,
-  unlistenRef: React.MutableRefObject<UnlistenFn | undefined>,
-  setRightButtons: React.Dispatch<
-    React.SetStateAction<WindowTitlebarButtonProps[]>
-  >
-) => {
-  appWindow
-    .onResized(() => {
-      if (!resized) setResized(true)
-      console.debug('Layout -> on window resized()')
-      createButtons(resized, setResized, setRightButtons)
-    })
-    .then((unlisten) => {
-      unlistenRef.current = unlisten
-    })
-  createButtons(resized, setResized, setRightButtons)
 }

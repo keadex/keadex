@@ -6,7 +6,8 @@ import {
 } from '@keadex/keadex-ui-kit/cross'
 import type { WindowTitlebarButtonProps } from '@keadex/keadex-ui-kit/desktop'
 import { Window, WindowTitlebar } from '@keadex/keadex-ui-kit/desktop'
-import { UnlistenFn } from '@tauri-apps/api/event'
+import { TauriEvent, UnlistenFn } from '@tauri-apps/api/event'
+import { appWindow } from '@tauri-apps/api/window'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
@@ -16,7 +17,7 @@ import AppEventContext from '../../context/AppEventContext'
 import ROUTES from '../../core/router/routes'
 import { useAppDispatch, useAppSelector } from '../../core/store/hooks'
 import AppMenu from '../AppMenu/AppMenu'
-import initWindowTitlebarButtons from './window-titlebar-buttons'
+import { createButtons } from './window-titlebar-buttons'
 
 /* eslint-disable-next-line */
 export interface LayoutProps {}
@@ -33,31 +34,32 @@ export const Layout = React.memo((props: LayoutProps) => {
   const { modal, showModal, hideModal } = useModal()
   const dispatch = useAppDispatch()
   const project = useAppSelector((state) => state.project.value)
-
   const [rightButtons, setRightButtons] = useState<WindowTitlebarButtonProps[]>(
     [],
   )
-  const [resized, setResized] = useState(false)
   const [windowTitlebarMenu, setWindowTitlebarMenu] =
     useState<DropdownMenuProps>(emptyWindowTitlebarMenu)
   const [isAppMenuVisible, setIsAppMenuVisible] = useState(false)
-  const unlistenRef = useRef<UnlistenFn>()
+  const isOnResizedDisabled = useRef(true)
 
   useEffect(() => {
     console.debug('Layout -> useEffect()')
+    let unlisten: Promise<UnlistenFn> | null
     if (!rightButtons || rightButtons.length === 0) {
-      initWindowTitlebarButtons(
-        resized,
-        setResized,
-        unlistenRef,
-        setRightButtons,
-      )
+      createButtons(setRightButtons, isOnResizedDisabled)
+      unlisten = appWindow.listen(TauriEvent.WINDOW_RESIZED, () => {
+        console.debug(
+          `Layout -> on window resized() ${isOnResizedDisabled.current}`,
+        )
+        if (!isOnResizedDisabled.current) {
+          createButtons(setRightButtons, isOnResizedDisabled)
+        }
+      })
     }
-    const unlisten = unlistenRef.current
     return () => {
-      if (unlisten) unlisten()
+      if (unlisten) unlisten.then((f) => f())
     }
-  }, [resized, rightButtons])
+  }, [])
 
   useEffect(() => {
     console.debug('Location changed!', location.pathname)

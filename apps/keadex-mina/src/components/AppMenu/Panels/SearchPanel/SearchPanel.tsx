@@ -167,7 +167,7 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
         <div className="text-brand1 mt-4 text-4xl">
           <FontAwesomeIcon icon={faSearch} />
         </div>
-        <div className="text-accent-primary mt-2 text-lg font-bold">
+        <div className="text-accent-primary mt-2 text-lg font-bold pointer-events-none">
           {t('common.search')}
         </div>
 

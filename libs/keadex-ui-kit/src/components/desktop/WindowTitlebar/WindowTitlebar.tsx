@@ -42,7 +42,7 @@ export const WindowTitlebar = React.memo((props: WindowTitlebarProps) => {
   return (
     <nav
       data-tauri-drag-region
-      className="window-titlebar window__inner-border bg-dark-primary fixed left-0 right-0 top-0 z-10 flex h-8 w-full flex-row items-center border-l-0 border-r-0 border-t-0"
+      className="window-titlebar window__inner-border bg-dark-primary fixed left-0 right-0 top-0 z-10 flex h-8 w-full flex-row items-center border-l-0 border-r-0 border-t-0 relative"
     >
       {props.title && (
         <span className="absolute w-full text-center opacity-20 pointer-events-none">

@@ -93,7 +93,7 @@ export const HomeProject = React.memo((props: HomeProjectProps) => {
     },
     t: TFunction,
     forceUpdate: () => void,
-    openDiagram: (diagramName?: string, diagramType?: DiagramType) => void
+    openDiagram: (diagramName?: string, diagramType?: DiagramType) => void,
   ): { data: DiagramData[]; totalRows: number } {
     const data: DiagramData[] = []
     let totalRows = 1
@@ -123,7 +123,7 @@ export const HomeProject = React.memo((props: HomeProjectProps) => {
                     showModal,
                     hideModal,
                     forceUpdate,
-                    openDiagram
+                    openDiagram,
                   ).menuItemsProps
                 }
               />
@@ -151,7 +151,7 @@ export const HomeProject = React.memo((props: HomeProjectProps) => {
       })
       .catch((error: MinaError) => {
         toast.error(
-          t('common.error.project_not_opened', { errorMessage: error.msg })
+          t('common.error.project_not_opened', { errorMessage: error.msg }),
         )
       })
   }, [t, updatedCounter])
@@ -160,7 +160,7 @@ export const HomeProject = React.memo((props: HomeProjectProps) => {
     <div className="h-full w-full p-3">
       {modal}
       <div className="flex items-center">
-        <div className="text-accent-primary inline-block text-2xl font-bold">
+        <div className="text-accent-primary inline-block text-2xl font-bold pointer-events-none">
           {t('common.diagrams')}
         </div>
         <div className="ml-5 inline-block w-64">
@@ -173,7 +173,7 @@ export const HomeProject = React.memo((props: HomeProjectProps) => {
               showModal({
                 id: 'newDiargamModal',
                 title: `${t('common.new')} ${t(
-                  'common.diagram'
+                  'common.diagram',
                 ).toLowerCase()}`,
                 body: (
                   <ModalCreateDiagram
@@ -190,7 +190,7 @@ export const HomeProject = React.memo((props: HomeProjectProps) => {
               <FontAwesomeIcon icon={faPlus} />
             </span>
             <span className="ml-1">{`${t('common.create')} ${t(
-              'common.diagram'
+              'common.diagram',
             )}`}</span>
           </Button>
         </div>

@@ -51,7 +51,7 @@ export const LibraryPanel = React.memo((props: LibraryPanelProps) => {
         <div className="text-brand1 mt-4 text-4xl">
           <FontAwesomeIcon icon={faBook} />
         </div>
-        <div className="text-accent-primary mt-2 text-lg font-bold">
+        <div className="text-accent-primary mt-2 text-lg font-bold pointer-events-none">
           {t('common.library')}
         </div>
       </div>

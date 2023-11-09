@@ -56,7 +56,7 @@ export const ProjectPanel = React.memo((props: ProjectPanelProps) => {
                     toast.error(
                       t('common.error.project_not_closed', {
                         errorMessage: 'unknown error',
-                      })
+                      }),
                     )
                   }
                 })
@@ -64,7 +64,7 @@ export const ProjectPanel = React.memo((props: ProjectPanelProps) => {
                   toast.error(
                     t('common.error.project_not_closed', {
                       errorMessage: error.msg,
-                    })
+                    }),
                   )
                 })
             } else {
@@ -100,13 +100,13 @@ export const ProjectPanel = React.memo((props: ProjectPanelProps) => {
       <div className="text-brand1 mt-4 text-4xl">
         <FontAwesomeIcon icon={faKeadexMina} />
       </div>
-      <div className="text-accent-primary mt-2 text-lg font-bold">
+      <div className="text-accent-primary mt-2 text-lg font-bold pointer-events-none">
         {project?.project_settings?.name}
       </div>
-      <div className="mt-1 text-sm font-light italic">
+      <div className="mt-1 text-sm font-light italic pointer-events-none">
         v{project?.project_settings?.version}
       </div>
-      <div className="mt-4 text-left">
+      <div className="mt-4 text-left pointer-events-none">
         {project?.project_settings?.description}
       </div>
       <div className="mt-5">

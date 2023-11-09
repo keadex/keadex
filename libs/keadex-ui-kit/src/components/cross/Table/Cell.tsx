@@ -46,7 +46,7 @@ export const Cell = <T extends TableData<T>>(props: CellProps<T>) => {
               <FontAwesomeIcon icon={faChevronRight} />
             )}
           </button>
-          <span className="text-accent-primary text-lg">
+          <span className="text-accent-primary text-lg pointer-events-none">
             {getValue() as any}
           </span>
         </div>
