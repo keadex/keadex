@@ -12,11 +12,11 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const cspHeader = `
     default-src 'self';
-    connect-src 'self' https://vercel.live;
+    connect-src 'self' https://vercel.live https://consentcdn.cookiebot.com https://region1.google-analytics.com;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://vercel.live https://www.googletagmanager.com;
     frame-src 'self' https://consentcdn.cookiebot.com https://vercel.live;
     style-src 'self' 'unsafe-inline';
-    img-src 'self' blob: data:;
+    img-src 'self' blob: data: https://imgsct.cookiebot.com;
     font-src 'self';
     object-src 'none';
     base-uri 'self';

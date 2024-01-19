@@ -23,7 +23,7 @@ a#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll {
 }
 
 #CybotCookiebotDialogBodyContent {
-  @apply pl-0 sm:pl-2 sm:pr-2 !important;
+  @apply pl-0  max-sm:pl-2 max-sm:pr-2 !important;
 }
 
 #CybotCookiebotDialogBodyLevelDetailsWrapper {
@@ -111,4 +111,8 @@ a#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll {
 
 #CybotCookiebotDialogDetailFooter a {
   text-decoration: none;
+}
+
+#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelectionWrapper a {
+  @apply m-0 mr-4 mb-3 !important;
 }
