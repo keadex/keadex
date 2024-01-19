@@ -5,6 +5,7 @@ import { useRef, useEffect, useState } from 'react'
 
 export interface DropdownMenuItemProps {
   className?: string
+  buttonClassName?: string
   id: string
   isHeaderMenuItem?: boolean
   isSepator?: boolean
@@ -29,7 +30,7 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
   const [dropdownOpened, setDropdownOpened] = useState(false)
 
   function renderSubMenuItem(
-    subMenuItemProps: DropdownMenuItemProps
+    subMenuItemProps: DropdownMenuItemProps,
   ): JSX.Element {
     let renderedSubMenuItem
     if (subMenuItemProps.isSepator) {
@@ -84,7 +85,7 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
           {renderSubMenuItems(
             subMenuItemProps.isHeaderMenuItem,
             subMenuItemProps.id,
-            subMenuItemProps.subMenuItems
+            subMenuItemProps.subMenuItems,
           )}
         </li>
       )
@@ -95,7 +96,7 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
   function renderSubMenuItems(
     parentIsHeaderMenuItem: boolean | undefined,
     id: string,
-    subMenuItems?: DropdownMenuItemProps[]
+    subMenuItems?: DropdownMenuItemProps[],
   ) {
     const renderedSubMenuItems: JSX.Element[] = []
 
@@ -159,11 +160,11 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
     const currentDropdownEl = dropdownEl.current
     currentDropdownEl?.addEventListener(
       DROPDOWN_HIDE_EVENT,
-      dropdownEventListener
+      dropdownEventListener,
     )
     currentDropdownEl?.addEventListener(
       DROPDOWN_SHOW_EVENT,
-      dropdownEventListener
+      dropdownEventListener,
     )
     if (props.alwaysOpen && !dropdownOpened) {
       currentDropdownEl?.dispatchEvent(new MouseEvent('click'))
@@ -173,11 +174,11 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
     return () => {
       currentDropdownEl?.removeEventListener(
         DROPDOWN_HIDE_EVENT,
-        dropdownEventListener
+        dropdownEventListener,
       )
       currentDropdownEl?.removeEventListener(
         DROPDOWN_SHOW_EVENT,
-        dropdownEventListener
+        dropdownEventListener,
       )
     }
   })
@@ -204,6 +205,7 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
         focus:ring-0
         ${dropdownOpened ? ' bg-primary show text-white' : ''}
         ${props.hidden ? ' h-0 opacity-0' : ''}
+        ${props.buttonClassName ? ` ${props.buttonClassName}` : ''}
       `}
         type="button"
         id={props.id}

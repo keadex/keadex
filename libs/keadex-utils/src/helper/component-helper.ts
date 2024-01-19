@@ -6,3 +6,7 @@ export const getDataAttributes = (inputProps: any = {}) =>
 
     return acc
   }, {})
+
+export const isCSR = () => {
+  return typeof window !== 'undefined'
+}

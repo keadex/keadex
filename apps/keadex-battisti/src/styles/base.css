@@ -1,0 +1,19 @@
+@import 'animate.css/animate.min.css';
+@import '@keadex/keadex-ui-kit/src/styles/base.css';
+@import './cookiebot.css';
+
+div[role='tooltip'] {
+  @apply !duration-[0ms];
+}
+
+li a {
+  @apply no-underline text-inherit;
+}
+
+li a:hover {
+  @apply brightness-100;
+}
+
+.page {
+  @apply pt-24 px-8;
+}

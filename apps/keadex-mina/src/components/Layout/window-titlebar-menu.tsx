@@ -174,6 +174,10 @@ const factory: WindowTitlebarMenuFactory<
     context?.emit({ type: AppEventType.OpenSearch })
   }
 
+  const handleDocumentation = () => {
+    open('https://keadex.dev/en/docs/mina')
+  }
+
   const handleC4Model = () => {
     open('https://c4model.com/')
   }
@@ -286,7 +290,7 @@ const factory: WindowTitlebarMenuFactory<
         isHeaderMenuItem: false,
         id: 'wbar_help_documentation',
         label: t('common.documentation').toString(),
-        onClick: () => toast.info(t('common.info.coming_soon')),
+        onClick: () => handleDocumentation,
       },
       {
         isHeaderMenuItem: false,

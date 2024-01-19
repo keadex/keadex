@@ -1,0 +1,16 @@
+{
+  "en": {
+    "type": "doc",
+    "display": "children"
+  },
+  "projects": {
+    "title": "Projects",
+    "type": "menu",
+    "items": {
+      "about": {
+        "title": "Keadex Mina",
+        "href": "/en/docs/mina"
+      }
+    }
+  }
+}

@@ -1,12 +1,12 @@
 <p align="center">
-  <a href="https://keadex.io/kealab#keadex-battisti" target="blank"><img src="./static//keadex-logo-black.png" width="350" alt="Keadex Battisti Logo" /></a>
+  <a href="https://keadex.dev" target="blank"><img src="./static//keadex-logo-black.png" width="350" alt="Keadex Battisti Logo" /></a>
 </p>
 <p align="center"><i>Experiment. Learn. Share.</i></p>
 
 <div align="center">
 
 ![GitHub](https://img.shields.io/github/license/keadex/keadex)
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Fkeadex.io&label=website&up_message=keadex.io)](https://keadex.io)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fkeadex.dev&label=website&up_message=keadex.dev)](https://keadex.dev)
 [![Website](https://img.shields.io/website?up_message=Keadex&up_color=5662F6&url=https%3A%2F%2Fdiscord.gg%2F92XZ5DNa&label=Discord)](https://discord.gg/92XZ5DNa)
 [![Static Badge](https://img.shields.io/badge/Linkedin-0A66C2?logo=linkedin)
 ](https://www.linkedin.com/in/giacomosimmi/)
@@ -20,18 +20,18 @@
 
 **Keadex** is a project that aims to **experiment**, **learn** and provide **open source** solutions.
 
-Some of the packages in this repo are experiments (:microscope:), some under development (:hourglass_flowing_sand:), while others are ready to use open source solutions (:white_check_mark:).
+Some of the packages in this repo are experiments ( :microscope: ), some under development ( :hourglass_flowing_sand: ), while others are ready to use open source solutions ( :white_check_mark: ).
 
-If you're interested in knowing more about Keadex, me or the provided solutions please visit [keadex.io](https://keadex.io), the [documentation](https://keadex.io/documentation) section or the [Discord channel](https://discord.gg/92XZ5DNa).
+If you're interested in knowing more about Keadex, me or the provided solutions please visit [keadex.dev](https://keadex.dev), the [documentation](https://keadex.dev/docs) section or the [Discord channel](https://discord.gg/92XZ5DNa).
 
 ## Packages
 
 ### Applications
 
-|           Type           | Package                                                                         | Short Description                                   | Version                                                                                                                                                       | Language(s)      | Framework(s)               |
-| :----------------------: | ------------------------------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | -------------------------- |
-| :hourglass_flowing_sand: | [apps/keadex-docs](https://github.com/keadex/keadex/tree/main/apps/keadex-docs) | Website of the Keadex documentation.                | ![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=apps%2Fkeadex-docs%2Fpackage.json) | Typescript       | Docusaurus                 |
-|    :white_check_mark:    | [apps/keadex-mina](https://github.com/keadex/keadex/tree/main/apps/keadex-mina) | Desktop app to create and manage C4 Model diagrams. | ![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=apps%2Fkeadex-mina%2Fpackage.json) | Typescript, Rust | Tauri, React, Tailwind CSS |
+|        Type        | Package                                                                                 | Short Description                                   | Version                                                                                                                                                           | Language(s)      | Framework(s)                  |
+| :----------------: | --------------------------------------------------------------------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ----------------------------- |
+| :white_check_mark: | [apps/keadex-battisti](https://github.com/keadex/keadex/tree/main/apps/keadex-battisti) | Keadex Website & Documentation Platform.            | ![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=apps%2Fkeadex-battisti%2Fpackage.json) | Typescript, MDX  | Next.js, Nextra, Tailwing CSS |
+| :white_check_mark: | [apps/keadex-mina](https://github.com/keadex/keadex/tree/main/apps/keadex-mina)         | Desktop app to create and manage C4 Model diagrams. | ![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=apps%2Fkeadex-mina%2Fpackage.json)     | Typescript, Rust | Tauri, React, Tailwind CSS    |
 
 ### Libraries
 

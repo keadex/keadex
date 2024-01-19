@@ -22,6 +22,7 @@ export type AccordionProps<T> = {
 export const Accordion = <T,>(props: AccordionProps<T>) => {
   const { id, items } = props
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [collapseList, setCollapseList] = useState<any[]>([])
   const currentItems = useRef<AccordionItem<T>[] | null>()
 
@@ -32,8 +33,8 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
   useEffect(() => {
     const collapseElementList = [].slice.call(
       document.querySelectorAll(
-        `#${id} [data-te-collapse-item][data-te-collapse-item]`
-      )
+        `#${id} [data-te-collapse-item][data-te-collapse-item]`,
+      ),
     )
 
     if (collapseElementList && collapseElementList.length > 0) {
@@ -43,18 +44,18 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
           return new Collapse(collapseEl, {
             toggle: false,
           })
-        })
+        }),
       )
     }
 
     const tooltipTriggerList = [].slice.call(
-      document.querySelectorAll(`#${id} [data-te-toggle="tooltip"]`)
+      document.querySelectorAll(`#${id} [data-te-toggle="tooltip"]`),
     )
     const tooltips = tooltipTriggerList.map(
       (tooltipTriggerEl) =>
         new Tooltip(tooltipTriggerEl, {
           trigger: 'hover',
-        })
+        }),
     )
 
     return () => {
@@ -66,7 +67,7 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
 
   function handleBodyClick(
     e: React.MouseEvent<HTMLDivElement>,
-    item: AccordionItem<T>
+    item: AccordionItem<T>,
   ) {
     if (props.onBodyClick) {
       props.onBodyClick(item.data)

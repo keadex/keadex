@@ -1,0 +1,15 @@
+.tags {
+  @apply m-0 p-0 relative list-none;
+}
+
+.tags li {
+  @apply float-left h-4 leading-4 relative mr-1 ml-3 my-0.5 pl-3 pr-2 py-0 rounded-r-sm bg-dark-brand1 text-xs lowercase;
+}
+
+.tags li:before {
+  @apply content-[''] float-left absolute top-0 -left-2 w-0 h-0 border-t-transparent border-b-transparent border-l-transparent border-r-dark-brand1 border-solid border-t-[0.50rem] border-b-[0.50rem] border-r-[0.50rem] border-l-0;
+}
+
+.tags li:after {
+  @apply content-[''] absolute top-1/2 -translate-y-1/2 left-0 float-left w-1 h-1 rounded-sm bg-accent-secondary;
+}

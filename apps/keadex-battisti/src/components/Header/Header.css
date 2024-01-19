@@ -1,0 +1,105 @@
+.header__nav > div > div > ul {
+  @apply w-full list-inside list-none;
+}
+.header__nav > div > div > ul > li {
+  @apply relative float-left list-inside list-none;
+}
+
+.header__nav > div > div > ul > li:last-child {
+  @apply float-none overflow-hidden;
+}
+
+.header__nav > div > div > ul > li:last-child a {
+  @apply pb-0;
+}
+
+.header__nav ul > li > a {
+  @apply lg:py-2 py-3 lg:mx-6 mx-8 cursor-pointer inline-block relative;
+}
+
+.header__nav ul > li:first-child > a {
+  @apply mt-3 lg:mt-0;
+}
+
+.header__nav ul a:hover {
+  @apply text-accent-primary font-medium transition-all duration-300;
+}
+
+.header__nav ul a.active {
+  @apply text-link font-semibold;
+}
+
+.header__nav ul a.sub-active {
+  @apply font-bold;
+}
+
+.header__nav ul .dropdown-menu {
+  @apply lg:mx-6 mx-8;
+}
+
+.header__nav ul .dropdown-menu > div > button {
+  @apply lg:py-2 py-3 px-0 bg-transparent;
+}
+
+.header__nav ul .dropdown-menu > div > button > span.active {
+  @apply text-link;
+}
+
+.header__nav ul .dropdown-menu button {
+  @apply text-base text-inherit;
+}
+
+.header__nav ul .dropdown-menu ul {
+  @apply min-w-[250px];
+}
+
+.header__nav ul .dropdown-menu ul li button {
+  @apply py-1 px-4;
+}
+
+.header__nav ul .dropdown-menu button:hover {
+  @apply text-accent-primary drop-shadow-none shadow-none;
+}
+
+.header__menu-button {
+  @apply relative w-7 h-7;
+}
+
+.header__menu-button::before,
+.header__menu-button::after,
+.header__menu-button span {
+  @apply bg-accent-third;
+}
+
+.header__menu-button::before,
+.header__menu-button::after {
+  @apply absolute top-1/2 right-0 w-full h-[2px] pointer-events-none transition-transform origin-center content-[''];
+}
+
+.header__menu-button span {
+  @apply absolute left-0 overflow-hidden w-full h-[2px] indent-[200%] transition-opacity;
+}
+
+.header__menu-button::before {
+  -webkit-transform: translate3d(0, -12px, 0) scale3d(0.8, 1, 1);
+  transform: translate3d(0, -12px, 0) scale3d(0.8, 1, 1);
+}
+
+.header__menu-button::after {
+  -webkit-transform: translate3d(0, 12px, 0) scale3d(0.8, 1, 1);
+  transform: translate3d(0, 12px, 0) scale3d(0.8, 1, 1);
+}
+
+.header__menu-button--open span {
+  @apply opacity-0;
+}
+
+.header__menu-button--open::before {
+  -webkit-transform: rotate3d(0, 0, 1, 45deg);
+  transform: rotate3d(0, 0, 1, 45deg);
+}
+
+.header__menu-button--open::after {
+  -webkit-transform: rotate3d(0, 0, 1, -45deg);
+  transform: rotate3d(0, 0, 1, -45deg);
+}

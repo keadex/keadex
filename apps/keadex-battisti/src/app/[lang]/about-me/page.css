@@ -1,0 +1,11 @@
+.about-me-page .timeline:nth-child(1 of .timeline) > div:first-of-type {
+  @apply min-h-[3rem];
+}
+
+.about-me__hobbies {
+  @apply text-center ml-0 md:-ml-12 -mt-10;
+}
+
+.about-me__hobbies img {
+  @apply h-36 mt-10 inline;
+}

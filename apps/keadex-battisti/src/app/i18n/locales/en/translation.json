@@ -1,0 +1,85 @@
+{
+  "common": {
+    "about_me": "About me",
+    "architectural": "Architectural",
+    "banking": "Banking",
+    "documentation": "Documentation",
+    "ecommerce": "eCommerce",
+    "energy_utilities": "Energy & Utilities",
+    "experience": "Experience",
+    "functional": "Functional",
+    "healthcare": "Healthcare",
+    "hobbies": "Hobbies",
+    "massmedia": "Mass Media",
+    "operational": "Operational",
+    "projects": "Projects",
+    "retail": "Retail",
+    "risk_analytics": "Risk Analytics",
+    "since": "Since",
+    "streaming": "Streaming",
+    "summary": "Summary",
+    "technical": "Technical",
+    "telecommunications": "Telecommunications",
+    "action": {
+      "select_project": "Select a project"
+    },
+    "error": {},
+    "info": {},
+    "question": {
+      "interested_knowing_me": "Interested in knowing more about me?"
+    }
+  },
+  "about_me": {
+    "activities": {
+      "app_development": "Lead the <span className='text-white'>development</span> of applications, ensuring seamless integration and functionality.",
+      "arch_decision_making": "Make key <span className='text-white'>decisions</span> regarding <span className='text-white'>technology stack</span>, frameworks, databases, and other architectural components. Consider <span className='text-white'>trade-offs</span> between various options and choose the most suitable ones based on project requirements.",
+      "code_refactoring": "Identify opportunities for <span className='text-white'>code refactoring</span> and <span className='text-white'>improvements</span> to enhance the maintainability, readability, and extensibility of the <span className='text-white'>codebase</span>.",
+      "code_review_guidance": "Provide <span className='text-white'>guidance and oversight</span> during the development phase. Conduct <span className='text-white'>code reviews</span> to ensure that the implemented code <span className='text-white'>aligns</span> with the architectural design and meets quality standards.",
+      "code_review_quality": "<span className='text-white'>Conduct</span> thorough code reviews to ensure adherence to coding standards, best practices, and overall <span className='text-white'>code quality</span>. <span className='text-white'>Mentor</span> junior developers to enhance their coding skills.",
+      "collab_and_communication": "<span className='text-white'>Foster collaboration and communication</span> between different teams, including development, operations, and business units. Ensure that everyone involved <span className='text-white'>understands</span> the <span className='text-white'>architectural vision and goals</span>.",
+      "collab_with_devs": "Work closely with development teams to ensure that the <span className='text-white'>architectural vision</span> is understood and <span className='text-white'>implemented correctly</span>. Foster collaboration and communication among team members.",
+      "continuous_learning": "<span className='text-white'>Stay updated</span> on industry trends, emerging technologies, and best practices in software development and architecture. <span className='text-white'>Apply new knowledge</span> to enhance the effectiveness of architectural decisions.",
+      "cost_estimation": "Work with project managers and stakeholders to <span className='text-white'>estimate the costs</span> associated with implementing the solution. Consider factors such as hardware, software licenses, development effort, and ongoing maintenance.",
+      "documentation": "Create and <span className='text-white'>maintain</span> comprehensive <span className='text-white'>documentation</span> that explains the software architecture, design decisions, and rationale. This documentation serves as a <span className='text-white'>reference</span> for developers and other stakeholders.",
+      "evolutionary_planning": "<span className='text-white'>Plan</span> for the long-term <span className='text-white'>evolution</span> and maintenance of the software system. <span className='text-white'>Anticipate</span> changes and ensure that the architecture is <span className='text-white'>flexible and adaptable</span> to accommodate future requirements.",
+      "integration_planning": "<span className='text-white'>Design solutions</span> that integrate seamlessly with existing systems and technologies. Address <span className='text-white'>interoperability challenges</span> and define integration points to ensure a cohesive and efficient IT environment.",
+      "leadership_and_mentoring": "Provide <span className='text-white'>leadership</span>, <span className='text-white'>mentorship</span>, and <span className='text-white'>guidance</span> to the development team. Help team members understand and <span className='text-white'>adhere</span> to architectural principles and best practices.",
+      "people_management": "<span className='text-white'>Lead and support</span> team members for effective collaboration and project execution. <span className='text-white'>People management</span> responsibilities include talent development, resource planning, conflict resolution, and fostering a positive work environment to <span className='text-white'>ensure the team's success</span> in delivering quality architectural solutions.",
+      "performance_optimization": "<span className='text-white'>Optimize the performance</span> of the system by identifying and addressing bottlenecks, ensuring scalability, and considering factors such as response time, throughput, and resource utilization.",
+      "poc": "Create <span className='text-white'>prototypes</span> or proof-of-concept implementations to <span className='text-white'>validate the feasibility</span> of certain design decisions or to explore innovative solutions before <span className='text-white'>full-scale</span> development.",
+      "problem_solving": "Tackle complex <span className='text-white'>technical challenges</span> and <span className='text-white'>problem-solving</span>, demonstrating a deep understanding of algorithms, data structures, and system architecture.",
+      "project_leadership": "Lead and contribute to the <span className='text-white'>planning, estimation, and execution</span> of software development projects. Take ownership of project components or features.",
+      "requirements_analysis": "<span className='text-white'>Collaborate</span> with stakeholders, including clients, product owners, and developers, to understand and <span className='text-white'>analyze the functional and non-functional requirements</span> of the system. Ensure that the architecture aligns with these requirements.",
+      "risk_management": "<span className='text-white'>Identify</span> potential <span className='text-white'>risks</span> in the project and develop <span className='text-white'>strategies</span> to mitigate them. This includes addressing technical, business, and operational risks that may impact the success of the project.",
+      "security_considerations": "<span className='text-white'>Address security concerns</span> and implement strategies to safeguard the system against potential <span className='text-white'>vulnerabilities and threats</span>. This includes designing secure authentication, authorization, and data protection mechanisms.",
+      "system_design": "Develop the <span className='text-white'>high-level design</span> of the software system, defining the overall structure, components, modules, and their relationships. This involves making decisions on the <span className='text-white'>architecture style</span>, such as microservices, monolithic, or others.",
+      "tech_leadership": "Provide <span className='text-white'>technical leadership</span> and guidance to the development team, offering expertise in software design, coding practices, and architectural decisions.",
+      "vendor_management": "<span className='text-white'>Collaborate with vendors and third-party providers</span> to evaluate and select external components or services that may be part of the overall solution. Ensure compatibility and alignment with <span className='text-white'>organizational standards</span>."
+    }
+  },
+  "footer": {
+    "privacy_policy": "Privacy Policy",
+    "title": "Keadex ©{{year}}. Code licensed under an <a href='https://github.com/keadex/keadex/blob/main/apps/keadex-battisti/LICENSE' target='_blank'>MIT-style License</a>. Documentation licensed under <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'>CC BY 4.0</a>.",
+    "terms_and_conditions": "Terms & Conditions"
+  },
+  "home": {
+    "about_me_summary": "Born in the <span className='font-normal'>90s</span>, I grew up in <span className='font-normal'>southern Italy</span> surrounded by martial arts, anime, video games, and computers.<p>I fell in love with <span className='font-normal'>computer science</span> when software was still distributed on <span className='font-normal'>floppy disks</span>.</p><p>I started my career as a Mobile Developer when Android was just emerging. Later, I took on roles such as Web Developer, Backend Developer, Tech Lead, and IT Manager.</p><p>Today, I am an <span className='font-normal'>IT Architect</span> with more than <span className='font-normal'>10 years</span> of experience in consulting companies and corporates.</p>",
+    "architectural_docs_descr": "Architectural documentation focuses on the high-level design and structure of the software, emphasizing the organization and interaction of its components.",
+    "check_docs": "Check the docs",
+    "check_my_full_profile": "Check my full profile",
+    "docs_summary_part1": "<p>As an IT Architect, <span className='font-normal'>documenting projects</span> is part of my job.</p><p>In open source projects like Keadex, documentation is very important to enable and promote <span className='font-normal'>collaboration</span> without asking for a huge <span className='font-normal'>reverse engineering</span> effort.</p><p>At a very high level, there are different <span className='font-normal'>types</span> of documentation:</p>",
+    "docs_summary_part2": "<p>Keadex leverages on the <a href='https://c4model.com/' target='_blank' className='font-normal'>C4 Model</a> appoach to document the projects architecture.</p>",
+    "functional_docs_descr": "Functional documentation describes the functionalities and features of the software from a user's perspective.",
+    "keadex_summary": "Ciao! My name is <span className='font-normal'>Giacomo</span>, I'm an <span className='font-normal'>IT Architect</span>,<br />and this is Keadex, my <span className='font-normal'>open source</span> project.",
+    "operational_docs_descr": "Operational documentation focuses on the operation and maintenance of the software system in a production environment.",
+    "projects_summary": "Each project is born out of a <span className='font-normal'>need</span> or <span className='font-normal'>idea</span>, undergoes a meticulous process of <span className='font-normal'>experimentation</span> and <span className='font-normal'>design</span>, transitions through the <span className='font-normal'>coding</span> phase, and ultimately evolves into a working <span className='font-normal'>solution</span>.<br /><br /><span className='font-normal'>Keadex</span> is the project I created to share all those <span className='font-normal'>open source</span> projects: <i>\"one project to rule them all\"</i>.",
+    "technical_docs_descr": "Technical documentation provides detailed information about the internal workings of the software, explaining how it achieves its functionality."
+  },
+  "keadex_mina": {
+    "title": "is coming soon"
+  },
+  "not_found": {
+    "go_home": "Go Home",
+    "title": "OOPS! PAGE NOT FOUND"
+  }
+}

@@ -97,7 +97,6 @@ export const DiagramDesignView = forwardRef(
     function destroyCanvas() {
       if (canvas.current) {
         canvas.current.dispose()
-        console.log('unset canvas')
         canvas.current = undefined
       }
     }

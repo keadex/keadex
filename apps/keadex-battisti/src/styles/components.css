@@ -1,0 +1,21 @@
+@import '../components/Header/Header.css';
+@import '@keadex/keadex-ui-kit/src/components/cross/Tags/Tags.css';
+@import '@keadex/keadex-ui-kit/src/components/cross/Button/Button.css';
+@import '@keadex/keadex-ui-kit/src/components/cross/DropdownMenu/DropdownMenu.css';
+@import '@keadex/keadex-ui-kit/src/components/cross/Input/Input.css';
+@import '@keadex/keadex-ui-kit/src/components/cross/Select/Select.css';
+
+/* @import '../components/AppMenu/AppMenu.css';
+@import '../components/AppMenu/Panels/SearchPanel/SearchPanel.css';
+@import 'react-resizable/css/styles.css';
+@import '@keadex/keadex-ui-kit/styles/components/cross/Table/Table.css';
+@import '@keadex/keadex-ui-kit/styles/components/cross/Button/Button.css';
+@import '@keadex/keadex-ui-kit/styles/components/cross/Input/Input.css';
+@import '@keadex/keadex-ui-kit/styles/components/cross/Textarea/Textarea.css';
+@import '@keadex/keadex-ui-kit/styles/components/cross/Select/Select.css';
+@import '@keadex/keadex-ui-kit/styles/components/cross/Autocomplete/Autocomplete.css';
+@import '@keadex/keadex-ui-kit/styles/components/cross/DropdownMenu/DropdownMenu.css';
+@import '@keadex/keadex-ui-kit/styles/components/cross/SearchButton/SearchButton.css';
+@import '@keadex/keadex-ui-kit/styles/components/cross/Modal/Modal.css';
+@import '@keadex/keadex-ui-kit/styles/components/cross/Tooltip/Tooltip.css';
+@import '@keadex/keadex-ui-kit/styles/components/desktop/Window/Window.css'; */

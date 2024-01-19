@@ -1,0 +1,114 @@
+#CybotCookiebotDialog {
+  @apply top-[inherit] bottom-0 bg-secondary text-accent-secondary !important;
+}
+
+a#CybotCookiebotDialogBodyLevelButtonLevelOptinDeclineAll {
+  @apply w-[inherit] bg-link border-link border-solid border-[1px] !important;
+}
+
+a#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection {
+  @apply w-[inherit] bg-link border-link border-solid border-[1px] !important;
+}
+
+a#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll {
+  @apply w-[inherit] bg-link border-link border-solid border-[1px] !important;
+}
+
+#CybotCookiebotDialogBodyContentTitle {
+  @apply text-link !important;
+}
+
+#CybotCookiebotDialogPoweredbyLink {
+  @apply hidden !important;
+}
+
+#CybotCookiebotDialogBodyContent {
+  @apply pl-0 sm:pl-2 sm:pr-2 !important;
+}
+
+#CybotCookiebotDialogBodyLevelDetailsWrapper {
+  @apply bg-primary border-accent-third !important;
+}
+
+#CybotCookiebotDialogBodyLevelDetailsWrapper
+  #CybotCookiebotDialogBodyButtonDetails:focus,
+#CybotCookiebotDialogBodyLevelDetailsWrapper
+  #CybotCookiebotDialogBodyLevelDetailsButton:focus {
+  text-decoration: none;
+}
+
+#CybotCookiebotDialogBodyLevelButtonsSelectPane {
+  @apply border-accent-third !important;
+}
+
+#CybotCookiebotDialogBodyLevelButtons {
+  @apply ml-0 !important;
+}
+
+#CybotCookiebotDialogDetail {
+  @apply bg-secondary !important;
+}
+
+#CybotCookiebotDialog a,
+#CybotCookiebotDialog a:hover {
+  @apply text-accent-secondary !important;
+}
+.CybotCookiebotDialogDetailBodyContentTabsItemSelected,
+#CybotCookiebotDialogDetailBodyContentTabsOverview:focus,
+#CybotCookiebotDialogDetailBodyContentTabsAbout:focus {
+  @apply bg-secondary !important;
+}
+.CybotCookiebotDialogDetailBodyContentTabsItem,
+#CybotCookiebotDialogDetailBodyContentTabsAbout:hover,
+#CybotCookiebotDialogDetailBodyContentTabsOverview:hover {
+  @apply bg-primary !important;
+}
+
+.CybotCookiebotDialogDetailBodyContentTab:first-child {
+  @apply border-accent-third !important;
+}
+.CybotCookiebotDialogDetailBodyContentTabsItem,
+.CybotCookiebotDialogDetailBodyContentTabsItemSelected {
+  @apply border-accent-third !important;
+}
+
+#CybotCookiebotDialogDetailBodyContent {
+  @apply bg-secondary border-accent-third text-accent-secondary !important;
+}
+
+.CybotCookiebotDialogDetailBodyContentCookieTypeTableContainer
+  .CybotCookiebotDialogDetailBodyContentCookieTypeTable
+  thead
+  td,
+.CybotCookiebotDialogDetailBodyContentCookieTypeTableContainer
+  .CybotCookiebotDialogDetailBodyContentCookieTypeTable
+  thead
+  th {
+  @apply bg-primary border-accent-third text-accent-secondary !important;
+}
+
+.CybotCookiebotDialogDetailBodyContentCookieTypeTableContainer
+  .CybotCookiebotDialogDetailBodyContentCookieTypeTable
+  tbody
+  td {
+  @apply border-accent-third text-accent-secondary !important;
+}
+
+.CybotCookiebotDialogDetailBodyContentCookieContainerTypesSelected,
+.CybotCookiebotDialogDetailBodyContentCookieContainerTypesSelected:hover {
+  @apply bg-secondary  border-accent-third border-r-secondary opacity-100 !important;
+}
+
+.CybotCookiebotDialogDetailBodyContentCookieContainerTypes,
+#CybotCookiebotDialogDetailBodyContentCookieContainerTypes
+  a.CybotCookiebotDialogDetailBodyContentCookieContainerTypes:hover {
+  @apply bg-primary border-accent-third !important;
+}
+
+#CybotCookiebotDialogDetailFooter {
+  @apply bg-secondary text-accent-secondary !important;
+}
+
+#CybotCookiebotDialogDetailFooter a {
+  text-decoration: none;
+}

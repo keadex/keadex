@@ -1,7 +1,5 @@
-import {
-  DropdownMenu,
-  DropdownMenuItemProps,
-} from '@keadex/keadex-ui-kit/cross'
+import { DropdownMenu } from '../DropdownMenu/DropdownMenu'
+import { DropdownMenuItemProps } from '../DropdownMenu/DropdownMenuItem'
 import React from 'react'
 
 export interface TableOptionsProps {

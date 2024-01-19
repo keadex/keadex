@@ -3,16 +3,11 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "commit": "git-cz",
-    "install-keadex-docs": "cd apps/keadex-docs && yarn",
-    "install-isolated-packages": "yarn install-keadex-docs",
-    "postinstall": "yarn install-isolated-packages"
+    "commit": "git-cz"
   },
   "private": true,
   "dependencies": {
     "core-js": "^3.33.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "regenerator-runtime": "0.14.0",
     "tslib": "^2.6.2"
   },
@@ -24,16 +19,21 @@
     "@nrwl/react": "16.10.0",
     "@nrwl/web": "16.10.0",
     "@nrwl/workspace": "16.10.0",
-    "@nx-plus/docusaurus": "^14.1.0",
+    "@nx/cypress": "16.10.0",
+    "@nx/jest": "16.10.0",
+    "@nx/js": "16.10.0",
+    "@nx/next": "16.10.0",
+    "@nx/react": "16.10.0",
     "@testing-library/react": "14.0.0",
     "@types/jest": "29.5.5",
     "@types/node": "20.8.6",
-    "@types/react": "18.2.28",
-    "@types/react-dom": "18.2.13",
     "@typescript-eslint/eslint-plugin": "6.8.0",
     "@typescript-eslint/parser": "6.8.0",
     "babel-jest": "29.7.0",
+    "cypress": "^13.0.0",
     "eslint": "^8.51.0",
+    "eslint-config-next": "13.4.1",
+    "eslint-plugin-cypress": "^2.13.4",
     "eslint-plugin-import": "2.28.1",
     "eslint-plugin-jsx-a11y": "6.7.1",
     "eslint-plugin-prettier": "^5.0.1",
@@ -52,7 +52,7 @@
   },
   "workspaces": {
     "packages": [
-      "apps/!(keadex-docs)*",
+      "apps/*",
       "libs/*"
     ]
   }
