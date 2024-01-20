@@ -2,8 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import { PropsWithChildren } from 'react'
-import { useGoogleAnalytics } from '@keadex/keadex-ui-kit/web'
-import { TWElementsInit } from '../TWElementsInit/TWElementsInit'
+import { useAppBootstrap } from '@keadex/keadex-ui-kit/cross'
 
 const Header = dynamic(() => import('../Header/Header'))
 const Footer = dynamic(() => import('../Footer/Footer'))
@@ -21,11 +20,17 @@ if (process.env.NODE_ENV === 'production') {
 export default function Layout(props: PropsWithChildren<LayourProps>) {
   const { lang, children } = props
 
-  useGoogleAnalytics()
+  async function initializeTailwindElements() {
+    const { initTE, Button, Collapse, Dropdown, Input, Modal, Select } =
+      await import('tw-elements')
+    await initTE({ Dropdown, Button, Modal, Input, Select, Collapse })
+  }
+
+  useAppBootstrap({ initGA: true, initTE: initializeTailwindElements })
 
   return (
     <>
-      <TWElementsInit />
+      {/* <TWElementsInit /> */}
       <Header lang={lang} />
       <main>{children}</main>
       <Footer lang={lang} />
