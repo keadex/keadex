@@ -46,7 +46,7 @@ export default function DocsSummary({
                 <Image
                   src={operationalLogo}
                   alt="Operational docs logo"
-                  className="w-28 h-28 mx-auto"
+                  className="w-28 h-28 mx-auto mt-12 md:mt-0"
                 />
                 <span className="text-2xl text-brand1 mt-3">
                   {t('common.operational')}
@@ -63,7 +63,7 @@ export default function DocsSummary({
                 <Image
                   src={functionalLogo}
                   alt="Functional docs logo"
-                  className="w-28 h-28 mx-auto"
+                  className="w-28 h-28 mx-auto mt-12 md:mt-0"
                 />
                 <span className="text-2xl text-brand1 mt-3">
                   {t('common.functional')}
@@ -80,7 +80,7 @@ export default function DocsSummary({
                 <Image
                   src={architectural}
                   alt="Architectural docs logo"
-                  className="w-28 h-28 mx-auto"
+                  className="w-28 h-28 mx-auto mt-12 md:mt-0"
                 />
                 <span className="text-2xl text-brand1 mt-3">
                   {t('common.architectural')}
@@ -97,7 +97,7 @@ export default function DocsSummary({
                 <Image
                   src={technicalLogo}
                   alt="Technical docs logo"
-                  className="w-28 h-28 mx-auto"
+                  className="w-28 h-28 mx-auto mt-12 md:mt-0"
                 />
                 <span className="text-2xl text-brand1 mt-3">
                   {t('common.technical')}
