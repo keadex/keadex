@@ -86,7 +86,7 @@ input {
 }
 
 .nextra-nav-container nav > div:first-child {
-  @apply mr-4 !important;
+  @apply mr-auto lg:mr-4 !important;
 }
 
 .nextra-nav-container nav > div:first-child > div > a:first-child {
@@ -102,14 +102,14 @@ input {
 }
 
 .nextra-nav-container nav > a {
-  @apply text-accent-secondary text-base ml-1 mr-6 !important;
+  @apply text-accent-secondary text-base ml-1 mr-auto !important;
 }
 
 .nextra-nav-container nav > a:hover {
   @apply text-accent-primary opacity-100 !important;
 }
 
-.nextra-nav-container nav > div:nth-child(2) {
+/* .nextra-nav-container nav > div:nth-child(2) {
   @apply mr-auto !important;
 }
 
@@ -135,7 +135,7 @@ input {
 
 .nextra-nav-container nav > div div[role='menu'] a:hover {
   @apply bg-link text-white filter-none !important;
-}
+} */
 
 .nextra-sidebar-container {
   @apply max-sm:bg-dark-primary/60 max-sm:backdrop-blur-md !important;
