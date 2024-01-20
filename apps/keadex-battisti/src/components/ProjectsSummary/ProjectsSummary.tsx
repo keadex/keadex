@@ -31,7 +31,7 @@ export default function ProjectsSummary({
             <Image
               src={projectLifecycle}
               alt="Project lifecycle"
-              className="w-[60rem]"
+              className="w-[30rem] mx-auto lg:mx-0 lg:w-[60rem]"
             />
           </div>
           <div className="text-left">
