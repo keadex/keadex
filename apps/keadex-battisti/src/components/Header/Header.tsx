@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  faDiscord,
   faGithub,
   faLinkedin,
   faSpotify,
@@ -164,6 +165,13 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
               <li className="text-center lg:text-right">
                 <Link href="https://github.com/keadex/keadex" target="_blank">
                   <FontAwesomeIcon icon={faGithub} className="text-xl" />
+                </Link>
+                <Link
+                  href="https://discord.gg/92XZ5DNa"
+                  target="_blank"
+                  className="!ml-3 lg:!ml-0"
+                >
+                  <FontAwesomeIcon icon={faDiscord} className="text-xl" />
                 </Link>
                 <Link
                   href="https://www.linkedin.com/in/giacomosimmi"
