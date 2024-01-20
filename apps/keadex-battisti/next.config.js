@@ -43,6 +43,13 @@ const nextConfig = {
     ],
     webpackBuildWorker: true,
   },
+  webpack: (
+    config,
+    { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack },
+  ) => {
+    config.optimization.minimize = false
+    return config
+  },
   transpilePackages: ['../../libs/keadex-ui-kit/src/web.ts'],
   async headers() {
     return [
