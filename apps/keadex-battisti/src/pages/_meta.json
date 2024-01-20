@@ -2,10 +2,5 @@
   "en": {
     "type": "doc",
     "display": "children"
-  },
-  "mina": {
-    "title": "Keadex Mina",
-    "type": "page",
-    "href": "/en/docs/mina"
   }
 }
