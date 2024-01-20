@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import ReactGA from 'react-ga4'
 
 export type CookieConsent = {
@@ -52,35 +52,29 @@ export function logException(description = '', fatal = false) {
   }
 }
 
-export function useGoogleAnalytics() {
-  const [isGAInitialized, setIsGAInitialized] = useState(false)
+export function addGoogleAnalytics(
+  isGAInitialized: boolean,
+  setIsGAInitialized: Dispatch<SetStateAction<boolean>>,
+) {
+  //---- start to use Google Analytics only if the user has given the consensus
+  let cookieConsentValue = Cookies.get('CookieConsent')
 
-  useEffect(() => {
-    //---- start to use Google Analytics only if the user has given the consensus
-    let cookieConsentValue = Cookies.get('CookieConsent')
+  //fix Cookiebot "CookieConsent" cookie json string (missing quotes)
+  cookieConsentValue = cookieConsentValue
+    ?.replace(/{/gi, '{"')
+    .replace(/:/gi, '":')
+    .replace(/,/gi, ',"')
+    .replace(/'/gi, '"')
 
-    //fix Cookiebot "CookieConsent" cookie json string (missing quotes)
-    cookieConsentValue = cookieConsentValue
-      ?.replace(/{/gi, '{"')
-      .replace(/:/gi, '":')
-      .replace(/,/gi, ',"')
-      .replace(/'/gi, '"')
-
-    if (
-      !isGAInitialized &&
-      cookieConsentValue &&
-      (JSON.parse(cookieConsentValue) as CookieConsent).statistics
-    ) {
-      initGA()
-      setIsGAInitialized(true)
-    }
-    if (isGAInitialized) {
-      logPageView()
-    }
-    //----
-  }, [isGAInitialized])
-
-  return {
-    isGAInitialized,
+  if (
+    !isGAInitialized &&
+    cookieConsentValue &&
+    (JSON.parse(cookieConsentValue) as CookieConsent).statistics
+  ) {
+    initGA()
+    setIsGAInitialized(true)
+  }
+  if (isGAInitialized) {
+    logPageView()
   }
 }

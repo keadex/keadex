@@ -3,6 +3,10 @@ export * from './common'
 export { ContextMenu } from './components/cross/ContextMenu/ContextMenu'
 export type { KeadexContextMenuEvent } from './components/cross/ContextMenu/useContextMenu'
 export {
+  useAppBootstrap,
+  type AppBootstrapProps,
+} from './hooks/useAppBootstrap/useAppBootstrap'
+export {
   DropdownMenu,
   type DropdownMenuProps,
 } from './components/cross/DropdownMenu/DropdownMenu'
