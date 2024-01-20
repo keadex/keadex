@@ -1,7 +1,7 @@
 {
   "name": "@keadex/keadex-battisti",
   "description": "Keadex Website & Documentation Platform",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "license": "MIT",
   "dependencies": {
