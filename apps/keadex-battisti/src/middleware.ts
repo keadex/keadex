@@ -16,6 +16,12 @@ export function middleware(req: NextRequest) {
   // if (!lng) lng = acceptLanguage.get(req.headers.get('Accept-Language'))
   if (!lng) lng = fallbackLng
 
+  // Workaround for Nextra (see apps\keadex-battisti\src\hooks\useNextraSidebarWorkaround\useNextraSidebarWorkaround.tsx)
+  // TODO: remove this workaround when the above issues/limitations have been resolved.
+  if (req.nextUrl.pathname.includes('/[lang]')) {
+    req.nextUrl.pathname = req.nextUrl.pathname.replace('/[lang]', '')
+  }
+
   // Redirect if lng in path is not supported
   if (
     !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&

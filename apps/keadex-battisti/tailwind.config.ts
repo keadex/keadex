@@ -4,6 +4,7 @@ import type { Config } from 'tailwindcss'
 const config: Config = {
   content: [
     './src/**/*.{js,ts,jsx,tsx,md,mdx}',
+    './theme.config.jsx',
     '../../libs/keadex-ui-kit/src/**/!(*.stories|*.spec).{ts,tsx,html}',
     '../../node_modules/tw-elements/dist/js/**/*.js',
   ],

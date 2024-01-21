@@ -35,6 +35,7 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  reactStrictMode: true,
   experimental: {
     optimizePackageImports: [
       '@keadex/keadex-ui-kit/cross',
@@ -42,13 +43,6 @@ const nextConfig = {
       '@keadex/keadex-utils',
     ],
     webpackBuildWorker: true,
-  },
-  webpack: (
-    config,
-    { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack },
-  ) => {
-    config.optimization.minimize = false
-    return config
   },
   transpilePackages: ['../../libs/keadex-ui-kit/src/web.ts'],
   async headers() {

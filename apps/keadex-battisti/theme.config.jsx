@@ -17,6 +17,7 @@ const config = {
         <Image height={24} src={keadexLogo} alt="Keadex Logo" />
       </a>
       <a href="/">Back to Keadex</a>
+      {/* <a href="/en/docs/mina">Keadex Mina</a> */}
     </div>
   ),
   logoLink: false,

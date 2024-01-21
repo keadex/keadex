@@ -2,6 +2,10 @@ import type { AppProps } from 'next/app'
 import '../styles/index.css'
 import '../styles/nextra.css'
 import { useAppBootstrap } from '@keadex/keadex-ui-kit/cross'
+import {
+  MenuItem,
+  useNextraSidebarWorkaround,
+} from '../hooks/useNextraSidebarWorkaround/useNextraSidebarWorkaround'
 
 //---------- Disable debug and log levels in production
 if (process.env.NODE_ENV === 'production') {
@@ -11,7 +15,19 @@ if (process.env.NODE_ENV === 'production') {
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const sidebar: MenuItem[] = [
+    {
+      title: 'Overview',
+      href: '/en/docs',
+    },
+    {
+      title: 'Keadex Mina',
+      href: '/en/docs/mina',
+    },
+  ]
+
   useAppBootstrap({ initGA: true })
+  useNextraSidebarWorkaround({ menu: sidebar })
 
   return (
     <div className="bg-primary text-base nextra-container">

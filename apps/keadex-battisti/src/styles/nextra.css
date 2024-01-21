@@ -86,18 +86,20 @@ input {
 }
 
 .nextra-nav-container nav > div:first-child {
-  @apply mr-auto lg:mr-4 !important;
+  @apply mr-auto !important;
 }
 
 .nextra-nav-container nav > div:first-child > div > a:first-child {
   @apply mr-[5rem] !important;
 }
 
-.nextra-nav-container nav > div:first-child > div > a:nth-child(2) {
-  @apply mr-3 truncate text-accent-secondary no-underline hidden md:block !important;
+.nextra-nav-container nav > div:first-child > div > a:nth-child(2),
+.nextra-nav-container nav > div:first-child > div > a:nth-child(3) {
+  @apply mr-8 truncate text-accent-secondary no-underline hidden md:block !important;
 }
 
-.nextra-nav-container nav > div:first-child > div > a:nth-child(2):hover {
+.nextra-nav-container nav > div:first-child > div > a:nth-child(2):hover,
+.nextra-nav-container nav > div:first-child > div > a:nth-child(3):hover {
   @apply text-accent-primary !important;
 }
 
@@ -108,34 +110,6 @@ input {
 .nextra-nav-container nav > a:hover {
   @apply text-accent-primary opacity-100 !important;
 }
-
-/* .nextra-nav-container nav > div:nth-child(2) {
-  @apply mr-auto !important;
-}
-
-.nextra-nav-container nav > div button {
-  @apply text-base text-accent-secondary !important;
-}
-
-.nextra-nav-container nav > div button:hover {
-  @apply text-accent-primary !important;
-}
-
-.nextra-nav-container nav > div div[role='menu'] {
-  @apply bg-secondary text-accent-primary !important;
-}
-
-.nextra-nav-container nav > div div[role='menu'] {
-  @apply bg-secondary !important;
-}
-
-.nextra-nav-container nav > div div[role='menu'] a {
-  @apply text-accent-primary no-underline !important;
-}
-
-.nextra-nav-container nav > div div[role='menu'] a:hover {
-  @apply bg-link text-white filter-none !important;
-} */
 
 .nextra-sidebar-container {
   @apply max-sm:bg-dark-primary/60 max-sm:backdrop-blur-md !important;
