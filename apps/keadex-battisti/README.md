@@ -19,4 +19,4 @@
 
 ## Documentation
 
-Discover all the features and details in the [Keadex Mina documentation](https://keadex.dev/en/docs/mina).
+Discover all the features and details in the [Keadex Battisti documentation](https://keadex.dev/en/docs/battisti).
