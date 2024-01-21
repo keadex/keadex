@@ -26,19 +26,33 @@ export function useNextraSidebarWorkaround(
 
   const router = useRouter()
 
-  // console.log(router.asPath)
-  // console.log(router.pathname)
-  // console.log(router.locale)
-  // console.log(router.query)
+  function getDesktopSidebar(): HTMLCollectionOf<Element> {
+    return document.getElementsByClassName('nextra-menu-desktop')
+  }
 
-  function clearSidebar() {
-    const sidebar = document.getElementsByClassName('nextra-menu-desktop')[0]
+  function getMobileSidebar(): HTMLCollectionOf<Element> {
+    return document.getElementsByClassName('nextra-menu-mobile')
+  }
+
+  function clearDesktopSidebar() {
+    const sidebar = getDesktopSidebar()[0]
     while (sidebar.lastChild) {
       sidebar.removeChild(sidebar.lastChild)
     }
   }
 
-  function addSidebarItems(menu: MenuItem[]) {
+  function clearMobileSidebar() {
+    const sidebar = getMobileSidebar()[0]
+    while (sidebar.lastChild) {
+      sidebar.removeChild(sidebar.lastChild)
+    }
+  }
+
+  function createSidebar(
+    menu: MenuItem[],
+    clearSidebar: () => void,
+    getSidebar: () => HTMLCollectionOf<Element>,
+  ) {
     clearSidebar()
     menu.forEach((menuItem) => {
       const isActive = menuItem.href === location.pathname
@@ -55,24 +69,16 @@ export function useNextraSidebarWorkaround(
       }
       a.textContent = menuItem.title
       li.appendChild(a)
-      document.getElementsByClassName('nextra-menu-desktop')[0].appendChild(li)
+      getSidebar()[0].appendChild(li)
     })
   }
 
-  // function isSidebarInitialized(): boolean {
-  //   return (
-  //     document.getElementsByClassName('nextra-menu-desktop')[0].children &&
-  //     document.getElementsByClassName('nextra-menu-desktop')[0].children
-  //       .length > 0
-  //   )
-  // }
-
   useEffect(() => {
-    if (
-      document.getElementsByClassName('nextra-menu-desktop') &&
-      document.getElementsByClassName('nextra-menu-desktop').length > 0
-    ) {
-      addSidebarItems(menu)
+    if (getDesktopSidebar() && getDesktopSidebar().length > 0) {
+      createSidebar(menu, clearDesktopSidebar, getDesktopSidebar)
+    }
+    if (getMobileSidebar() && getMobileSidebar().length > 0) {
+      createSidebar(menu, clearMobileSidebar, getMobileSidebar)
     }
   }, [router.asPath, menu])
 

@@ -16,7 +16,7 @@ const cspHeader = `
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://vercel.live https://www.googletagmanager.com;
     frame-src 'self' https://consentcdn.cookiebot.com https://vercel.live;
     style-src 'self' 'unsafe-inline';
-    img-src 'self' blob: data: https://imgsct.cookiebot.com;
+    img-src 'self' blob: data: https://imgsct.cookiebot.com https://www.googletagmanager.com;
     font-src 'self';
     object-src 'none';
     base-uri 'self';

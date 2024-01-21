@@ -112,7 +112,7 @@ input {
 }
 
 .nextra-sidebar-container {
-  @apply max-sm:bg-dark-primary/60 max-sm:backdrop-blur-md !important;
+  @apply max-md:bg-dark-primary/60 max-md:backdrop-blur-md !important;
 }
 
 .nextra-search .nextra-scrollbar {
