@@ -7,7 +7,7 @@
 
 ![GitHub](https://img.shields.io/github/license/keadex/keadex)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fkeadex.dev&label=website&up_message=keadex.dev)](https://keadex.dev)
-[![Website](https://img.shields.io/website?up_message=Keadex&up_color=5662F6&url=https%3A%2F%2Fdiscord.gg%2F92XZ5DNa&label=Discord)](https://discord.gg/92XZ5DNa)
+[![Website](https://img.shields.io/website?up_message=Keadex&up_color=5662F6&url=https%3A%2F%2Fdiscord.gg%2FHx9qDQTS&label=Discord)](https://discord.gg/Hx9qDQTS)
 [![Static Badge](https://img.shields.io/badge/Linkedin-0A66C2?logo=linkedin)
 ](https://www.linkedin.com/in/giacomosimmi/)
 [![Static Badge](https://img.shields.io/badge/Spotify-1DD05D?logo=spotify&color=09451F)](http://open.spotify.com/user/jacksimmi)
@@ -22,7 +22,7 @@
 
 Some of the packages in this repo are experiments ( :microscope: ), some under development ( :hourglass_flowing_sand: ), while others are ready to use open source solutions ( :white_check_mark: ).
 
-If you're interested in knowing more about Keadex, me or the provided solutions please visit [keadex.dev](https://keadex.dev), the [documentation](https://keadex.dev/docs) section or the [Discord channel](https://discord.gg/92XZ5DNa).
+If you're interested in knowing more about Keadex, me or the provided solutions please visit [keadex.dev](https://keadex.dev), the [documentation](https://keadex.dev/docs) section or the [Discord channel](https://discord.gg/Hx9qDQTS).
 
 ## Packages
 

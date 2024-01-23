@@ -167,7 +167,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
                   <FontAwesomeIcon icon={faGithub} className="text-xl" />
                 </Link>
                 <Link
-                  href="https://discord.gg/92XZ5DNa"
+                  href="https://discord.gg/Hx9qDQTS"
                   target="_blank"
                   className="!ml-3 lg:!ml-0"
                 >
