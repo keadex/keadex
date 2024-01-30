@@ -1,5 +1,5 @@
 {
-  "root": "C:\\Users\\Jack\\Documents\\Progetti\\Keadex\\SourceCode\\keadex\\apps\\keadex-mina\\test-mina-project",
+  "root": "apps\\keadex-mina\\test-mina-project\\mina.json",
   "name": "My first project",
   "description": "This is my first amazing project built with Mina!",
   "version": "1.0.0"
