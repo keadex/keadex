@@ -1,0 +1,39 @@
+{
+  "uuid": "401d6746-2264-44ae-9780-1955823e4a7e",
+  "elements_specs": [
+    {
+      "alias": "legend",
+      "position": {
+        "left": 29.867841,
+        "top": 31.414085,
+        "z_index": 0,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 121.0,
+        "height": 141.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "internetBanking",
+      "element_type": {
+        "SoftwareSystem": "System"
+      },
+      "position": {
+        "left": 195.42465,
+        "top": 261.29555,
+        "z_index": 1,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    }
+  ],
+  "shapes": []
+}

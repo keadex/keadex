@@ -15,7 +15,10 @@ export {
   type DropdownMenuItemProps,
 } from './components/cross/DropdownMenu/DropdownMenuItem'
 export { GENERIC_EVENTS } from './constants/events'
-export { KeadexCanvas } from './components/cross/Canvas/KeadexCanvas'
+export {
+  KeadexCanvas,
+  type KeadexCanvasOptions,
+} from './components/cross/Canvas/KeadexCanvas'
 export { IconButton } from './components/cross/IconButton/IconButton'
 export type {
   TableProps,

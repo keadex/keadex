@@ -25,4 +25,7 @@ export default defineConfig({
     // disable inline assets due to CSP
     assetsInlineLimit: 0,
   },
+  define: {
+    'process.env': {},
+  },
 })

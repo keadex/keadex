@@ -19,7 +19,9 @@
       "@keadex/keadex-ui-kit/cross": ["libs/keadex-ui-kit/src/cross.ts"],
       "@keadex/keadex-ui-kit/desktop": ["libs/keadex-ui-kit/src/desktop.ts"],
       "@keadex/keadex-ui-kit/web": ["libs/keadex-ui-kit/src/web.ts"],
-      "@keadex/keadex-utils": ["libs/keadex-utils/src/index.ts"]
+      "@keadex/keadex-utils": ["libs/keadex-utils/src/index.ts"],
+      "@keadex/mina-confluence-plugin": ["libs/mina-confluence-plugin/src/index.ts"],
+
     }
   },
   "exclude": ["node_modules", "tmp"]

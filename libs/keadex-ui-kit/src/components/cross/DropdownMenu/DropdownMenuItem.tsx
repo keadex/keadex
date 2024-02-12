@@ -136,7 +136,7 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
         </ul>
       )
     } else {
-      return
+      return <div data-te-dropdown-menu-ref></div>
     }
   }
 

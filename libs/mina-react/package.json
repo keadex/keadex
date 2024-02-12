@@ -1,0 +1,33 @@
+{
+  "name": "@keadex/mina-react",
+  "description": "React library to render C4 Model diagrams created with Keadex Mina.",
+  "author": "Keadex <keadex.it@gmail.com>",
+  "license": "MIT",
+  "version": "1.0.0",
+  "private": false,
+  "homepage": "https://keadex.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keadex/keadex"
+  },
+  "main": "index.js",
+  "types": "index.d.ts",
+  "devDependencies": {
+    "@types/react": "^18.2.28",
+    "@types/react-dom": "^18.2.13",
+    "@wasm-tool/wasm-pack-plugin": "^1.7.0",
+    "copy-webpack-plugin": "^12.0.2",
+    "webpack": "^5.89.0"
+  },
+  "dependencies": {
+    "next": "^14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.3.3",
+    "tw-elements": "1.0.0",
+    "wasm-pack": "^0.12.1"
+  },
+  "peerDependencies": {
+    "react-router-dom": "^6.17.0"
+  }
+}

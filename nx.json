@@ -22,11 +22,6 @@
     }
   },
   "generators": {
-    "@nrwl/react": {
-      "application": {
-        "babel": true
-      }
-    },
     "@nx/react": {
       "application": {
         "babel": true

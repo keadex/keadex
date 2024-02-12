@@ -6,22 +6,16 @@
   "tags": [],
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "libs/keadex-ui-kit/**/*.{ts,tsx,js,jsx}"
-        ],
+        "lintFilePatterns": ["libs/keadex-ui-kit/**/*.{ts,tsx,js,jsx}"],
         "ignorePath": "libs/keadex-ui-kit/.eslintignore"
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/libs/keadex-ui-kit"
-      ],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/keadex-ui-kit"],
       "options": {
         "jestConfig": "libs/keadex-ui-kit/jest.config.ts",
         "passWithNoTests": true

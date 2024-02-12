@@ -5,8 +5,13 @@ pub mod error_handling;
 pub mod helper;
 pub mod model;
 pub mod parser;
+#[cfg(feature = "desktop")]
 pub mod repository;
+#[cfg(feature = "desktop")]
 pub mod service;
+#[cfg(feature = "desktop")]
 pub mod templates;
+#[cfg(feature = "desktop")]
 pub mod validator;
+#[cfg(feature = "desktop")]
 pub mod view;

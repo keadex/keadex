@@ -1,0 +1,17 @@
+{
+  "name": "mina-confluence-plugin",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mina-confluence-plugin/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "semantic-release": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "libs/mina-confluence-plugin",
+        "command": "forge deploy -e production"
+      },
+      "dependsOn": [{ "projects": ["mina-confluence-app"], "target": "build" }]
+    }
+  }
+}

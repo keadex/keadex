@@ -10,6 +10,12 @@
         "script": "tauri dev"
       }
     },
+    "build": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "tauri build"
+      }
+    },
     "info": {
       "executor": "nx:run-script",
       "options": {
@@ -17,14 +23,10 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/keadex-mina/**/*.{ts,tsx,js,jsx}"
-        ],
+        "lintFilePatterns": ["apps/keadex-mina/**/*.{ts,tsx,js,jsx}"],
         "eslintConfig": "apps/keadex-mina/.eslintrc.json",
         "ignorePath": "apps/keadex-mina/.eslintignore"
       }

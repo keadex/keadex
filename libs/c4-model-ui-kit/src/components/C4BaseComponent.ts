@@ -1,6 +1,7 @@
 import {
   DropdownMenuItemProps,
   GENERIC_EVENTS,
+  KeadexCanvas,
   KeadexContextMenuEvent,
 } from '@keadex/keadex-ui-kit/cross'
 import { fabric } from 'fabric'
@@ -265,6 +266,7 @@ export const createBaseContextMenuItems = (
   const baseContextMenuItems = []
   const elementType = object.data?.rawDiagramElementSpec?.element_type
   const diagramLink = object.data?.rawData?.base_data?.link
+  const isCanvasReadOnly = (canvas as KeadexCanvas).isReadOnly()
   const canOpenDiagramLink =
     elementType !== undefined &&
     diagramLink &&
@@ -275,50 +277,53 @@ export const createBaseContextMenuItems = (
       softwareSystemDiagramElement(elementType) !== undefined)
 
   if (canOpenDiagramLink) {
+    baseContextMenuItems.push({
+      isHeaderMenuItem: false,
+      id: 'openDiagram',
+      label: 'Open Diagram',
+      onClick: () => {
+        if (canvas.diagramListener) {
+          canvas.diagramListener.onOpenDiagramClick(diagramLink)
+        }
+      },
+    })
+    if (!isCanvasReadOnly) {
+      baseContextMenuItems.push({
+        id: 'separatorCommon',
+        isSepator: true,
+      })
+    }
+  }
+
+  if (!isCanvasReadOnly) {
     baseContextMenuItems.push(
       {
         isHeaderMenuItem: false,
-        id: 'openDiagram',
-        label: 'Open Diagram',
-        onClick: () => {
-          if (canvas.diagramListener) {
-            canvas.diagramListener.onOpenDiagramClick(diagramLink)
-          }
-        },
+        id: 'bringToFront',
+        label: 'Bring to Front',
+        onClick: () => object.bringToFront(),
       },
       {
-        id: 'separatorCommon',
-        isSepator: true,
+        isHeaderMenuItem: false,
+        id: 'bringForward',
+        label: 'Bring Forward',
+        onClick: () => object.bringForward(),
+      },
+      {
+        isHeaderMenuItem: false,
+        id: 'sentToBack',
+        label: 'Send to Back',
+        onClick: () => sendToBack(object),
+      },
+      {
+        isHeaderMenuItem: false,
+        id: 'sendBackwards',
+        label: 'Send Backwards',
+        onClick: () => sendBackwards(object),
       },
     )
   }
 
-  baseContextMenuItems.push(
-    {
-      isHeaderMenuItem: false,
-      id: 'bringToFront',
-      label: 'Bring to Front',
-      onClick: () => object.bringToFront(),
-    },
-    {
-      isHeaderMenuItem: false,
-      id: 'bringForward',
-      label: 'Bring Forward',
-      onClick: () => object.bringForward(),
-    },
-    {
-      isHeaderMenuItem: false,
-      id: 'sentToBack',
-      label: 'Send to Back',
-      onClick: () => sendToBack(object),
-    },
-    {
-      isHeaderMenuItem: false,
-      id: 'sendBackwards',
-      label: 'Send Backwards',
-      onClick: () => sendBackwards(object),
-    },
-  )
   if (!asSubMenu) return baseContextMenuItems
   else
     return [

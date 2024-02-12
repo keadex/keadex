@@ -1,0 +1,70 @@
+{
+  "name": "mina-react",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mina-react/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "semantic-release": {
+      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
+      "options": {
+        "buildTarget": "build",
+        "outputPath": "libs/mina-react/dist"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn nx build-types mina-react"
+      }
+    },
+    "build-types": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "tsc --p ./tsconfig.lib.json"
+      },
+      "dependsOn": ["build-code"]
+    },
+    "build-code": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "compiler": "babel",
+        "outputPath": "libs/mina-react/dist",
+        "outputHashing": "none",
+        "main": "libs/mina-react/index.ts",
+        "tsConfig": "libs/mina-react/tsconfig.lib.json",
+        "webpackConfig": "libs/mina-react/webpack.config.ts",
+        "optimization": true,
+        "sourceMap": false,
+        "namedChunks": false,
+        "extractLicenses": true,
+        "vendorChunk": false,
+        "externalDependencies": "all"
+      },
+      "dependsOn": ["build-wasm"]
+    },
+    "build-wasm": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "wasm-pack build ./src-rust --target bundler"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/mina-react/**/*.{ts,tsx,js,jsx}"],
+        "ignorePath": "libs/mina-react/.eslintignore"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/mina-react"],
+      "options": {
+        "jestConfig": "libs/mina-react/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

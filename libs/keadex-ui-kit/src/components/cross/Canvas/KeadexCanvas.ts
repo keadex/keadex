@@ -6,10 +6,12 @@ const STATE_PANNING = 'panning'
 const DELTA_ZOOM = 1.1
 const DELTA_PAN = 5
 
+export type KeadexCanvasOptions = fabric.ICanvasOptions & { readOnly?: boolean }
+
 export class KeadexCanvas extends fabric.Canvas {
   constructor(
     element: HTMLCanvasElement | string | null,
-    options?: fabric.ICanvasOptions
+    options?: KeadexCanvasOptions,
   ) {
     super(element, options)
     setCanvasZoom(this)
@@ -18,11 +20,40 @@ export class KeadexCanvas extends fabric.Canvas {
 
   override initialize(
     element: HTMLCanvasElement | string | null,
-    options?: fabric.ICanvasOptions
+    options?: KeadexCanvasOptions,
   ): fabric.Canvas {
     setCanvasZoom(this)
     setCanvasPanning(this)
+    if (isReadOnly(options?.readOnly)) {
+      this.setReadOnly()
+    }
     return super.initialize(element, options)
+  }
+
+  isReadOnly() {
+    return (
+      !fabric.Object.prototype.selectable &&
+      fabric.Object.prototype.lockMovementX &&
+      fabric.Object.prototype.lockMovementY &&
+      fabric.Object.prototype.lockRotation &&
+      fabric.Object.prototype.lockScalingFlip &&
+      fabric.Object.prototype.lockScalingX &&
+      fabric.Object.prototype.lockScalingY &&
+      fabric.Object.prototype.lockSkewingX &&
+      fabric.Object.prototype.lockSkewingY
+    )
+  }
+
+  setReadOnly() {
+    fabric.Object.prototype.selectable = false
+    fabric.Object.prototype.lockMovementX = true
+    fabric.Object.prototype.lockMovementY = true
+    fabric.Object.prototype.lockRotation = true
+    fabric.Object.prototype.lockScalingFlip = true
+    fabric.Object.prototype.lockScalingX = true
+    fabric.Object.prototype.lockScalingY = true
+    fabric.Object.prototype.lockSkewingX = true
+    fabric.Object.prototype.lockSkewingY = true
   }
 
   zoomIn() {
@@ -48,6 +79,10 @@ export class KeadexCanvas extends fabric.Canvas {
   panDown() {
     this.relativePan(new fabric.Point(0, -DELTA_PAN))
   }
+}
+
+function isReadOnly(readOnly?: boolean) {
+  return readOnly === true
 }
 
 function isButtonForPanning(event: fabric.IEvent<MouseEvent>) {

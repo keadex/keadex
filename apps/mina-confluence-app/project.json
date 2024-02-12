@@ -1,0 +1,91 @@
+{
+  "name": "mina-confluence-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/mina-confluence-app/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "libs/mina-confluence-plugin/static/build",
+        "index": "apps/mina-confluence-app/src/index.html",
+        "main": "apps/mina-confluence-app/src/main.tsx",
+        "tsConfig": "apps/mina-confluence-app/tsconfig.app.json",
+        "assets": [
+          "apps/mina-confluence-app/src/favicon.ico",
+          "apps/mina-confluence-app/src/assets"
+        ],
+        "scripts": [],
+        "webpackConfig": "apps/mina-confluence-app/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true,
+          "baseHref": "/"
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/mina-confluence-app/src/environments/environment.ts",
+              "with": "apps/mina-confluence-app/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "baseHref": "./"
+        }
+      },
+      "dependsOn": [{ "projects": ["mina-react"], "target": "build-wasm" }]
+    },
+    "serve": {
+      "executor": "@nx/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "mina-confluence-app:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "mina-confluence-app:build:development"
+        },
+        "production": {
+          "buildTarget": "mina-confluence-app:build:production",
+          "hmr": false
+        }
+      },
+      "dependsOn": [{ "projects": ["mina-react"], "target": "build-wasm" }]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/mina-confluence-app/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/mina-confluence-app/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

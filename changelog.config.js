@@ -4,14 +4,19 @@ function getScopes() {
   const apps = fs
     .readdirSync('./apps', { withFileTypes: true })
     .filter((dirent) => dirent.isDirectory())
-    .map((dirent) => dirent.name)
+    .map((dirent) => `apps/${dirent.name}`)
 
   const libs = fs
     .readdirSync('./libs', { withFileTypes: true })
     .filter((dirent) => dirent.isDirectory())
-    .map((dirent) => dirent.name)
+    .map((dirent) => `libs/${dirent.name}`)
 
-  return apps.concat(libs).concat(['common'])
+  const examples = fs
+    .readdirSync('./examples', { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => `examples/${dirent.name}`)
+
+  return apps.concat(libs).concat(examples).concat(['common'])
 }
 
 module.exports = {

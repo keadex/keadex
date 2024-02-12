@@ -1,0 +1,5 @@
+@import '@keadex/keadex-ui-kit/src/styles/base.css';
+
+ul {
+  padding-left: 0 !important;
+}

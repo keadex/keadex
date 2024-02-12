@@ -1,0 +1,40 @@
+name: 'release libraries'
+on:
+  push:
+    branches:
+      - main
+
+env:
+  FORGE_EMAIL: ${{ secrets.FORGE_EMAIL }}
+  FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+jobs:
+  check-affected:
+    runs-on: ubuntu-latest
+    outputs:
+      is_mina_affected: ${{ steps.affected.outputs.is_mina_affected }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'yarn'
+      - run: yarn --frozen-lockfile
+      - name: configure git
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      - name: configure Atlassian Forge
+        run: |
+          npm install -g @forge/cli
+          forge settings set usage-analytics false
+      - uses: nrwl/nx-set-shas@v4
+      - name: release affected libraries
+        run: yarn nx affected -t semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

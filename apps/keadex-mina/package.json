@@ -1,8 +1,9 @@
 {
   "name": "@keadex/keadex-mina",
   "description": "Desktop application to draw, manage and share the architectures of software systems.",
-  "version": "0.1.0-9",
-  "private": false,
+  "author": "Keadex <keadex.it@gmail.com>",
+  "version": "1.0.0-1",
+  "private": true,
   "license": "MIT",
   "type": "module",
   "dependencies": {
@@ -48,7 +49,7 @@
     "@types/uuid": "^9.0.5",
     "@vitejs/plugin-react": "^4.1.0",
     "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.31",
+    "postcss": "^8.4.33",
     "postcss-import": "^15.1.0",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.2.2",

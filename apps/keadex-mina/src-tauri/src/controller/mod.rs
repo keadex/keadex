@@ -1,4 +1,10 @@
+#[cfg(feature = "desktop")]
 pub mod ai_controller;
+#[cfg(feature = "desktop")]
 pub mod diagram_controller;
+#[cfg(feature = "desktop")]
 pub mod library_controller;
+#[cfg(feature = "desktop")]
 pub mod project_controller;
+#[cfg(feature = "web")]
+pub mod web_controller;

@@ -9,7 +9,7 @@ import {
   renderDiagram,
   updateDiagramElementsSpecsFromCanvas,
 } from '@keadex/c4-model-ui-kit'
-import { KeadexCanvas } from '@keadex/keadex-ui-kit/cross'
+import { KeadexCanvas, KeadexCanvasOptions } from '@keadex/keadex-ui-kit/cross'
 import { objectsAreEqual } from '@keadex/keadex-utils'
 import { fabric } from 'fabric'
 import {
@@ -39,6 +39,7 @@ export interface DiagramDesignViewProps {
   diagramListener: DiagramListener
   diagram?: Diagram
   error?: MinaError
+  readOnly?: boolean
 }
 
 export interface DiagramDesignViewCommands {
@@ -70,12 +71,14 @@ export const DiagramDesignView = forwardRef(
     }
 
     function createCanvas(canvasState?: KeadexCanvasState) {
-      const options: fabric.ICanvasOptions = {
+      const options: KeadexCanvasOptions = {
         fireRightClick: true,
         fireMiddleClick: true,
         stopContextMenu: true,
         backgroundColor: 'white',
+        readOnly: props.readOnly,
       }
+
       const localCanvas = new KeadexCanvas(canvasEl.current, options)
 
       localCanvas.on('object:added', canvasModifiedCallback)
