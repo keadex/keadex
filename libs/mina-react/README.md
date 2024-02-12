@@ -16,5 +16,3 @@
 ## Documentation
 
 If you are interested on the details of this package, please visit the [Mina React documentation](TODO).
-
-<!-- test -->
