@@ -32,10 +32,10 @@ jobs:
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
       - run: yarn --frozen-lockfile
       - run: npm config set workspaces-update false
-      - name: configure git
-        run: |
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      # - name: configure git
+      #   run: |
+      #     git config user.name "${GITHUB_ACTOR}"
+      #     git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - name: configure Atlassian Forge
         run: |
           npm install -g @forge/cli
