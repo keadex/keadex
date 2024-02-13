@@ -19,28 +19,47 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: setup node
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'yarn'
+
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
+
       - name: install dependencies (ubuntu only)
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+
       - run: yarn --frozen-lockfile
+
       - run: npm config set workspaces-update false
-      # - name: configure git
-      #   run: |
-      #     git config user.name "${GITHUB_ACTOR}"
-      #     git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+      - name: import GPG key
+        id: import-gpg
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: sign all commits and push changes
+        run: |
+          git config --global user.email "${{ steps.import-gpg.outputs.email }}"
+          git config --global user.name "${{ steps.import-gpg.outputs.name }}"
+          git config --global commit.gpgsign true
+
       - name: configure Atlassian Forge
         run: |
           npm install -g @forge/cli
           forge settings set usage-analytics false
+
       - uses: nrwl/nx-set-shas@v4
+
       - name: release affected libraries
         run: yarn nx affected -t semantic-release
         env:
