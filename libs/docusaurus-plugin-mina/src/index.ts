@@ -5,7 +5,7 @@ import { dirname, join } from 'path'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const CopyPlugin = require('copy-webpack-plugin')
-
+//
 function pluginMina({
   siteConfig: { themeConfig },
 }: LoadContext): Plugin<void> {
