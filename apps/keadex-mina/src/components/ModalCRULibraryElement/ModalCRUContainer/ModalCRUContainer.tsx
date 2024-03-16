@@ -31,7 +31,6 @@ const emptyContainer: Container = {
     alias: '',
     label: '',
     description: '',
-    link: '',
     notes: '',
   },
   technology: '',
@@ -41,7 +40,7 @@ export const ModalCRUContainer = (props: ModalCRULibraryElementProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const [newContainer, setNewContainer] = useState(
-    props.libraryElement ? (props.libraryElement as Container) : emptyContainer
+    props.libraryElement ? (props.libraryElement as Container) : emptyContainer,
   )
 
   function handleUpdateContainer() {
@@ -142,7 +141,7 @@ export const ModalCRUContainer = (props: ModalCRULibraryElementProps) => {
                   label: capitalCase(noCase(containerType)),
                   value: containerType,
                 }
-              })
+              }),
             ),
           ])}
           onChange={(e) =>

@@ -1,3 +1,4 @@
-import MinaReact from './src/components/MinaReact/MinaReact'
+import './src/styles/index.css'
+import { LazyMinaReact } from './src/components/MinaReact/LazyMinaReact'
 
-export default MinaReact
+export default LazyMinaReact

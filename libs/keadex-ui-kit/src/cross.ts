@@ -62,7 +62,6 @@ export {
   type AccordionProps,
   type AccordionItem,
 } from './components/cross/Accordion/Accordion'
-export { NoSSR } from './components/cross/NoSSR/NoSSR'
 export {
   Timeline,
   type TimelineProps,
@@ -73,3 +72,4 @@ export {
   type ProgressProps,
 } from './components/cross/Progress/Progress'
 export { Tags, type TagsProps } from './components/cross/Tags/Tags'
+export { Tabs, type TabsProps, type Tab } from './components/cross/Tabs/Tabs'

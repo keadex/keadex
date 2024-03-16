@@ -4,10 +4,10 @@ import { Collapse, Tooltip } from 'tw-elements'
 import ReactHtmlParser from 'react-html-parser'
 
 export type AccordionItem<T> = {
-  header: string
-  body: string
+  header: string | JSX.Element
+  body: string | JSX.Element
   parseHtmlBody?: boolean
-  data: T
+  data?: T
 }
 
 export type AccordionProps<T> = {
@@ -16,7 +16,7 @@ export type AccordionProps<T> = {
   showButtonTooltip?: boolean
   buttonIconPosition?: 'left' | 'right'
   className?: string
-  onBodyClick?: (item: T) => void
+  onBodyClick?: (item?: T) => void
 }
 
 export const Accordion = <T,>(props: AccordionProps<T>) => {
@@ -40,7 +40,6 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
     if (collapseElementList && collapseElementList.length > 0) {
       setCollapseList(
         collapseElementList.map((collapseEl) => {
-          console.log('new CollapseTE')
           return new Collapse(collapseEl, {
             toggle: false,
           })
@@ -144,7 +143,9 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
                 }`}
                 onClick={(e) => handleBodyClick(e, item)}
               >
-                {item.parseHtmlBody !== undefined && item.parseHtmlBody
+                {item.parseHtmlBody !== undefined &&
+                item.parseHtmlBody &&
+                typeof item.body === 'string'
                   ? ReactHtmlParser(item.body)
                   : item.body}
               </div>

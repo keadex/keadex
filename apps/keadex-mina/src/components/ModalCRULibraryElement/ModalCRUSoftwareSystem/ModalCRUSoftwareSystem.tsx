@@ -31,7 +31,6 @@ const emptySoftwareSystem: SoftwareSystem = {
     alias: '',
     label: '',
     description: '',
-    link: '',
     notes: '',
   },
 }
@@ -42,10 +41,12 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
   const [newSoftwareSystem, setNewSoftwareSystem] = useState(
     props.libraryElement
       ? (props.libraryElement as SoftwareSystem)
-      : emptySoftwareSystem
+      : emptySoftwareSystem,
   )
 
   function handleUpdateSoftwareSystem() {
+    console.log('updaaaa')
+    console.log(newSoftwareSystem)
     updateSoftwareSystem(newSoftwareSystem as SoftwareSystem)
       .then((updatedProjectLibrary) => {
         if (props.project?.project_settings && props.project?.project_library) {
@@ -143,7 +144,7 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
                   label: capitalCase(noCase(softwareSystemType)),
                   value: softwareSystemType,
                 }
-              })
+              }),
             ),
           ])}
           onChange={(e) =>

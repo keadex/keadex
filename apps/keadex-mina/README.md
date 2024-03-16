@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://keadex.dev/en/projects/keadex-mina" target="_blank"><img src="./public//mina-logo-full.png" width="400" alt="Keadex Battisti Logo" /></a>
+  <a href="https://keadex.dev/en/projects/keadex-mina" target="_blank"><img src="./public/mina-logo-full.png" width="400" alt="Keadex Battisti Logo" /></a>
 </p>
 <p align="center"><i>Desktop app to easily code and organize at a scale <a href="https://c4model.com/" target="_blank">C4 Model</a> diagrams</i></p>
 <div align="center">
@@ -21,9 +21,17 @@ It is based on the **Diagram as Code** concept: you can diagram software archite
 
 Mina is designed to be used in large projects and provides features to organize your diagrams.
 
+<div align="center" style="margin-top: 20px">
+  <a href="https://www.youtube.com/watch?v=Cy6KzhWjNLo" target="_blank"><img src="./public/mina-plantuml.jpg" alt="Keadex Mina demo" width="70%" /></a>
+</div>
+
 ## Download
 
-Download the latest version from the [Release](https://github.com/keadex/keadex/releases) section.
+Download the latest version from the [release](https://github.com/keadex/keadex/releases) section or from [keadex.dev](https://keadex.dev/en/projects/keadex-mina).
+
+## Roadmap
+
+Discover the upcoming and planned features [here](https://github.com/users/keadex/projects/2).
 
 ## Documentation
 

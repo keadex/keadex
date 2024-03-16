@@ -71,8 +71,8 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
     safeExit(`${BASE_PATH_LIBRARY}${c4ElementTypePathName(c4ElementType)}`)
   }
 
-  async function handleSearchResultItemClick(item: FileSearchResult[]) {
-    if (item.length > 0) {
+  async function handleSearchResultItemClick(item?: FileSearchResult[]) {
+    if (item && item.length > 0) {
       const category = item[0].category
       const path = item[0].path
       if (category === 'Diagram') {
@@ -151,11 +151,17 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
   }
 
   useEffect(() => {
-    if (project === undefined) {
-      setSearchValue('')
-      setSearchedValue('')
-      setSearchResults(null)
-    }
+    // Commenting the following condition will cause the search panel
+    // to be reset everytime the project changes (not only when it will be closed).
+    // For example, when the user creates a new element in the library,
+    // the project is re-saved and changes.
+    // As a consequence the search panel will be reset.
+    // For now, this behaviour is acceptable.
+    // if (project === undefined) {
+    setSearchValue('')
+    setSearchedValue('')
+    setSearchResults(null)
+    // }
   }, [project])
 
   return (

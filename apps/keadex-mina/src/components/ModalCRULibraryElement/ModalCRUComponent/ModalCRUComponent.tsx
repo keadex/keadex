@@ -31,7 +31,6 @@ const emptyComponent: Component = {
     alias: '',
     label: '',
     description: '',
-    link: '',
     notes: '',
   },
   technology: '',
@@ -41,7 +40,7 @@ export const ModalCRUComponent = (props: ModalCRULibraryElementProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const [newComponent, setNewComponent] = useState(
-    props.libraryElement ? (props.libraryElement as Component) : emptyComponent
+    props.libraryElement ? (props.libraryElement as Component) : emptyComponent,
   )
 
   function handleUpdateComponent() {
@@ -142,7 +141,7 @@ export const ModalCRUComponent = (props: ModalCRULibraryElementProps) => {
                   label: capitalCase(noCase(componentType)),
                   value: componentType,
                 }
-              })
+              }),
             ),
           ])}
           onChange={(e) =>

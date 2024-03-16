@@ -6,7 +6,7 @@ div[role='tooltip'] {
   @apply !duration-[0ms];
 }
 
-li a {
+ul:not(.list-disc) li a {
   @apply no-underline text-inherit;
 }
 

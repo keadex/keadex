@@ -16,7 +16,6 @@ import {
   DropdownMenuItemProps,
   useAppBootstrap,
 } from '@keadex/keadex-ui-kit/cross'
-import '../../styles/index.css'
 
 export interface MinaReactProps {
   projectRootUrl: string

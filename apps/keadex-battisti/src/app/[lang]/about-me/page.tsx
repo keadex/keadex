@@ -463,7 +463,7 @@ const AboutMe: NextPage<PageProps> = async ({ params: { lang } }) => {
           </div>
         </div>
       </div>
-      <Timeline items={timelineItems} />
+      <Timeline items={timelineItems} ImageComponent={Image} />
     </div>
   )
 }

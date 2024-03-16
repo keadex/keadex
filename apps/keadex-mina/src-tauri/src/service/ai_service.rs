@@ -30,7 +30,7 @@ pub async fn generate_plantuml(description: &str) -> Result<String, MinaError> {
   let full_description = "Show me the PlantUML code by using the C4-PlantUML stdlib and by omitting directives, of a C4 Model diagram with the following description: ".to_owned() + description;
 
   let request = CreateCompletionRequestArgs::default()
-    .model("text-davinci-003")
+    .model("gpt-3.5-turbo-instruct")
     .prompt(full_description)
     .max_tokens(2048_u16)
     .build()

@@ -1,0 +1,31 @@
+#mina-faq .accordion-button {
+  @apply bg-primary overflow-hidden px-2 py-2 text-lg;
+}
+
+#mina-faq .accordion-button span {
+  @apply text-clip whitespace-normal;
+}
+
+#mina-faq .accordion-button:hover {
+  @apply bg-link;
+}
+
+#mina-faq .accordion-button[data-te-collapse-collapsed] {
+  @apply bg-dark-primary;
+}
+
+#mina-faq .accordion-button[data-te-collapse-collapsed]:hover {
+  @apply bg-link;
+}
+
+#mina-faq .accordion-icon {
+  @apply h-4 w-4 mr-5;
+}
+
+#mina-faq .accordion-icon svg {
+  @apply h-4 w-4;
+}
+
+#mina-faq .accordion-body {
+  @apply bg-dark-primary overflow-hidden py-6 pl-5 pr-2 text-base font-light;
+}

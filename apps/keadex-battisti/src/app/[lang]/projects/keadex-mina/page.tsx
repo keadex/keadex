@@ -1,7 +1,13 @@
 import { type Metadata, type NextPage } from 'next'
-import Image from 'next/image'
 import keadexMina from '../../../../../public/img/keadex-mina-logo.svg'
-import { useTranslation } from '../../../i18n'
+import MinaAI from '../../../../components/MinaAI/MinaAI'
+import MinaDetails from '../../../../components/MinaDetails/MinaDetails'
+import MinaDocsIntegration from '../../../../components/MinaDocsIntegration/MinaDocsIntegration'
+import MinaFAQ from '../../../../components/MinaFAQ/MinaFAQ'
+import MinaPlantUML from '../../../../components/MinaPlantUML/MinaPlantUML'
+import MinaProjectStructure from '../../../../components/MinaProjectStructure/MinaProjectStructure'
+import MinaRendering from '../../../../components/MinaRendering/MinaRendering'
+import MinaSummary from '../../../../components/MinaSummary/MinaSummary'
 import { PageProps } from '../../layout'
 
 const seo = {
@@ -32,26 +38,17 @@ export const metadata: Metadata = {
 }
 
 const KeadexMina: NextPage<PageProps> = async ({ params: { lang } }) => {
-  const { t } = await useTranslation(lang)
-
   return (
-    // <div className="about-me-page page font-light flex flex-col pb-20">
-    <div className="h-screen px-10 align-middle flex flex-col">
-      <div className="text-4xl !leading-loose my-auto text-center font-extralight">
-        <a
-          href="https://github.com/keadex/keadex/tree/main/apps/keadex-mina"
-          target="_blank"
-        >
-          <Image
-            src={keadexMina}
-            alt="Keadex Mina Logo"
-            className="mx-auto mb-10 lg:w-[36rem] w-[30rem]"
-          />
-        </a>
-        <span className="text-link">{t('keadex_mina.title')}</span>
-      </div>
+    <div className="overflow-x-hidden">
+      <MinaSummary lang={lang} />
+      <MinaDetails lang={lang} />
+      <MinaPlantUML lang={lang} />
+      <MinaRendering lang={lang} />
+      <MinaProjectStructure lang={lang} />
+      <MinaDocsIntegration lang={lang} />
+      <MinaAI lang={lang} />
+      <MinaFAQ lang={lang} />
     </div>
-    // </div>
   )
 }
 

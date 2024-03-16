@@ -14,13 +14,15 @@ export type CookieConsent = {
 }
 
 export function initGA() {
-  console.debug(`GA init ${process.env['NEXT_PUBLIC_GA_MEASUREMENT_ID']!}`)
-  ReactGA.initialize([
-    {
-      trackingId: process.env['NEXT_PUBLIC_GA_MEASUREMENT_ID']!,
-      gtagOptions: { anonymize_ip: true, send_page_view: false },
-    },
-  ])
+  // console.debug(`GA init ${process.env['NEXT_PUBLIC_GA_MEASUREMENT_ID']!}`)
+  if (process.env['NEXT_PUBLIC_GA_MEASUREMENT_ID']) {
+    ReactGA.initialize([
+      {
+        trackingId: process.env['NEXT_PUBLIC_GA_MEASUREMENT_ID'],
+        gtagOptions: { anonymize_ip: true, send_page_view: false },
+      },
+    ])
+  }
 }
 
 export function logPageView() {

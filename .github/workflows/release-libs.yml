@@ -39,21 +39,6 @@ jobs:
 
       - run: npm config set workspaces-update false
 
-      # - name: import GPG key
-      #   id: import-gpg
-      #   uses: crazy-max/ghaction-import-gpg@v4
-      #   with:
-      #     gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-      #     passphrase: ${{ secrets.PASSPHRASE }}
-      #     git_user_signingkey: true
-      #     git_commit_gpgsign: true
-
-      # - name: sign all commits and push changes
-      #   run: |
-      #     git config --global user.email "${{ steps.import-gpg.outputs.email }}"
-      #     git config --global user.name "${{ steps.import-gpg.outputs.name }}"
-      #     git config --global commit.gpgsign true
-
       - name: setup git
         run: |
           git config --global user.email "159919634+keadexbot@users.noreply.github.com"

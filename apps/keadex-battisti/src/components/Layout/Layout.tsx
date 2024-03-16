@@ -21,9 +21,9 @@ export default function Layout(props: PropsWithChildren<LayourProps>) {
   const { lang, children } = props
 
   async function initializeTailwindElements() {
-    const { initTE, Button, Collapse, Dropdown, Input, Modal, Select } =
+    const { initTE, Button, Collapse, Dropdown, Input, Modal, Select, Tab } =
       await import('tw-elements')
-    await initTE({ Dropdown, Button, Modal, Input, Select, Collapse })
+    await initTE({ Dropdown, Button, Modal, Input, Select, Collapse, Tab })
   }
 
   useAppBootstrap({ initGA: true, initTE: initializeTailwindElements })

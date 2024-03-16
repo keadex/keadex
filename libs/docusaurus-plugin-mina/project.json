@@ -1,0 +1,59 @@
+{
+  "name": "docusaurus-plugin-mina",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/docusaurus-plugin-mina/src",
+  "projectType": "library",
+  "targets": {
+    "semantic-release": {
+      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
+      "options": {
+        "buildTarget": "build",
+        "outputPath": "libs/docusaurus-plugin-mina/dist"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn nx build-code docusaurus-plugin-mina"
+      }
+    },
+    "build-code": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/docusaurus-plugin-mina/dist",
+        "main": "libs/docusaurus-plugin-mina/src/index.ts",
+        "tsConfig": "libs/docusaurus-plugin-mina/tsconfig.lib.json",
+        "assets": [
+          "libs/docusaurus-plugin-mina/*.md",
+          "libs/docusaurus-plugin-mina/static/mina-docusaurus-logo.svg"
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/docusaurus-plugin-mina/**/*.ts",
+          "libs/docusaurus-plugin-mina/package.json"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/docusaurus-plugin-mina/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

@@ -290,7 +290,7 @@ const factory: WindowTitlebarMenuFactory<
         isHeaderMenuItem: false,
         id: 'wbar_help_documentation',
         label: t('common.documentation').toString(),
-        onClick: () => handleDocumentation,
+        onClick: handleDocumentation,
       },
       {
         isHeaderMenuItem: false,

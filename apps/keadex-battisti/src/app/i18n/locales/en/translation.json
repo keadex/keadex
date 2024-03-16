@@ -5,16 +5,24 @@
     "banking": "Banking",
     "documentation": "Documentation",
     "ecommerce": "eCommerce",
+    "export": "Export",
     "energy_utilities": "Energy & Utilities",
     "experience": "Experience",
+    "faq": "FAQ",
     "functional": "Functional",
     "healthcare": "Healthcare",
     "hobbies": "Hobbies",
+    "library": "Library",
+    "link": "Link",
     "massmedia": "Mass Media",
     "operational": "Operational",
+    "organize": "Organize",
+    "packages": "Packages",
     "projects": "Projects",
     "retail": "Retail",
+    "reuse": "Reuse",
     "risk_analytics": "Risk Analytics",
+    "search": "Search",
     "since": "Since",
     "streaming": "Streaming",
     "summary": "Summary",
@@ -68,7 +76,7 @@
     "check_docs": "Check the docs",
     "check_my_full_profile": "Check my full profile",
     "docs_summary_part1": "<p>As an IT Architect, <span className='font-normal'>documenting projects</span> is part of my job.</p><p>In open source projects like Keadex, documentation is very important to enable and promote <span className='font-normal'>collaboration</span> without asking for a huge <span className='font-normal'>reverse engineering</span> effort.</p><p>At a very high level, there are different <span className='font-normal'>types</span> of documentation:</p>",
-    "docs_summary_part2": "<p>Keadex leverages on the <a href='https://c4model.com/' target='_blank' className='font-normal'>C4 Model</a> appoach to document the projects architecture.</p>",
+    "docs_summary_part2": "<p>Keadex leverages on the <a href='https://c4model.com/' target='_blank' className='font-normal'>C4 model</a> appoach to document the projects architecture.</p>",
     "functional_docs_descr": "Functional documentation describes the functionalities and features of the software from a user's perspective.",
     "keadex_summary": "Ciao! My name is <span className='font-normal'>Giacomo</span>, I'm an <span className='font-normal'>IT Architect</span>,<br />and this is Keadex, my <span className='font-normal'>open source</span> project.",
     "operational_docs_descr": "Operational documentation focuses on the operation and maintenance of the software system in a production environment.",
@@ -76,7 +84,54 @@
     "technical_docs_descr": "Technical documentation provides detailed information about the internal workings of the software, explaining how it achieves its functionality."
   },
   "keadex_mina": {
-    "title": "is coming soon"
+    "ai": {
+      "title": "AI-Powered",
+      "description": "<span className='text-orange-400'>This feature is in alpha version and in development stages. Therefore, it may currently return results that are not always correct.</span><p>Mina integrates AI to <span className='font-bold'>generate diagram code</span> based on a natural language description of your architecture.</p><p>Mina uses OpenAI's <code>gpt-3.5-turbo-instruct</code> model to provide the functionality of generating code for architectural diagrams from natural language descriptions. Since Mina is and always will be <span className='font-bold'>open source and free</span>, and since the <code>gpt-3.5-turbo-instruct</code> model is not free, you will need to configure your <span className='font-bold'>OpenAI API Key</span> within Mina if you want to use this feature.</p>"
+    },
+    "description": "Open Source<span className='font-extralight'>, serverless IDE to easily code and organize at a scale</span> C4 model diagrams.",
+    "details": {
+      "features": {
+        "c4model": "<span className='font-bold'>C4 model centric</span>: Mina is based on the <a href='https://c4model.com/' target='_blank'>C4 model</a> approach to diagramming software architecture.",
+        "export": "<p>Mina provides various plugins and libraries to include interactive diagrams directly into the most common <span className='font-bold'>documentation platforms</span> (e.g., Confluence, Docusaurus, etc.) using a URL (e.g., Git repo URL), thus eliminating the need for exporting them.</p><p>If you need to <span className='font-bold'>export</span> the diagram as a static image instead, you can do so directly from Mina.</p>",
+        "link": "<p>The <span className='font-bold'>layering</span> of the C4 model enables the creation of clear and understandable diagrams. Moreover, you will often create diagrams focusing on specific systems, which, in turn, <span className='font-bold'>integrate</span> with other systems.</p><p>By <span className='font-bold'>linking</span> diagrams of different levels or systems together, you will enable <span className='font-bold'>interactive navigation</span> that allows users to have a clear and detailed view of your architectures.</p>",
+        "offline": "<span className='font-bold'>Offline</span>: the rendering system of Mina is based on Rust, and compilation into WASM enables its portability across different systems. This allows for the quick and immediate translation of code into diagrams, without the need to depend on external servers, thus also available offline.",
+        "organize": "<p>Organize your architectural diagrams respecting the <span className='font-bold'>layering</span> of the C4 model.</p>",
+        "reuse": "<p>Typically, various architectural diagrams <span className='font-bold'>share</span> some elements (databases, servers, clients, etc.).</p><p>Add these elements to the <span className='font-bold'>library</span> and include them in your diagrams. This way, you will promote the sharing of architectural elements and their characteristics within your team and speed up the creation of diagrams.</p>",
+        "search": "<p>In the case of complex architectures, with many diagrams and shared architectural elements, it's important to <span className='font-bold'>quickly search</span> for the existence of specific content to avoid duplication and encourage reuse.</p><p>For this reason, in addition to the standard search functionalities (within the library or in the list of diagrams), Mina integrates a keyword search feature in your diagrams with the ability to <span className='font-bold'>access</span> them quickly with a click.</p>",
+        "simple": "<span className='font-bold'>Simple</span>: an interface reduced to the essentials and simple to use.",
+        "serverless": "<span className='font-bold'>Serverless</span>: a diagram as code application, without the need of installing servers or deploying software. Just download the application and use it.",
+        "title": "A <span className='font-normal'>simple</span> IDE for coding C4 model diagrams.<br />Even <span className='font-normal'>offline</span>."
+      },
+      "title": "A <span className='font-normal'>simple</span> IDE for coding C4 model diagrams.<br />Even <span className='font-normal'>offline</span>."
+    },
+    "docs_integration": {
+      "title": "<span className='font-normal'>Integrated</span> with the most common <span className='font-normal'>documentation</span> platforms.",
+      "description": "Keadex provides various <span className='font-bold'>libraries and extensions</span> to include diagrams created with Mina within the most common documentation platforms.<p>By using these packages:</p><ul className='list-disc pl-8'><li>You can include the diagrams using their <span className='font-bold'>URL</span>, without the need to export them.</li><li>As a result your documentation will always render the <span className='font-bold'>most updated diagram</span> based on your versioning system, without the need for constant manual updates.</li><li>The diagrams will be <span className='font-bold'>interactive</span>, allowing navigation across various connected architectural diagrams.</li></ul>"
+    },
+    "faq": {
+      "answer_download_blocked": "Mina is absolutely safe to use, so you can proceed with the download by following the steps outlined below.",
+      "answer_setup_blocked": "Mina is absolutely safe to use, so you can proceed with the setup or execution by following the steps outlined below, depending on your system.",
+      "question_download_blocked": "My browser is blocking the download of Mina as it appears suspicious. Is it safe to proceed with the download? How can I unblock the download?",
+      "question_setup_blocked": "My system is blocking the setup or execution of Mina as it appears suspicious. Is it safe? How can I proceed with setup or execution?",
+      "reason_not_signed": "<p>Your browser or system marks it as suspicious because the code has not been signed with a certificate. This does not make the application harmful to your system, <span className='font-bold'>but make sure to download Keadex software only from the official <a href='https://keadex.dev' target='_blank'>Keadex website</a> and <a href='https://github.com/keadex/keadex' target='_blank'>GitHub repository</a></span>.</p><p>The code for Mina has not been signed with a certificate because Keadex provides open-source, free, and non-profit software. Certificates for signing code for different operating systems, however, are not free and are quite expensive. Therefore, at the moment, Keadex cannot provide signed code.</p>"
+    },
+    "other_download_options": "Other download options",
+    "plantuml": {
+      "description": "One of Mina's fundamental principles is to facilitate onboarding and usage. For this reason, unlike many other tools, Mina does not introduce a new <span className='font-bold'>Domain-Specific Language (DSL)</span> to provide its functionalities but relies on the <a href='https://plantuml.com/guide' target='_blank'>PlantUML DSL</a>.<p>Specifically, Mina supports the syntax of the official <a href='https://github.com/plantuml-stdlib/C4-PlantUML' target='_blank'>PlantUML C4 model standard library</a>.</p><p>This allows you to <span className='font-bold'>reuse</span> PlantUML C4 code created with other tools and immediately leverage Mina's capabilities. If you decide to leave Mina (but we hope you don't), you can still reuse the PlantUML code created in Mina with other tools that support PlantUML.</p><p><a href='https://plantuml.com' target='_blank'>PlantUML</a> was born in 2009 and is a well-known open-source tool with a <span className='font-bold'>mature and widely used DSL</span>. In the meantime, several PlantUML extensions have been released. Among these is <a href='https://github.com/plantuml-stdlib/C4-PlantUML' target='_blank'>C4-PlantUML</a>, the standard library that supports the specifications of the C4 model.</p>",
+      "title": "Not another language to learn.<br />Just based on <span className='font-normal'>PlantUML</span>."
+    },
+    "project_structure": {
+      "description": "A Mina project primarily consists of the following files:<ul className='list-disc pl-8'><li><code>.puml</code> files: contain the code of the diagrams.</li><li><code>.json</code> files: contain specifications of the diagrams, including position, size, and metadata of the elements within a diagram.</li></ul><p>Thus, the project only contains <span className='font-bold'>human-readable code</span> without any binary data or incomprehensible metadata files.</p><p>This feature makes a Mina project <span className='font-bold'>easily versionable</span> with tools such as GitHub, facilitating the adoption of common <span className='font-bold'>software development best practices</span> like code reviews, pull request approval processes, continuous integration, and more.</p>",
+      "title": "A simple <span className='font-normal'>project structure</span>, easily <span className='font-normal'>versionable</span>."
+    },
+    "rendering": {
+      "description": "Architectural diagrams are fundamental for <span className='font-bold'>sharing</span> within the team how different systems and processes are integrated with each other. These become even more important in large companies, where <span className='font-bold'>hundreds of different systems</span> are integrated. In this case, it is equally crucial to create clear and <span className='font-bold'>understandable</span> diagrams.<p>Applications with <span className='font-bold'>fully automated rendering systems</span>, in the presence of many architectural elements, generate cluttered and <span className='font-bold'>hardly understandable</span> diagrams, making them lose their utility.</p><p>For this reason, Mina adopts and integrates a <span className='font-bold'>semi-automated rendering system</span>: starting from the code, it automatically renders various architectural elements, but leaves the positioning activity to the user.</p><p>In the future, Mina will seek to automate rendering even more, without ever neglecting the fundamental goal: the <span className='font-bold'>comprehensibility</span> of the diagrams.</p>",
+      "fully_automated_rendering": "Fully automated rendering (other tools)",
+      "semi_automated_rendering": "Semi-automated rendering (Keadex Mina)",
+      "title": "<span className='text-green-700'>Semi</span>-automated but <span className='text-green-700'>clear</span> diagrams, over <span className='text-red-700'>fully</span> automated, but <span className='text-red-700'>messy</span> diagrams."
+    },
+    "slogan": "Code C4 model diagrams without giving up on software development best practices<br />and on power of freehand drawing.",
+    "title": "<span className='font-extralight'>Diagram as Code.</span><br />For real."
   },
   "not_found": {
     "go_home": "Go Home",

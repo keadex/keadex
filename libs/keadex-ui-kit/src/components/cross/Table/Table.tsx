@@ -50,7 +50,7 @@ export interface TableProps<T extends TableData<T>> {
   expandable?: boolean
   onRowClick?: (
     e: React.MouseEvent<HTMLTableCellElement, MouseEvent>,
-    data: T
+    data: T,
   ) => void
   suppressRowClickColIDs?: string[]
 }
@@ -58,7 +58,7 @@ export interface TableProps<T extends TableData<T>> {
 export const Table = forwardRef(
   <T extends TableData<T>>(
     props: TableProps<T>,
-    ref: Ref<TanStackTable<T>>
+    ref: Ref<TanStackTable<T>>,
   ) => {
     const {
       tableOptions,
@@ -79,12 +79,13 @@ export const Table = forwardRef(
     if (expandable === undefined) expandable = true
 
     const [expanded, setExpanded] = React.useState<ExpandedState>(
-      defaultExpanded !== undefined ? defaultExpanded : {}
+      defaultExpanded !== undefined ? defaultExpanded : {},
     )
 
     const fullColumns = () => {
       const result: ColumnDef<T>[] = []
       columns.forEach((column) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const accessor: any = {}
         if (column.accessorKey) {
           accessor.accessorKey = column.accessorKey
@@ -166,7 +167,7 @@ export const Table = forwardRef(
                         <div>
                           {flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                         </div>
                       )}
@@ -208,7 +209,7 @@ export const Table = forwardRef(
                             props.onRowClick &&
                             (!props.suppressRowClickColIDs ||
                               !props.suppressRowClickColIDs.includes(
-                                cell.column.id
+                                cell.column.id,
                               ))
                           )
                             props.onRowClick(e, row.original)
@@ -218,7 +219,7 @@ export const Table = forwardRef(
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </td>
                     )
@@ -297,7 +298,7 @@ export const Table = forwardRef(
         </div>
       </div>
     )
-  }
+  },
 )
 
 export default Table

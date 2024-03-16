@@ -6,7 +6,11 @@ const STATE_PANNING = 'panning'
 const DELTA_ZOOM = 1.1
 const DELTA_PAN = 5
 
-export type KeadexCanvasOptions = fabric.ICanvasOptions & { readOnly?: boolean }
+export type KeadexCanvasOptions = fabric.ICanvasOptions & {
+  readOnly?: boolean
+  enableSnapToGrid?: boolean
+  gridSize?: number
+}
 
 export class KeadexCanvas extends fabric.Canvas {
   constructor(
@@ -24,8 +28,11 @@ export class KeadexCanvas extends fabric.Canvas {
   ): fabric.Canvas {
     setCanvasZoom(this)
     setCanvasPanning(this)
-    if (isReadOnly(options?.readOnly)) {
+    if (options?.readOnly === true) {
       this.setReadOnly()
+    }
+    if (options?.enableSnapToGrid === true) {
+      enableSnapToGrid(this, options.gridSize)
     }
     return super.initialize(element, options)
   }
@@ -79,10 +86,6 @@ export class KeadexCanvas extends fabric.Canvas {
   panDown() {
     this.relativePan(new fabric.Point(0, -DELTA_PAN))
   }
-}
-
-function isReadOnly(readOnly?: boolean) {
-  return readOnly === true
 }
 
 function isButtonForPanning(event: fabric.IEvent<MouseEvent>) {
@@ -148,5 +151,15 @@ function setCanvasPanning(canvas: fabric.Canvas) {
       canvas.relativePan(delta)
       canvas.fire('moved')
     }
+  })
+}
+
+function enableSnapToGrid(canvas: fabric.Canvas, gridSize?: number) {
+  const _gridSize = gridSize ?? 5
+  canvas.on('object:moving', (options) => {
+    options.target?.set({
+      left: Math.round((options.target.left ?? 0) / _gridSize) * _gridSize,
+      top: Math.round((options.target.top ?? 0) / _gridSize) * _gridSize,
+    })
   })
 }

@@ -4,7 +4,7 @@ import DropdownMenu, {
 import WindowTitlebarButton from './WindowTitlebarButton'
 import type { WindowTitlebarButtonProps } from './WindowTitlebarButton'
 import React from 'react'
-import { TFunction } from 'i18next'
+import { type TFunction } from 'i18next'
 import { EventEmitter } from 'ahooks/lib/useEventEmitter'
 import { Location, NavigateFunction } from 'react-router-dom'
 

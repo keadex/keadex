@@ -1,4 +1,4 @@
-import { useForceUpdate } from '@keadex/keadex-ui-kit/cross'
+import { useForceUpdate } from '../../../cross'
 import { getDataAttributes } from '@keadex/keadex-utils'
 import React, { useEffect, useState } from 'react'
 import { Select as SelectTE } from 'tw-elements'
@@ -14,16 +14,24 @@ export type AutocompleteProps =
     }[]
     initialValue?: string
     onTyping: (value: string) => void
+    onDefaultOptionSelected?: (value: string) => void
   }
 
 export const Autocomplete = React.memo((props: AutocompleteProps) => {
-  const { label, className, onTyping, initialValue, ...otherProps } = {
+  const {
+    label,
+    className,
+    onTyping,
+    initialValue,
+    onDefaultOptionSelected,
+    ...otherProps
+  } = {
     ...props,
   }
 
   const dataAttributes = getDataAttributes(props)
   const [localInputValue, setLocalInputValue] = useState(
-    props.value?.toString() ?? ''
+    props.value?.toString() ?? '',
   )
   const { forceUpdate } = useForceUpdate()
 
@@ -33,7 +41,7 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
       renderedOptions.push(
         <option value={option.value} key={option.value?.toString()}>
           {option.label}
-        </option>
+        </option>,
       )
     })
     return renderedOptions
@@ -50,16 +58,15 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
           dropdown: 'select__dropdown',
           formCheckInput: 'bg-red-400 checked:after:border-red-500',
           selectInput: `peer select__input`,
-          selectOption:
-            'select__option data-[te-select-option-selected]:data-[te-input-state-active]:link',
+          selectOption: `select__option ${props.id} data-[te-select-option-selected]:data-[te-input-state-active]:link`,
           selectLabelSizeDefault: 'select__label-size-default',
           selectLabel: 'select__label',
           selectArrow: 'select__arrow top-[0.65rem]',
-        }
+        },
       )
     }
     const input = document.querySelector(
-      `.${props.id} [data-te-select-input-ref]`
+      `.${props.id} [data-te-select-input-ref]`,
     )
     if (input) {
       const inputEl = input as HTMLInputElement
@@ -69,6 +76,15 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
       inputEl.oninput = () => {
         setLocalInputValue(inputEl.value)
         props.onTyping(inputEl.value)
+      }
+    }
+    if (onDefaultOptionSelected) {
+      const options = document.querySelectorAll(
+        `.${props.id}[data-te-select-option-ref]`,
+      )
+      if (options && options.length > 0) {
+        const optionEl = options[0] as HTMLDivElement
+        optionEl.onclick = () => onDefaultOptionSelected(localInputValue)
       }
     }
   })

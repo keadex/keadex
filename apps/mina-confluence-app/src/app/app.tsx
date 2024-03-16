@@ -11,7 +11,6 @@ export function App() {
     await initTE({ Dropdown })
   }
 
-  // const [data, setData] = useState<string | null>(null)
   const [context, setContext] = useState<FullContext | null>(null)
 
   useEffect(() => {
@@ -20,10 +19,6 @@ export function App() {
 
   useAppBootstrap({ initTE: initializeTailwindElements })
 
-  // useEffect(() => {
-  //   invoke<string>('getText', { example: 'my-invoke-variable' }).then(setData)
-  // }, [])
-
   let height, projectRootUrl, diagramUrl
   if (context?.extension && context?.extension.config) {
     const config = context?.extension.config as MinaMacroConfig
@@ -31,12 +26,6 @@ export function App() {
     projectRootUrl = config.projectRootUrl
     diagramUrl = config.diagramUrl
   }
-
-  // const height = 'h-[50rem]'
-  // const projectRootUrl =
-  //   'https://raw.githubusercontent.com/keadex/keadex/mina-plugins/examples/mina-react-example/demo_mina_project/Mina%20Demo'
-  // const diagramUrl =
-  //   'https://raw.githubusercontent.com/keadex/keadex/mina-plugins/examples/mina-react-example/demo_mina_project/Mina%20Demo/diagrams/system-context/demo-diagram'
 
   if (projectRootUrl && diagramUrl) {
     return (

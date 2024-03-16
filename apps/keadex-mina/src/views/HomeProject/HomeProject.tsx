@@ -154,7 +154,7 @@ export const HomeProject = React.memo((props: HomeProjectProps) => {
           t('common.error.project_not_opened', { errorMessage: error.msg }),
         )
       })
-  }, [t, updatedCounter])
+  }, [t, updatedCounter, project])
 
   return (
     <div className="h-full w-full p-3">

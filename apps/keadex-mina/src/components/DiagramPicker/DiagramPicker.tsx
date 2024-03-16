@@ -1,6 +1,6 @@
 import { DiagramType } from '@keadex/c4-model-ui-kit'
 import { Autocomplete } from '@keadex/keadex-ui-kit/cross'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { diagramToLinkString, listDiagrams } from '../../core/tauri-rust-bridge'
 
@@ -32,15 +32,15 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
           await Promise.all(
             diagrams[typedKey].map(async (diagramName) => {
               return await diagramToLinkString(diagramName, typedKey)
-            })
-          )
+            }),
+          ),
         )
       }
       setDiagrams(diagramStrings)
       handleOnTyping(
         !props.value || props.value === '',
         props.value ?? '',
-        diagramStrings
+        diagramStrings,
       )
     })
   }, [])
@@ -48,7 +48,7 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
   function handleOnTyping(
     addDefaultOption: boolean,
     value: string,
-    inputDiagrams?: string[]
+    inputDiagrams?: string[],
   ) {
     const _diagrams = diagrams ?? inputDiagrams
 
@@ -66,7 +66,7 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
     if (_diagrams) {
       const filteredDiagrams = _diagrams.filter(
         (diagram) =>
-          value === '' || diagram.toLowerCase().includes(value.toLowerCase())
+          value === '' || diagram.toLowerCase().includes(value.toLowerCase()),
       )
       options = options.concat(
         filteredDiagrams.map((diagram) => {
@@ -74,7 +74,7 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
             label: diagram,
             value: diagram,
           }
-        })
+        }),
       )
     }
 
@@ -86,9 +86,9 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
     setOptions(options)
   }
 
-  function handleOnDiagramSelected(e: ChangeEvent<HTMLSelectElement>) {
-    if (diagrams && diagrams.includes(e.target.value)) {
-      props.onDiagramSelected(e.target.value)
+  function handleOnDiagramSelected(selectedDiagram: string) {
+    if (diagrams && diagrams.includes(selectedDiagram)) {
+      props.onDiagramSelected(selectedDiagram)
     } else {
       props.onDiagramSelected()
     }
@@ -106,7 +106,10 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
         handleOnTyping(true, value)
       }}
       onChange={(e) => {
-        handleOnDiagramSelected(e)
+        handleOnDiagramSelected(e.target.value)
+      }}
+      onDefaultOptionSelected={(value) => {
+        handleOnDiagramSelected(value)
       }}
     />
   )

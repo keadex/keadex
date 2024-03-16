@@ -20,6 +20,12 @@
         "@next/next/no-html-link-for-pages": [
           "error",
           "apps/keadex-battisti/src/pages"
+        ],
+        "@nx/enforce-module-boundaries": [
+          "error",
+          {
+            "checkDynamicDependenciesExceptions": ["@keadex/keadex-ui-kit"]
+          }
         ]
       }
     },

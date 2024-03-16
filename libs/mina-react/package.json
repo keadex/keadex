@@ -3,7 +3,7 @@
   "description": "React library to render C4 Model diagrams created with Keadex Mina.",
   "author": "Keadex <keadex.it@gmail.com>",
   "license": "MIT",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "private": false,
   "homepage": "https://keadex.dev",
   "repository": {
@@ -13,6 +13,15 @@
   "publishConfig": {
     "access": "public"
   },
+  "keywords": [
+    "c4-model",
+    "interactive",
+    "diagrams",
+    "component",
+    "react",
+    "render",
+    "mina"
+  ],
   "main": "index.js",
   "types": "index.d.ts",
   "devDependencies": {
@@ -23,14 +32,29 @@
     "webpack": "^5.89.0"
   },
   "dependencies": {
-    "next": "^14.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@tanstack/react-table": "^8.10.7",
+    "@tauri-apps/api": "^1.5.1",
+    "change-case": "^5.4.3",
+    "fabric": "^5.3.0",
+    "fontfaceobserver": "^2.3.0",
+    "js-cookie": "^3.0.5",
+    "lodash.clonedeep": "^4.5.0",
+    "pluralize": "^8.0.0",
+    "react-ga4": "^2.1.0",
+    "react-html-parser": "^2.0.2",
+    "react-i18next": "^13.3.0",
+    "react-resize-detector": "^9.1.0",
+    "react-toastify": "^9.1.3",
     "tailwindcss": "^3.3.3",
     "tw-elements": "1.0.0",
     "wasm-pack": "^0.12.1"
   },
   "peerDependencies": {
-    "react-router-dom": "^6.17.0"
+    "react-router-dom": "^6.17.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }

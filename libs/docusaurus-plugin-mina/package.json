@@ -1,0 +1,36 @@
+{
+  "name": "@keadex/docusaurus-plugin-mina",
+  "description": "Docusaurus plugin to render C4 Model diagrams created with Keadex Mina.",
+  "author": "Keadex <keadex.it@gmail.com>",
+  "license": "MIT",
+  "version": "1.0.0",
+  "private": false,
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "homepage": "https://keadex.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keadex/keadex"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "c4-model",
+    "interactive",
+    "diagrams",
+    "component",
+    "docusaurus",
+    "plugin",
+    "render",
+    "mina"
+  ],
+  "dependencies": {
+    "copy-webpack-plugin": "^9.1.0",
+    "tslib": "^2.6.2"
+  },
+  "devDependencies": {
+    "@docusaurus/types": "3.1.1"
+  }
+}

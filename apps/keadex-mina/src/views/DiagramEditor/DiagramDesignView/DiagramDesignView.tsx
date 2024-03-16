@@ -77,6 +77,7 @@ export const DiagramDesignView = forwardRef(
         stopContextMenu: true,
         backgroundColor: 'white',
         readOnly: props.readOnly,
+        enableSnapToGrid: true,
       }
 
       const localCanvas = new KeadexCanvas(canvasEl.current, options)
