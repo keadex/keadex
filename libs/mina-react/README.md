@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./static/mina-react-logo.svg" width="400" alt="Keadex Mina React Logo" />
+  <img src="https://raw.githubusercontent.com/keadex/keadex/main/libs/mina-react/static/mina-react-logo.svg" width="400" alt="Keadex Mina React Logo" />
 </p>
 
 <div align="center">
@@ -15,7 +15,7 @@
 **Keadex Mina React** is a library that provides React components to render interactive C4 Model diagrams created with [Keadex Mina](https://keadex.dev/en/projects/keadex-mina).
 
 <div align="center" style="margin-top: 20px">
-  <img src="./static/mina-react.gif" alt="Keadex Mina React component demo" width="70%" />
+  <img src="https://raw.githubusercontent.com/keadex/keadex/main/libs/mina-react/static/mina-react.gif" alt="Keadex Mina React component demo" width="70%" />
 </div>
 
 ## Usage

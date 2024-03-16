@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./static/mina-docusaurus-logo.svg" width="400" alt="Keadex Mina React Logo" />
+  <img src="https://raw.githubusercontent.com/keadex/keadex/main/libs/docusaurus-plugin-mina/static/mina-docusaurus-logo.svg" width="400" alt="Keadex Mina React Logo" />
 </p>
 
 <div align="center">
@@ -15,7 +15,7 @@
 This Docusaurus plugin injects Webpack configurations to include into Docusaurus pages interactive C4 Model diagrams created with [Keadex Mina](https://keadex.dev/en/projects/keadex-mina) through the [Mina React](https://github.com/keadex/keadex/tree/main/libs/mina-react) component.
 
 <div align="center" style="margin-top: 20px">
-  <img src="./static/mina-docusaurus.gif" alt="Keadex Mina Docusaurus plugin demo" width="70%" />
+  <img src="https://raw.githubusercontent.com/keadex/keadex/main/libs/docusaurus-plugin-mina/static/mina-docusaurus.gif" alt="Keadex Mina Docusaurus plugin demo" width="70%" />
 </div>
 
 ## Usage
