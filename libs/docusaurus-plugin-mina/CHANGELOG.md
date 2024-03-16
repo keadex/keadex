@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/keadex/keadex/compare/docusaurus-plugin-mina@1.0.0...docusaurus-plugin-mina@1.0.1) (2024-03-16)
+
+
+### Bug Fixes
+
+* **libs/docusaurus-plugin-mina:** minor fix ([c2377fc](https://github.com/keadex/keadex/commit/c2377fc24bd8d0babbc6b73f436f15e0ed5da15f))
+
 # 1.0.0 (2024-03-16)
 
 
