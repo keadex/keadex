@@ -280,34 +280,34 @@ Returns the saved diagram.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-pub fn save_spec_diagram_parsed_plantuml(
-  diagram_plantuml: &DiagramPlantUML,
-  diagram_spec: &DiagramSpec,
-  diagram_name: &str,
-  diagram_type: &DiagramType,
-) -> Result<(), MinaError> {
-  let plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, diagram_type)?;
-  let spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type)?;
+// pub fn save_spec_diagram_parsed_plantuml(
+//   diagram_plantuml: &DiagramPlantUML,
+//   diagram_spec: &DiagramSpec,
+//   diagram_name: &str,
+//   diagram_type: &DiagramType,
+// ) -> Result<(), MinaError> {
+//   let plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, diagram_type)?;
+//   let spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type)?;
 
-  // serialize and deserialize again to check the given object is a valid PlantUML representation.
-  deserialize_plantuml_by_string(&diagram_plantuml.serialize_to_plantuml())?;
+//   // serialize and deserialize again to check the given object is a valid PlantUML representation.
+//   deserialize_plantuml_by_string(&diagram_plantuml.serialize_to_plantuml())?;
 
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  resolve_to_write!(store, DiagramPlantUMLFsDAO).save(
-    diagram_plantuml,
-    Path::new(&plantuml_path),
-    false,
-  )?;
+//   let store = ROOT_RESOLVER.get().read().unwrap();
+//   resolve_to_write!(store, DiagramPlantUMLFsDAO).save(
+//     diagram_plantuml,
+//     Path::new(&plantuml_path),
+//     false,
+//   )?;
 
-  let cleaned_diagram_specs = clean_diagram_specs(&diagram_plantuml, diagram_spec);
-  resolve_to_write!(store, DiagramSpecFsDAO).save(
-    &cleaned_diagram_specs,
-    Path::new(&spec_path),
-    false,
-  )?;
+//   let cleaned_diagram_specs = clean_diagram_specs(&diagram_plantuml, diagram_spec);
+//   resolve_to_write!(store, DiagramSpecFsDAO).save(
+//     &cleaned_diagram_specs,
+//     Path::new(&spec_path),
+//     false,
+//   )?;
 
-  Ok(())
-}
+//   Ok(())
+// }
 
 /**
 Exports a diagram whose content is represented by the given data url,

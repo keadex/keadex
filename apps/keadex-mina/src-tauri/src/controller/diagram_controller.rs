@@ -153,22 +153,22 @@ Returns the saved diagram.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-#[tauri::command]
-pub async fn save_spec_diagram_parsed_plantuml(
-  diagram_plantuml: DiagramPlantUML,
-  diagram_spec: DiagramSpec,
-  diagram_name: &str,
-  diagram_type: DiagramType,
-) -> Result<Diagram, MinaError> {
-  log::info!("Saving parsed PlantUML of the diagram {}", diagram_name);
-  diagram_repository::save_spec_diagram_parsed_plantuml(
-    &diagram_plantuml,
-    &diagram_spec,
-    diagram_name,
-    &diagram_type,
-  )?;
-  open_diagram(diagram_name, diagram_type).await
-}
+// #[tauri::command]
+// pub async fn save_spec_diagram_parsed_plantuml(
+//   diagram_plantuml: DiagramPlantUML,
+//   diagram_spec: DiagramSpec,
+//   diagram_name: &str,
+//   diagram_type: DiagramType,
+// ) -> Result<Diagram, MinaError> {
+//   log::info!("Saving parsed PlantUML of the diagram {}", diagram_name);
+//   diagram_repository::save_spec_diagram_parsed_plantuml(
+//     &diagram_plantuml,
+//     &diagram_spec,
+//     diagram_name,
+//     &diagram_type,
+//   )?;
+//   open_diagram(diagram_name, diagram_type).await
+// }
 
 /**
 Exports a diagram whose content is represented by the given data url,

@@ -28,7 +28,7 @@ use keadex_mina::__cmd__open_diagram;
 use keadex_mina::__cmd__open_project;
 use keadex_mina::__cmd__parsed_element_to_plantuml;
 use keadex_mina::__cmd__save_project_settings;
-use keadex_mina::__cmd__save_spec_diagram_parsed_plantuml;
+// use keadex_mina::__cmd__save_spec_diagram_parsed_plantuml;
 use keadex_mina::__cmd__save_spec_diagram_raw_plantuml;
 use keadex_mina::__cmd__update_component;
 use keadex_mina::__cmd__update_container;
@@ -51,7 +51,7 @@ use keadex_mina::controller::diagram_controller::export_diagram_to_file;
 use keadex_mina::controller::diagram_controller::list_diagrams;
 use keadex_mina::controller::diagram_controller::open_diagram;
 use keadex_mina::controller::diagram_controller::parsed_element_to_plantuml;
-use keadex_mina::controller::diagram_controller::save_spec_diagram_parsed_plantuml;
+// use keadex_mina::controller::diagram_controller::save_spec_diagram_parsed_plantuml;
 use keadex_mina::controller::diagram_controller::save_spec_diagram_raw_plantuml;
 use keadex_mina::controller::library_controller::__cmd__library_element_type_from_path;
 use keadex_mina::controller::library_controller::create_component;
@@ -119,7 +119,7 @@ fn main() {
       parsed_element_to_plantuml,
       save_project_settings,
       save_spec_diagram_raw_plantuml,
-      save_spec_diagram_parsed_plantuml,
+      // save_spec_diagram_parsed_plantuml,
       search,
       update_component,
       update_container,
