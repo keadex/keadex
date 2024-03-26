@@ -12,18 +12,14 @@
       "isBackground": true,
       // change this to your `beforeDevCommand`:
       "command": "yarn",
-      "args": [
-        "dev"
-      ]
+      "args": ["dev"]
     },
     {
       "label": "ui:build",
       "type": "shell",
       // change this to your `beforeBuildCommand`:
       "command": "yarn",
-      "args": [
-        "build"
-      ]
+      "args": ["build"]
     }
   ]
 }
