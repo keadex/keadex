@@ -23,6 +23,21 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     {
       title: 'Keadex Mina',
       href: '/en/docs/mina',
+      children: [
+        {
+          title: 'Introduction',
+          href: '/en/docs/mina',
+        },
+        {
+          title: 'Plugins',
+          children: [
+            {
+              title: 'Confluence',
+              href: '/en/docs/mina/plugins/confluence',
+            },
+          ],
+        },
+      ],
     },
   ]
 

@@ -11,7 +11,7 @@ import { useEffect } from 'react'
 
 export type MenuItem = {
   title: string
-  href: string
+  href?: string
   children?: MenuItem[]
 }
 
@@ -59,7 +59,7 @@ export function useNextraSidebarWorkaround(
       const li = document.createElement('li')
       li.className = `nx-flex nx-flex-col nx-gap-1 ${isActive ? 'active' : ''}`
       const a = document.createElement('a')
-      a.href = menuItem.href
+      a.href = menuItem.href ?? '#'
       a.className =
         'nx-flex nx-rounded nx-px-2 nx-py-1.5 nx-text-sm nx-transition-colors [word-break:break-word] nx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:nx-border'
       if (isActive) {

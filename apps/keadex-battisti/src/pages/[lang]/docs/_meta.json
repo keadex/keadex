@@ -1,8 +1,4 @@
 {
-  "index": {
-    "title": "Overview"
-  },
-  "mina": {
-    "title": "Keadex Mina"
-  }
+  "index": "Overview",
+  "mina": "Keadex Mina"
 }
