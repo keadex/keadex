@@ -243,7 +243,12 @@ pub fn diagram_spec_path_from_name_type(
 
 #[cfg(feature = "desktop")]
 pub fn get_all_elements_aliases(elements: &Vec<DiagramElementType>) -> Vec<String> {
-  let mut aliases: Vec<String> = vec!["legend".to_string()];
+  let mut aliases: Vec<String> = vec![];
+
+  // Explicitly add the legend since it is not coded into the PlantUML file
+  let index_legend_alias = 0;
+  aliases.insert(index_legend_alias, "legend".to_string());
+
   for element in elements.clone() {
     match element {
       DiagramElementType::Person(person) => {
@@ -270,12 +275,14 @@ pub fn get_all_elements_aliases(elements: &Vec<DiagramElementType>) -> Vec<Strin
         if let Some(alias) = boundary.base_data.alias {
           aliases.push(alias)
         }
+        aliases.remove(index_legend_alias); // remove the alias since it will be added again in the recursive call
         aliases.append(&mut get_all_elements_aliases(&boundary.sub_elements))
       }
       DiagramElementType::DeploymentNode(deployment_node) => {
         if let Some(alias) = deployment_node.base_data.alias {
           aliases.push(alias)
         }
+        aliases.remove(index_legend_alias); // remove the alias since it will be added again in the recursive call
         aliases.append(&mut get_all_elements_aliases(&deployment_node.sub_elements))
       }
       DiagramElementType::Relationship(relationship) => {

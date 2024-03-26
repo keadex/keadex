@@ -35,6 +35,7 @@ use crate::model::diagram::DiagramType;
 use crate::model::project_library::ProjectLibrary;
 use crate::repository::library::library_repository;
 use crate::resolve_to_write;
+use crate::service::diagram_service::validate_diagram;
 use data_url::DataUrl;
 use std::collections::HashMap;
 use std::fs;
@@ -250,8 +251,8 @@ pub fn save_spec_diagram_raw_plantuml(
   let plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, diagram_type)?;
   let spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type)?;
 
-  // deserialize to check the given raw PlantUML is valid
-  let diagram_plantuml = deserialize_plantuml_by_string(&raw_plantuml.to_string())?;
+  // Validate the diagram before saving it
+  let diagram_plantuml = validate_diagram(&raw_plantuml.to_string())?;
 
   let store = ROOT_RESOLVER.get().read().unwrap();
   resolve_to_write!(store, DiagramPlantUMLFsDAO).save(

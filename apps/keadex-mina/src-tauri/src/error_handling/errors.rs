@@ -19,6 +19,7 @@ pub const PROJECT_NOT_LOADED_ERROR_CODE: i32 = 4;
 pub const INVALID_NEW_PROJECT_PATH_ERROR_CODE: i32 = 5;
 pub const LIBRARY_ERROR_CODE: i32 = 6;
 pub const INVALID_NEW_DIAGRAM_PATH_ERROR_CODE: i32 = 7;
+pub const DUPLICATED_ALIASES_IN_DIAGRAM: i32 = 8;
 
 // Error messages
 pub const GENERIC_ERROR_MSG: &str = "Generic error.";
