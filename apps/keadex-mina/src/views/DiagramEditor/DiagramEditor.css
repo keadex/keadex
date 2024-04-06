@@ -1,7 +1,7 @@
 .Toastify__toast-container:has(.diagram-editor_toast--error) {
   width: 100%;
   left: 0;
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 .diagram-editor_toast--error {

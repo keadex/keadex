@@ -20,7 +20,7 @@ impl InMemoryDAO<Option<ProjectLibrary>> for ProejctLibraryDAO {
     APP_STATE.get().read().unwrap().library.clone()
   }
 
-  fn delete(&self, data: &Option<ProjectLibrary>) {
+  fn delete(&self, _data: &Option<ProjectLibrary>) {
     todo!()
   }
 }

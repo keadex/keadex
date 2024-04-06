@@ -7,8 +7,8 @@ use crate::dao::filesystem::library::software_system_dao::FILE_NAME as SOFTWARE_
 use crate::dao::filesystem::library::LIBRARY_FOLDER;
 use crate::dao::inmemory::InMemoryDAO;
 use crate::error_handling::errors::{
-  INVALID_LIBRARY_PATH_ERROR_MSG, LIBRARY_ERROR_CODE, PROJECT_NOT_LOADED_ERROR_CODE,
-  PROJECT_NOT_LOADED_ERROR_MSG,
+  INVALID_LIBRARY_PATH_ERROR_MSG, INVALID_LIB_ELEMENT_ERROR_CODE, INVALID_LIB_ELEMENT_ERROR_MSG,
+  LIBRARY_ERROR_CODE, PROJECT_NOT_LOADED_ERROR_CODE, PROJECT_NOT_LOADED_ERROR_MSG,
 };
 use crate::error_handling::mina_error::MinaError;
 use crate::model::diagram::diagram_plantuml::DiagramElementType;
@@ -102,5 +102,44 @@ pub fn element_type_from_path(path: &str) -> Result<C4ElementType, MinaError> {
       LIBRARY_ERROR_CODE,
       INVALID_LIBRARY_PATH_ERROR_MSG,
     ));
+  }
+}
+
+/**
+Utility which retrieves the full path of a library's file given the element type.
+# Arguments
+  * `element_type` - Type of the element for which is requested the path
+*/
+pub fn path_from_element_type(element_type: &DiagramElementType) -> Result<String, MinaError> {
+  let store = ROOT_RESOLVER.get().read().unwrap();
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
+  if let None = project_settings {
+    return Err(MinaError::new(
+      PROJECT_NOT_LOADED_ERROR_CODE,
+      PROJECT_NOT_LOADED_ERROR_MSG,
+    ));
+  }
+  let project_root = project_settings.unwrap().root;
+
+  match element_type {
+    DiagramElementType::Person(_person) => {
+      Ok(project_library_file_path(&project_root, PERSON_FILE_NAME))
+    }
+    DiagramElementType::SoftwareSystem(_software_system) => Ok(project_library_file_path(
+      &project_root,
+      SOFTWARE_SYSTEM_FILE_NAME,
+    )),
+    DiagramElementType::Container(_container) => Ok(project_library_file_path(
+      &project_root,
+      CONTAINER_FILE_NAME,
+    )),
+    DiagramElementType::Component(_component) => Ok(project_library_file_path(
+      &project_root,
+      COMPONENT_FILE_NAME,
+    )),
+    _ => Err(MinaError {
+      code: INVALID_LIB_ELEMENT_ERROR_CODE,
+      msg: INVALID_LIB_ELEMENT_ERROR_MSG.to_string(),
+    }),
   }
 }

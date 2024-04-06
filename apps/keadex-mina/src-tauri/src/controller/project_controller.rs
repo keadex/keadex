@@ -8,7 +8,7 @@ use crate::model::project::Project;
 use crate::model::project_settings::ProjectSettings;
 use crate::repository::project_repository;
 use crate::resolve_to_write;
-use crate::service::search_service::search as search_service;
+use crate::service::search_service::search_text;
 
 /**
 Creates an empty Mina project.
@@ -82,7 +82,7 @@ pub async fn search(
     .unwrap();
   log::info!("Search {} in {}", string_to_search, project_settings.root);
 
-  Ok(search_service(
+  Ok(search_text(
     string_to_search,
     include_diagrams_dir,
     include_library_dir,

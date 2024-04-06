@@ -6,7 +6,7 @@ authors = ["Keadex"]
 license = "MIT"
 repository = "https://github.com/keadex/keadex"
 edition = "2021"
-rust-version = "1.57"
+rust-version = "1.77.1"
 
 [lib]
 crate-type = ["cdylib"]

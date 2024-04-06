@@ -1,13 +1,13 @@
 [package]
 name = "keadex_mina"
-version = "1.0.0-2"
+version = "1.0.0-3"
 description = "Desktop application to draw, manage and share the architectures of software systems."
 authors = ["Keadex"]
 license = "MIT"
 repository = ""
 default-run = "keadex_mina"
 edition = "2021"
-rust-version = "1.57"
+rust-version = "1.77.1"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -49,6 +49,8 @@ bomboni_wasm = { version = "0.1", features = [
   "derive",
   "js",
 ], default-features = false }
+fancy-regex = "0.13.0"
+
 
 [features]
 default = ["desktop", "custom-protocol"]

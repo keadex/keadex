@@ -80,6 +80,8 @@ pub struct Diagram {
   pub diagram_plantuml: Option<DiagramPlantUML>,
   #[serde(skip_serializing_if = "Option::is_none")]
   pub raw_plantuml: Option<String>,
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub last_modified: Option<String>,
 }
 
 #[derive(TS)]

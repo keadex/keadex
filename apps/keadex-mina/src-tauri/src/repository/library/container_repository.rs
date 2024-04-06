@@ -15,9 +15,11 @@ use crate::error_handling::mina_error::MinaError;
 use crate::helper::diagram_helper::delete_references_from_base_data;
 use crate::helper::library_helper::project_library_file_path;
 use crate::model::c4_element::container::Container;
+use crate::model::diagram::diagram_plantuml::DiagramElementType;
 use crate::model::diagram::DiagramType;
 use crate::model::project_library::ProjectLibrary;
 use crate::resolve_to_write;
+use crate::service::diagram_service::check_cross_diagrams_elements_aliases;
 use std::path::Path;
 
 /**
@@ -26,6 +28,12 @@ Creates a Container library element in memory and in file system.
   * `container` - Container with the updated data.
 */
 pub fn create_container(container: Container) -> Result<ProjectLibrary, MinaError> {
+  check_cross_diagrams_elements_aliases(
+    &vec![DiagramElementType::Container(container.clone())],
+    None,
+    None,
+  )?;
+
   let store = ROOT_RESOLVER.get().read().unwrap();
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
     .get()

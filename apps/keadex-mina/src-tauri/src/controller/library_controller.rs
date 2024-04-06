@@ -22,9 +22,9 @@ pub async fn list_library_elements(
   filter_c4_element_type: C4ElementType,
 ) -> Result<C4Elements, MinaError> {
   log::info!("List {} from the library", filter_c4_element_type);
-  Ok(library_repository::list_library_elements(
+  Ok(library_repository::list_library_elements(Some(
     filter_c4_element_type,
-  )?)
+  ))?)
 }
 
 /**

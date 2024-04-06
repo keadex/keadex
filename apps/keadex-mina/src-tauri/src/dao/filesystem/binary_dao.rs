@@ -29,7 +29,7 @@ impl FileSystemDAO<Vec<u8>> for BinaryDAO {
     &mut self.opened_files
   }
 
-  fn get(&mut self, path: &Path) -> Result<Vec<u8>, MinaError> {
+  fn get(&mut self, _path: &Path) -> Result<Vec<u8>, MinaError> {
     unimplemented!()
   }
 
@@ -53,7 +53,7 @@ impl FileSystemDAO<Vec<u8>> for BinaryDAO {
     Ok(())
   }
 
-  fn get_all(&mut self, path: &Path) -> Result<Vec<Vec<u8>>, MinaError> {
+  fn get_all(&mut self, _path: &Path) -> Result<Vec<Vec<u8>>, MinaError> {
     unimplemented!()
   }
 }

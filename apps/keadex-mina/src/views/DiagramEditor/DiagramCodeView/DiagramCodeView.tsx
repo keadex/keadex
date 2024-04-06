@@ -39,6 +39,7 @@ export interface DiagramCodeViewProps {
   error?: MinaError
   diagramEditorToolbarCommands: DiagramEditorToolbarCommands | null
   saveDiagram: () => void
+  isSaving: boolean
 }
 
 export interface DiagramCodeViewCommands {
@@ -62,7 +63,7 @@ export interface DiagramCodeViewCommands {
 
 export const DiagramCodeView = forwardRef(
   (props: DiagramCodeViewProps, ref: Ref<DiagramCodeViewCommands>) => {
-    const { diagram, error, saveDiagram } = props
+    const { diagram, saveDiagram, isSaving } = props
 
     const { t } = useTranslation()
     const { modal, showModal, hideModal } = useModal()
@@ -94,6 +95,7 @@ export const DiagramCodeView = forwardRef(
       if (editorRef.current && editorPosition) {
         editorRef.current.focus()
         editorRef.current.setPosition(editorPosition)
+        editorRef.current.updateOptions({ readOnly: isSaving })
       }
     })
 
@@ -102,7 +104,7 @@ export const DiagramCodeView = forwardRef(
         const { raw_plantuml } = diagram
         setRawPlantuml(raw_plantuml ?? '')
       }
-    }, [rawPlantuml, diagram, error])
+    }, [diagram])
 
     useImperativeHandle(ref, () => ({
       resetCode: () => {
@@ -197,6 +199,9 @@ export const DiagramCodeView = forwardRef(
       value: string | undefined,
       ev: monaco.editor.IModelContentChangedEvent,
     ) {
+      if (editorRef.current?.getModel())
+        setRawPlantuml(editorRef.current?.getModel()!.getValue())
+
       setEditorPosition(editorRef.current?.getPosition() ?? null)
 
       const versionId =
@@ -364,7 +369,6 @@ export const DiagramCodeView = forwardRef(
                           Component: typedElementToLink,
                         })
                       }
-                      console.log(updatedPlantUML)
                       replaceLineContent(
                         cursorPosition.lineNumber,
                         updatedPlantUML.replaceAll('\n', ''),
@@ -394,7 +398,15 @@ export const DiagramCodeView = forwardRef(
           theme="vs-dark"
           onMount={handleEditorDidMount}
           onChange={handleEditorChange}
+          options={{ wordWrap: 'on' }}
         />
+        <div
+          className={`${
+            isSaving ? 'opacity-90' : 'opacity-0'
+          } bg-dark-brand1 z-[6] absolute bottom-5 left-1/2 -translate-x-1/2 text-center transition duration-200 ease-in-out px-10 py-1 rounded pointer-events-none`}
+        >
+          {t('common.saving')}...
+        </div>
         <AISpeechBubble
           aiHidden={aiHidden}
           addCodeAtCursorPosition={addCodeAtCursorPosition}

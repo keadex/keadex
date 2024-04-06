@@ -54,7 +54,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
     append: bool,
     truncate: bool,
   ) -> Result<&File, MinaError> {
-    log::debug!("Open and unlock file {:?}", path);
+    // log::debug!("Open and unlock file {:?}", path);
     let file = OpenOptions::new()
       .read(true)
       .write(true)
@@ -63,13 +63,13 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
       .open(path);
     match file {
       Ok(file) => {
-        file.unlock();
+        let _ = file.unlock();
         self.get_opened_files().remove(path.to_str().unwrap());
         if let Entry::Vacant(v) = self
           .get_opened_files()
           .entry(path.to_str().unwrap().to_string())
         {
-          log::debug!("Update cached file {:?}", path);
+          // log::debug!("Update cached file {:?}", path);
           return Ok(v.insert(file));
         }
       }
@@ -89,20 +89,22 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
     * `path` - Path of the file
   */
   fn lock_file(&mut self, path: &Path) -> Result<bool, MinaError> {
-    log::debug!("Lock file {:?}", path);
+    // log::debug!("Lock file {:?}", path);
     let file = self
       .get_opened_files()
       .entry(path.to_str().unwrap().to_string());
     match file {
       Entry::Occupied(o) => {
         let file = o.into_mut();
-        file.lock_exclusive();
+        let _ = file.lock_exclusive();
         Ok(true)
       }
       Entry::Vacant(_) => {
         let error = MinaError::new(IO_ERROR_CODE, NO_CACHED_FILE_ERROR_MSG);
         log::error!("{}", error);
-        Err(error)
+        // Commented the following line since it is not really required to trigger an error
+        // Err(error)
+        Ok(true)
       }
     }
   }
@@ -114,7 +116,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
     * `remove_from_cache` - If the opened files should also be removed from the cache
   */
   fn unlock_all_files(&mut self, remove_from_cache: bool) -> Result<bool, MinaError> {
-    log::debug!("Unlock all files");
+    // log::debug!("Unlock all files");
     let opened_files: Vec<String> = self
       .get_opened_files()
       .keys()
@@ -133,14 +135,14 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
     * `remove_from_cache` - If the file should also be removed from the cache
   */
   fn unlock_file(&mut self, path: &Path, remove_from_cache: bool) -> Result<bool, MinaError> {
-    log::debug!("Unlock file {:?}", path);
+    // log::debug!("Unlock file {:?}", path);
     let file = self
       .get_opened_files()
       .entry(path.to_str().unwrap().to_string());
     match file {
       Entry::Occupied(o) => {
         let file = o.into_mut();
-        file.unlock();
+        let _ = file.unlock();
         if remove_from_cache {
           self
             .get_opened_files()
@@ -151,7 +153,9 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
       Entry::Vacant(_) => {
         let error = MinaError::new(IO_ERROR_CODE, NO_CACHED_FILE_ERROR_MSG);
         log::error!("{}", error);
-        Err(error)
+        // Commented the following line since it is not really required to trigger an error
+        // Err(error)
+        Ok(true)
       }
     }
   }
@@ -170,7 +174,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
   {
     let file = self.open_and_unlock_file(path, true, false)?;
     let result = deserialize_json_by_file::<T>(&file, path)?;
-    self.lock_file(path);
+    let _ = self.lock_file(path);
     Ok(result)
   }
 
@@ -188,7 +192,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
   {
     let file = self.open_and_unlock_file(path, true, false)?;
     let results = deserialize_json_by_file::<Vec<T>>(&file, path)?;
-    self.lock_file(path);
+    let _ = self.lock_file(path);
     Ok(results)
   }
 
@@ -211,7 +215,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
     let mut file = self.open_and_unlock_file(path, false, true)?;
     let serialized_json = serialize_obj_to_json_string(data)?;
     file.write_all(serialized_json.as_bytes())?;
-    self.lock_file(path);
+    let _ = self.lock_file(path);
     Ok(())
   }
 
@@ -226,7 +230,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
     let mut file = self.open_and_unlock_file(path, false, true)?;
     let serialized_json = serialize_obj_to_json_string(data)?;
     file.write_all(serialized_json.as_bytes())?;
-    self.lock_file(path);
+    let _ = self.lock_file(path);
     Ok(())
   }
 
@@ -238,7 +242,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
   fn delete(&mut self, path: &Path) -> Result<(), MinaError> {
     // Ignoring a possible error during unlock, since it reasonable that a diagram could not
     // be opened before the deletion.
-    self.unlock_file(path, true);
+    let _ = self.unlock_file(path, true);
     std::fs::remove_file(path)?;
     Ok(())
   }

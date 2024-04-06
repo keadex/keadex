@@ -47,6 +47,7 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
   const { t } = useTranslation()
   const { modal, showModal, hideModal } = useModal()
   const [diagram, setDiagram] = useState<Diagram | undefined>()
+  const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<MinaError | undefined>()
   const diagramDesignViewRef = useRef<DiagramDesignViewCommands>(null)
   const diagramCodeViewRef = useRef<DiagramCodeViewCommands>(null)
@@ -176,42 +177,47 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
   }
 
   const handleSaveDiagram = async () => {
-    const updatedRawPlantUML =
-      diagramCodeViewRef.current?.getUpdatedRawPlantUML()
-    const updatedDiagramSpec =
-      diagramDesignViewRef.current?.getUpdatedDiagramSpec()
-    if (
-      diagram &&
-      diagram.diagram_name &&
-      diagram.diagram_type &&
-      updatedRawPlantUML &&
-      updatedDiagramSpec
-    ) {
-      const updatedDiagram: Diagram = {
-        ...diagram,
-        raw_plantuml: updatedRawPlantUML,
-        diagram_spec: updatedDiagramSpec,
-      }
+    if (!isSaving) {
+      const updatedRawPlantUML =
+        diagramCodeViewRef.current?.getUpdatedRawPlantUML()
+      const updatedDiagramSpec =
+        diagramDesignViewRef.current?.getUpdatedDiagramSpec()
+      if (
+        diagram &&
+        diagram.diagram_name &&
+        diagram.diagram_type &&
+        updatedRawPlantUML &&
+        updatedDiagramSpec
+      ) {
+        const updatedDiagram: Diagram = {
+          ...diagram,
+          raw_plantuml: updatedRawPlantUML,
+          diagram_spec: updatedDiagramSpec,
+        }
 
-      if (isDiagramChanged(diagram, updatedDiagram)) {
-        await saveSpecDiagramRawPlantuml(
-          diagram.diagram_name,
-          diagram.diagram_type,
-          updatedRawPlantUML,
-          updatedDiagramSpec,
-        )
-          .then(async () => {
-            setError(undefined)
-            await handleCloseDiagram(
-              true,
-              diagramDesignViewRef.current?.getCanvasState(),
-            )
-            await handleOpenDiagram()
-          })
-          .catch((error: MinaError) => {
-            toast.error(error.msg, TOAST_ERROR_DEFAULT_CONFIGS)
-            setError(error)
-          })
+        if (isDiagramChanged(diagram, updatedDiagram)) {
+          setIsSaving(true)
+          await saveSpecDiagramRawPlantuml(
+            diagram.diagram_name,
+            diagram.diagram_type,
+            updatedRawPlantUML,
+            updatedDiagramSpec,
+          )
+            .then(async () => {
+              setError(undefined)
+              await handleCloseDiagram(
+                true,
+                diagramDesignViewRef.current?.getCanvasState(),
+              )
+              await handleOpenDiagram()
+              setIsSaving(false)
+            })
+            .catch((error: MinaError) => {
+              setIsSaving(false)
+              toast.error(error.msg, TOAST_ERROR_DEFAULT_CONFIGS)
+              setError(error)
+            })
+        }
       }
     }
   }
@@ -260,6 +266,7 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
                 error={error}
                 diagramEditorToolbarCommands={diagramEditorToolbarRef.current}
                 saveDiagram={handleSaveDiagram}
+                isSaving={isSaving}
               />
             </div>
           </ResizableBox>

@@ -50,7 +50,7 @@ impl FileSystemDAO<DiagramPlantUML> for DiagramPlantUMLDAO {
   fn get(&mut self, path: &Path) -> Result<DiagramPlantUML, MinaError> {
     let file = self.open_and_unlock_file(path, true, false)?;
     let deserialized_plantuml = deserialize_plantuml_by_file(file)?;
-    self.lock_file(path);
+    let _ = self.lock_file(path);
     Ok(deserialized_plantuml)
   }
 
@@ -70,11 +70,11 @@ impl FileSystemDAO<DiagramPlantUML> for DiagramPlantUMLDAO {
     let mut file = self.open_and_unlock_file(path, false, true)?;
     let serialized_diagram = serialize_diagram_to_plantuml(data);
     file.write_all(serialized_diagram.as_bytes())?;
-    self.lock_file(path);
+    let _ = self.lock_file(path);
     Ok(())
   }
 
-  fn get_all(&mut self, path: &Path) -> Result<Vec<DiagramPlantUML>, MinaError> {
+  fn get_all(&mut self, _path: &Path) -> Result<Vec<DiagramPlantUML>, MinaError> {
     todo!()
   }
 }

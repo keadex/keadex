@@ -243,47 +243,64 @@ pub fn diagram_spec_path_from_name_type(
 
 #[cfg(feature = "desktop")]
 pub fn get_all_elements_aliases(elements: &Vec<DiagramElementType>) -> Vec<String> {
-  let mut aliases: Vec<String> = vec!["legend".to_string()];
+  let mut aliases: Vec<String> = vec![];
+
+  // Explicitly add the legend since it is not coded into the PlantUML file
+  aliases.push("legend".to_string());
+
   for element in elements.clone() {
     match element {
       DiagramElementType::Person(person) => {
         if let Some(alias) = person.base_data.alias {
-          aliases.push(alias)
+          aliases.push(alias);
         }
       }
       DiagramElementType::SoftwareSystem(software_system) => {
         if let Some(alias) = software_system.base_data.alias {
-          aliases.push(alias)
+          aliases.push(alias);
         }
       }
       DiagramElementType::Container(container) => {
         if let Some(alias) = container.base_data.alias {
-          aliases.push(alias)
+          aliases.push(alias);
         }
       }
       DiagramElementType::Component(component) => {
         if let Some(alias) = component.base_data.alias {
-          aliases.push(alias)
+          aliases.push(alias);
         }
       }
       DiagramElementType::Boundary(boundary) => {
         if let Some(alias) = boundary.base_data.alias {
-          aliases.push(alias)
+          aliases.push(alias);
         }
-        aliases.append(&mut get_all_elements_aliases(&boundary.sub_elements))
+
+        // remove the legend alias since it will be added again in the recursive call
+        let sub_aliases = &mut get_all_elements_aliases(&boundary.sub_elements);
+        let pos_legend_result = sub_aliases.iter().position(|r| r == "legend");
+        if let Some(pos_legend) = pos_legend_result {
+          sub_aliases.remove(pos_legend);
+        }
+
+        aliases.append(sub_aliases);
       }
       DiagramElementType::DeploymentNode(deployment_node) => {
         if let Some(alias) = deployment_node.base_data.alias {
           aliases.push(alias)
         }
-        aliases.append(&mut get_all_elements_aliases(&deployment_node.sub_elements))
-      }
-      DiagramElementType::Relationship(relationship) => {
-        if let Some(alias) = relationship.base_data.alias {
-          aliases.push(alias)
+
+        // remove the legend alias since it will be added again in the recursive call
+        let sub_aliases = &mut get_all_elements_aliases(&deployment_node.sub_elements);
+        let pos_legend_result = sub_aliases.iter().position(|r| r == "legend");
+        if let Some(pos_legend) = pos_legend_result {
+          sub_aliases.remove(pos_legend);
         }
+
+        aliases.append(sub_aliases);
       }
-      _ => (),
+      DiagramElementType::Include(_) => (),
+      DiagramElementType::Comment(_) => (),
+      DiagramElementType::Relationship(_) => (),
     }
   }
   aliases
@@ -382,6 +399,7 @@ pub fn diagram_from_link_string(link_string: &str) -> Result<Diagram, MinaError>
     diagram_spec: None,
     diagram_plantuml: None,
     raw_plantuml: None,
+    last_modified: None,
   })
 }
 

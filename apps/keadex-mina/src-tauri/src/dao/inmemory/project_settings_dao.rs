@@ -20,7 +20,7 @@ impl InMemoryDAO<Option<ProjectSettings>> for ProjectSettingsDAO {
     APP_STATE.get().read().unwrap().project_settings.clone()
   }
 
-  fn delete(&self, data: &Option<ProjectSettings>) {
+  fn delete(&self, _data: &Option<ProjectSettings>) {
     todo!()
   }
 }

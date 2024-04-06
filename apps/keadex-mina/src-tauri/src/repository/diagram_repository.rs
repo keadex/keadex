@@ -9,7 +9,6 @@ use crate::core::resolver::ResolvableModules::BinaryFsDAO;
 use crate::core::resolver::ResolvableModules::DiagramPlantUMLFsDAO;
 use crate::core::resolver::ResolvableModules::DiagramSpecFsDAO;
 use crate::core::resolver::ResolvableModules::ProjectSettingsIMDAO;
-use crate::core::serializer::deserialize_plantuml_by_string;
 use crate::core::serializer::serialize_diagram_to_plantuml;
 use crate::dao::filesystem::FileSystemDAO;
 use crate::dao::inmemory::InMemoryDAO;
@@ -27,7 +26,6 @@ use crate::helper::diagram_helper::{
   diagram_dir_path_from_name_type, diagram_plantuml_path_from_name_type,
 };
 use crate::model::diagram::diagram_plantuml::DiagramPlantUML;
-use crate::model::diagram::diagram_plantuml::PlantUMLSerializer;
 use crate::model::diagram::diagram_spec::DiagramSpec;
 use crate::model::diagram::Diagram;
 use crate::model::diagram::DiagramFormat;
@@ -35,10 +33,12 @@ use crate::model::diagram::DiagramType;
 use crate::model::project_library::ProjectLibrary;
 use crate::repository::library::library_repository;
 use crate::resolve_to_write;
+use crate::service::diagram_service::validate_diagram;
 use data_url::DataUrl;
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
+use std::time::UNIX_EPOCH;
 use strum::IntoEnumIterator;
 
 /**
@@ -94,12 +94,22 @@ pub fn open_diagram(diagram_name: &str, diagram_type: DiagramType) -> Result<Dia
   let raw_plantuml = serialize_diagram_to_plantuml(&diagram_plantuml);
   let (diagram_name, diagram_type) = diagram_name_type_from_path(&plantuml_path)?;
   let diagram_spec = resolve_to_write!(store, DiagramSpecFsDAO).get(Path::new(&spec_path))?;
+
+  let metadata = fs::metadata(&plantuml_path)?;
+  let last_modified = metadata
+    .modified()
+    .unwrap()
+    .duration_since(UNIX_EPOCH)
+    .unwrap()
+    .as_secs()
+    .to_string();
   Ok(Diagram {
     diagram_name: Some(diagram_name),
     diagram_type: Some(diagram_type),
     diagram_plantuml: Some(diagram_plantuml),
     diagram_spec: Some(diagram_spec),
     raw_plantuml: Some(raw_plantuml),
+    last_modified: Some(last_modified),
   })
 }
 
@@ -250,8 +260,8 @@ pub fn save_spec_diagram_raw_plantuml(
   let plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, diagram_type)?;
   let spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type)?;
 
-  // deserialize to check the given raw PlantUML is valid
-  let diagram_plantuml = deserialize_plantuml_by_string(&raw_plantuml.to_string())?;
+  // Validate the diagram before saving it
+  let diagram_plantuml = validate_diagram(raw_plantuml, diagram_name, diagram_type)?;
 
   let store = ROOT_RESOLVER.get().read().unwrap();
   resolve_to_write!(store, DiagramPlantUMLFsDAO).save(
@@ -280,34 +290,34 @@ Returns the saved diagram.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-pub fn save_spec_diagram_parsed_plantuml(
-  diagram_plantuml: &DiagramPlantUML,
-  diagram_spec: &DiagramSpec,
-  diagram_name: &str,
-  diagram_type: &DiagramType,
-) -> Result<(), MinaError> {
-  let plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, diagram_type)?;
-  let spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type)?;
+// pub fn save_spec_diagram_parsed_plantuml(
+//   diagram_plantuml: &DiagramPlantUML,
+//   diagram_spec: &DiagramSpec,
+//   diagram_name: &str,
+//   diagram_type: &DiagramType,
+// ) -> Result<(), MinaError> {
+//   let plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, diagram_type)?;
+//   let spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type)?;
 
-  // serialize and deserialize again to check the given object is a valid PlantUML representation.
-  deserialize_plantuml_by_string(&diagram_plantuml.serialize_to_plantuml())?;
+//   // serialize and deserialize again to check the given object is a valid PlantUML representation.
+//   deserialize_plantuml_by_string(&diagram_plantuml.serialize_to_plantuml())?;
 
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  resolve_to_write!(store, DiagramPlantUMLFsDAO).save(
-    diagram_plantuml,
-    Path::new(&plantuml_path),
-    false,
-  )?;
+//   let store = ROOT_RESOLVER.get().read().unwrap();
+//   resolve_to_write!(store, DiagramPlantUMLFsDAO).save(
+//     diagram_plantuml,
+//     Path::new(&plantuml_path),
+//     false,
+//   )?;
 
-  let cleaned_diagram_specs = clean_diagram_specs(&diagram_plantuml, diagram_spec);
-  resolve_to_write!(store, DiagramSpecFsDAO).save(
-    &cleaned_diagram_specs,
-    Path::new(&spec_path),
-    false,
-  )?;
+//   let cleaned_diagram_specs = clean_diagram_specs(&diagram_plantuml, diagram_spec);
+//   resolve_to_write!(store, DiagramSpecFsDAO).save(
+//     &cleaned_diagram_specs,
+//     Path::new(&spec_path),
+//     false,
+//   )?;
 
-  Ok(())
-}
+//   Ok(())
+// }
 
 /**
 Exports a diagram whose content is represented by the given data url,
@@ -326,7 +336,7 @@ pub fn export_diagram_to_file(
   diagram_type: &DiagramType,
 ) -> Result<String, MinaError> {
   let url = DataUrl::process(diagram_data_url).unwrap();
-  let (body, fragment) = url.decode_to_vec().unwrap();
+  let (body, _fragment) = url.decode_to_vec().unwrap();
   let dist_diagram_path = format!(
     "{}{}{}",
     diagram_dist_dir_path_from_name_type(diagram_name, diagram_type)?,

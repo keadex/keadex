@@ -4,6 +4,7 @@ Error codes:
   -   0 --> Generic error
   - > 0 --> User errors
 */
+pub const INVALID_LIB_ELEMENT_ERROR_CODE: i32 = -8;
 pub const WALKDIR_ERROR_CODE: i32 = -7;
 pub const OPENAI_ERROR_CODE: i32 = -6;
 pub const SERDE_SERIALIZE_ERROR_CODE: i32 = -5;
@@ -19,6 +20,8 @@ pub const PROJECT_NOT_LOADED_ERROR_CODE: i32 = 4;
 pub const INVALID_NEW_PROJECT_PATH_ERROR_CODE: i32 = 5;
 pub const LIBRARY_ERROR_CODE: i32 = 6;
 pub const INVALID_NEW_DIAGRAM_PATH_ERROR_CODE: i32 = 7;
+pub const DUPLICATED_ALIASES_IN_DIAGRAM: i32 = 8;
+pub const DUPLICATED_ALIASES_IN_PROJECT: i32 = 9;
 
 // Error messages
 pub const GENERIC_ERROR_MSG: &str = "Generic error.";
@@ -36,3 +39,4 @@ pub const NOT_EXISTING_PATH_ERROR_MSG: &str = "Provided path does not exist.";
 pub const INVALID_LIBRARY_PATH_ERROR_MSG: &str = "Invalid library's path.";
 pub const EXISTING_DIAGRAM_ERROR_MSG: &str =
   "A diagram with the given name and type already exists. Choose a different name or type.";
+pub const INVALID_LIB_ELEMENT_ERROR_MSG: &str = "Provided element is not a valid library element.";

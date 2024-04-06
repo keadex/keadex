@@ -45,8 +45,6 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
   )
 
   function handleUpdateSoftwareSystem() {
-    console.log('updaaaa')
-    console.log(newSoftwareSystem)
     updateSoftwareSystem(newSoftwareSystem as SoftwareSystem)
       .then((updatedProjectLibrary) => {
         if (props.project?.project_settings && props.project?.project_library) {
@@ -100,7 +98,7 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
           value={newSoftwareSystem?.base_data?.uuid}
         />
         <Input
-          disabled={!props.enableEdit}
+          disabled={props.libraryElement !== undefined || !props.enableEdit}
           type="text"
           label={`${t('common.alias')}*`}
           className="mt-6"

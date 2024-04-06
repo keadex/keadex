@@ -6,3 +6,5 @@ pub mod library_helper;
 #[cfg(feature = "desktop")]
 pub mod project_helper;
 pub mod relationship_helper;
+#[cfg(feature = "desktop")]
+pub mod search_helper;

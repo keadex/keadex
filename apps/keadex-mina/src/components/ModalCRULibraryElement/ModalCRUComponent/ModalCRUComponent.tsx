@@ -97,7 +97,7 @@ export const ModalCRUComponent = (props: ModalCRULibraryElementProps) => {
           value={newComponent?.base_data?.uuid}
         />
         <Input
-          disabled={!props.enableEdit}
+          disabled={props.libraryElement !== undefined || !props.enableEdit}
           type="text"
           label={`${t('common.alias')}*`}
           className="mt-6"

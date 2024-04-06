@@ -7,3 +7,7 @@ body {
 div[role='tooltip'] {
   @apply !duration-[0ms];
 }
+
+.Toastify__toast-container {
+  white-space: pre-wrap;
+}

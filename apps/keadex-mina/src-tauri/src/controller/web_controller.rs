@@ -26,6 +26,7 @@ pub fn open_diagram(
     diagram_plantuml: Some(diagram_plantuml),
     diagram_spec: Some(diagram_spec),
     raw_plantuml: Some(String::from(raw_plantuml)),
+    last_modified: None,
   })
 }
 
