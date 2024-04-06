@@ -52,7 +52,7 @@ jobs:
       - uses: nrwl/nx-set-shas@v4
 
       - name: release affected libraries
-        run: yarn nx affected -t semantic-release
+        run: yarn nx affected -t semantic-release --parallel=1
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_ACCESS_TOKEN }}
           GIT_AUTHOR_NAME: Keadex Bot

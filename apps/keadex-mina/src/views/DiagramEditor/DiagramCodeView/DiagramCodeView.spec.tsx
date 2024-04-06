@@ -10,6 +10,7 @@ describe('DiagramCodeView', () => {
         saveDiagram={function (): void {
           console.log('Function not implemented.')
         }}
+        isSaving={false}
       />,
     )
     expect(baseElement).toBeTruthy()
