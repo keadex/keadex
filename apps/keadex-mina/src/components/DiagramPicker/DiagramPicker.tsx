@@ -56,8 +56,8 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
     let options = addDefaultOption
       ? [
           {
-            label: value,
-            value: `${value !== '' ? `${value}_input` : ''}`,
+            label: value === '' ? `${t('common.unlink')}...` : value,
+            value: value,
           },
         ]
       : []

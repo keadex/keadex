@@ -7,15 +7,21 @@ Under the hood it uses DAOs.
 use crate::core::app::ROOT_RESOLVER;
 use crate::core::resolver::ResolvableModules::ProjectLibraryIMDAO;
 use crate::dao::inmemory::InMemoryDAO;
+use crate::error_handling::errors::{
+  INVALID_LIB_ELEMENT_ERROR_CODE, INVALID_LIB_ELEMENT_ERROR_MSG,
+};
 use crate::error_handling::mina_error::MinaError;
+use crate::helper::diagram_helper::clean_plantuml_diagram_element;
 use crate::model::c4_element::C4Elements;
-use crate::model::diagram::diagram_plantuml::DiagramElementType;
+use crate::model::diagram::diagram_plantuml::{serialize_elements_to_plantuml, DiagramElementType};
 use crate::model::diagram::{C4ElementType, DiagramType};
 use crate::model::project_library::ProjectLibrary;
 use crate::repository::library::{
   component_repository, container_repository, person_repository, software_system_repository,
 };
 use crate::resolve_to_write;
+use crate::service::diagram_service::check_cross_diagrams_elements_aliases;
+use crate::service::search_service::search_and_replace_text;
 
 /**
 List the elements of the given type stored in the library.
@@ -48,6 +54,111 @@ pub fn list_library_elements(
   } else {
     Ok(c4elements)
   }
+}
+
+/**
+Creates a diagram's element in the library.
+Returns the updated library.
+# Arguments
+  * `diagram_element` - Diagram's element to create
+*/
+pub fn create_element(diagram_element: &DiagramElementType) -> Result<ProjectLibrary, MinaError> {
+  log::info!("Create element in library");
+
+  check_cross_diagrams_elements_aliases(&vec![diagram_element.clone()], None, None)?;
+
+  let error = MinaError {
+    code: INVALID_LIB_ELEMENT_ERROR_CODE,
+    msg: INVALID_LIB_ELEMENT_ERROR_MSG.to_string(),
+  };
+
+  // Create the element
+  match diagram_element {
+    DiagramElementType::Person(person) => {
+      return Ok(person_repository::create_person(person.clone())?)
+    }
+    DiagramElementType::SoftwareSystem(software_system) => {
+      return Ok(software_system_repository::create_software_system(
+        software_system.clone(),
+      )?)
+    }
+    DiagramElementType::Container(container) => {
+      return Ok(container_repository::create_container(container.clone())?)
+    }
+    DiagramElementType::Component(component) => {
+      return Ok(component_repository::create_component(component.clone())?)
+    }
+    DiagramElementType::Boundary(_) => return Err(error),
+    DiagramElementType::DeploymentNode(_) => return Err(error),
+    DiagramElementType::Include(_) => return Err(error),
+    DiagramElementType::Comment(_) => return Err(error),
+    DiagramElementType::Relationship(_) => return Err(error),
+  };
+}
+
+/**
+Updates a diagram's element in the library.
+Returns the updated library.
+# Arguments
+  * `old_diagram_element` - Diagram's element before the changes
+  * `new_diagram_element` - Diagram's element updated
+*/
+pub fn update_element(
+  old_diagram_element: &DiagramElementType,
+  new_diagram_element: &DiagramElementType,
+) -> Result<ProjectLibrary, MinaError> {
+  log::info!("Update element in library");
+
+  let error = MinaError {
+    code: INVALID_LIB_ELEMENT_ERROR_CODE,
+    msg: INVALID_LIB_ELEMENT_ERROR_MSG.to_string(),
+  };
+  let mut result = Err(error);
+
+  // Create the element
+  match new_diagram_element {
+    DiagramElementType::Person(person) => {
+      result = Ok(person_repository::update_person(person.clone())?)
+    }
+    DiagramElementType::SoftwareSystem(software_system) => {
+      result = Ok(software_system_repository::update_software_system(
+        software_system.clone(),
+      )?)
+    }
+    DiagramElementType::Container(container) => {
+      result = Ok(container_repository::update_container(container.clone())?)
+    }
+    DiagramElementType::Component(component) => {
+      result = Ok(component_repository::update_component(component.clone())?)
+    }
+    DiagramElementType::Boundary(_) => (),
+    DiagramElementType::DeploymentNode(_) => (),
+    DiagramElementType::Include(_) => (),
+    DiagramElementType::Comment(_) => (),
+    DiagramElementType::Relationship(_) => (),
+  };
+
+  if result.is_ok() {
+    // Proceed with updating all the diagrams that import the updated library element
+    // only after ensuring that the library element has been successfully updated.
+    let cleaned_old_plantuml = clean_plantuml_diagram_element(&serialize_elements_to_plantuml(
+      &vec![old_diagram_element.clone()],
+      "",
+    ))?;
+    let cleaned_new_plantuml = clean_plantuml_diagram_element(&serialize_elements_to_plantuml(
+      &vec![new_diagram_element.clone()],
+      "",
+    ))?;
+    let _ = search_and_replace_text(
+      &cleaned_old_plantuml,
+      &cleaned_new_plantuml,
+      true,
+      false,
+      i32::MAX,
+    )?;
+  }
+
+  return result;
 }
 
 /**

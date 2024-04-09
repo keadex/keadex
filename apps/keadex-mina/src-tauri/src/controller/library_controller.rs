@@ -1,16 +1,10 @@
 use crate::error_handling::mina_error::MinaError;
 use crate::helper::library_helper::element_type_from_path as element_type_from_path_helper;
-use crate::model::c4_element::component::Component;
-use crate::model::c4_element::container::Container;
-use crate::model::c4_element::person::Person;
-use crate::model::c4_element::software_system::SoftwareSystem;
 use crate::model::c4_element::C4Elements;
+use crate::model::diagram::diagram_plantuml::DiagramElementType;
 use crate::model::diagram::C4ElementType;
 use crate::model::project_library::ProjectLibrary;
-use crate::repository::library::{
-  component_repository, container_repository, library_repository, person_repository,
-  software_system_repository,
-};
+use crate::repository::library::library_repository;
 
 /**
 List the elements of the given type stored in the library.
@@ -25,6 +19,39 @@ pub async fn list_library_elements(
   Ok(library_repository::list_library_elements(Some(
     filter_c4_element_type,
   ))?)
+}
+
+/**
+Saves in the library (in memory and in file system) the given new diagram's element.
+Returns the updated library.
+# Arguments
+  * `diagram_element` - Diagram's element to create
+*/
+#[tauri::command]
+pub async fn create_library_element(
+  diagram_element: DiagramElementType,
+) -> Result<ProjectLibrary, MinaError> {
+  log::info!("Create element in library");
+  library_repository::create_element(&diagram_element)
+}
+
+/**
+Updates the library (in memory and in file system) with the given updated diagram's element.
+Returns the updated library.
+# Arguments
+  * `diagram_element` - Diagram's element to update
+*/
+#[tauri::command]
+pub async fn update_library_element(
+  old_diagram_element: DiagramElementType,
+  new_diagram_element: DiagramElementType,
+) -> Result<ProjectLibrary, MinaError> {
+  log::info!(
+    "Update element in library from {} to {}",
+    old_diagram_element,
+    new_diagram_element
+  );
+  library_repository::update_element(&old_diagram_element, &new_diagram_element)
 }
 
 /**
@@ -48,134 +75,6 @@ pub async fn delete_library_element(
     uuid_element,
     element_type,
   )?)
-}
-
-/**
-Saves in the library (in memory and in file system) the given new Person.
-# Arguments
-  * `person` - Person with the updated data.
-*/
-#[tauri::command]
-pub async fn create_person(person: Person) -> Result<ProjectLibrary, MinaError> {
-  let cloned_uuid = (&person).base_data.uuid.clone();
-  log::info!(
-    "Create in the library the person with UUID {}",
-    cloned_uuid.unwrap()
-  );
-  Ok(person_repository::create_person(person)?)
-}
-
-/**
-Updates the library (in memory and in file system) with the given updated Person.
-# Arguments
-  * `person` - Person with the updated data.
-*/
-#[tauri::command]
-pub async fn update_person(person: Person) -> Result<ProjectLibrary, MinaError> {
-  let cloned_uuid = (&person).base_data.uuid.clone();
-  log::info!(
-    "Update the person with UUID {} in the library",
-    cloned_uuid.unwrap()
-  );
-  Ok(person_repository::update_person(person)?)
-}
-
-/**
-Saves in the library (in memory and in file system) the given new Software System.
-# Arguments
-  * `software_system` - Person with the updated data.
-*/
-#[tauri::command]
-pub async fn create_software_system(
-  software_system: SoftwareSystem,
-) -> Result<ProjectLibrary, MinaError> {
-  let cloned_uuid = (&software_system).base_data.uuid.clone();
-  log::info!(
-    "Create in the library the software system with UUID {}",
-    cloned_uuid.unwrap()
-  );
-  Ok(software_system_repository::create_software_system(
-    software_system,
-  )?)
-}
-
-/**
-Updates the library (in memory and in file system) with the given updated Software System.
-# Arguments
-  * `software_system` - Software System with the updated data.
-*/
-#[tauri::command]
-pub async fn update_software_system(
-  software_system: SoftwareSystem,
-) -> Result<ProjectLibrary, MinaError> {
-  let cloned_uuid = (&software_system).base_data.uuid.clone();
-  log::info!(
-    "Update the software system with UUID {} in the library",
-    cloned_uuid.unwrap()
-  );
-  Ok(software_system_repository::update_software_system(
-    software_system,
-  )?)
-}
-
-/**
-Saves in the library (in memory and in file system) the given new Container.
-# Arguments
-  * `container` - Container with the updated data.
-*/
-#[tauri::command]
-pub async fn create_container(container: Container) -> Result<ProjectLibrary, MinaError> {
-  let cloned_uuid = (&container).base_data.uuid.clone();
-  log::info!(
-    "Create in the library the container with UUID {}",
-    cloned_uuid.unwrap()
-  );
-  Ok(container_repository::create_container(container)?)
-}
-
-/**
-Updates the library (in memory and in file system) with the given updated Container.
-# Arguments
-  * `container` - Container with the updated data.
-*/
-#[tauri::command]
-pub async fn update_container(container: Container) -> Result<ProjectLibrary, MinaError> {
-  let cloned_uuid = (&container).base_data.uuid.clone();
-  log::info!(
-    "Update the container with UUID {} in the library",
-    cloned_uuid.unwrap()
-  );
-  Ok(container_repository::update_container(container)?)
-}
-
-/**
-Saves in the library (in memory and in file system) the given new Component.
-# Arguments
-  * `component` - Component with the updated data.
-*/
-#[tauri::command]
-pub async fn create_component(component: Component) -> Result<ProjectLibrary, MinaError> {
-  let cloned_uuid = (&component).base_data.uuid.clone();
-  log::info!(
-    "Create in the library the component with UUID {}",
-    cloned_uuid.unwrap()
-  );
-  Ok(component_repository::create_component(component)?)
-}
-
-/**
-Updates the library (in memory and in file system) with the given updated Component.
-# Arguments
-  * `component` - Component with the updated data.
-*/
-#[tauri::command]
-pub async fn update_component(component: Component) -> Result<ProjectLibrary, MinaError> {
-  let cloned_uuid = (&component).base_data.uuid.clone();
-  log::info!(
-    "Update the component with UUID {} in the library",
-    cloned_uuid.unwrap()
-  );
-  Ok(component_repository::update_component(component)?)
 }
 
 /**

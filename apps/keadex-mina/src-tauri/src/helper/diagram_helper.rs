@@ -572,3 +572,12 @@ pub fn diagram_spec_url_from_diagram_url(
   let (diagram_name, diagram_type) = diagram_name_type_from_url(project_root_url, diagram_url)?;
   diagram_spec_url_from_name_type(project_root_url, &diagram_name, &diagram_type)
 }
+
+/**
+Utility which cleans the given PlantUML string from useless chars (new lines, leading and trailing spaces)
+# Arguments
+  * `plantuml_string` - PlantUML string to clean
+*/
+pub fn clean_plantuml_diagram_element(plantuml_string: &str) -> Result<String, MinaError> {
+  Ok(plantuml_string.trim().replace(r"\n", ""))
+}

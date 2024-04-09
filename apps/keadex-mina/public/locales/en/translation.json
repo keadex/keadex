@@ -22,6 +22,7 @@
     "documentation": "Documentation",
     "duplicate": "Duplicate",
     "edit": "Edit",
+    "empty": "Empty",
     "exit": "Exit",
     "export": "Export",
     "external": "External",
@@ -60,6 +61,7 @@
     "technology": "Technology",
     "type": "Type",
     "undo": "Undo",
+    "unlink": "Unlink",
     "version": "Version",
     "yes": "Yes",
     "action": {

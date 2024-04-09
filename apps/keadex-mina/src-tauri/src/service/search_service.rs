@@ -4,6 +4,7 @@ use crate::core::project_initializer::unload_project;
 use crate::core::resolver::ResolvableModules::ProjectSettingsIMDAO;
 use crate::dao::inmemory::InMemoryDAO;
 use crate::error_handling::mina_error::MinaError;
+use crate::helper::diagram_helper::clean_plantuml_diagram_element;
 use crate::helper::diagram_helper::diagrams_path;
 use crate::helper::library_helper::path_from_element_type;
 use crate::helper::library_helper::project_library_path;
@@ -16,9 +17,11 @@ use crate::model::file_search_results::{FileSearchResult, FileSearchResults};
 use crate::repository::library::library_repository::search_library_element;
 use crate::resolve_to_write;
 use std::collections::HashMap;
+use std::fs::rename;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
+use std::io::Write;
 use walkdir::DirEntry;
 use walkdir::WalkDir;
 
@@ -71,14 +74,14 @@ fn is_searchable_dir(
 Searches by using the given callback in the project's files.
 # Arguments
   * `predicate` - Callback invoked with the current line, current line number, current path, diagrams directory and library directory. Returns true if the line matches the condition, false otherwise.
-  * `include_diagrams_dir` - If you want to include the diagrams directory in the search.
-  * `include_library_dir` - If you want to include the library directory in the search.
+  * `include_diagrams` - If you want to include the diagrams directory in the search.
+  * `include_library` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
-pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> bool>(
+pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> Result<bool, MinaError>>(
   mut predicate: F,
-  include_diagrams_dir: bool,
-  include_library_dir: bool,
+  include_diagrams: bool,
+  include_library: bool,
   limit: i32,
 ) -> Result<bool, MinaError> {
   let store = ROOT_RESOLVER.get().read().unwrap();
@@ -105,8 +108,8 @@ pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> bool>(
       is_searchable_dir(
         e,
         &temp_root_2,
-        include_diagrams_dir,
-        include_library_dir,
+        include_diagrams,
+        include_library,
         &diagrams_directory,
         &library_directory,
       )
@@ -126,7 +129,7 @@ pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> bool>(
             path,
             &diagrams_directory,
             &library_directory,
-          ) {
+          )? {
             count += 1;
             if count > limit {
               reached_limit = true;
@@ -152,95 +155,116 @@ pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> bool>(
 }
 
 /**
-TODO: Refactor to reuse search_in_project()
-
-Searches for the given string in the project's files.
+Searches for the given text in the project's files and replace it with the given text.
 # Arguments
-  * `string` - String to search for.
-  * `include_diagrams_dir` - If you want to include the diagrams directory in the search.
-  * `include_library_dir` - If you want to include the library directory in the search.
+  * `text_to_search` - Text to search for.
+  * `replacement` - Replacement.
+  * `include_diagrams` - If you want to include the diagrams directory in the search.
+  * `include_library` - If you want to include the library directory in the search.
+  * `limit` - Limit of the returned results.
+*/
+pub fn search_and_replace_text(
+  text_to_search: &str,
+  replacement: &str,
+  include_diagrams: bool,
+  include_library: bool,
+  limit: i32,
+) -> Result<FileSearchResults, MinaError> {
+  log::debug!("Search {} and replace with {}", text_to_search, replacement);
+
+  let mut current_path = String::from("");
+  let mut temp_file_opt = None;
+  let mut new_line = String::from("");
+
+  let mut results = HashMap::new();
+  let reached_limit = search_in_project(
+    |line, line_num, path, diagrams_directory, library_directory| {
+      if !path.eq(&current_path) {
+        if !current_path.eq("") {
+          rename(format!("{}.tmp", current_path), &current_path)?;
+        }
+        current_path = path.to_string();
+        temp_file_opt = Some(File::create(format!("{}.tmp", path))?);
+      }
+
+      let mut is_found = Ok(false);
+      if let Some(temp_file) = temp_file_opt.as_mut() {
+        if line.eq(&text_to_search) {
+          new_line = replacement.to_string();
+          is_found = Ok(true);
+
+          results
+            .entry(String::from(path))
+            .or_insert(Vec::new())
+            .push(FileSearchResult {
+              line_content: String::from(line),
+              line_number: line_num + 1,
+              category: get_category(path, &diagrams_directory, &library_directory),
+              path: String::from(path),
+            });
+        } else {
+          new_line = line;
+          is_found = Ok(false)
+        }
+        writeln!(temp_file, "{}", new_line)?;
+        return is_found;
+      }
+      return is_found;
+    },
+    include_diagrams,
+    include_library,
+    limit,
+  )?;
+
+  if !current_path.eq("") {
+    rename(format!("{}.tmp", current_path), &current_path)?;
+  }
+
+  let count = results.len().try_into().unwrap();
+  Ok(FileSearchResults {
+    results,
+    count,
+    reached_limit,
+  })
+}
+
+/**
+Searches for the given text in the project's files.
+# Arguments
+  * `text_to_search` - Text to search for.
+  * `include_diagrams` - If you want to include the diagrams directory in the search.
+  * `include_library` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
 pub fn search_text(
-  string_to_search: &str,
-  include_diagrams_dir: bool,
-  include_library_dir: bool,
+  text_to_search: &str,
+  include_diagrams: bool,
+  include_library: bool,
   limit: i32,
 ) -> Result<FileSearchResults, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
-    .get()
-    .unwrap();
-
-  let temp_root_1 = String::from(&project_settings.root);
-  let temp_root_2 = String::from(&project_settings.root);
-
-  let diagrams_directory = diagrams_path(&temp_root_2);
-  let library_directory = project_library_path(&temp_root_2);
-
-  let mut count = 0;
-  let mut reached_limit = false;
-
-  // Unload the project since we need to unlock all the project's file in order to read them
-  unload_project(&project_settings.root)?;
-
-  // Search for the given string in all the project's files
   let mut results = HashMap::new();
-  for entry in WalkDir::new(temp_root_1)
-    .into_iter()
-    .filter_entry(|e| {
-      is_searchable_dir(
-        e,
-        &temp_root_2,
-        include_diagrams_dir,
-        include_library_dir,
-        &diagrams_directory,
-        &library_directory,
-      )
-    })
-    .filter_map(|e| e.ok())
-  {
-    if entry.file_type().is_file() {
-      let file = File::options().read(true).write(false).open(entry.path())?;
-      let reader = BufReader::new(file);
-      let path = entry.path().to_str().unwrap();
-
-      for (line_num, line) in reader.lines().enumerate() {
-        if let Ok(line) = line {
-          if line
-            .to_lowercase()
-            .contains(&string_to_search.to_lowercase())
-          {
-            count += 1;
-            if count > limit {
-              reached_limit = true;
-              count -= 1;
-              break;
-            }
-            results
-              .entry(String::from(path))
-              .or_insert(Vec::new())
-              .push(FileSearchResult {
-                line_content: String::from(line),
-                line_number: line_num + 1,
-                category: get_category(path, &diagrams_directory, &library_directory),
-                path: String::from(path),
-              });
-          }
-        } else {
-          break;
-        }
+  let reached_limit = search_in_project(
+    |line, line_num, path, diagrams_directory, library_directory| {
+      if line.to_lowercase().contains(&text_to_search.to_lowercase()) {
+        results
+          .entry(String::from(path))
+          .or_insert(Vec::new())
+          .push(FileSearchResult {
+            line_content: String::from(line),
+            line_number: line_num + 1,
+            category: get_category(path, &diagrams_directory, &library_directory),
+            path: String::from(path),
+          });
+        return Ok(true);
       }
-    }
+      return Ok(false);
+    },
+    include_diagrams,
+    include_library,
+    limit,
+  )?;
 
-    if reached_limit {
-      break;
-    }
-  }
-
-  // (Re)load the project to make it available again to the client
-  load_project(&temp_root_2)?;
-
+  let count = results.len().try_into().unwrap();
   Ok(FileSearchResults {
     results,
     count,
@@ -265,7 +289,7 @@ pub fn search_diagram_element(
   limit: i32,
 ) -> Result<DiagramElementSearchResults, MinaError> {
   // clean the plantuml
-  let cleaned_plantuml_diagram_element = plantuml_diagram_element.trim().replace(r"\n", "");
+  let cleaned_plantuml_diagram_element = clean_plantuml_diagram_element(plantuml_diagram_element)?;
 
   let re_diagrams_dir = create_search_diagram_elem_in_plantuml_regex(alias);
 
@@ -277,7 +301,7 @@ pub fn search_diagram_element(
     reached_limit = search_in_project(
       |line, _line_num, path, diagrams_directory, library_directory| {
         // clean the line
-        let cleaned_line = line.trim().replace(r"\n", "");
+        let cleaned_line = clean_plantuml_diagram_element(&line)?;
 
         let category = get_category(path, diagrams_directory, library_directory);
 
@@ -316,11 +340,11 @@ pub fn search_diagram_element(
               .or_insert(Vec::new())
               .push(result);
 
-            return true;
+            return Ok(true);
           }
         }
 
-        return false;
+        return Ok(false);
       },
       include_diagrams,
       false,
@@ -343,7 +367,8 @@ pub fn search_diagram_element(
         serialize_elements_to_plantuml(&vec![lib_element.clone()], "");
 
       // clean the plantuml
-      let cleaned_plantuml_found_lib_element = plantuml_found_lib_element.trim().replace(r"\n", "");
+      let cleaned_plantuml_found_lib_element =
+        clean_plantuml_diagram_element(&plantuml_found_lib_element)?;
 
       if cleaned_plantuml_diagram_element.eq(&cleaned_plantuml_found_lib_element) {
         result.partial_match = false;

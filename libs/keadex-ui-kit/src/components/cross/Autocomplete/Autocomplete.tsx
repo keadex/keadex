@@ -37,9 +37,12 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
 
   function renderOptions(): JSX.Element[] {
     const renderedOptions: JSX.Element[] = []
-    props.options.forEach((option) => {
+    props.options.forEach((option, index) => {
       renderedOptions.push(
-        <option value={option.value} key={option.value?.toString()}>
+        <option
+          value={option.value}
+          key={`${option.value?.toString()}_${index}`}
+        >
           {option.label}
         </option>,
       )
