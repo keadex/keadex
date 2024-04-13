@@ -298,9 +298,13 @@ pub fn get_all_elements_aliases(elements: &Vec<DiagramElementType>) -> Vec<Strin
 
         aliases.append(sub_aliases);
       }
+      DiagramElementType::Relationship(relationship) => {
+        if let Some(alias) = relationship.base_data.alias {
+          aliases.push(alias)
+        }
+      }
       DiagramElementType::Include(_) => (),
       DiagramElementType::Comment(_) => (),
-      DiagramElementType::Relationship(_) => (),
     }
   }
   aliases
