@@ -2,6 +2,7 @@
 Model representing a C4 Software System element.
 */
 
+use crate::core::serializer::format_with_indent;
 use crate::model::{
   c4_element::base_element::BaseElement, diagram::diagram_plantuml::PlantUMLSerializer,
 };
@@ -80,7 +81,7 @@ impl<'i> TryFrom<Pair<'i, Rule>> for SoftwareSystem {
 }
 
 impl PlantUMLSerializer for SoftwareSystem {
-  fn serialize_to_plantuml(&self) -> String {
+  fn serialize_to_plantuml(&self, level: usize) -> String {
     let mut system_ser = String::new();
     // Serialize "system type"
     if let Some(system_type) = &self.system_type {
@@ -111,6 +112,7 @@ impl PlantUMLSerializer for SoftwareSystem {
       system_ser.push_str(&format!(", $link=\"{}\"", link));
     }
     system_ser.push_str(")");
-    system_ser
+
+    format_with_indent(level, system_ser)
   }
 }

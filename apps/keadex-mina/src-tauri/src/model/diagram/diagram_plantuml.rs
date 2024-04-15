@@ -2,6 +2,7 @@
 Model representing the root of a PlantUML diagram.
 */
 
+use crate::core::serializer::format_with_indent;
 use crate::model::c4_element::boundary::Boundary;
 use crate::model::c4_element::component::{Component, ComponentType};
 use crate::model::c4_element::container::{Container, ContainerType};
@@ -20,7 +21,7 @@ use ts_rs::TS;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 pub trait PlantUMLSerializer {
-  fn serialize_to_plantuml(&self) -> String;
+  fn serialize_to_plantuml(&self, level: usize) -> String;
 }
 
 #[derive(TS)]
@@ -171,16 +172,16 @@ fn parse_stdlib_c4_container_component(pair: Pair<Rule>) -> Option<DiagramElemen
 }
 
 impl PlantUMLSerializer for DiagramPlantUML {
-  fn serialize_to_plantuml(&self) -> String {
+  fn serialize_to_plantuml(&self, level: usize) -> String {
     // Serialize "diagram id"
     let mut diagram_id_ser = String::from("");
     if let Some(diagram_id) = &self.diagram_id {
       diagram_id_ser = format!("(id={})", diagram_id);
     }
     // Serialize "diagram elements"
-    let elements_ser = serialize_elements_to_plantuml(&self.elements, "");
+    let elements_ser = serialize_elements_to_plantuml(&self.elements, level);
 
-    format!("@startuml{}\n\n{}\n@enduml", diagram_id_ser, elements_ser)
+    format!("@startuml{}\n{}\n@enduml", diagram_id_ser, elements_ser)
   }
 }
 
@@ -189,53 +190,39 @@ Serializes a vector of elements to PlantUML
 # Arguments
   * `elements` - Vector of elements
 */
-pub fn serialize_elements_to_plantuml(
-  elements: &Vec<DiagramElementType>,
-  indent_spaces: &str,
-) -> String {
+pub fn serialize_elements_to_plantuml(elements: &Vec<DiagramElementType>, level: usize) -> String {
   let mut elements_ser = String::new();
   for element in elements {
     match element {
       DiagramElementType::Include(uri) => {
-        elements_ser.push_str(&format!("{}!include {}\n\n", indent_spaces, uri))
+        elements_ser.push_str(&format_with_indent(level, format!("\n!include {}\n", uri)))
       }
       DiagramElementType::Comment(comment) => {
-        elements_ser.push_str(&format!("{}{}\n", indent_spaces, comment))
+        elements_ser.push_str(&format_with_indent(level, format!("\n{}\n", comment,)))
       }
-      DiagramElementType::Person(person) => elements_ser.push_str(&format!(
-        "{}{}\n\n",
-        indent_spaces,
-        person.serialize_to_plantuml()
-      )),
+      DiagramElementType::Person(person) => {
+        elements_ser.push_str(&format!("\n{}\n", person.serialize_to_plantuml(level)))
+      }
       DiagramElementType::SoftwareSystem(software_system) => elements_ser.push_str(&format!(
-        "{}{}\n\n",
-        indent_spaces,
-        software_system.serialize_to_plantuml()
+        "\n{}\n",
+        software_system.serialize_to_plantuml(level)
       )),
-      DiagramElementType::Container(container) => elements_ser.push_str(&format!(
-        "{}{}\n\n",
-        indent_spaces,
-        container.serialize_to_plantuml()
-      )),
-      DiagramElementType::Component(component) => elements_ser.push_str(&format!(
-        "{}{}\n\n",
-        indent_spaces,
-        component.serialize_to_plantuml()
-      )),
-      DiagramElementType::Boundary(boundary) => elements_ser.push_str(&format!(
-        "{}{}\n\n",
-        indent_spaces,
-        boundary.serialize_to_plantuml()
-      )),
+      DiagramElementType::Container(container) => {
+        elements_ser.push_str(&format!("\n{}\n", container.serialize_to_plantuml(level)))
+      }
+      DiagramElementType::Component(component) => {
+        elements_ser.push_str(&format!("\n{}\n", component.serialize_to_plantuml(level)))
+      }
+      DiagramElementType::Boundary(boundary) => {
+        elements_ser.push_str(&format!("\n{}\n", boundary.serialize_to_plantuml(level)))
+      }
       DiagramElementType::DeploymentNode(deployment_node) => elements_ser.push_str(&format!(
-        "{}{}\n\n",
-        indent_spaces,
-        deployment_node.serialize_to_plantuml()
+        "\n{}\n",
+        deployment_node.serialize_to_plantuml(level)
       )),
       DiagramElementType::Relationship(relationship) => elements_ser.push_str(&format!(
-        "{}{}\n\n",
-        indent_spaces,
-        relationship.serialize_to_plantuml()
+        "\n{}\n",
+        relationship.serialize_to_plantuml(level)
       )),
     }
   }

@@ -2,6 +2,7 @@
 Model representing a Person entity.
 */
 
+use crate::core::serializer::format_with_indent;
 use crate::model::{
   c4_element::base_element::BaseElement, diagram::diagram_plantuml::PlantUMLSerializer,
 };
@@ -68,7 +69,7 @@ impl<'i> TryFrom<Pair<'i, Rule>> for Person {
 }
 
 impl PlantUMLSerializer for Person {
-  fn serialize_to_plantuml(&self) -> String {
+  fn serialize_to_plantuml(&self, level: usize) -> String {
     let mut person_ser = String::new();
     // Serialize "person type"
     if let Some(person_type) = &self.person_type {
@@ -99,6 +100,7 @@ impl PlantUMLSerializer for Person {
       person_ser.push_str(&format!(", $link=\"{}\"", link));
     }
     person_ser.push_str(")");
-    person_ser
+
+    format_with_indent(level, person_ser)
   }
 }

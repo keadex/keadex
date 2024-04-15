@@ -2,7 +2,7 @@
   "$schema": "../../../node_modules/@tauri-apps/cli/schema.json",
   "package": {
     "productName": "Keadex Mina",
-    "version": "1.0.0-5"
+    "version": "1.0.0-6"
   },
   "build": {
     "distDir": "../dist",

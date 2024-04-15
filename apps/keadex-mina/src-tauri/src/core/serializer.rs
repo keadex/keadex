@@ -102,5 +102,24 @@ Serializes a diagram into PlantUML
   * `diagram` - Diagram
 */
 pub fn serialize_diagram_to_plantuml(diagram: &DiagramPlantUML) -> String {
-  diagram.serialize_to_plantuml()
+  diagram.serialize_to_plantuml(0)
+}
+
+/**
+Generates the indent value starting from a given hierarchy's level.
+# Arguments
+  * `level` - Level of the hierarchy
+*/
+pub fn level_to_indent(level: usize) -> usize {
+  return level * 2;
+}
+
+/**
+Formats the given text with an indentation according to the given level.
+# Arguments
+  * `level` - Level of the hierarchy
+  * `text` - Text to format
+*/
+pub fn format_with_indent(level: usize, text: String) -> String {
+  format!("{:indent$}{}", "", text, indent = level_to_indent(level))
 }

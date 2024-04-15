@@ -143,11 +143,11 @@ pub fn update_element(
     // only after ensuring that the library element has been successfully updated.
     let cleaned_old_plantuml = clean_plantuml_diagram_element(&serialize_elements_to_plantuml(
       &vec![old_diagram_element.clone()],
-      "",
+      0,
     ))?;
     let cleaned_new_plantuml = clean_plantuml_diagram_element(&serialize_elements_to_plantuml(
       &vec![new_diagram_element.clone()],
-      "",
+      0,
     ))?;
     let _ = search_and_replace_text(
       &cleaned_old_plantuml,

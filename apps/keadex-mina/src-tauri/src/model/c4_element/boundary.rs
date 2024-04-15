@@ -2,6 +2,7 @@
 Model representing a C4 Boundary element.
 */
 
+use crate::core::serializer::format_with_indent;
 use crate::model::c4_element::base_element::BaseElement;
 use crate::model::diagram::diagram_plantuml::{
   parse_uml_element, serialize_elements_to_plantuml, DiagramElementType, PlantUMLSerializer,
@@ -92,7 +93,7 @@ impl<'i> TryFrom<Pair<'i, Rule>> for Boundary {
 }
 
 impl PlantUMLSerializer for Boundary {
-  fn serialize_to_plantuml(&self) -> String {
+  fn serialize_to_plantuml(&self, level: usize) -> String {
     let mut boundary_ser = String::new();
     // Serialize "boundary type"
     if let Some(boundary_type) = &self.boundary_type {
@@ -119,9 +120,11 @@ impl PlantUMLSerializer for Boundary {
       boundary_ser.push_str(&format!(", $link=\"{}\"", link));
     }
     boundary_ser.push_str(&format!(
-      "){{\n{}}}",
-      serialize_elements_to_plantuml(&self.sub_elements, "\t")
+      "){{{}{}",
+      serialize_elements_to_plantuml(&self.sub_elements, level + 1),
+      format_with_indent(level, "}".to_string())
     ));
-    boundary_ser
+
+    format_with_indent(level, boundary_ser)
   }
 }

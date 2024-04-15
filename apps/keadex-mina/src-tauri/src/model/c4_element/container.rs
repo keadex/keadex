@@ -2,6 +2,7 @@
 Model representing a C4 Container element.
 */
 
+use crate::core::serializer::format_with_indent;
 use crate::model::{
   c4_element::base_element::BaseElement, diagram::diagram_plantuml::PlantUMLSerializer,
 };
@@ -85,7 +86,7 @@ impl<'i> TryFrom<Pair<'i, Rule>> for Container {
 }
 
 impl PlantUMLSerializer for Container {
-  fn serialize_to_plantuml(&self) -> String {
+  fn serialize_to_plantuml(&self, level: usize) -> String {
     let mut container_ser = String::new();
     // Serialize "container type"
     if let Some(container_type) = &self.container_type {
@@ -120,6 +121,7 @@ impl PlantUMLSerializer for Container {
       container_ser.push_str(&format!(", $link=\"{}\"", link));
     }
     container_ser.push_str(")");
-    container_ser
+
+    format_with_indent(level, container_ser)
   }
 }

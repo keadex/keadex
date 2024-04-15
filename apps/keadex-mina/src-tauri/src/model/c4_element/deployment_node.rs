@@ -2,6 +2,7 @@
 Model representing a C4 Deployment Node.
 */
 
+use crate::core::serializer::format_with_indent;
 use crate::model::diagram::diagram_plantuml::{
   parse_uml_element, serialize_elements_to_plantuml, PlantUMLSerializer,
 };
@@ -97,7 +98,7 @@ impl<'i> TryFrom<Pair<'i, Rule>> for DeploymentNode {
 }
 
 impl PlantUMLSerializer for DeploymentNode {
-  fn serialize_to_plantuml(&self) -> String {
+  fn serialize_to_plantuml(&self, level: usize) -> String {
     let mut deployment_node_ser = String::new();
     // Serialize "deployment node type"
     if let Some(deployment_node_type) = &self.deployment_node_type {
@@ -132,9 +133,11 @@ impl PlantUMLSerializer for DeploymentNode {
       deployment_node_ser.push_str(&format!(", $link=\"{}\"", link));
     }
     deployment_node_ser.push_str(&format!(
-      "){{\n{}}}",
-      serialize_elements_to_plantuml(&self.sub_elements, "\t")
+      "){{{}{}",
+      serialize_elements_to_plantuml(&self.sub_elements, level + 1),
+      format_with_indent(level, "}".to_string())
     ));
-    deployment_node_ser
+
+    format_with_indent(level, deployment_node_ser)
   }
 }

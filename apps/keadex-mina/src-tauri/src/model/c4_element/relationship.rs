@@ -2,6 +2,7 @@
 Model representing a Relationship between two C4 entities.
 */
 
+use crate::core::serializer::format_with_indent;
 use crate::helper::relationship_helper::generate_relationship_alias;
 use crate::model::{
   c4_element::base_element::BaseElement, diagram::diagram_plantuml::PlantUMLSerializer,
@@ -148,7 +149,7 @@ impl<'i> TryFrom<Pair<'i, Rule>> for Relationship {
 }
 
 impl PlantUMLSerializer for Relationship {
-  fn serialize_to_plantuml(&self) -> String {
+  fn serialize_to_plantuml(&self, level: usize) -> String {
     let mut relationship_ser = String::new();
     // Serialize "relationship type"
     if let Some(relationship_type) = &self.relationship_type {
@@ -187,6 +188,7 @@ impl PlantUMLSerializer for Relationship {
       relationship_ser.push_str(&format!(", $link=\"{}\"", link));
     }
     relationship_ser.push_str(")");
-    relationship_ser
+
+    format_with_indent(level, relationship_ser)
   }
 }

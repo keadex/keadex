@@ -364,7 +364,7 @@ pub fn search_diagram_element(
       };
 
       let plantuml_found_lib_element =
-        serialize_elements_to_plantuml(&vec![lib_element.clone()], "");
+        serialize_elements_to_plantuml(&vec![lib_element.clone()], 0);
 
       // clean the plantuml
       let cleaned_plantuml_found_lib_element =

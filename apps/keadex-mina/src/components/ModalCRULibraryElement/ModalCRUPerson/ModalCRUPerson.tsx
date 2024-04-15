@@ -161,21 +161,23 @@ export const ModalCRUPerson = (props: ModalCRULibraryElementProps) => {
             })
           }
         />
-        <Textarea
-          disabled={!props.enableEdit}
-          label={`${t('common.notes')}`}
-          className="mt-6"
-          value={newPerson?.base_data?.notes}
-          onChange={(e) =>
-            setNewPerson({
-              ...newPerson,
-              base_data: {
-                ...newPerson?.base_data,
-                notes: e.target.value,
-              },
-            })
-          }
-        />
+        {props.mode !== 'serializer' && (
+          <Textarea
+            disabled={!props.enableEdit}
+            label={`${t('common.notes')}`}
+            className="mt-6"
+            value={newPerson?.base_data?.notes}
+            onChange={(e) =>
+              setNewPerson({
+                ...newPerson,
+                base_data: {
+                  ...newPerson?.base_data,
+                  notes: e.target.value,
+                },
+              })
+            }
+          />
+        )}
       </div>
 
       {/* Modal footer */}
@@ -195,7 +197,12 @@ export const ModalCRUPerson = (props: ModalCRULibraryElementProps) => {
               !newPerson.person_type ||
               !newPerson.base_data.description,
             onClick: () => {
-              if (props.project) {
+              if (props.mode === 'serializer') {
+                if (props.onElementCreated) {
+                  props.onElementCreated({ Person: newPerson })
+                  props.hideModal()
+                }
+              } else if (props.project) {
                 if (props.libraryElement) {
                   handleUpdatePerson()
                 } else {

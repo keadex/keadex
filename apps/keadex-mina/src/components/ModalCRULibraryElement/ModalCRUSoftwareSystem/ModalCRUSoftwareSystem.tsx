@@ -188,22 +188,24 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
             })
           }}
         />
-        <Textarea
-          id="software-system-note"
-          disabled={!props.enableEdit}
-          label={`${t('common.notes')}`}
-          className="mt-6"
-          value={newSoftwareSystem?.base_data?.notes}
-          onChange={(e) =>
-            setNewSoftwareSystem({
-              ...newSoftwareSystem,
-              base_data: {
-                ...newSoftwareSystem?.base_data,
-                notes: e.target.value,
-              },
-            })
-          }
-        />
+        {props.mode !== 'serializer' && (
+          <Textarea
+            id="software-system-note"
+            disabled={!props.enableEdit}
+            label={`${t('common.notes')}`}
+            className="mt-6"
+            value={newSoftwareSystem?.base_data?.notes}
+            onChange={(e) =>
+              setNewSoftwareSystem({
+                ...newSoftwareSystem,
+                base_data: {
+                  ...newSoftwareSystem?.base_data,
+                  notes: e.target.value,
+                },
+              })
+            }
+          />
+        )}
       </div>
 
       {/* Modal footer */}
@@ -223,7 +225,12 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
               !newSoftwareSystem.system_type ||
               !newSoftwareSystem.base_data.description,
             onClick: () => {
-              if (props.project) {
+              if (props.mode === 'serializer') {
+                if (props.onElementCreated) {
+                  props.onElementCreated({ SoftwareSystem: newSoftwareSystem })
+                  props.hideModal()
+                }
+              } else if (props.project) {
                 if (props.libraryElement) {
                   handleUpdateSoftwareSystem()
                 } else {

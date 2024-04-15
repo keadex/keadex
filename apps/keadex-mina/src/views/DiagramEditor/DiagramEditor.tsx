@@ -251,6 +251,7 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
       {modal}
       <DiagramEditorToolbar
         ref={diagramEditorToolbarRef}
+        diagram={diagram}
         diagramCodeViewCommands={diagramCodeViewRef.current}
         diagramDesignViewCommands={diagramDesignViewRef.current}
         saveDiagram={handleSaveDiagram}

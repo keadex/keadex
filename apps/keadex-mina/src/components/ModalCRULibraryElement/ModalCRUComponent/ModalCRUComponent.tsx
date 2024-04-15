@@ -196,22 +196,24 @@ export const ModalCRUComponent = (props: ModalCRULibraryElementProps) => {
             })
           }}
         />
-        <Textarea
-          id="component-note"
-          disabled={!props.enableEdit}
-          label={`${t('common.notes')}`}
-          className="mt-6"
-          value={newComponent?.base_data?.notes}
-          onChange={(e) =>
-            setNewComponent({
-              ...newComponent,
-              base_data: {
-                ...newComponent?.base_data,
-                notes: e.target.value,
-              },
-            })
-          }
-        />
+        {props.mode !== 'serializer' && (
+          <Textarea
+            id="component-note"
+            disabled={!props.enableEdit}
+            label={`${t('common.notes')}`}
+            className="mt-6"
+            value={newComponent?.base_data?.notes}
+            onChange={(e) =>
+              setNewComponent({
+                ...newComponent,
+                base_data: {
+                  ...newComponent?.base_data,
+                  notes: e.target.value,
+                },
+              })
+            }
+          />
+        )}
       </div>
 
       {/* Modal footer */}
@@ -232,7 +234,12 @@ export const ModalCRUComponent = (props: ModalCRULibraryElementProps) => {
               !newComponent.technology ||
               !newComponent.base_data.description,
             onClick: () => {
-              if (props.project) {
+              if (props.mode === 'serializer') {
+                if (props.onElementCreated) {
+                  props.onElementCreated({ Component: newComponent })
+                  props.hideModal()
+                }
+              } else if (props.project) {
                 if (props.libraryElement) {
                   handleUpdateComponent()
                 } else {

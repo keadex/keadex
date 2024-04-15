@@ -196,22 +196,24 @@ export const ModalCRUContainer = (props: ModalCRULibraryElementProps) => {
             })
           }}
         />
-        <Textarea
-          id="container-note"
-          disabled={!props.enableEdit}
-          label={`${t('common.notes')}`}
-          className="mt-6"
-          value={newContainer?.base_data?.notes}
-          onChange={(e) =>
-            setNewContainer({
-              ...newContainer,
-              base_data: {
-                ...newContainer?.base_data,
-                notes: e.target.value,
-              },
-            })
-          }
-        />
+        {props.mode !== 'serializer' && (
+          <Textarea
+            id="container-note"
+            disabled={!props.enableEdit}
+            label={`${t('common.notes')}`}
+            className="mt-6"
+            value={newContainer?.base_data?.notes}
+            onChange={(e) =>
+              setNewContainer({
+                ...newContainer,
+                base_data: {
+                  ...newContainer?.base_data,
+                  notes: e.target.value,
+                },
+              })
+            }
+          />
+        )}
       </div>
 
       {/* Modal footer */}
@@ -232,7 +234,12 @@ export const ModalCRUContainer = (props: ModalCRULibraryElementProps) => {
               !newContainer.technology ||
               !newContainer.base_data.description,
             onClick: () => {
-              if (props.project) {
+              if (props.mode === 'serializer') {
+                if (props.onElementCreated) {
+                  props.onElementCreated({ Container: newContainer })
+                  props.hideModal()
+                }
+              } else if (props.project) {
                 if (props.libraryElement) {
                   handleUpdateContainer()
                 } else {

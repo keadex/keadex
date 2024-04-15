@@ -205,7 +205,7 @@ pub async fn parsed_element_to_plantuml(
   parsed_element: DiagramElementType,
 ) -> Result<String, MinaError> {
   log::info!("Serialize {}", parsed_element);
-  Ok(serialize_elements_to_plantuml(&vec![parsed_element], ""))
+  Ok(serialize_elements_to_plantuml(&vec![parsed_element], 0))
 }
 
 /**

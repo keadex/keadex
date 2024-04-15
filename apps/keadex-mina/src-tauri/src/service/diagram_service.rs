@@ -82,7 +82,7 @@ pub fn check_cross_diagrams_elements_aliases(
   diagram_type: Option<&DiagramType>,
 ) -> Result<(), MinaError> {
   for element in diagram_plantuml_elements.clone() {
-    let plantuml_diagram_elem_to_check = serialize_elements_to_plantuml(&vec![element.clone()], "");
+    let plantuml_diagram_elem_to_check = serialize_elements_to_plantuml(&vec![element.clone()], 0);
 
     // Exclude from the check relationships, boundaries, deployment nodes,
     // includes and comments since those are not architectural elements or elements
