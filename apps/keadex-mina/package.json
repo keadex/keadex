@@ -2,7 +2,7 @@
   "name": "@keadex/keadex-mina",
   "description": "Desktop application to draw, manage and share the architectures of software systems.",
   "author": "Keadex <keadex.it@gmail.com>",
-  "version": "1.0.0-6",
+  "version": "1.0.0-7",
   "private": true,
   "license": "MIT",
   "type": "module",
@@ -13,7 +13,7 @@
     "@monaco-editor/react": "^4.6.0",
     "@reduxjs/toolkit": "^1.9.7",
     "@tanstack/react-table": "^8.10.7",
-    "@tauri-apps/api": "^1.5.1",
+    "@tauri-apps/api": "^1.5.3",
     "@types/fabric": "^5.3.4",
     "@types/react-resizable": "^3.0.5",
     "ahooks": "^3.7.8",
@@ -41,7 +41,7 @@
     "tauri": "tauri"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.5.4",
+    "@tauri-apps/cli": "^1.5.11",
     "@types/fontfaceobserver": "^2.1.2",
     "@types/pluralize": "^0.0.31",
     "@types/react": "^18.2.28",

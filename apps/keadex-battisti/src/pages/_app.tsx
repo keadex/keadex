@@ -9,8 +9,12 @@ import {
 
 //---------- Disable debug and log levels in production
 if (process.env.NODE_ENV === 'production') {
-  console.log = () => {}
-  console.debug = () => {}
+  console.log = () => {
+    // do nothing
+  }
+  console.debug = () => {
+    // do nothing
+  }
 }
 
 // This default export is required in a new `pages/_app.js` file.

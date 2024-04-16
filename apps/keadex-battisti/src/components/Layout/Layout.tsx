@@ -13,8 +13,12 @@ export type LayourProps = {
 
 //---------- Disable debug and log levels in production
 if (process.env.NODE_ENV === 'production') {
-  console.log = () => {}
-  console.debug = () => {}
+  console.log = () => {
+    // do nothing
+  }
+  console.debug = () => {
+    // do nothing
+  }
 }
 
 export default function Layout(props: PropsWithChildren<LayourProps>) {

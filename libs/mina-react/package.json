@@ -36,7 +36,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@tanstack/react-table": "^8.10.7",
-    "@tauri-apps/api": "^1.5.1",
+    "@tauri-apps/api": "^1.5.3",
     "change-case": "^5.4.3",
     "fabric": "^5.3.0",
     "fontfaceobserver": "^2.3.0",

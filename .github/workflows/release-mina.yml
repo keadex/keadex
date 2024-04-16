@@ -16,15 +16,15 @@ jobs:
         with:
           fetch-depth: 0
       # -------------- START TO REMOVE
-      # - uses: actions/setup-node@v3
+      # - uses: actions/setup-node@v4
       #   with:
-      #     node-version: 18
+      #     node-version: 20
       # - run: npm install --global yarn
       # -------------- END TO REMOVE
       - name: setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: 'yarn'
       - uses: nrwl/nx-set-shas@v4
       - run: yarn --frozen-lockfile
@@ -59,13 +59,13 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: 'yarn'
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
