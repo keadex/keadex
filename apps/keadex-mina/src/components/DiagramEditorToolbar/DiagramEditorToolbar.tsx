@@ -14,26 +14,28 @@ import {
   faSearch,
   faTerminal,
 } from '@fortawesome/free-solid-svg-icons'
-import {
-  DropdownMenu,
-  DropdownMenuItemProps,
-  IconButton,
-  Separator,
-  useForceUpdate,
-  useModal,
-} from '@keadex/keadex-ui-kit/cross'
-import { Ref, forwardRef, useEffect, useImperativeHandle } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Tooltip } from 'tw-elements'
-import { DiagramCodeViewCommands } from '../../views/DiagramEditor/DiagramCodeView/DiagramCodeView'
-import { DiagramDesignViewCommands } from '../../views/DiagramEditor/DiagramDesignView/DiagramDesignView'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   DIAGRAM_ELEMENTS_TYPES,
   Diagram,
   diagramTypeHumanName,
 } from '@keadex/c4-model-ui-kit'
+import {
+  DropdownMenu,
+  DropdownMenuItemProps,
+  IconButton,
+  Separator,
+  Tags,
+  useForceUpdate,
+  useModal,
+} from '@keadex/keadex-ui-kit/cross'
 import { kebabCase, snakeCase } from 'change-case'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Ref, forwardRef, useEffect, useImperativeHandle } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Tooltip } from 'tw-elements'
+import { DiagramCodeViewCommands } from '../../views/DiagramEditor/DiagramCodeView/DiagramCodeView'
+import { DiagramDesignViewCommands } from '../../views/DiagramEditor/DiagramDesignView/DiagramDesignView'
+import ModalCRUDiagram from '../ModalCRUDiagram/ModalCRUDiagram'
 
 export interface DiagramEditorToolbarProps {
   diagram?: Diagram
@@ -61,7 +63,7 @@ export const DiagramEditorToolbar = forwardRef(
     const AI_ENABLED = JSON.parse(import.meta.env.VITE_AI_ENABLED)
     const { t } = useTranslation()
     const { forceUpdate } = useForceUpdate()
-    const { modal } = useModal()
+    const { modal, showModal, hideModal } = useModal()
 
     useEffect(() => {
       const tooltipTriggerList = [].slice.call(
@@ -123,13 +125,52 @@ export const DiagramEditorToolbar = forwardRef(
       return addDiagramElementMenuItems
     }
 
+    function handleProjectInfoClick() {
+      if (diagram && diagram.diagram_type && diagram.diagram_name) {
+        showModal({
+          id: `showInfoDiargamModal`,
+          title: `${diagramTypeHumanName(diagram.diagram_type)} ${t(
+            'common.diagram',
+          )} - ${diagram.diagram_name}`,
+          body: (
+            <ModalCRUDiagram
+              diagramName={diagram.diagram_name}
+              diagramType={diagram.diagram_type}
+              mode="readonly"
+              hideModal={hideModal}
+              forceUpdate={forceUpdate}
+            />
+          ),
+          buttons: false,
+        })
+      }
+    }
+
     return (
       <div id="diagram-editor-toolbar" className="w-full z-[6]">
         {modal}
         {diagram && diagram.diagram_type && (
-          <div className="w-full pt-3 px-3 text-lg">
-            {diagramTypeHumanName(diagram.diagram_type)} -{' '}
-            {diagram.diagram_name}
+          <div
+            className="w-full pt-3 px-3 flex flex-col cursor-pointer"
+            onClick={handleProjectInfoClick}
+          >
+            <div className="flex">
+              <div className="text-lg grow truncate">
+                {diagramTypeHumanName(diagram.diagram_type)}{' '}
+                {t('common.diagram')} - {diagram.diagram_name}
+              </div>
+              {diagram.diagram_spec?.tags && (
+                <div>
+                  <Tags
+                    tags={diagram.diagram_spec.tags}
+                    className="float-right top-1/2 -translate-y-1/2"
+                  />
+                </div>
+              )}
+            </div>
+            <div className="text-sm line-clamp-3">
+              {diagram.diagram_spec?.description}
+            </div>
           </div>
         )}
 

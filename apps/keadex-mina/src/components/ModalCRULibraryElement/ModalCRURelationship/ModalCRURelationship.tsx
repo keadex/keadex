@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { ModalCRULibraryElementProps } from '../ModalCRULibraryElements'
+import { ALIAS_REGEX, NAME_REGEX } from '../../../constants/regex'
 
 const emptyRelationship: Relationship = {
   base_data: {
@@ -54,6 +55,8 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
           type="text"
           label={`${t('common.from')}*`}
           className="mt-6"
+          allowedChars={ALIAS_REGEX}
+          info={`${t('common.allowed_pattern')}: ${ALIAS_REGEX}`}
           value={newRelationship?.from}
           onChange={(e) =>
             setNewRelationship({
@@ -67,6 +70,8 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
           type="text"
           label={`${t('common.to')}*`}
           className="mt-6"
+          allowedChars={ALIAS_REGEX}
+          info={`${t('common.allowed_pattern')}: ${ALIAS_REGEX}`}
           value={newRelationship?.to}
           onChange={(e) =>
             setNewRelationship({
@@ -80,6 +85,8 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
           type="text"
           label={`${t('common.label')}*`}
           className="mt-6"
+          allowedChars={NAME_REGEX}
+          info={`${t('common.allowed_pattern')}: ${NAME_REGEX}`}
           value={newRelationship?.base_data?.label}
           onChange={(e) =>
             setNewRelationship({
@@ -119,6 +126,8 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
           type="text"
           label={`${t('common.technology')}*`}
           className="mt-6"
+          allowedChars={NAME_REGEX}
+          info={`${t('common.allowed_pattern')}: ${NAME_REGEX}`}
           value={newRelationship?.technology}
           onChange={(e) =>
             setNewRelationship({

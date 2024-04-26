@@ -1,5 +1,5 @@
 import { getDataAttributes } from '@keadex/keadex-utils'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export type TextareaProps =
   React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
@@ -13,6 +13,10 @@ export const Textarea = React.memo((props: TextareaProps) => {
     string | number | readonly string[] | undefined
   >(props.value)
   const dataAttributes = getDataAttributes(props)
+
+  useEffect(() => {
+    setValue(props.value)
+  }, [props.value])
 
   return (
     <div className={`relative mb-3`} data-te-input-wrapper-init>

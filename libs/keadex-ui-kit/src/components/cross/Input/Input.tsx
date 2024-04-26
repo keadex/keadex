@@ -1,28 +1,54 @@
 import { getDataAttributes } from '@keadex/keadex-utils'
-import React, { useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   [key: `data-${string}`]: unknown
   key?: string
   label: string
+  info?: string
+  allowedChars?: RegExp
 }
 
 export const Input = React.memo((props: InputProps) => {
   const [value, setValue] = useState<
     string | number | readonly string[] | undefined
   >(props.value)
+
+  const { label, info, allowedChars, ...otherProps } = {
+    ...props,
+  }
+
   const dataAttributes = getDataAttributes(props)
+
+  useEffect(() => {
+    setValue(props.value)
+  }, [props.value])
+
+  function handleOnKeyDown(e: KeyboardEvent) {
+    if (props.allowedChars) {
+      if (!props.allowedChars.test(e.key)) e.preventDefault()
+      // console.log(e.key)
+    }
+  }
+
+  function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
+    if (props.allowedChars && e.currentTarget.value !== '') {
+      if (!props.allowedChars.test(e.currentTarget.value)) {
+        if (value) e.currentTarget.value = value.toString()
+        return
+      }
+    }
+    setValue(e.currentTarget.value)
+    if (props.onChange) props.onChange(e)
+  }
 
   return (
     <div className={`relative mb-3`}>
       <input
         maxLength={200}
-        {...props}
+        {...otherProps}
         {...dataAttributes}
-        onChange={(e) => {
-          setValue(e.currentTarget.value)
-          if (props.onChange) props.onChange(e)
-        }}
+        onChange={handleOnChange}
         data-te-input-state-active
         className={`peer transition-all duration-200 ease-linear placeholder:opacity-0 motion-reduce:transition-none ${props.className}`}
         placeholder={props.label}
@@ -37,6 +63,7 @@ export const Input = React.memo((props: InputProps) => {
       >
         {props.label}
       </label>
+      {info && <div className="text-sm px-3">{info}</div>}
     </div>
   )
 })

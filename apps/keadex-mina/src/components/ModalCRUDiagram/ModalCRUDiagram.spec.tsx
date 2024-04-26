@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react'
 
-import ModalCreateDiagram from './ModalCreateDiagram'
+import ModalCRUDiagram from './ModalCRUDiagram'
 
-describe('ModalCreateDiagram', () => {
+describe('ModalCRUDiagram', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
-      <ModalCreateDiagram
+      <ModalCRUDiagram
         mode={'create'}
         hideModal={function (): void {
           console.log('Function not implemented.')

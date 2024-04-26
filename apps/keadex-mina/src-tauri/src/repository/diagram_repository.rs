@@ -164,48 +164,19 @@ pub fn delete_diagram(
 }
 
 /**
-Duplicates a diagram.
-# Arguments
-  * `from_diagram_name` - Name of the diagram to duplicate.
-  * `from_diagram_type` - Type of the diagram to duplicate.
-  * `to_diagram_name` - Name of the duplicated diagram.
-  * `to_diagram_type` - Type of the duplicated diagram.
-*/
-pub fn duplicate_diagram(
-  from_diagram_name: &str,
-  from_diagram_type: &DiagramType,
-  to_diagram_name: &str,
-  to_diagram_type: &DiagramType,
-) -> Result<bool, MinaError> {
-  let from_diagram = open_diagram(from_diagram_name, from_diagram_type.clone())?;
-  close_diagram(from_diagram_name, from_diagram_type.clone())?;
-  create_diagram(
-    to_diagram_name,
-    &to_diagram_type,
-    from_diagram.diagram_plantuml,
-    from_diagram.diagram_spec,
-  )?;
-  Ok(true)
-}
-
-/**
 Creates a diagram.
 # Arguments
-  * `diagram_name` - Name of the diagram to open.
-  * `diagram_type` - Type of the diagram to open.
-  * `diagram_plantuml` - Optional PlantUML code of the new diagram.
-  * `diagram_spec` - Optional specifications of the new diagram.
+  * `new_diagram` - New diagram to create.
 */
-pub fn create_diagram(
-  diagram_name: &str,
-  diagram_type: &DiagramType,
-  diagram_plantuml: Option<DiagramPlantUML>,
-  diagram_spec: Option<DiagramSpec>,
-) -> Result<(), MinaError> {
-  let _diagram_plantuml = diagram_plantuml.unwrap_or(DiagramPlantUML::default());
-  let _diagram_spec = diagram_spec.unwrap_or(DiagramSpec::default());
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let diagram_dir_path = diagram_dir_path_from_name_type(diagram_name, &diagram_type)?;
+pub fn create_diagram(new_diagram: Diagram) -> Result<(), MinaError> {
+  let _diagram_plantuml = new_diagram
+    .diagram_plantuml
+    .unwrap_or(DiagramPlantUML::default());
+  let _diagram_spec = new_diagram.diagram_spec.unwrap_or(DiagramSpec::default());
+
+  let diagram_name = &new_diagram.diagram_name.unwrap();
+  let diagram_type = &new_diagram.diagram_type.unwrap();
+  let diagram_dir_path = diagram_dir_path_from_name_type(diagram_name, diagram_type)?;
 
   if Path::new(&diagram_dir_path).exists() {
     return Err(MinaError::new(
@@ -218,6 +189,7 @@ pub fn create_diagram(
   std::fs::create_dir_all(&diagram_dir_path)?;
 
   // Create PlantUML file
+  let store = ROOT_RESOLVER.get().read().unwrap();
   let diagram_plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, diagram_type)?;
   resolve_to_write!(store, DiagramPlantUMLFsDAO).save(
     &_diagram_plantuml,

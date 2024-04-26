@@ -5035,6 +5035,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/yaireo__tagify@^4.18.0":
+  version "4.18.0"
+  resolved "https://registry.yarnpkg.com/@types/yaireo__tagify/-/yaireo__tagify-4.18.0.tgz#51646ab02e79e4f57b563be6f264d2af7f2add59"
+  integrity sha512-iT1it1OyTiuZl7G9Gh2mTBGQ2dssiWChJpmD41/+zLux1x1r2tSroIZ+mXFvdsoqG1yprjd2x+taV+0u9QF9zA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/yargs-parser@*":
   version "21.0.1"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-21.0.1.tgz#07773d7160494d56aa882d7531aac7319ea67c3b"
@@ -5412,6 +5419,11 @@
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
+
+"@yaireo/tagify@^4.24.0":
+  version "4.24.0"
+  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.24.0.tgz#5e7dcf6b421178dd15bf79dce98db4078879785e"
+  integrity sha512-Q124iBwTsVgmCG1/LezRf13CGcmRqed3Jy5EZ0lE0QhnUzmwXZ0YBnYeO0Ic8DkFnZSzK2XJ7ESNwXBohs8uMw==
 
 "@yarnpkg/lockfile@^1.1.0":
   version "1.1.0"

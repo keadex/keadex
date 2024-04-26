@@ -2,4 +2,4 @@
 import type { DiagramElementSpec } from "./DiagramElementSpec";
 import type { Shape } from "./Shape";
 
-export interface DiagramSpec { uuid: string, description?: string, elements_specs: Array<DiagramElementSpec>, shapes: Array<Shape>, }
+export interface DiagramSpec { uuid: string, description?: string, tags: Array<string> | null, elements_specs: Array<DiagramElementSpec>, shapes: Array<Shape>, }

@@ -1,0 +1,62 @@
+import { objectsAreEqual } from '@keadex/keadex-utils'
+import Tagify, { BaseTagData, EventDataMap, TagData } from '@yaireo/tagify'
+import React, { useEffect, useState } from 'react'
+
+export interface TagsInputProps<T extends BaseTagData = TagData> {
+  id: string
+  tags: string[]
+  callbacks?: {
+    [K in keyof EventDataMap]?: (event: CustomEvent<EventDataMap<T>[K]>) => void
+  }
+  label?: string
+  className?: string
+  disabled?: boolean
+}
+
+export const TagsInput = React.memo(
+  ({ id, tags, callbacks, label, className, disabled }: TagsInputProps) => {
+    const [tagifiedInput, setTagifiedInput] = useState<Tagify | undefined>()
+
+    useEffect(() => {
+      // the 'input' element which will be transformed into a Tagify component
+      const inputElem = document.querySelector(`input[id=${id}]`) as
+        | HTMLInputElement
+        | undefined
+      if (inputElem && !tagifiedInput) {
+        setTagifiedInput(
+          new Tagify(inputElem, {
+            callbacks,
+          }),
+        )
+      }
+    }, [id])
+
+    useEffect(() => {
+      if (tagifiedInput) {
+        const currentTags = tagifiedInput.value.map((value) => value.value)
+        if (!objectsAreEqual(currentTags, tags)) {
+          tagifiedInput.removeAllTags({ withoutChangeEvent: true })
+          tagifiedInput.addTags(tags)
+        }
+      }
+    }, [tagifiedInput, tags])
+
+    return (
+      <div className={`relative ${className ?? ''}`}>
+        {label && (
+          <span className="input__label absolute left-3 top-0 mb-0 -translate-y-[1.1rem] scale-[0.9] pt-[0.37rem] leading-[1.6] drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] z-[1]">
+            {label}
+          </span>
+        )}
+        <input
+          id={id}
+          type="text"
+          defaultValue={tags.join(',')}
+          disabled={disabled}
+        />
+      </div>
+    )
+  },
+)
+
+export default TagsInput

@@ -21,6 +21,7 @@ pub struct DiagramSpec {
   pub uuid: String,
   #[serde(skip_serializing_if = "Option::is_none")]
   pub description: Option<String>,
+  pub tags: Option<Vec<String>>,
   pub elements_specs: Vec<DiagramElementSpec>,
   pub shapes: Vec<Shape>,
 }
@@ -33,6 +34,7 @@ impl Default for DiagramSpec {
       #[cfg(not(feature = "desktop"))]
       uuid: String::from("null"),
       description: None,
+      tags: None,
       elements_specs: vec![],
       shapes: vec![],
     }

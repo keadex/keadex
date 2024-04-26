@@ -10,5 +10,7 @@
 @import '@keadex/keadex-ui-kit/styles/components/cross/DropdownMenu/DropdownMenu.css';
 @import '@keadex/keadex-ui-kit/styles/components/cross/SearchButton/SearchButton.css';
 @import '@keadex/keadex-ui-kit/styles/components/cross/Modal/Modal.css';
+@import '@keadex/keadex-ui-kit/styles/components/cross/Tags/Tags.css';
+@import '@keadex/keadex-ui-kit/styles/components/cross/TagsInput/TagsInput.css';
 @import '@keadex/keadex-ui-kit/styles/components/cross/Tooltip/Tooltip.css';
 @import '@keadex/keadex-ui-kit/styles/components/desktop/Window/Window.css';

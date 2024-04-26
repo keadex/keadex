@@ -25,7 +25,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import ModalCreateDiagram from '../../components/ModalCreateDiagram/ModalCreateDiagram'
+import ModalCRUDiagram from '../../components/ModalCRUDiagram/ModalCRUDiagram'
 import { EDIT_DIAGRAM } from '../../core/router/routes'
 import { useAppDispatch, useAppSelector } from '../../core/store/hooks'
 import { listDiagrams } from '../../core/tauri-rust-bridge'
@@ -176,7 +176,7 @@ export const HomeProject = React.memo((props: HomeProjectProps) => {
                   'common.diagram',
                 ).toLowerCase()}`,
                 body: (
-                  <ModalCreateDiagram
+                  <ModalCRUDiagram
                     mode="create"
                     hideModal={hideModal}
                     forceUpdate={forceUpdate}

@@ -29,7 +29,7 @@ use keadex_mina::controller::ai_controller::generate_plantuml;
 use keadex_mina::controller::diagram_controller::__cmd__deserialize_plantuml_by_string;
 use keadex_mina::controller::diagram_controller::__cmd__diagram_from_link_string;
 use keadex_mina::controller::diagram_controller::__cmd__diagram_name_type_from_path;
-use keadex_mina::controller::diagram_controller::__cmd__duplicate_diagram;
+use keadex_mina::controller::diagram_controller::__cmd__get_diagram;
 use keadex_mina::controller::diagram_controller::close_diagram;
 use keadex_mina::controller::diagram_controller::create_diagram;
 use keadex_mina::controller::diagram_controller::delete_diagram;
@@ -37,8 +37,8 @@ use keadex_mina::controller::diagram_controller::deserialize_plantuml_by_string;
 use keadex_mina::controller::diagram_controller::diagram_from_link_string;
 use keadex_mina::controller::diagram_controller::diagram_name_type_from_path;
 use keadex_mina::controller::diagram_controller::diagram_to_link_string;
-use keadex_mina::controller::diagram_controller::duplicate_diagram;
 use keadex_mina::controller::diagram_controller::export_diagram_to_file;
+use keadex_mina::controller::diagram_controller::get_diagram;
 use keadex_mina::controller::diagram_controller::list_diagrams;
 use keadex_mina::controller::diagram_controller::open_diagram;
 use keadex_mina::controller::diagram_controller::parsed_element_to_plantuml;
@@ -73,7 +73,7 @@ fn main() {
       .transparent(true)
       .decorations(false)
       .title("Keadex Mina")
-      .inner_size(1080.0, 768.0)
+      .inner_size(1080.0, 800.0)
       .resizable(true)
       .center()
       .build()?;
@@ -91,10 +91,10 @@ fn main() {
       diagram_from_link_string,
       diagram_name_type_from_path,
       diagram_to_link_string,
-      duplicate_diagram,
-      library_element_type_from_path,
       export_diagram_to_file,
       generate_plantuml,
+      get_diagram,
+      library_element_type_from_path,
       list_diagrams,
       list_library_elements,
       open_diagram,

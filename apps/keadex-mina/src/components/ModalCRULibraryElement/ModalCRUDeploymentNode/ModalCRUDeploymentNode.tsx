@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { ModalCRULibraryElementProps } from '../ModalCRULibraryElements'
+import { ALIAS_REGEX, NAME_REGEX } from '../../../constants/regex'
 
 const emptyDeploymentNode: DeploymentNode = {
   base_data: {
@@ -53,6 +54,8 @@ export const ModalCRUDeploymentNode = (props: ModalCRULibraryElementProps) => {
           type="text"
           label={`${t('common.alias')}*`}
           className="mt-6"
+          allowedChars={ALIAS_REGEX}
+          info={`${t('common.allowed_pattern')}: ${ALIAS_REGEX}`}
           value={newDeploymentNode?.base_data?.alias}
           onChange={(e) =>
             setNewDeploymentNode({
@@ -69,6 +72,8 @@ export const ModalCRUDeploymentNode = (props: ModalCRULibraryElementProps) => {
           type="text"
           label={`${t('common.label')}*`}
           className="mt-6"
+          allowedChars={NAME_REGEX}
+          info={`${t('common.allowed_pattern')}: ${NAME_REGEX}`}
           value={newDeploymentNode?.base_data?.label}
           onChange={(e) =>
             setNewDeploymentNode({

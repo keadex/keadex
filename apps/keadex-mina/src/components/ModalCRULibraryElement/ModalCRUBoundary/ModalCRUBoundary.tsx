@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { ModalCRULibraryElementProps } from '../ModalCRULibraryElements'
+import { ALIAS_REGEX, NAME_REGEX } from '../../../constants/regex'
 
 const emptyBoundary: Boundary = {
   base_data: {
@@ -47,6 +48,8 @@ export const ModalCRUBoundary = (props: ModalCRULibraryElementProps) => {
           type="text"
           label={`${t('common.alias')}*`}
           className="mt-6"
+          allowedChars={ALIAS_REGEX}
+          info={`${t('common.allowed_pattern')}: ${ALIAS_REGEX}`}
           value={newBoundary?.base_data?.alias}
           onChange={(e) =>
             setNewBoundary({
@@ -63,6 +66,8 @@ export const ModalCRUBoundary = (props: ModalCRULibraryElementProps) => {
           type="text"
           label={`${t('common.label')}*`}
           className="mt-6"
+          allowedChars={NAME_REGEX}
+          info={`${t('common.allowed_pattern')}: ${NAME_REGEX}`}
           value={newBoundary?.base_data?.label}
           onChange={(e) =>
             setNewBoundary({

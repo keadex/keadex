@@ -26,6 +26,22 @@ pub async fn list_diagrams() -> Result<HashMap<DiagramType, Vec<String>>, MinaEr
 }
 
 /**
+Returns the data of a diagram.
+# Arguments
+  * `diagram_name` - Name of the diagram to open.
+  * `diagram_type` - Type of the diagram to open.
+*/
+#[tauri::command]
+pub async fn get_diagram(
+  diagram_name: &str,
+  diagram_type: DiagramType,
+) -> Result<Diagram, MinaError> {
+  let diagram = diagram_repository::open_diagram(diagram_name, diagram_type.clone())?;
+  diagram_repository::close_diagram(diagram_name, diagram_type.clone())?;
+  Ok(diagram)
+}
+
+/**
 Opens and parses a diagram.
 Returns the opened and parsed diagram.
 # Arguments
@@ -80,39 +96,11 @@ pub async fn delete_diagram(
 /**
 Creates a diagram.
 # Arguments
-  * `diagram_name` - Name of the diagram to open.
-  * `diagram_type` - Type of the diagram to open.
+  * `new_diagram` - New diagram to create.
 */
 #[tauri::command]
-pub async fn create_diagram(
-  diagram_name: &str,
-  diagram_type: DiagramType,
-) -> Result<bool, MinaError> {
-  diagram_repository::create_diagram(diagram_name, &diagram_type, None, None)?;
-  Ok(true)
-}
-
-/**
-Duplicates a diagram.
-# Arguments
-  * `from_diagram_name` - Name of the diagram to duplicate.
-  * `from_diagram_type` - Type of the diagram to duplicate.
-  * `to_diagram_name` - Name of the duplicated diagram.
-  * `to_diagram_type` - Type of the duplicated diagram.
-*/
-#[tauri::command]
-pub async fn duplicate_diagram(
-  from_diagram_name: &str,
-  from_diagram_type: DiagramType,
-  to_diagram_name: &str,
-  to_diagram_type: DiagramType,
-) -> Result<bool, MinaError> {
-  diagram_repository::duplicate_diagram(
-    from_diagram_name,
-    &from_diagram_type,
-    to_diagram_name,
-    &to_diagram_type,
-  )?;
+pub async fn create_diagram(new_diagram: Diagram) -> Result<bool, MinaError> {
+  diagram_repository::create_diagram(new_diagram)?;
   Ok(true)
 }
 

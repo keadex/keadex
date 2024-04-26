@@ -60,6 +60,13 @@ export async function listDiagrams(): Promise<{
   return invoke('list_diagrams')
 }
 
+export async function getDiagram(
+  diagramName: string,
+  diagramType: DiagramType,
+): Promise<Diagram> {
+  return invoke('get_diagram', { diagramName, diagramType })
+}
+
 export async function loadDiagram(
   diagramName: string,
   diagramType: DiagramType,
@@ -80,27 +87,9 @@ export async function closeDiagram(
   })
 }
 
-export async function createDiagram(
-  diagramName: string,
-  diagramType: DiagramType,
-): Promise<boolean> {
+export async function createDiagram(newDiagram: Diagram): Promise<boolean> {
   return invoke('create_diagram', {
-    diagramName,
-    diagramType,
-  })
-}
-
-export async function duplicateDiagram(
-  fromDiagramName: string,
-  fromDiagramType: DiagramType,
-  toDiagramName: string,
-  toDiagramType: DiagramType,
-): Promise<boolean> {
-  return invoke('duplicate_diagram', {
-    fromDiagramName,
-    fromDiagramType,
-    toDiagramName,
-    toDiagramType,
+    newDiagram,
   })
 }
 

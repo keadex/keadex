@@ -2,6 +2,7 @@
   "common": {
     "about": "About",
     "alias": "Alias",
+    "allowed_pattern": "Allowed pattern",
     "architecture": "Architecture",
     "boundary": "Boundary",
     "cancel": "Cancel",
@@ -62,6 +63,7 @@
     "settings": "Settings",
     "software_system": "Software System",
     "system": "System",
+    "tags": "Tags",
     "technology": "Technology",
     "to": "To",
     "type": "Type",

@@ -72,4 +72,8 @@ export {
   type ProgressProps,
 } from './components/cross/Progress/Progress'
 export { Tags, type TagsProps } from './components/cross/Tags/Tags'
+export {
+  TagsInput,
+  type TagsInputProps,
+} from './components/cross/TagsInput/TagsInput'
 export { Tabs, type TabsProps, type Tab } from './components/cross/Tabs/Tabs'

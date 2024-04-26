@@ -6,6 +6,10 @@
   @apply cursor-pointer;
 }
 
+.select__input:disabled {
+  @apply cursor-default;
+}
+
 .select__option {
   @apply text-accent-primary data-[te-input-multiple-active]:bg-link hover:[&:not([data-te-select-option-disabled])]:bg-link data-[te-input-state-active]:bg-link flex w-full cursor-pointer select-none flex-row items-center justify-between truncate bg-transparent px-4 data-[te-select-option-disabled]:cursor-default data-[te-select-selected]:data-[te-select-option-disabled]:cursor-default data-[te-select-option-selected]:bg-black/[0.02] data-[te-select-selected]:data-[te-select-option-disabled]:bg-transparent data-[te-input-state-active]:text-white data-[te-select-option-disabled]:text-gray-400 data-[te-select-selected]:data-[te-select-option-disabled]:text-white group-data-[te-select-option-group-ref]/opt:pl-7 hover:[&:not([data-te-select-option-disabled])]:text-white !important;
 }

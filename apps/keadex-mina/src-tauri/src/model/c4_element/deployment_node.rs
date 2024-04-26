@@ -132,9 +132,16 @@ impl PlantUMLSerializer for DeploymentNode {
     if let Some(link) = &self.base_data.link {
       deployment_node_ser.push_str(&format!(", $link=\"{}\"", link));
     }
+
+    let sub_elements = serialize_elements_to_plantuml(&self.sub_elements, level + 1);
+    let mut new_line = "";
+    if sub_elements.eq("") {
+      new_line = "\n";
+    }
     deployment_node_ser.push_str(&format!(
-      "){{{}{}",
-      serialize_elements_to_plantuml(&self.sub_elements, level + 1),
+      "){{{}{}{}",
+      sub_elements,
+      new_line,
       format_with_indent(level, "}".to_string())
     ));
 
