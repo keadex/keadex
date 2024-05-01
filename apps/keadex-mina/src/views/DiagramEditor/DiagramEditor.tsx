@@ -13,6 +13,7 @@ import { EDIT_DIAGRAM, HOME_PROJECT } from '../../core/router/routes'
 import {
   closeDiagram,
   diagramFromLinkString,
+  executeHook,
   loadDiagram,
   saveSpecDiagramRawPlantuml,
 } from '../../core/tauri-rust-bridge'
@@ -211,6 +212,10 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
               )
               await handleOpenDiagram()
               setIsSaving(false)
+              executeHook({
+                data: { Diagram: updatedDiagram },
+                hook_type: 'onDiagramSaved',
+              })
             })
             .catch((error: MinaError) => {
               setIsSaving(false)

@@ -17,11 +17,16 @@ Deserializes a JSON file by giving its path
 # Arguments
   * `path` - Path of the file
 */
-pub fn serialize_obj_to_json_string<T>(data: &T) -> Result<String, MinaError>
+pub fn serialize_obj_to_json_string<T>(data: &T, pretty: bool) -> Result<String, MinaError>
 where
   T: serde::Serialize + std::fmt::Debug,
 {
-  let result = serde_json::to_string_pretty(data);
+  let result;
+  if pretty {
+    result = serde_json::to_string_pretty(data);
+  } else {
+    result = serde_json::to_string(data);
+  }
   if let Err(error) = result {
     log::error!("{}", error);
     let error_msg = format!("{:?} {}", data, error.to_string());

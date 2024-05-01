@@ -213,7 +213,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
       }
     }
     let mut file = self.open_and_unlock_file(path, false, true)?;
-    let serialized_json = serialize_obj_to_json_string(data)?;
+    let serialized_json = serialize_obj_to_json_string(data, true)?;
     file.write_all(serialized_json.as_bytes())?;
     let _ = self.lock_file(path);
     Ok(())
@@ -228,7 +228,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
   */
   fn save_all(&mut self, data: &Vec<T>, path: &Path) -> Result<(), MinaError> {
     let mut file = self.open_and_unlock_file(path, false, true)?;
-    let serialized_json = serialize_obj_to_json_string(data)?;
+    let serialized_json = serialize_obj_to_json_string(data, true)?;
     file.write_all(serialized_json.as_bytes())?;
     let _ = self.lock_file(path);
     Ok(())

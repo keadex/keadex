@@ -19,6 +19,7 @@ use crate::dao::filesystem::FileSystemDAO;
 use crate::dao::inmemory::InMemoryDAO;
 use crate::error_handling::mina_error::MinaError;
 use crate::helper::diagram_helper::{diagram_folder_name_from_type, diagram_type_path};
+use crate::helper::hook_helper::hooks_path;
 use crate::helper::library_helper::{project_library_file_path, project_library_path};
 use crate::helper::project_helper::project_settings_path;
 use crate::model::c4_element::C4Elements;
@@ -29,6 +30,7 @@ use crate::model::project_settings::ProjectSettings;
 use crate::resolve_to_write;
 use crate::templates::demo_diagram_puml::generate_demo_diagram_puml;
 use crate::templates::demo_diagram_spec::generate_demo_diagram_spec;
+use crate::templates::hooks_js_file::generate_hooks_js_file;
 use crate::validator::project_validator::{
   validate_output_project_directory, validate_project_structure,
 };
@@ -227,6 +229,10 @@ pub fn create_empty_project(
     &Path::new(&project_settings_path(&project_settings.root)),
     true,
   )?;
+
+  // Generate hooks js file
+  let mut hooks_file = File::create(hooks_path(&project_settings.root))?;
+  hooks_file.write_all(generate_hooks_js_file().as_bytes())?;
 
   Ok(project_settings)
 }

@@ -3,6 +3,8 @@ pub mod ai_controller;
 #[cfg(feature = "desktop")]
 pub mod diagram_controller;
 #[cfg(feature = "desktop")]
+pub mod hook_controller;
+#[cfg(feature = "desktop")]
 pub mod library_controller;
 #[cfg(feature = "desktop")]
 pub mod project_controller;

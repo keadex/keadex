@@ -43,6 +43,7 @@ use keadex_mina::controller::diagram_controller::list_diagrams;
 use keadex_mina::controller::diagram_controller::open_diagram;
 use keadex_mina::controller::diagram_controller::parsed_element_to_plantuml;
 use keadex_mina::controller::diagram_controller::save_spec_diagram_raw_plantuml;
+use keadex_mina::controller::hook_controller::__cmd__execute_hook;
 use keadex_mina::controller::library_controller::__cmd__create_library_element;
 use keadex_mina::controller::library_controller::__cmd__library_element_type_from_path;
 use keadex_mina::controller::library_controller::__cmd__update_library_element;
@@ -57,6 +58,7 @@ use keadex_mina::controller::project_controller::create_project;
 use keadex_mina::controller::project_controller::open_project;
 use keadex_mina::controller::project_controller::search;
 use keadex_mina::repository::project_repository::save_project_settings;
+use keadex_mina::service::hook_service::execute_hook;
 use tauri::WindowBuilder;
 
 fn main() {
@@ -91,6 +93,7 @@ fn main() {
       diagram_from_link_string,
       diagram_name_type_from_path,
       diagram_to_link_string,
+      execute_hook,
       export_diagram_to_file,
       generate_plantuml,
       get_diagram,

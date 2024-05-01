@@ -1,7 +1,9 @@
 use std::collections::HashSet;
 
 use crate::core::serializer::deserialize_plantuml_by_string;
-use crate::error_handling::errors::{DUPLICATED_ALIASES_IN_DIAGRAM, DUPLICATED_ALIASES_IN_PROJECT};
+use crate::error_handling::errors::{
+  DUPLICATED_ALIASES_IN_DIAGRAM_ERROR_CODE, DUPLICATED_ALIASES_IN_PROJECT_ERROR_CODE,
+};
 use crate::error_handling::mina_error::MinaError;
 use crate::helper::diagram_helper::{
   diagram_name_type_from_path, diagram_to_link_string, get_all_elements_aliases,
@@ -57,7 +59,7 @@ pub fn check_in_diagram_elements_aliases(
     let added = map_aliases.insert(alias.clone());
     if !added {
       return Err(MinaError::new(
-        DUPLICATED_ALIASES_IN_DIAGRAM,
+        DUPLICATED_ALIASES_IN_DIAGRAM_ERROR_CODE,
         &format!(
           "The alias \"{}\" is already present in the diagram. Please choose a different alias.",
           alias
@@ -165,7 +167,7 @@ pub fn check_cross_diagrams_elements_aliases(
         }
         if partial_paths_found.len() > 0 {
           return Err(MinaError {
-            code: DUPLICATED_ALIASES_IN_PROJECT,
+            code: DUPLICATED_ALIASES_IN_PROJECT_ERROR_CODE,
             msg: format!("The alias \"{}\" is already used with different attributes in the following diagram(s) and/or library element(s): {}.\n\nIf you intend to modify an element imported from the library, ensure that the modification is made within the library itself rather than within the diagram. Otherwise make sure to use a different alias.", alias, partial_paths_found.join(", ")),
           });
         }

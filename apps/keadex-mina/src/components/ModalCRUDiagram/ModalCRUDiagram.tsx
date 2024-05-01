@@ -19,6 +19,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { NAME_REGEX } from '../../constants/regex'
 import {
   createDiagram,
+  executeHook,
   getDiagram,
   saveSpecDiagramRawPlantuml,
 } from '../../core/tauri-rust-bridge'
@@ -71,6 +72,10 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
         .then((success) => {
           if (success) {
             toast.info(t('common.info.done'))
+            executeHook({
+              data: { Diagram: diagram },
+              hook_type: 'onDiagramCreated',
+            })
             props.forceUpdate()
             props.hideModal()
           }
@@ -93,6 +98,10 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
         )
           .then(() => {
             toast.info(t('common.info.done'))
+            executeHook({
+              data: { Diagram: diagram },
+              hook_type: 'onDiagramSaved',
+            })
             props.forceUpdate()
             props.hideModal()
           })
