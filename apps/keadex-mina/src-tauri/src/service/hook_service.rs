@@ -6,6 +6,8 @@ use crate::error_handling::mina_error::MinaError;
 use crate::helper::hook_helper::hooks_path;
 use crate::model::hook::{HookData, HookPayload};
 use crate::resolve_to_write;
+#[cfg(target_os = "windows")]
+use std::os::windows::process::CommandExt;
 use std::process::Command;
 
 pub const HOOKS_FILE_NAME: &str = "hooks.js";
@@ -18,6 +20,8 @@ Returns true if the hook has been successfully executed.
 */
 pub async fn execute_hook(payload: HookPayload) -> Result<bool, MinaError> {
   log::info!("Executing hook {:?}", payload.hook_type);
+
+  const CREATE_NO_WINDOW: u32 = 0x08000000;
 
   let store = ROOT_RESOLVER.get().read().unwrap();
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
@@ -42,6 +46,9 @@ pub async fn execute_hook(payload: HookPayload) -> Result<bool, MinaError> {
   let mut output = Command::new("node");
   output.arg("-e");
   output.arg(import);
+
+  #[cfg(target_os = "windows")]
+  output.creation_flags(CREATE_NO_WINDOW);
 
   let result = output.status();
   if let Ok(_res) = result {
