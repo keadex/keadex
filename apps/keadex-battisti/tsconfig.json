@@ -16,7 +16,10 @@
         "name": "next"
       }
     ],
-    "types": ["jest", "node"]
+    "types": [
+      "jest",
+      "node"
+    ]
   },
   "include": [
     "**/*.ts",
@@ -25,7 +28,8 @@
     "**/*.jsx",
     "../../apps/keadex-battisti/.next/types/**/*.ts",
     "../../dist/apps/keadex-battisti/.next/types/**/*.ts",
-    "next-env.d.ts"
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

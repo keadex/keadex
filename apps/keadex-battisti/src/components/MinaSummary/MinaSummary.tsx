@@ -37,9 +37,14 @@ export default function MinaSummary({
     let url
 
     if (direct) {
+      // const userAgent = navigator?.userAgent.toLowerCase()
+      const userAgent = 'linux'
+
       const part1URL =
         'https://github.com/keadex/keadex/releases/download/keadex-mina-v'
-      const part2URL = '/Keadex.Mina_'
+      const part2URL = userAgent.includes('linux')
+        ? '/keadex-mina_'
+        : '/Keadex.Mina_'
       const baseURL = `${part1URL}${latestMinaVersion}${part2URL}${latestMinaVersion}`
 
       const windows64 = `${baseURL}_x64-setup.exe`
@@ -47,8 +52,6 @@ export default function MinaSummary({
       const linux64 = `${baseURL}_amd64.AppImage`
 
       url = windows64 // default windows x64
-
-      const userAgent = navigator?.userAgent.toLowerCase()
 
       // You can add more checks for specific OS if needed
       if (userAgent.includes('win')) {
