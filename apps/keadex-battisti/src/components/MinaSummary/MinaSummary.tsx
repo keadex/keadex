@@ -37,9 +37,8 @@ export default function MinaSummary({
     let url
 
     if (direct) {
-      // const userAgent = navigator?.userAgent.toLowerCase()
-      const userAgent = 'linux'
-
+      const userAgent = navigator?.userAgent.toLowerCase()
+      
       const part1URL =
         'https://github.com/keadex/keadex/releases/download/keadex-mina-v'
       const part2URL = userAgent.includes('linux')
