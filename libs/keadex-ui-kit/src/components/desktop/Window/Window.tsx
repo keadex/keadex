@@ -9,7 +9,7 @@ export const Window = React.memo(
     useDisableBrowserShortcuts()
 
     return (
-      <div className="window__border bg-primary absolute left-0 right-0 top-0 bottom-0 overflow-hidden rounded drop-shadow-md">
+      <div className="window__border bg-primary absolute left-0 right-0 top-0 bottom-0 overflow-hidden rounded">
         {props.children}
       </div>
     )
