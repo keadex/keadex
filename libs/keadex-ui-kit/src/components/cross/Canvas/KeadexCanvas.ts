@@ -71,6 +71,10 @@ export class KeadexCanvas extends fabric.Canvas {
     this.setZoom(this.getZoom() / DELTA_ZOOM)
   }
 
+  resetZoom() {
+    this.setZoom(1)
+  }
+
   panLeft() {
     this.relativePan(new fabric.Point(DELTA_PAN, 0))
   }
@@ -85,6 +89,10 @@ export class KeadexCanvas extends fabric.Canvas {
 
   panDown() {
     this.relativePan(new fabric.Point(0, -DELTA_PAN))
+  }
+
+  resetPan() {
+    this.absolutePan(new fabric.Point(0, 0))
   }
 }
 

@@ -404,7 +404,7 @@ dependencies = [
 
 [[package]]
 name = "keadex_mina"
-version = "1.0.0-13"
+version = "1.0.0-14"
 dependencies = [
  "bomboni_wasm",
  "convert_case",
