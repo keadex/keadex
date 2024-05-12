@@ -9,7 +9,7 @@ export type MinaMacroConfig = {
 const Config = () => {
   return (
     <MacroConfig>
-      {/* Form components */}
+      {/* Form components. */}
       <TextField
         name="projectRootUrl"
         label="Mina project root URL (mandatory) - e.g. https://raw.githubusercontent.com/{owner}/{repo}/mina-project"
