@@ -66,7 +66,10 @@ export class C4RelationshipComponent extends C4BaseComponent {
 
       relationshipUpdatedSpecs.shapes = []
       this.children?.forEach((srcChild) => {
-        const child = cloneDeep(srcChild)
+        // Clone of the Fabric object is required because it will be rotated to calculate
+        // the new position. Without cloning, you will see on the canvas
+        // the rotation of the object during the save process.
+        const child = fabric.util.object.clone(srcChild)
         if (
           child.name === RelObjects.Line ||
           child.name === RelObjects.Rectangle
