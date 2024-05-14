@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/keadex/keadex/compare/mina-react@1.1.0...mina-react@1.1.1) (2024-05-14)
+
+
+### Bug Fixes
+
+* **libs/mina-react:** fixed zindex ([f60a415](https://github.com/keadex/keadex/commit/f60a415c08209ef4434bdd84e3a64e904846aae1))
+
 # [1.1.0](https://github.com/keadex/keadex/compare/mina-react@1.0.0...mina-react@1.1.0) (2024-05-12)
 
 
