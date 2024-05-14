@@ -98,7 +98,7 @@ export const MinaReact = (props: MinaReactProps) => {
     openDiagram(diagramUrl)
   }, [diagramUrl])
 
-  // Workaround to initialize TW Elements dropdown.
+  // Workaround to initialize TW Elements dropdown
   const menuItems: DropdownMenuItemProps[] = [
     {
       id: 'dropdown-init',
