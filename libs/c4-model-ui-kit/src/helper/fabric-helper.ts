@@ -106,6 +106,28 @@ export function getMinZIndex(
   return minZIndex !== Number.MAX_SAFE_INTEGER ? minZIndex : undefined
 }
 
+export function getSavedZIndex(component: fabric.Object): number | undefined {
+  let zIndex
+  if (component.isVirtualGroupParent()) {
+    // Virtual groups do not have a position since they are composed of independent
+    // children (which could be shapes other c4 components), virtually grouped, each one with an own position.
+    // In this case only the z-index of the shapes are considered since they build the UI
+    // of the given component (parent). The c4 components instead are relative to the parent.
+    zIndex = component.data?.rawDiagramElementSpec?.shapes?.reduce(
+      (prevShape, currShape) => {
+        if (prevShape.position?.z_index === undefined) return currShape
+        if (currShape.position?.z_index === undefined) return prevShape
+        if (currShape.position.z_index < prevShape.position.z_index)
+          return prevShape
+        else return prevShape
+      },
+    ).position?.z_index
+  } else {
+    zIndex = component.data?.rawDiagramElementSpec?.position?.z_index
+  }
+  return zIndex
+}
+
 export function filterVirtualGroups(objects?: fabric.Object[]): {
   filteredObjects: fabric.Object[]
   virtualGroupsRoots: Set<C4BaseComponent>

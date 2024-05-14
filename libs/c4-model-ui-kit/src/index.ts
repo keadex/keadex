@@ -13,6 +13,11 @@ export {
   DEPLOYMENT_NODE_TYPES,
   RELATIONSHIP_TYPES,
 } from './constants/diagram'
+export {
+  CANVAS_EVENTS,
+  OBJECT_EVENTS,
+  MOUSE_EVENTS,
+} from './constants/fabric-events'
 export { ELEMENT } from './styles/style-constants'
 
 // Rendering System
@@ -56,6 +61,7 @@ export {
   addObjectsToGroupAndKeepScale,
   getBoundingBox,
   getZIndexOfObject,
+  getSavedZIndex,
   getCanvasPan,
   invalidateCanvasCache,
 } from './helper/fabric-helper'

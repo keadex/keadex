@@ -1,4 +1,5 @@
 import {
+  CANVAS_EVENTS,
   Diagram,
   DiagramListener,
   DiagramSpec,
@@ -82,9 +83,9 @@ export const DiagramDesignView = forwardRef(
 
       const localCanvas = new KeadexCanvas(canvasEl.current, options)
 
-      localCanvas.on('object:added', canvasModifiedCallback)
-      localCanvas.on('object:removed', canvasModifiedCallback)
-      localCanvas.on('object:modified', canvasModifiedCallback)
+      localCanvas.on(CANVAS_EVENTS.OBJECT_ADDED, canvasModifiedCallback)
+      localCanvas.on(CANVAS_EVENTS.OBJECT_REMOVED, canvasModifiedCallback)
+      localCanvas.on(CANVAS_EVENTS.OBJECT_MODIFIED, canvasModifiedCallback)
 
       isDiagramChanged.current = false
 

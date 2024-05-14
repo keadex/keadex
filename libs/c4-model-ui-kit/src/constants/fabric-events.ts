@@ -1,7 +1,9 @@
 export const CANVAS_EVENTS = {
   SELECTION_CREATED: 'selection:created',
+  OBJECT_ADDED: 'object:added',
   OBJECT_MOVING: 'object:moving',
   OBJECT_MODIFIED: 'object:modified',
+  OBJECT_REMOVED: 'object:removed',
   MOUSE_DOWN: 'mouse:down',
 }
 

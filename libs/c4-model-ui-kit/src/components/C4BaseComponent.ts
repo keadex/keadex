@@ -6,7 +6,11 @@ import {
 } from '@keadex/keadex-ui-kit/cross'
 import { fabric } from 'fabric'
 import { IEvent } from 'fabric/fabric-impl'
-import { MOUSE_EVENTS, OBJECT_EVENTS } from '../constants/fabric-events'
+import {
+  CANVAS_EVENTS,
+  MOUSE_EVENTS,
+  OBJECT_EVENTS,
+} from '../constants/fabric-events'
 import {
   boundaryDiagramElement,
   componentDiagramElement,
@@ -38,6 +42,7 @@ export interface IVirtualGroup {
   isVirtualGroupParent: () => boolean
   isVirtualGroupChild: () => boolean
   isVirtualGroupLeaf: () => boolean
+  isVirtualGroupBaseShape: () => boolean
   getVirtualGroupRoot: () => C4BaseComponent | undefined
 }
 
@@ -80,6 +85,12 @@ fabric.Object.prototype.isVirtualGroupRoot = function () {
 
 fabric.Object.prototype.isVirtualGroupLeaf = function () {
   return this.isVirtualGroupChild() && !this.isVirtualGroupParent()
+}
+
+fabric.Object.prototype.isVirtualGroupBaseShape = function () {
+  // If this object is the first children on the parent, then this is
+  // the base shape of the object (e.g. the rectangle in C4BaseElasticContainer)
+  return this.isVirtualGroupChild() && this.parent!.children![0] === this
 }
 
 fabric.Object.prototype.getVirtualGroupRoot = function ():
@@ -301,13 +312,19 @@ export const createBaseContextMenuItems = (
         isHeaderMenuItem: false,
         id: 'bringToFront',
         label: 'Bring to Front',
-        onClick: () => object.bringToFront(),
+        onClick: () => {
+          object.bringToFront()
+          object.canvas?.fire(CANVAS_EVENTS.OBJECT_MODIFIED)
+        },
       },
       {
         isHeaderMenuItem: false,
         id: 'bringForward',
         label: 'Bring Forward',
-        onClick: () => object.bringForward(),
+        onClick: () => {
+          object.bringForward()
+          object.canvas?.fire(CANVAS_EVENTS.OBJECT_MODIFIED)
+        },
       },
       {
         isHeaderMenuItem: false,
@@ -344,6 +361,7 @@ const sendToBack = (object: fabric.Object) => {
     // of a virtual group, otherwise it will go behind of the parent and
     // it will not be possible to bring again it to front.
     object.sendToBack()
+    object.canvas?.fire(CANVAS_EVENTS.OBJECT_MODIFIED)
   }
 }
 
@@ -367,6 +385,7 @@ const sendBackwards = (object: fabric.Object) => {
       minZIndexOfSelectedGroup - 1 > minZIndexOfParentChildren
     ) {
       object.sendBackwards()
+      object.canvas?.fire(CANVAS_EVENTS.OBJECT_MODIFIED)
     } else {
       console.debug(
         `cannot send backwards ${minZIndexOfSelectedGroup} ${minZIndexOfParentChildren}`,
@@ -385,6 +404,7 @@ const sendBackwards = (object: fabric.Object) => {
       minZIndexOfObject - 1 > minZIndexOfParentChildren
     ) {
       object.sendBackwards()
+      object.canvas?.fire(CANVAS_EVENTS.OBJECT_MODIFIED)
     } else {
       console.debug(
         `cannot send backwards ${minZIndexOfObject} ${minZIndexOfParentChildren}`,
