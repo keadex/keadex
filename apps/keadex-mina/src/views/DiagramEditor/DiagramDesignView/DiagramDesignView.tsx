@@ -40,7 +40,7 @@ export interface KeadexCanvasState {
 }
 
 export interface DiagramDesignViewProps {
-  diagramDesignViewToolbarCommands: RefObject<DiagramDesignViewToolbarCommands>
+  diagramDesignViewToolbarCommands?: RefObject<DiagramDesignViewToolbarCommands>
   diagramListener: DiagramListener
   diagram?: Diagram
   error?: MinaError
@@ -61,7 +61,12 @@ export interface DiagramDesignViewCommands {
 
 export const DiagramDesignView = forwardRef(
   (props: DiagramDesignViewProps, ref: Ref<DiagramDesignViewCommands>) => {
-    const { diagram, diagramListener, diagramDesignViewToolbarCommands } = props
+    const {
+      readOnly,
+      diagram,
+      diagramListener,
+      diagramDesignViewToolbarCommands,
+    } = props
 
     const { t } = useTranslation()
     const canvas = useRef<KeadexCanvas>()
@@ -360,6 +365,7 @@ export const DiagramDesignView = forwardRef(
     useEffect(() => {
       function handle(e: KeyboardEvent) {
         if (
+          !readOnly &&
           (e.key.toUpperCase() === 'Z' || e.key.toUpperCase() === 'Y') &&
           (e.ctrlKey || e.metaKey) &&
           mouseOnCanvas.current
@@ -374,7 +380,7 @@ export const DiagramDesignView = forwardRef(
       }
       document.addEventListener('keydown', handle)
       return () => document.removeEventListener('keydown', handle)
-    }, [historyUndo, historyRedo])
+    }, [readOnly, historyUndo, historyRedo])
 
     useEffect(() => {
       if (canvas.current && currentRenderedDiagram.current) {
@@ -391,9 +397,11 @@ export const DiagramDesignView = forwardRef(
     }, [currentRenderedDiagram.current])
 
     useEffect(() => {
-      console.debug('Update design toolbar')
-      diagramDesignViewToolbarCommands.current?.forceUpdate()
-    }, [historyUndo, historyRedo, diagramDesignViewToolbarCommands])
+      if (!readOnly && diagramDesignViewToolbarCommands) {
+        console.debug('Update design toolbar')
+        diagramDesignViewToolbarCommands.current?.forceUpdate()
+      }
+    }, [readOnly, historyUndo, historyRedo, diagramDesignViewToolbarCommands])
 
     return (
       <div className="relative h-full w-full border" ref={rootDiv}>
