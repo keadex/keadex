@@ -87,7 +87,7 @@ export const DiagramDesignView = forwardRef(
 
     function canvasModifiedCallback() {
       isDiagramChanged.current = true
-      saveHistory()
+      if (!readOnly) saveHistory()
     }
 
     function createCanvas(canvasState?: KeadexCanvasState) {
@@ -298,11 +298,11 @@ export const DiagramDesignView = forwardRef(
     }
 
     function canUndo(): boolean {
-      return historyUndo.length > 1
+      return !readOnly && historyUndo.length > 1
     }
 
     function canRedo(): boolean {
-      return historyRedo.length > 0
+      return !readOnly && historyRedo.length > 0
     }
     //----------------- End History Implementation
 
@@ -384,6 +384,8 @@ export const DiagramDesignView = forwardRef(
 
     useEffect(() => {
       if (canvas.current && currentRenderedDiagram.current) {
+        // Set history processing to true to avoid to save the history during the first rendering
+        historyProcessing.current = true
         console.debug('Rendering the diagram')
         renderDiagram(
           canvas.current,
@@ -392,7 +394,8 @@ export const DiagramDesignView = forwardRef(
         )
         canvas.current.renderAll()
         isDiagramChanged.current = false
-        if (!historyProcessing.current) initHistory()
+        historyProcessing.current = false
+        if (!readOnly) initHistory()
       }
     }, [currentRenderedDiagram.current])
 
