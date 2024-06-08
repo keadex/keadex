@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/keadex/keadex/compare/mina-react@1.2.0...mina-react@1.3.0) (2024-06-08)
+
+
+### Bug Fixes
+
+* **libs/mina-react:** disabled history processing in read only mode ([2d87055](https://github.com/keadex/keadex/commit/2d87055f8c427c7c206d88aff4aa1c7bdc24f144))
+
+
+### Features
+
+* **apps/keadex-battisti:** updated mina-react library ([c58749a](https://github.com/keadex/keadex/commit/c58749af519b6fd747427b5c820b7e2cb81c062f))
+
 # [1.2.0](https://github.com/keadex/keadex/compare/mina-react@1.1.1...mina-react@1.2.0) (2024-06-08)
 
 
