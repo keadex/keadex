@@ -20,7 +20,7 @@ import { Tooltip } from 'tw-elements'
 import { DiagramDesignViewCommands } from '../../views/DiagramEditor/DiagramDesignView/DiagramDesignView'
 
 export interface DiagramDesignViewToolbarProps {
-  diagramDesignViewCommands: RefObject<DiagramDesignViewCommands>
+  diagramDesignViewCommands: RefObject<DiagramDesignViewCommands> | null
 }
 
 export interface DiagramDesignViewToolbarCommands {
@@ -71,26 +71,26 @@ export const DiagramDesignViewToolbar = forwardRef(
         <div className="p-3">
           <div className="bg-primary flex w-full flex-1 rounded text-sm drop-shadow-md">
             <IconButton
-              disabled={diagramDesignViewCommands.current?.canUndo() === false}
+              disabled={diagramDesignViewCommands?.current?.canUndo() === false}
               icon={faRotateLeft}
               className={`${styleButton}`}
               data-te-toggle="tooltip"
               data-te-placement="bottom"
               title={t('common.undo').toString()}
               onClick={() => {
-                diagramDesignViewCommands.current?.undo()
+                diagramDesignViewCommands?.current?.undo()
                 forceUpdate()
               }}
             />
             <IconButton
-              disabled={diagramDesignViewCommands.current?.canRedo() === false}
+              disabled={diagramDesignViewCommands?.current?.canRedo() === false}
               icon={faRotateRight}
               className={`${styleButton}`}
               data-te-toggle="tooltip"
               data-te-placement="bottom"
               title={t('common.redo').toString()}
               onClick={() => {
-                diagramDesignViewCommands.current?.redo()
+                diagramDesignViewCommands?.current?.redo()
                 forceUpdate()
               }}
             />
@@ -104,7 +104,7 @@ export const DiagramDesignViewToolbar = forwardRef(
                 .toString()
                 .toLowerCase()}`}
               onClick={() => {
-                diagramDesignViewCommands.current?.exportDiagram()
+                diagramDesignViewCommands?.current?.exportDiagram()
               }}
             />
           </div>
