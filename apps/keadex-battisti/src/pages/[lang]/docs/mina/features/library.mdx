@@ -1,0 +1,76 @@
+import { faBook } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Callout } from 'nextra/components'
+
+# Library
+
+As you begin to describe more architectures within your team, the number of diagrams will grow. Additionally, many of these diagrams will share some architectural elements.
+
+While *diagrams-as-code* is a powerful approach, it also introduces some common pitfalls of software development, such as **code duplication**.
+
+Consider the following scenario: 
+
+*"Your team reuses an important architectural element (e.g., a CDN) across all systems. As a consequence, the same PlantUML code of this architectural element is included in many of your diagrams. At a certain point, your team decides to change the technology of this architectural element, requiring you to update all the diagrams."*
+
+This scenario introduces several problems:
+
+  - **Manual Refactoring**: Duplicated code necessitates manual refactoring to update all occurrences whenever a change is required.
+  - **Inconsistent Diagrams**: Manual refactoring is prone to errors. You might accidentally skip some occurrences, resulting in an inconsistent description of the architecture.
+  - **Low Productivity**: Manually recreating parts of a diagram multiple times can slow down your work.
+
+And this is where the **Mina Library** comes in with the following features:
+
+  - **Elements Reuse**: Create an element in the library and simply import it into your diagrams.
+  - **Diagrams Synchronization**: If you need to change a reused element, update it in the library. Mina will automatically synchronize all the diagrams with the updated data.
+
+## Usage
+
+<iframe
+  src="https://www.youtube.com/embed/pfYGNEbJ9Kg"
+  className="w-full h-80 my-14 border-0"
+  frameBorder="0"
+  allowFullScreen
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+/>
+
+### Creating an element in the library
+1. Click on the *library* icon (<FontAwesomeIcon icon={faBook} className="inline w-4 mx-2" />) in the sidebar
+2. Select the type of the C4 element you want to create
+3. Click on the *create* button at the top-right
+4. Fill the form with the required info
+5. Click on the *save* button
+
+### Importing a library element in a diagram
+1. Open a diagram
+2. Place the cursor at the line of the code editor where you want to add the PlantUML code of the library element
+3. You have two options:
+    1. Right mouse click -> *"Import from the library"* 
+    2. Click on the icon <FontAwesomeIcon icon={faBook} className="inline w-4 mx-2" /> in the toolbar of the editor
+4. In the dialog, select the C4 element type to import from the library
+5. Select the element from the table
+6. The dialog will close, and the PlantUML code of the selected element will be added in the code editor
+
+### Modifying a library element
+
+<Callout type="info" emoji="ℹ️">
+  Mina will synchronize all diagrams that import the modified element with the updated data.
+</Callout>
+
+1. Click on the *library* icon (<FontAwesomeIcon icon={faBook} className="inline w-4 mx-2" />) in the sidebar
+2. Select the type of the C4 element you want to modify
+3. You have two options:
+    1. Click on the row of the element you want to modify 
+    2. Click on the icon **...** and then *open*
+4. Modify the element
+5. Click on the *save* button
+6. Mina will synchronize all diagrams that import the modified element with the updated data
+
+### Deleting a library element
+
+<Callout type="warning" emoji="⚠️">
+  Mina will not remove the deleted element from the diagrams that import it. The element will be removed just from the library.
+</Callout>
+
+1. Click on the *library* icon (<FontAwesomeIcon icon={faBook} className="inline w-4 mx-2" />) in the sidebar
+2. Select the type of the C4 element you want to delete
+3. Click on the icon **...** and then *delete*

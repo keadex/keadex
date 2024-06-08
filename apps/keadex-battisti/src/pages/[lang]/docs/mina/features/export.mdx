@@ -1,0 +1,25 @@
+import { Callout } from 'nextra/components'
+import Image from 'next/image'
+import exportScreenshot from '../../../../../../public/img/mina/mina-export.jpg'
+import { faFileExport } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+# Export
+
+Mina provides various plugins and libraries to include interactive diagrams directly into the most common **documentation platforms** (e.g., Confluence, Docusaurus, etc.) using a URL (e.g., Git repo URL), thus eliminating the need for exporting them.
+
+If you need to export the diagram as a static image instead, you can do so directly from Mina by clicking on the icon <FontAwesomeIcon icon={faFileExport} className="inline w-4 mx-2" /> in the diagram editor.
+
+<p align="center" className="my-7">
+  <Image src={exportScreenshot} alt="Keadex Mina screenshot of the export feature from the diagram editor" width={600} className="border-solid border-dark-primary border" />
+</p>
+
+Currently, Mina supports export only to the png format. More formats may be supported in the future.
+
+<Callout type="info" emoji="ℹ️">
+  Although Mina allows exporting diagrams as static images, it is suggested to avoid this approach and instead leverage Mina's plugins and components to share and display diagrams.
+
+  If you decide to export diagrams as static images, you should version only the code of the diagrams, not the images themselves.
+
+  In short, Mina encourages the adoption of the diagram-as-code paradigm.
+</Callout>

@@ -11,6 +11,9 @@ const config = {
     }
   },
   darkMode: false,
+  nextThemes: {
+    defaultTheme: 'dark',
+  },
   logo: (
     <div className="flex flex-row">
       <a href="/">

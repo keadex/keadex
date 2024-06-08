@@ -1,8 +1,9 @@
 'use client'
 
+import { NewsBanner, useAppBootstrap } from '@keadex/keadex-ui-kit/cross'
 import dynamic from 'next/dynamic'
 import { PropsWithChildren } from 'react'
-import { useAppBootstrap } from '@keadex/keadex-ui-kit/cross'
+import { NEWS } from '../../core/news'
 
 const Header = dynamic(() => import('../Header/Header'))
 const Footer = dynamic(() => import('../Footer/Footer'))
@@ -35,6 +36,7 @@ export default function Layout(props: PropsWithChildren<LayourProps>) {
   return (
     <>
       {/* <TWElementsInit /> */}
+      <NewsBanner content={NEWS} />
       <Header lang={lang} />
       <main>{children}</main>
       <Footer lang={lang} />

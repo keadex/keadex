@@ -1,0 +1,83 @@
+import Image from 'next/image'
+import dynamic from 'next/dynamic'
+import rustLogo from '../../../../../../public/img/rust-logo.svg'
+import fabricjsLogo from '../../../../../../public/img/fabricjs-logo.png'
+
+export const MinaReact = dynamic(() => import('@keadex/mina-react-npm'), { ssr: false })
+
+# Rendering System
+
+<div align="center" className="my-14 block md:flex items-center justify-center">
+  <Image src={rustLogo} alt="Rust Logo" height={70} className="invert" />
+  <div className="text-5xl px-5">&plus;</div>
+  <Image src={fabricjsLogo} alt="Fabric.js Logo" height={70} />
+</div>
+
+The **Rendering System** is one of the fundamental components of Keadex Mina. It is responsible for translating diagram code (PlantUML and JSON) into interactive, visually appealing diagrams.
+
+The system is composed of two layers:
+
+  1. **Rust Layer**: Responsible for loading and parsing the diagram code.
+  2. **Fabric.js Layer**: Handles the rendering of the interactive diagram.
+
+There are three main differences between the Keadex Mina Rendering System and the rendering systems of other *diagrams as code* tools:
+
+  1. **Client-Side Execution**: It runs on the client side and does not require a web server for execution, resulting in faster rendering.
+  2. **Offline Capability**: It functions even without an internet connection.
+  3. **Interactive Editing**: Users can modify the rendered diagram through the UI without involving any custom languages. The custom positions are saved in a JSON file, which is easily versionable with your version control system.
+
+## Dynamic Diagram
+
+The following diagram describes the main flows involved in the rendering process.
+
+<div className="w-full h-[50rem] mt-5">
+  <MinaReact
+    projectRootUrl="https://raw.githubusercontent.com/keadex/keadex/tree/main/apps/keadex-diagrams"
+    diagramUrl="https://raw.githubusercontent.com/keadex/keadex/tree/main/apps/keadex-diagrams/diagrams/dynamic/mina-rendering-system" />
+</div>
+
+### Flows
+
+**[1] User &rarr; Frontend**
+
+Everything starts when a user opens a diagram from the Keadex Mina UI.
+
+**[2] Frontend &rarr; Controllers**
+
+The [Mina Frontend](/en/docs/mina/architecture/modules#frontend) invokes the Tauri commands exposed by the *Diagram Controller* in the [Mina Backend](/en/docs/mina/architecture/modules#backend) to get the data of the diagram selected by the user in JSON format.
+
+**[3] Controllers &rarr; Repositories**
+
+The *Diagram Controller* invokes the *Diagram Repository* to read the code (JSON and PlantUML) of the diagram selected by the user.
+
+**[4] Repositories &rarr; Resolver**
+
+The *Diagram Repository* retrieves the *Diagram Spec and PlantUML File System DAOs* from the [resolver](/en/docs/mina/architecture/modules#resolver) to read from the file system the `.json` and `.puml` diagram files.  
+
+**[5] Resolver &rarr; DAOs**
+
+The [resolver](/en/docs/mina/architecture/modules#resolver) returns the requested [DAOs](/en/docs/mina/architecture/modules#daos) to the repository, which then uses them to read the files.
+
+**[6] DAOs &rarr; File System**
+
+The DAOs read the diagram files. More precisely:
+  - The *Diagram Spec FS DAO* reads the `json` file containing the diagram specs.
+  - The *Diagram PlantUML FS DAO* reads the `puml` file containing the diagram PlantUML code.
+
+**[7] DAOs &rarr; SerDes**
+
+The DAOs invokes the [SerDes](/en/docs/mina/architecture/modules#serdes) module to deserialize the `json` and `puml` files into Rust objects.
+  - To deserialize the `json` files, Mina leverages the [Serde](https://serde.rs/) library.
+  - To deserialize the `puml` files, Mina uses its own [PlantUML Parser](/en/docs/mina/architecture/modules#plantuml-parser).
+
+**[8] SerDes &rarr; PlantUML Parser**
+
+The [SerDes](/en/docs/mina/architecture/modules#serdes) module invokes the [PlantUML Parser](/en/docs/mina/architecture/modules#plantuml-parser) to parse the read `puml` file.
+
+**[9] Frontend &rarr; C4 Model UI Kit**
+
+Once the [Mina Frontend](/en/docs/mina/architecture/modules#frontend) receives the diagram data from the backend, it calls the API of the [C4 Model UI Kit](/en/docs/mina/architecture/modules#c4-model-ui-kit) to render the diagram.
+
+**[10] C4 Model UI Ki &rarr; C4 Model UI Kit**
+
+The [C4 Model UI Kit](/en/docs/mina/architecture/modules#c4-model-ui-kit) uses the provided diagram specs and PlantUML code to instantiate, position, and render the C4 Model Fabric.js components that compose the diagram.

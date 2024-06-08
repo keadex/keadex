@@ -2,8 +2,10 @@
 
 # compiled output
 dist
+temp
 /tmp
 /out-tsc
+tsdoc-metadata.json
 
 # dependencies
 /node_modules

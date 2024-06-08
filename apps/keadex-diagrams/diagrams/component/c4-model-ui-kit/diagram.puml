@@ -1,0 +1,51 @@
+@startuml
+
+Container(c4ModelUiKitModels, "Models", "Typescript", "Typescript models for rendering C4 model diagrams.")
+
+Container_Boundary(c4modelUiKitRenderingSystem, "Rendering System"){
+  Component(c4modelUiKitDiagramRenderer, "Diagram Renderer", "Typescript", "Entrypoint for rendering a C4 model diagram.")
+
+  Container_Boundary(c4modelUiKitElementsRenderers, "C4 Elements Renderers"){
+    Component(c4modelUiKitSoftwareSystemRenderer, "Software System Renderer", "Typescript", "Responsible for rendering a C4 Software System element.")
+
+    Component(c4modelUiKitContainerRenderer, "Container Renderer", "Typescript", "Responsible for rendering a C4 Container element.")
+
+    Component(c4modelUiKitComponentRenderer, "Component Renderer", "Typescript", "Responsible for rendering a C4 Component element.")
+
+    Component(c4modelUiKitBoundaryRenderer, "Boundary Renderer", "Typescript", "Responsible for rendering a C4 Boundary element.")
+
+    Component(c4modelUiKitDeploymentNodeRenderer, "Deployment Node Renderer", "Typescript", "Responsible for rendering a C4 Deployment Node element.")
+
+    Component(c4modelUiKitPersonRenderer, "Person Renderer", "Typescript", "Responsible for rendering a C4 Person element.")
+
+    Component(c4modelUiKitRelationshipRenderer, "Relationship Renderer", "Typescript", "Responsible for rendering a C4 Relationship element.")
+  }
+
+  Rel(c4modelUiKitDiagramRenderer, c4modelUiKitElementsRenderers, "invokes to render", "Typescript")
+}
+
+Container_Boundary(c4modelUiKitComponents, "Components"){
+  Component(c4modelUiKitC4Component, "C4 Component", "Fabricjs", "Fabric.js UI component to render to a canvas a C4 Component")
+
+  Component(c4modelUiKitC4Container, "C4 Container", "Fabricjs", "Fabric.js UI component to render to a canvas a C4 Container")
+
+  Component(c4modelUiKitC4Person, "C4 Person", "Fabricjs", "Fabric.js UI component to render to a canvas a C4 Person")
+
+  Component(c4modelUiKitC4SoftwareSystem, "C4 Software System", "Fabricjs", "Fabric.js UI component to render to a canvas a C4 Software System")
+
+  Component(c4modelUiKitC4Relationship, "C4 Relationship", "Fabricjs", "Fabric.js UI component to render to a canvas a C4 Relationship")
+
+  Component(c4modelUiKitC4Boundary, "C4 Boundary", "Fabricjs", "Fabric.js UI component to render to a canvas a C4 Boundary")
+
+  Component(c4modelUiKitC4DeploymentNode, "C4 Deployment Node", "Fabricjs", "Fabric.js UI component to render to a canvas a C4 Deployment Node")
+
+  Component(c4modelUiKitC4Legend, "C4 Legend", "Fabricjs", "Fabric.js UI component to render to a canvas the C4 legend")
+}
+
+Rel(c4modelUiKitRenderingSystem, c4modelUiKitComponents, "renders", "Typescript")
+
+Rel(c4modelUiKitComponents, c4ModelUiKitModels, "uses", "Typescript")
+
+Rel(c4modelUiKitRenderingSystem, c4ModelUiKitModels, "uses", "Typescript")
+
+@enduml

@@ -1,4 +1,5 @@
 @import '../components/Header/Header.css';
+@import '../components/MinaDetails/MinaDetails.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/Tags/Tags.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/Button/Button.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/DropdownMenu/DropdownMenu.css';

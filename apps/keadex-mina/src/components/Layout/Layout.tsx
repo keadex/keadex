@@ -109,7 +109,7 @@ export const Layout = React.memo((props: LayoutProps) => {
           rightButtonsProps={rightButtons}
           icon={icon}
           menuProps={windowTitlebarMenu}
-          title="Keadex Mina Beta"
+          title="Keadex Mina"
         />
         <div className="absolute bottom-0 left-0 right-0 top-8 overflow-auto">
           <AppMenu visible={isAppMenuVisible}>

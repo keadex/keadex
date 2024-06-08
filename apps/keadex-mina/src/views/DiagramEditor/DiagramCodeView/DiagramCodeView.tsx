@@ -26,7 +26,6 @@ import {
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import AISpeechBubble from '../../../components/AISpeechBubble/AISpeechBubble'
-import { DiagramEditorToolbarCommands } from '../../../components/DiagramEditorToolbar/DiagramEditorToolbar'
 import DiagramPicker from '../../../components/DiagramPicker/DiagramPicker'
 import ModalImportLibraryElement from '../../../components/ModalImportLibraryElement/ModalImportLibraryElement'
 import {
@@ -42,13 +41,14 @@ import { snakeCase } from 'change-case'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { QuickInputService } from 'monaco-editor/esm/vs/platform/quickinput/browser/quickInputService'
+import ModalCRUBoundary from '../../../components/ModalCRULibraryElement/ModalCRUBoundary/ModalCRUBoundary'
 import ModalCRUComponent from '../../../components/ModalCRULibraryElement/ModalCRUComponent/ModalCRUComponent'
 import ModalCRUContainer from '../../../components/ModalCRULibraryElement/ModalCRUContainer/ModalCRUContainer'
-import ModalCRUPerson from '../../../components/ModalCRULibraryElement/ModalCRUPerson/ModalCRUPerson'
-import ModalCRUSoftwareSystem from '../../../components/ModalCRULibraryElement/ModalCRUSoftwareSystem/ModalCRUSoftwareSystem'
-import ModalCRUBoundary from '../../../components/ModalCRULibraryElement/ModalCRUBoundary/ModalCRUBoundary'
 import ModalCRUDeploymentNode from '../../../components/ModalCRULibraryElement/ModalCRUDeploymentNode/ModalCRUDeploymentNode'
+import ModalCRUPerson from '../../../components/ModalCRULibraryElement/ModalCRUPerson/ModalCRUPerson'
 import ModalCRURelationship from '../../../components/ModalCRULibraryElement/ModalCRURelationship/ModalCRURelationship'
+import ModalCRUSoftwareSystem from '../../../components/ModalCRULibraryElement/ModalCRUSoftwareSystem/ModalCRUSoftwareSystem'
+import { DiagramCodeViewToolbarCommands } from 'apps/keadex-mina/src/components/DiagramCodeViewToolbar/DiagramCodeViewToolbar'
 
 loader.config({ monaco })
 
@@ -63,7 +63,7 @@ export interface IQuickPickItem {
 export interface DiagramCodeViewProps {
   diagram?: Diagram
   error?: MinaError
-  diagramEditorToolbarCommands: DiagramEditorToolbarCommands | null
+  diagramCodeViewToolbarCommands: DiagramCodeViewToolbarCommands | null
   saveDiagram: () => void
   isSaving: boolean
 }
@@ -131,6 +131,7 @@ export const DiagramCodeView = forwardRef(
 
     useEffect(() => {
       if (diagram) {
+        canEditorUndo.current = true
         const { raw_plantuml } = diagram
         setRawPlantuml(raw_plantuml ?? '')
       }
@@ -138,7 +139,19 @@ export const DiagramCodeView = forwardRef(
 
     useImperativeHandle(ref, () => ({
       resetCode: () => {
+        // Setting the editor value, clear the undo/redo stack
+        editorRef.current?.getModel()?.setValue('')
         setRawPlantuml('')
+        // In the handleEditorChange() the canEditorUndo is properly set according to the
+        // editor versions ids. The following "reset" the current and initial version ids
+        // according to the current editor version id since in the Monaco editor is not possible
+        // to reset the version ids.
+        setCurrentVersionID(
+          (editorRef.current?.getModel()?.getAlternativeVersionId() ?? -1) + 1,
+        )
+        setInitialVersionID(
+          editorRef.current?.getModel()?.getAlternativeVersionId() ?? -1,
+        )
       },
       getUpdatedRawPlantUML: (): string | undefined => {
         if (
@@ -279,8 +292,9 @@ export const DiagramCodeView = forwardRef(
 
       const versionId =
         editorRef.current?.getModel()?.getAlternativeVersionId() ?? -1
+
       // undoing
-      if (versionId < currentVersionID) {
+      if (versionId <= currentVersionID) {
         canEditorRedo.current = true
         // no more undo possible
         if (versionId === initialVersionID) {
@@ -304,7 +318,7 @@ export const DiagramCodeView = forwardRef(
       }
       setCurrentVersionID(versionId)
 
-      props.diagramEditorToolbarCommands?.forceUpdate()
+      props.diagramCodeViewToolbarCommands?.forceUpdate()
     }
 
     function addCodeAtCursorPosition(code: string, cursorPosition?: number) {

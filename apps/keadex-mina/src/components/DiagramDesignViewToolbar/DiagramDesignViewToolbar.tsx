@@ -1,73 +1,113 @@
 import {
-  faCaretDown,
-  faCaretLeft,
-  faCaretRight,
-  faCaretUp,
-  faMagnifyingGlassMinus,
-  faMagnifyingGlassPlus,
+  faFileExport,
   faRotateLeft,
+  faRotateRight,
 } from '@fortawesome/free-solid-svg-icons'
-import { IconButton, KeadexCanvas } from '@keadex/keadex-ui-kit/cross'
-import React from 'react'
+import {
+  IconButton,
+  Separator,
+  useForceUpdate,
+} from '@keadex/keadex-ui-kit/cross'
+import {
+  useEffect,
+  forwardRef,
+  Ref,
+  useImperativeHandle,
+  RefObject,
+} from 'react'
+import { useTranslation } from 'react-i18next'
+import { Tooltip } from 'tw-elements'
+import { DiagramDesignViewCommands } from '../../views/DiagramEditor/DiagramDesignView/DiagramDesignView'
 
 export interface DiagramDesignViewToolbarProps {
-  canvas?: KeadexCanvas
+  diagramDesignViewCommands: RefObject<DiagramDesignViewCommands>
 }
 
-const styleButton = `text-5xl text-dark-primary hover:text-third`
-const styleCenterButtons = `text-2xl text-dark-primary hover:text-third`
+export interface DiagramDesignViewToolbarCommands {
+  forceUpdate: () => void
+}
 
-export const DiagramDesignViewToolbar = React.memo(
-  (props: DiagramDesignViewToolbarProps) => {
-    const { canvas } = props
+const styleButton =
+  'container-link-bg hover:bg-secondary disabled:hover:bg-transparent w-10 h-10'
+
+export const DiagramDesignViewToolbar = forwardRef(
+  (
+    props: DiagramDesignViewToolbarProps,
+    ref: Ref<DiagramDesignViewToolbarCommands>,
+  ) => {
+    const { diagramDesignViewCommands } = props
+
+    const { t } = useTranslation()
+    const { forceUpdate } = useForceUpdate()
+
+    useImperativeHandle(ref, () => ({
+      forceUpdate,
+    }))
+
+    useEffect(() => {
+      const tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-te-toggle="tooltip"]'),
+      )
+      tooltipTriggerList.map(
+        (tooltipTriggerEl) =>
+          new Tooltip(tooltipTriggerEl, { trigger: 'hover' }),
+      )
+    }, [])
+
+    useEffect(() => {
+      const tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-te-toggle="tooltip"]'),
+      )
+
+      tooltipTriggerList.forEach((tooltipTriggerEl) => {
+        const instance = Tooltip.getInstance(tooltipTriggerEl)
+        instance?.enable()
+        instance?.hide()
+      })
+    })
 
     return (
-      <div className="absolute bottom-0 left-0 z-[1] scale-[85%] opacity-20 transition hover:scale-[100%] hover:opacity-100 flex flex-row mx-2">
-        <div className="flex flex-col">
-          <IconButton
-            className={`${styleButton} !my-auto`}
-            icon={faCaretLeft}
-            onClick={() => canvas?.panLeft()}
-          />
-        </div>
-        <div className="flex flex-col">
-          <IconButton
-            className={styleButton}
-            icon={faCaretUp}
-            onClick={() => canvas?.panDown()}
-          />
-          <div>
+      <div id="diagram-design-view-toolbar" className="w-full z-[6]">
+        <div className="p-3">
+          <div className="bg-primary flex w-full flex-1 rounded text-sm drop-shadow-md">
             <IconButton
-              className={`${styleCenterButtons} ml-1`}
-              icon={faMagnifyingGlassPlus}
-              onClick={() => canvas?.zoomIn()}
-            />
-            <IconButton
-              className={`${styleCenterButtons} mx-2 !text-xl`}
+              disabled={diagramDesignViewCommands.current?.canUndo() === false}
               icon={faRotateLeft}
+              className={`${styleButton}`}
+              data-te-toggle="tooltip"
+              data-te-placement="bottom"
+              title={t('common.undo').toString()}
               onClick={() => {
-                canvas?.resetZoom()
-                canvas?.resetPan()
+                diagramDesignViewCommands.current?.undo()
+                forceUpdate()
               }}
             />
             <IconButton
-              className={`${styleCenterButtons} mr-1`}
-              icon={faMagnifyingGlassMinus}
-              onClick={() => canvas?.zoomOut()}
+              disabled={diagramDesignViewCommands.current?.canRedo() === false}
+              icon={faRotateRight}
+              className={`${styleButton}`}
+              data-te-toggle="tooltip"
+              data-te-placement="bottom"
+              title={t('common.redo').toString()}
+              onClick={() => {
+                diagramDesignViewCommands.current?.redo()
+                forceUpdate()
+              }}
+            />
+            <Separator />
+            <IconButton
+              icon={faFileExport}
+              className={`${styleButton}`}
+              data-te-toggle="tooltip"
+              data-te-placement="bottom"
+              title={`${t('common.export').toString()} ${t('common.diagram')
+                .toString()
+                .toLowerCase()}`}
+              onClick={() => {
+                diagramDesignViewCommands.current?.exportDiagram()
+              }}
             />
           </div>
-          <IconButton
-            className={styleButton}
-            icon={faCaretDown}
-            onClick={() => canvas?.panUp()}
-          />
-        </div>
-        <div className="flex flex-col">
-          <IconButton
-            className={`${styleButton} !my-auto`}
-            icon={faCaretRight}
-            onClick={() => canvas?.panRight()}
-          />
         </div>
       </div>
     )

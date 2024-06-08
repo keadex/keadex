@@ -49,9 +49,131 @@ ROUTES[PROJECT_KEADEX_UI_KIT] = {
 
 // ----- Documentation Paths
 export const DOCS = '/docs'
+export const DOCS_OVERVIEW = '/docs/overview'
+
+// > Keadex Mina
+export const MINA_DOCS = `/en${DOCS}/mina`
+// --> Mina Introduction
+export const MINA_INTRODUCTION = `${MINA_DOCS}/introduction`
+// --> Mina Architecture
+export const MINA_ARCHITECTURE = `${MINA_DOCS}/architecture`
+export const MINA_ARCH_OVERVIEW = `${MINA_ARCHITECTURE}/overview`
+export const MINA_ARCH_MODULES = `${MINA_ARCHITECTURE}/modules`
+export const MINA_RENDERING_SYSTEM = `${MINA_ARCHITECTURE}/rendering-system`
+// --> Mina Getting Started
+export const MINA_GETTING_STARTED = `${MINA_DOCS}/getting-started`
+export const MINA_GS_QUICK_START = `${MINA_GETTING_STARTED}/quick-start`
+export const MINA_GS_PROJECT_STRUCTURE = `${MINA_GETTING_STARTED}/project-structure`
+// --> Mina Features
+export const MINA_FEATURES = `${MINA_DOCS}/features`
+export const MINA_AI = `${MINA_FEATURES}/ai`
+export const MINA_DIAGRAMS_LINKS = `${MINA_FEATURES}/diagrams-links`
+export const MINA_DIAGRAMS_ORG = `${MINA_FEATURES}/diagrams-organization`
+export const MINA_EXPORT = `${MINA_FEATURES}/export`
+export const MINA_HOOKS = `${MINA_FEATURES}/hooks`
+export const MINA_LIBRARY = `${MINA_FEATURES}/library`
+export const MINA_LOW_CODING = `${MINA_FEATURES}/low-coding`
+export const MINA_PLANTUML = `${MINA_FEATURES}/plantuml`
+export const MINA_SEARCH = `${MINA_FEATURES}/search`
+export const MINA_TAGS = `${MINA_FEATURES}/tags`
+export const MINA_VERSIONING = `${MINA_FEATURES}/versioning`
+// --> Mina Plugins
+export const MINA_PLUGINS = `${MINA_DOCS}/plugins`
+export const MINA_PLUGINS_OVERVIEW = `${MINA_PLUGINS}/overview`
+export const MINA_CONFLUENCE_PLUGIN = `${MINA_PLUGINS}/confluence`
+
+// > C4 Model UI Kit
+export const C4_MODEL_UI_KIT_DOCS = `/en${DOCS}/c4-model-ui-kit`
+export const C4_MODEL_UI_KIT_ARCH = `${C4_MODEL_UI_KIT_DOCS}/architecture`
+export const C4_MODEL_UI_KIT_API_PATTERN = `${C4_MODEL_UI_KIT_DOCS}/api/*`
+export const C4_MODEL_UI_KIT_API = `${C4_MODEL_UI_KIT_DOCS}/api/api`
 
 ROUTES[DOCS] = {
   path: DOCS,
+}
+ROUTES[DOCS_OVERVIEW] = {
+  path: DOCS_OVERVIEW,
+}
+ROUTES[MINA_DOCS] = {
+  path: MINA_DOCS,
+}
+ROUTES[MINA_INTRODUCTION] = {
+  path: MINA_INTRODUCTION,
+}
+ROUTES[MINA_ARCHITECTURE] = {
+  path: MINA_ARCHITECTURE,
+}
+ROUTES[MINA_ARCH_OVERVIEW] = {
+  path: MINA_ARCH_OVERVIEW,
+}
+ROUTES[MINA_ARCH_MODULES] = {
+  path: MINA_ARCH_MODULES,
+}
+ROUTES[MINA_RENDERING_SYSTEM] = {
+  path: MINA_RENDERING_SYSTEM,
+}
+ROUTES[MINA_GETTING_STARTED] = {
+  path: MINA_GETTING_STARTED,
+}
+ROUTES[MINA_GS_QUICK_START] = {
+  path: MINA_GS_QUICK_START,
+}
+ROUTES[MINA_GS_PROJECT_STRUCTURE] = {
+  path: MINA_GS_PROJECT_STRUCTURE,
+}
+ROUTES[MINA_FEATURES] = {
+  path: MINA_FEATURES,
+}
+ROUTES[MINA_AI] = {
+  path: MINA_AI,
+}
+ROUTES[MINA_DIAGRAMS_LINKS] = {
+  path: MINA_DIAGRAMS_LINKS,
+}
+ROUTES[MINA_DIAGRAMS_ORG] = {
+  path: MINA_DIAGRAMS_ORG,
+}
+ROUTES[MINA_EXPORT] = {
+  path: MINA_EXPORT,
+}
+ROUTES[MINA_HOOKS] = {
+  path: MINA_HOOKS,
+}
+ROUTES[MINA_LIBRARY] = {
+  path: MINA_LIBRARY,
+}
+ROUTES[MINA_LOW_CODING] = {
+  path: MINA_LOW_CODING,
+}
+ROUTES[MINA_PLANTUML] = {
+  path: MINA_PLANTUML,
+}
+ROUTES[MINA_SEARCH] = {
+  path: MINA_SEARCH,
+}
+ROUTES[MINA_TAGS] = {
+  path: MINA_TAGS,
+}
+ROUTES[MINA_VERSIONING] = {
+  path: MINA_VERSIONING,
+}
+ROUTES[MINA_PLUGINS] = {
+  path: MINA_PLUGINS,
+}
+ROUTES[MINA_PLUGINS_OVERVIEW] = {
+  path: MINA_PLUGINS_OVERVIEW,
+}
+ROUTES[MINA_CONFLUENCE_PLUGIN] = {
+  path: MINA_CONFLUENCE_PLUGIN,
+}
+ROUTES[C4_MODEL_UI_KIT_DOCS] = {
+  path: C4_MODEL_UI_KIT_DOCS,
+}
+ROUTES[C4_MODEL_UI_KIT_ARCH] = {
+  path: C4_MODEL_UI_KIT_ARCH,
+}
+ROUTES[C4_MODEL_UI_KIT_API] = {
+  path: C4_MODEL_UI_KIT_API,
 }
 
 // ----- Policies Paths

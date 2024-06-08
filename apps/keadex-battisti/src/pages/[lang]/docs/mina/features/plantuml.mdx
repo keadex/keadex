@@ -1,0 +1,28 @@
+import Image from 'next/image'
+import minaPlantUML from '../../../../../../public/img/mina/mina-plantuml.jpg'
+import logoPlantUML from '../../../../../../public/img/mina/logo-plantuml.png'
+
+<div className="flex flex-col w-full md:w-1/2 pl-0 md:pl-10 mt-5 md:mt-0 mx-auto">
+  <Image
+    src={logoPlantUML}
+    className="h-20 w-auto mb-10 mx-auto my-auto"
+    alt="PlantUML logo"
+  />
+  <Image
+    src={minaPlantUML}
+    className="w-full mx-auto my-auto border-solid border-dark-primary border"
+    alt="Mina PlantUML example"
+  />
+</div>
+
+One of Mina's fundamental principles is to facilitate onboarding and usage. 
+
+For this reason, unlike many other tools, Mina does not introduce a new **Domain-Specific Language (DSL)** to provide its functionalities but relies on the [PlantUML DSL](https://plantuml.com/guide).
+
+Specifically, Mina supports the syntax of the official [PlantUML C4 model standard library](https://github.com/plantuml-stdlib/C4-PlantUML).
+
+This allows you to **reuse** PlantUML C4 code created with other tools and immediately leverage Mina's capabilities. If you decide to leave Mina (but we hope you don't), you can still reuse the PlantUML code created in Mina with other tools that support PlantUML.
+
+[PlantUML](https://plantuml.com) was born in 2009 and is a well-known open-source tool with a **mature and widely used DSL**. In the meantime, several PlantUML extensions have been released. Among these is [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML), the standard library that supports the specifications of the C4 model.
+
+For further details about how Mina reads, parses and processes the C4-PlantUML code, please visit the [architectural documentation](/en/docs/mina/architecture/modules#plantuml-parser). 

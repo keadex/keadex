@@ -1,0 +1,40 @@
+import { Callout } from 'nextra/components'
+import Image from 'next/image'
+import minaLogo from '../../../../../../public/img/keadex-mina-logo-color.svg'
+import openaiLogo from '../../../../../../public/img/openai-logo.svg'
+import aiScreenshot from '../../../../../../public/img/mina/ai-powered.gif'
+
+# Diagram Generation w/ AI
+
+<Callout type="warning" emoji="🔬">
+  The AI integration is currently just an experyment in the early stages and is currently in **alpha version**. It may return incorrect results.
+</Callout>
+
+<div align="center" className="my-14 block md:flex items-center justify-center">
+  <Image src={minaLogo} alt="Keadex Mina Logo" height={55} />
+  <div className="text-5xl px-5">&plus;</div>
+  <Image src={openaiLogo} alt="OpenAI Logo" height={50} className="invert"/>
+</div>
+
+Mina integrates AI to **generate diagram code** based on a natural language description of your architecture.
+
+<p align="center">
+  <Image src={aiScreenshot} alt="Screenshot of Keadex Mina generatic diagrams with the AI" width={500} />
+</p>
+
+The current implementation is a rudimentary integration with the OpenAI APIs: the Mina backend sends a completion request with your diagram description, to the `gpt-3.5-turbo-instruct` OpenAI model every time you ask Mina to generate a diagram.
+
+Since Mina is and always will be **open source and free**, and since the `gpt-3.5-turbo-instruct` **OpenAI model is not free**, you will need to configure your **OpenAI API Key** within Mina if you want to use this feature.
+
+If you want an idea of the costs you can consider the following data:
+  - OpenAI Model: **`gpt-3.5-turbo-instruct`**
+  - OpenAI pricing: https://openai.com/api/pricing/
+  - Number of OpenAI requests: **1 OpenAI request/diagram generation request**
+  - Max allowed tokens for each request: **2048**
+
+
+## What's Next?
+
+There is a strong interest in evolving the integration of Keadex Mina with AI. The long-term goal is to provide a feature that can generate and render detailed, aesthetically pleasing, and linked C4 Model diagrams.
+
+We will soon plan the roadmap to achieve this goal.

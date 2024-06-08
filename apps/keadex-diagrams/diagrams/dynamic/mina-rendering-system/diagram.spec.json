@@ -1,0 +1,1821 @@
+{
+  "uuid": "8a56985f-7390-4ab1-80c1-aa2276de191c",
+  "tags": [
+    "keadex-mina",
+    "rendering-system"
+  ],
+  "elements_specs": [
+    {
+      "alias": "legend",
+      "position": {
+        "left": 55.0,
+        "top": -105.0,
+        "z_index": 0,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 121.0,
+        "height": 141.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "userMinaRendering",
+      "element_type": {
+        "Person": "Person"
+      },
+      "position": {
+        "left": 445.0,
+        "top": -105.0,
+        "z_index": 1,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 187.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "minaC4modelUIKit",
+      "element_type": {
+        "Container": "Container"
+      },
+      "position": {
+        "left": 1035.0,
+        "top": 240.0,
+        "z_index": 2,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "mina",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {
+            "left": 65.0,
+            "top": 230.0,
+            "z_index": 4
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "FOOTER",
+          "position": {
+            "z_index": 5
+          }
+        }
+      ],
+      "element_type": {
+        "Boundary": "Container_Boundary"
+      },
+      "inner_specs": [
+        {
+          "alias": "minaFrontendContainer",
+          "element_type": {
+            "Container": "Container"
+          },
+          "position": {
+            "left": 450.0,
+            "top": 240.0,
+            "z_index": 6,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "minaBackend",
+          "shapes": [
+            {
+              "shape_type": "RECTANGLE",
+              "position": {
+                "left": 75.0,
+                "top": 495.0,
+                "z_index": 8
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "FOOTER",
+              "position": {
+                "z_index": 9
+              }
+            }
+          ],
+          "element_type": {
+            "Boundary": "Container_Boundary"
+          },
+          "inner_specs": [
+            {
+              "alias": "minaBEControllers",
+              "element_type": {
+                "Container": "Container"
+              },
+              "position": {
+                "left": 445.0,
+                "top": 505.0,
+                "z_index": 10,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "minaBERepositories",
+              "element_type": {
+                "Container": "Container"
+              },
+              "position": {
+                "left": 445.0,
+                "top": 690.0,
+                "z_index": 11,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "minaBEDAOs",
+              "element_type": {
+                "Container": "Container"
+              },
+              "position": {
+                "left": 445.0,
+                "top": 1055.0,
+                "z_index": 12,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "minaBEResolver",
+              "element_type": {
+                "Container": "Container"
+              },
+              "position": {
+                "left": 445.0,
+                "top": 880.0,
+                "z_index": 13,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "minaBEFileSystem",
+              "element_type": {
+                "Container": "ContainerDb"
+              },
+              "position": {
+                "left": 445.0,
+                "top": 1250.0,
+                "z_index": 14,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 146.225,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "minaBESerDes",
+              "element_type": {
+                "Container": "Container"
+              },
+              "position": {
+                "left": 135.0,
+                "top": 880.0,
+                "z_index": 61,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "minaBEPlantUMLParser",
+              "element_type": {
+                "Container": "Container"
+              },
+              "position": {
+                "left": 130.0,
+                "top": 690.0,
+                "z_index": 70,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "minaBEControllers -> minaBERepositories",
+              "from": "minaBEControllers",
+              "to": "minaBERepositories",
+              "shapes": [
+                {
+                  "shape_type": "RECTANGLE",
+                  "position": {}
+                },
+                {
+                  "shape_type": "LINE",
+                  "position": {}
+                },
+                {
+                  "shape_type": "DOT",
+                  "position": {
+                    "left": 561.5,
+                    "top": 608.5
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "TRIANGLE",
+                  "position": {
+                    "left": 559.9088885832032,
+                    "top": 685.0928027814484,
+                    "angle": 178.94618992838616
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "TEXT",
+                  "position": {
+                    "left": 559.82763671875,
+                    "top": 645.3
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                }
+              ],
+              "element_type": {
+                "Relationship": "Rel"
+              }
+            },
+            {
+              "alias": "minaBERepositories -> minaBEResolver",
+              "from": "minaBERepositories",
+              "to": "minaBEResolver",
+              "shapes": [
+                {
+                  "shape_type": "RECTANGLE",
+                  "position": {}
+                },
+                {
+                  "shape_type": "LINE",
+                  "position": {}
+                },
+                {
+                  "shape_type": "DOT",
+                  "position": {
+                    "left": 561.5,
+                    "top": 798.5
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "TRIANGLE",
+                  "position": {
+                    "left": 559.9088635123754,
+                    "top": 875.0928287920251,
+                    "angle": 178.94620903423203
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "TEXT",
+                  "position": {
+                    "left": 560.0302734375,
+                    "top": 835.3
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                }
+              ],
+              "element_type": {
+                "Relationship": "Rel"
+              }
+            },
+            {
+              "alias": "minaBEResolver -> minaBEDAOs",
+              "from": "minaBEResolver",
+              "to": "minaBEDAOs",
+              "shapes": [
+                {
+                  "shape_type": "RECTANGLE",
+                  "position": {}
+                },
+                {
+                  "shape_type": "LINE",
+                  "position": {}
+                },
+                {
+                  "shape_type": "DOT",
+                  "position": {
+                    "left": 558.130859375,
+                    "top": 983.5
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "TRIANGLE",
+                  "position": {
+                    "left": 556.527165694653,
+                    "top": 1050.105890191548,
+                    "angle": 178.79904401643034
+                  },
+                  "size": {
+                    "scale_x": 0.9999999999999974,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "TEXT",
+                  "position": {
+                    "left": 558.32861328125,
+                    "top": 1015.3
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                }
+              ],
+              "element_type": {
+                "Relationship": "Rel"
+              }
+            },
+            {
+              "alias": "minaBEDAOs -> minaBEFileSystem",
+              "from": "minaBEDAOs",
+              "to": "minaBEFileSystem",
+              "shapes": [
+                {
+                  "shape_type": "RECTANGLE",
+                  "position": {}
+                },
+                {
+                  "shape_type": "LINE",
+                  "position": {}
+                },
+                {
+                  "shape_type": "DOT",
+                  "position": {
+                    "left": 563.814453125,
+                    "top": 1163.5
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "TRIANGLE",
+                  "position": {
+                    "left": 560.5266492103749,
+                    "top": 1241.981342478372,
+                    "angle": -179.78988795048875
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "TEXT",
+                  "position": {
+                    "left": 559.01220703125,
+                    "top": 1200.3
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                }
+              ],
+              "element_type": {
+                "Relationship": "Rel"
+              }
+            },
+            {
+              "alias": "minaBEDAOs -> minaBESerDes",
+              "from": "minaBEDAOs",
+              "to": "minaBESerDes",
+              "shapes": [
+                {
+                  "shape_type": "RECTANGLE",
+                  "position": {}
+                },
+                {
+                  "shape_type": "LINE",
+                  "position": {}
+                },
+                {
+                  "shape_type": "TRIANGLE",
+                  "position": {
+                    "left": 250.8154138628039,
+                    "top": 989.0225566005104,
+                    "angle": -1.287185037317883
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "DOT",
+                  "position": {
+                    "left": 256.5,
+                    "top": 1108.5
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "DOT",
+                  "position": {
+                    "left": 441.4999999999716,
+                    "top": 1108.5
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "TEXT",
+                  "position": {
+                    "left": 238.0234375,
+                    "top": 1045.3
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                }
+              ],
+              "element_type": {
+                "Relationship": "Rel"
+              }
+            },
+            {
+              "alias": "minaBESerDes -> minaBEPlantUMLParser",
+              "from": "minaBESerDes",
+              "to": "minaBEPlantUMLParser",
+              "shapes": [
+                {
+                  "shape_type": "RECTANGLE",
+                  "position": {}
+                },
+                {
+                  "shape_type": "LINE",
+                  "position": {}
+                },
+                {
+                  "shape_type": "DOT",
+                  "position": {
+                    "left": 251.5,
+                    "top": 878.5
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "TRIANGLE",
+                  "position": {
+                    "left": 244.9145070994691,
+                    "top": 795.0840554648104,
+                    "angle": -2.4612468827918264
+                  },
+                  "size": {
+                    "scale_x": 0.9999999999999996,
+                    "scale_y": 1.0
+                  }
+                },
+                {
+                  "shape_type": "TEXT",
+                  "position": {
+                    "left": 242.984375,
+                    "top": 835.3
+                  },
+                  "size": {
+                    "scale_x": 1.0,
+                    "scale_y": 1.0
+                  }
+                }
+              ],
+              "element_type": {
+                "Relationship": "Rel"
+              }
+            }
+          ]
+        },
+        {
+          "alias": "minaFEBridge -> minaBEControllers",
+          "from": "minaFEBridge",
+          "to": "minaBEControllers",
+          "shapes": [
+            {
+              "shape_type": "RECTANGLE",
+              "position": {}
+            },
+            {
+              "shape_type": "LINE",
+              "position": {}
+            },
+            {
+              "shape_type": "DOT",
+              "position": {
+                "left": 561.5,
+                "top": 353.5
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TRIANGLE",
+              "position": {
+                "left": 559.9507569012198,
+                "top": 500.0497329234251,
+                "angle": 179.43282371958662
+              },
+              "size": {
+                "scale_x": 0.9999999999999996,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TEXT",
+              "position": {
+                "left": 562.2373046875,
+                "top": 430.3
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            }
+          ],
+          "element_type": {
+            "Relationship": "Rel"
+          }
+        }
+      ]
+    },
+    {
+      "alias": "minaFrontendContainer",
+      "element_type": {
+        "Container": "Container"
+      },
+      "position": {
+        "left": 450.0,
+        "top": 240.0,
+        "z_index": 6,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "minaBackend",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {
+            "left": 75.0,
+            "top": 495.0,
+            "z_index": 8
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "FOOTER",
+          "position": {
+            "z_index": 9
+          }
+        }
+      ],
+      "element_type": {
+        "Boundary": "Container_Boundary"
+      },
+      "inner_specs": [
+        {
+          "alias": "minaBEControllers",
+          "element_type": {
+            "Container": "Container"
+          },
+          "position": {
+            "left": 445.0,
+            "top": 505.0,
+            "z_index": 10,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "minaBERepositories",
+          "element_type": {
+            "Container": "Container"
+          },
+          "position": {
+            "left": 445.0,
+            "top": 690.0,
+            "z_index": 11,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "minaBEDAOs",
+          "element_type": {
+            "Container": "Container"
+          },
+          "position": {
+            "left": 445.0,
+            "top": 1055.0,
+            "z_index": 12,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "minaBEResolver",
+          "element_type": {
+            "Container": "Container"
+          },
+          "position": {
+            "left": 445.0,
+            "top": 880.0,
+            "z_index": 13,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "minaBEFileSystem",
+          "element_type": {
+            "Container": "ContainerDb"
+          },
+          "position": {
+            "left": 445.0,
+            "top": 1250.0,
+            "z_index": 14,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 146.225,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "minaBESerDes",
+          "element_type": {
+            "Container": "Container"
+          },
+          "position": {
+            "left": 135.0,
+            "top": 880.0,
+            "z_index": 61,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "minaBEPlantUMLParser",
+          "element_type": {
+            "Container": "Container"
+          },
+          "position": {
+            "left": 130.0,
+            "top": 690.0,
+            "z_index": 70,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "minaBEControllers -> minaBERepositories",
+          "from": "minaBEControllers",
+          "to": "minaBERepositories",
+          "shapes": [
+            {
+              "shape_type": "RECTANGLE",
+              "position": {}
+            },
+            {
+              "shape_type": "LINE",
+              "position": {}
+            },
+            {
+              "shape_type": "DOT",
+              "position": {
+                "left": 561.5,
+                "top": 608.5
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TRIANGLE",
+              "position": {
+                "left": 559.9088885832032,
+                "top": 685.0928027814484,
+                "angle": 178.94618992838616
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TEXT",
+              "position": {
+                "left": 559.82763671875,
+                "top": 645.3
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            }
+          ],
+          "element_type": {
+            "Relationship": "Rel"
+          }
+        },
+        {
+          "alias": "minaBERepositories -> minaBEResolver",
+          "from": "minaBERepositories",
+          "to": "minaBEResolver",
+          "shapes": [
+            {
+              "shape_type": "RECTANGLE",
+              "position": {}
+            },
+            {
+              "shape_type": "LINE",
+              "position": {}
+            },
+            {
+              "shape_type": "DOT",
+              "position": {
+                "left": 561.5,
+                "top": 798.5
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TRIANGLE",
+              "position": {
+                "left": 559.9088635123754,
+                "top": 875.0928287920251,
+                "angle": 178.94620903423203
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TEXT",
+              "position": {
+                "left": 560.0302734375,
+                "top": 835.3
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            }
+          ],
+          "element_type": {
+            "Relationship": "Rel"
+          }
+        },
+        {
+          "alias": "minaBEResolver -> minaBEDAOs",
+          "from": "minaBEResolver",
+          "to": "minaBEDAOs",
+          "shapes": [
+            {
+              "shape_type": "RECTANGLE",
+              "position": {}
+            },
+            {
+              "shape_type": "LINE",
+              "position": {}
+            },
+            {
+              "shape_type": "DOT",
+              "position": {
+                "left": 558.130859375,
+                "top": 983.5
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TRIANGLE",
+              "position": {
+                "left": 556.527165694653,
+                "top": 1050.105890191548,
+                "angle": 178.79904401643034
+              },
+              "size": {
+                "scale_x": 0.9999999999999974,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TEXT",
+              "position": {
+                "left": 558.32861328125,
+                "top": 1015.3
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            }
+          ],
+          "element_type": {
+            "Relationship": "Rel"
+          }
+        },
+        {
+          "alias": "minaBEDAOs -> minaBEFileSystem",
+          "from": "minaBEDAOs",
+          "to": "minaBEFileSystem",
+          "shapes": [
+            {
+              "shape_type": "RECTANGLE",
+              "position": {}
+            },
+            {
+              "shape_type": "LINE",
+              "position": {}
+            },
+            {
+              "shape_type": "DOT",
+              "position": {
+                "left": 563.814453125,
+                "top": 1163.5
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TRIANGLE",
+              "position": {
+                "left": 560.5266492103749,
+                "top": 1241.981342478372,
+                "angle": -179.78988795048875
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TEXT",
+              "position": {
+                "left": 559.01220703125,
+                "top": 1200.3
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            }
+          ],
+          "element_type": {
+            "Relationship": "Rel"
+          }
+        },
+        {
+          "alias": "minaBEDAOs -> minaBESerDes",
+          "from": "minaBEDAOs",
+          "to": "minaBESerDes",
+          "shapes": [
+            {
+              "shape_type": "RECTANGLE",
+              "position": {}
+            },
+            {
+              "shape_type": "LINE",
+              "position": {}
+            },
+            {
+              "shape_type": "TRIANGLE",
+              "position": {
+                "left": 250.8154138628039,
+                "top": 989.0225566005104,
+                "angle": -1.287185037317883
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "DOT",
+              "position": {
+                "left": 256.5,
+                "top": 1108.5
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "DOT",
+              "position": {
+                "left": 441.4999999999716,
+                "top": 1108.5
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TEXT",
+              "position": {
+                "left": 238.0234375,
+                "top": 1045.3
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            }
+          ],
+          "element_type": {
+            "Relationship": "Rel"
+          }
+        },
+        {
+          "alias": "minaBESerDes -> minaBEPlantUMLParser",
+          "from": "minaBESerDes",
+          "to": "minaBEPlantUMLParser",
+          "shapes": [
+            {
+              "shape_type": "RECTANGLE",
+              "position": {}
+            },
+            {
+              "shape_type": "LINE",
+              "position": {}
+            },
+            {
+              "shape_type": "DOT",
+              "position": {
+                "left": 251.5,
+                "top": 878.5
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TRIANGLE",
+              "position": {
+                "left": 244.9145070994691,
+                "top": 795.0840554648104,
+                "angle": -2.4612468827918264
+              },
+              "size": {
+                "scale_x": 0.9999999999999996,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TEXT",
+              "position": {
+                "left": 242.984375,
+                "top": 835.3
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            }
+          ],
+          "element_type": {
+            "Relationship": "Rel"
+          }
+        }
+      ]
+    },
+    {
+      "alias": "minaBEControllers",
+      "element_type": {
+        "Container": "Container"
+      },
+      "position": {
+        "left": 445.0,
+        "top": 505.0,
+        "z_index": 10,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "minaBERepositories",
+      "element_type": {
+        "Container": "Container"
+      },
+      "position": {
+        "left": 445.0,
+        "top": 690.0,
+        "z_index": 11,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "minaBEDAOs",
+      "element_type": {
+        "Container": "Container"
+      },
+      "position": {
+        "left": 445.0,
+        "top": 1055.0,
+        "z_index": 12,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "minaBEResolver",
+      "element_type": {
+        "Container": "Container"
+      },
+      "position": {
+        "left": 445.0,
+        "top": 880.0,
+        "z_index": 13,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "minaBEFileSystem",
+      "element_type": {
+        "Container": "ContainerDb"
+      },
+      "position": {
+        "left": 445.0,
+        "top": 1250.0,
+        "z_index": 14,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 146.225,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "minaBEControllers -> minaBERepositories",
+      "from": "minaBEControllers",
+      "to": "minaBERepositories",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 561.5,
+            "top": 608.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 559.9088885832032,
+            "top": 685.0928027814484,
+            "angle": 178.94618992838616
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 559.82763671875,
+            "top": 645.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    },
+    {
+      "alias": "minaBERepositories -> minaBEResolver",
+      "from": "minaBERepositories",
+      "to": "minaBEResolver",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 561.5,
+            "top": 798.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 559.9088635123754,
+            "top": 875.0928287920251,
+            "angle": 178.94620903423203
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 560.0302734375,
+            "top": 835.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    },
+    {
+      "alias": "minaBEResolver -> minaBEDAOs",
+      "from": "minaBEResolver",
+      "to": "minaBEDAOs",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 558.130859375,
+            "top": 983.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 556.527165694653,
+            "top": 1050.105890191548,
+            "angle": 178.79904401643034
+          },
+          "size": {
+            "scale_x": 0.9999999999999974,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 558.32861328125,
+            "top": 1015.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    },
+    {
+      "alias": "minaBEDAOs -> minaBEFileSystem",
+      "from": "minaBEDAOs",
+      "to": "minaBEFileSystem",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 563.814453125,
+            "top": 1163.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 560.5266492103749,
+            "top": 1241.981342478372,
+            "angle": -179.78988795048875
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 559.01220703125,
+            "top": 1200.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    },
+    {
+      "alias": "minaBEDAOs -> minaBESerDes",
+      "from": "minaBEDAOs",
+      "to": "minaBESerDes",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 250.8154138628039,
+            "top": 989.0225566005104,
+            "angle": -1.287185037317883
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 256.5,
+            "top": 1108.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 441.4999999999716,
+            "top": 1108.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 238.0234375,
+            "top": 1045.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    },
+    {
+      "alias": "minaBESerDes -> minaBEPlantUMLParser",
+      "from": "minaBESerDes",
+      "to": "minaBEPlantUMLParser",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 251.5,
+            "top": 878.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 244.9145070994691,
+            "top": 795.0840554648104,
+            "angle": -2.4612468827918264
+          },
+          "size": {
+            "scale_x": 0.9999999999999996,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 242.984375,
+            "top": 835.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    },
+    {
+      "alias": "minaFEBridge -> minaBEControllers",
+      "from": "minaFEBridge",
+      "to": "minaBEControllers",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 561.5,
+            "top": 353.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 559.9507569012198,
+            "top": 500.0497329234251,
+            "angle": 179.43282371958662
+          },
+          "size": {
+            "scale_x": 0.9999999999999996,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 562.2373046875,
+            "top": 430.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    },
+    {
+      "alias": "userMinaRendering -> minaFrontendContainer",
+      "from": "userMinaRendering",
+      "to": "minaFrontendContainer",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 556.5,
+            "top": 88.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 553.2163953581055,
+            "top": 236.9956723334427,
+            "angle": 180.10942628171517
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 548.21630859375,
+            "top": 160.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    },
+    {
+      "alias": "minaBESerDes",
+      "element_type": {
+        "Container": "Container"
+      },
+      "position": {
+        "left": 135.0,
+        "top": 880.0,
+        "z_index": 61,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "minaFrontend -> minaC4modelUIKit",
+      "from": "minaFrontend",
+      "to": "minaC4modelUIKit",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 681.5,
+            "top": 290.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 1030.0042692189304,
+            "top": 290.0042655767927,
+            "angle": 89.95179480935995
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 857.06396484375,
+            "top": 290.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    },
+    {
+      "alias": "minaBEPlantUMLParser",
+      "element_type": {
+        "Container": "Container"
+      },
+      "position": {
+        "left": 130.0,
+        "top": 690.0,
+        "z_index": 70,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "minaC4modelUIKit -> minaC4modelUIKit",
+      "from": "minaC4modelUIKit",
+      "to": "minaC4modelUIKit",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 1146.5,
+            "top": 233.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 1146.5,
+            "top": 163.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 1316.5,
+            "top": 163.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 1316.5,
+            "top": 293.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 1259.4252379446166,
+            "top": 294.48481467822467,
+            "angle": 268.95663919125843
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 1139.6103515625,
+            "top": 200.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    }
+  ],
+  "shapes": []
+}

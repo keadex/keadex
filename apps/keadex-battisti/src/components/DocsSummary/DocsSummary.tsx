@@ -4,14 +4,14 @@ import { Button } from '@keadex/keadex-ui-kit/cross'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { PropsWithChildren } from 'react'
+import { AnimationOnScroll } from 'react-animation-on-scroll'
 import { Trans } from 'react-i18next'
 import architectural from '../../../public/img/architectural.svg'
 import functionalLogo from '../../../public/img/functional.svg'
 import operationalLogo from '../../../public/img/operational.svg'
 import technicalLogo from '../../../public/img/technical.svg'
 import { useTranslation } from '../../app/i18n/client'
-import ROUTES, { DOCS } from '../../core/routes'
-import { AnimationOnScroll } from 'react-animation-on-scroll'
+import ROUTES, { DOCS_OVERVIEW } from '../../core/routes'
 
 export type DocsSummaryProps = {
   lang: string
@@ -116,7 +116,7 @@ export default function DocsSummary({
         </div>
         <div className="text-center text-lg w-full mt-10 flex flex-col">
           <Button
-            onClick={() => router.push(ROUTES[DOCS].path)}
+            onClick={() => router.push(ROUTES[DOCS_OVERVIEW].path)}
             className="w-60 mx-auto"
           >
             {t('home.check_docs')}

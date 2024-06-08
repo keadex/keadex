@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "ApiDocsGenerator",
+  "title": "",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What is the project for which you would generate the API docs?"
+    },
+    "outputPath": {
+      "type": "string",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      },
+      "x-prompt": "Where will the API docs be generated?"
+    },
+    "entryMdFile": {
+      "type": "string",
+      "description": "Name of the generated Markdown entry file",
+      "default": "index.md"
+    }
+  },
+  "required": ["project", "outputPath"]
+}

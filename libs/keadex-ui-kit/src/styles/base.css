@@ -15,7 +15,7 @@ p {
 }
 
 a {
-  @apply text-brand1 underline underline-offset-8;
+  @apply text-brand1 underline underline-offset-[5px];
 }
 
 a:hover {

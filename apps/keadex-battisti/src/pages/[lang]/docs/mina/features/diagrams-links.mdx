@@ -1,0 +1,47 @@
+import aiScreenshot from '../../../../../../public/img/mina/ai-powered.gif'
+import { faLink } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+# Diagrams Links
+
+The **layering** of the C4 model enables the creation of clear and understandable diagrams. Moreover, you will often create diagrams focusing on specific systems, which, in turn, **integrate** with other systems.
+
+By **linking** diagrams of different levels or systems together, you will enable **interactive navigation** that allows users to have a clear and detailed view of your architectures.
+
+## Usage
+
+<iframe
+  src="https://www.youtube.com/embed/z4oOFNrtzfU"
+  className="w-full h-80 my-14 border-0"
+  frameBorder="0"
+  allowFullScreen
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+/>
+
+Keadex Mina leverages the `$link` property supported by the [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML/) syntax to define a link between a diagram element and a diagram.
+
+In Mina, the value of the `$link` property has the format `DIAGRAM_TYPE/DIAGRAM_NAME`, where `DIAGRAM_TYPE` and `DIAGRAM_NAME` are respectively the type and name of the linked diagram (in lower and dash-case).
+
+It is possible to link only the following C4 element types:
+  - Software Systems
+  - Containers
+  - Components
+
+### Creating a link
+1. Place the cursor at the line of the code editor containing the element to link
+2. You have two options:
+    1. Right mouse click -> *"Add a link to a diagram"* 
+    2. Click on the icon <FontAwesomeIcon icon={faLink} className="inline w-4 mx-2" />
+3. Select a diagram 
+4. Mina will add for you the `$link` property with the auto-generated value
+5. Save the diagram
+
+### Deleting a link
+1. Place the cursor at the line of the code editor containing the element to link
+2. You have two options:
+    1. Right mouse click -> *"Add a link to a diagram"* 
+    2. Click on the icon <FontAwesomeIcon icon={faLink} className="inline w-4 mx-2" />
+3. Clear the field
+4. Select *"Unlink..."*
+5. Mina will remove for you the `$link` property
+6. Save the diagram

@@ -5,6 +5,8 @@ export const CANVAS_EVENTS = {
   OBJECT_MODIFIED: 'object:modified',
   OBJECT_REMOVED: 'object:removed',
   MOUSE_DOWN: 'mouse:down',
+  MOUSE_OVER: 'mouse:over',
+  MOUSE_OUT: 'mouse:out',
 }
 
 export const OBJECT_EVENTS = {

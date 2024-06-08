@@ -1,0 +1,1116 @@
+{
+  "uuid": "17095cb5-dcd5-4a2d-b87d-168b3ac0911b",
+  "tags": [
+    "keadex-mina"
+  ],
+  "elements_specs": [
+    {
+      "alias": "legend",
+      "position": {
+        "left": 20.0,
+        "top": 20.0,
+        "z_index": 0,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 121.0,
+        "height": 141.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4ModelUiKitModels",
+      "element_type": {
+        "Container": "Container"
+      },
+      "position": {
+        "left": 940.0,
+        "top": 630.0,
+        "z_index": 1,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitRenderingSystem",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {
+            "left": 195.0,
+            "top": 40.0,
+            "z_index": 3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "FOOTER",
+          "position": {
+            "z_index": 4
+          }
+        }
+      ],
+      "element_type": {
+        "Boundary": "Container_Boundary"
+      },
+      "inner_specs": [
+        {
+          "alias": "c4modelUiKitDiagramRenderer",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 565.0,
+            "top": 50.0,
+            "z_index": 22,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitElementsRenderers",
+          "shapes": [
+            {
+              "shape_type": "RECTANGLE",
+              "position": {
+                "left": 205.0,
+                "top": 235.0,
+                "z_index": 24
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "FOOTER",
+              "position": {
+                "z_index": 25
+              }
+            }
+          ],
+          "element_type": {
+            "Boundary": "Container_Boundary"
+          },
+          "inner_specs": [
+            {
+              "alias": "c4modelUiKitSoftwareSystemRenderer",
+              "element_type": {
+                "Component": "Component"
+              },
+              "position": {
+                "left": 215.0,
+                "top": 245.0,
+                "z_index": 26,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "c4modelUiKitContainerRenderer",
+              "element_type": {
+                "Component": "Component"
+              },
+              "position": {
+                "left": 450.0,
+                "top": 245.0,
+                "z_index": 27,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "c4modelUiKitComponentRenderer",
+              "element_type": {
+                "Component": "Component"
+              },
+              "position": {
+                "left": 685.0,
+                "top": 245.0,
+                "z_index": 28,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "c4modelUiKitBoundaryRenderer",
+              "element_type": {
+                "Component": "Component"
+              },
+              "position": {
+                "left": 920.0,
+                "top": 245.0,
+                "z_index": 29,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "c4modelUiKitDeploymentNodeRenderer",
+              "element_type": {
+                "Component": "Component"
+              },
+              "position": {
+                "left": 350.0,
+                "top": 360.0,
+                "z_index": 30,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "c4modelUiKitPersonRenderer",
+              "element_type": {
+                "Component": "Component"
+              },
+              "position": {
+                "left": 585.0,
+                "top": 360.0,
+                "z_index": 31,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "alias": "c4modelUiKitRelationshipRenderer",
+              "element_type": {
+                "Component": "Component"
+              },
+              "position": {
+                "left": 820.0,
+                "top": 360.0,
+                "z_index": 33,
+                "angle": 0.0
+              },
+              "size": {
+                "width": 221.0,
+                "height": 101.0,
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "alias": "c4modelUiKitDiagramRenderer -> c4modelUiKitElementsRenderers",
+          "from": "c4modelUiKitDiagramRenderer",
+          "to": "c4modelUiKitElementsRenderers",
+          "shapes": [
+            {
+              "shape_type": "RECTANGLE",
+              "position": {}
+            },
+            {
+              "shape_type": "LINE",
+              "position": {}
+            },
+            {
+              "shape_type": "DOT",
+              "position": {
+                "left": 676.5,
+                "top": 153.5
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TRIANGLE",
+              "position": {
+                "left": 674.8961539131974,
+                "top": 220.10604912956495,
+                "angle": 178.7991779266826
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            },
+            {
+              "shape_type": "TEXT",
+              "position": {
+                "left": 672.896484375,
+                "top": 185.3
+              },
+              "size": {
+                "scale_x": 1.0,
+                "scale_y": 1.0
+              }
+            }
+          ],
+          "element_type": {
+            "Relationship": "Rel"
+          }
+        }
+      ]
+    },
+    {
+      "alias": "c4modelUiKitDiagramRenderer -> c4modelUiKitElementsRenderers",
+      "from": "c4modelUiKitDiagramRenderer",
+      "to": "c4modelUiKitElementsRenderers",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 676.5,
+            "top": 153.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 674.8961539131974,
+            "top": 220.10604912956495,
+            "angle": 178.7991779266826
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 672.896484375,
+            "top": 185.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    },
+    {
+      "alias": "c4modelUiKitComponents",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {
+            "left": 195.0,
+            "top": 805.0,
+            "z_index": 9
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "FOOTER",
+          "position": {
+            "z_index": 10
+          }
+        }
+      ],
+      "element_type": {
+        "Boundary": "Container_Boundary"
+      },
+      "inner_specs": [
+        {
+          "alias": "c4modelUiKitC4Component",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 690.0,
+            "top": 815.0,
+            "z_index": 11,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitC4Container",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 450.0,
+            "top": 815.0,
+            "z_index": 12,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitC4Person",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 450.0,
+            "top": 930.0,
+            "z_index": 13,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitC4SoftwareSystem",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 205.0,
+            "top": 815.0,
+            "z_index": 14,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitC4Relationship",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 690.0,
+            "top": 930.0,
+            "z_index": 15,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitC4Boundary",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 930.0,
+            "top": 815.0,
+            "z_index": 16,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitC4DeploymentNode",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 205.0,
+            "top": 930.0,
+            "z_index": 17,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitC4Legend",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 930.0,
+            "top": 930.0,
+            "z_index": 18,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "alias": "c4modelUiKitC4Component",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 690.0,
+        "top": 815.0,
+        "z_index": 11,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitC4Container",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 450.0,
+        "top": 815.0,
+        "z_index": 12,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitC4Person",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 450.0,
+        "top": 930.0,
+        "z_index": 13,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitC4SoftwareSystem",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 205.0,
+        "top": 815.0,
+        "z_index": 14,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitC4Relationship",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 690.0,
+        "top": 930.0,
+        "z_index": 15,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitC4Boundary",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 930.0,
+        "top": 815.0,
+        "z_index": 16,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitC4DeploymentNode",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 205.0,
+        "top": 930.0,
+        "z_index": 17,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitC4Legend",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 930.0,
+        "top": 930.0,
+        "z_index": 18,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitDiagramRenderer",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 565.0,
+        "top": 50.0,
+        "z_index": 22,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitElementsRenderers",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {
+            "left": 205.0,
+            "top": 235.0,
+            "z_index": 24
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "FOOTER",
+          "position": {
+            "z_index": 25
+          }
+        }
+      ],
+      "element_type": {
+        "Boundary": "Container_Boundary"
+      },
+      "inner_specs": [
+        {
+          "alias": "c4modelUiKitSoftwareSystemRenderer",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 215.0,
+            "top": 245.0,
+            "z_index": 26,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitContainerRenderer",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 450.0,
+            "top": 245.0,
+            "z_index": 27,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitComponentRenderer",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 685.0,
+            "top": 245.0,
+            "z_index": 28,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitBoundaryRenderer",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 920.0,
+            "top": 245.0,
+            "z_index": 29,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitDeploymentNodeRenderer",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 350.0,
+            "top": 360.0,
+            "z_index": 30,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitPersonRenderer",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 585.0,
+            "top": 360.0,
+            "z_index": 31,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "alias": "c4modelUiKitRelationshipRenderer",
+          "element_type": {
+            "Component": "Component"
+          },
+          "position": {
+            "left": 820.0,
+            "top": 360.0,
+            "z_index": 33,
+            "angle": 0.0
+          },
+          "size": {
+            "width": 221.0,
+            "height": 101.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "alias": "c4modelUiKitSoftwareSystemRenderer",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 215.0,
+        "top": 245.0,
+        "z_index": 26,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitContainerRenderer",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 450.0,
+        "top": 245.0,
+        "z_index": 27,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitComponentRenderer",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 685.0,
+        "top": 245.0,
+        "z_index": 28,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitBoundaryRenderer",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 920.0,
+        "top": 245.0,
+        "z_index": 29,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitDeploymentNodeRenderer",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 350.0,
+        "top": 360.0,
+        "z_index": 30,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitPersonRenderer",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 585.0,
+        "top": 360.0,
+        "z_index": 31,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitRenderingSystem -> c4modelUiKitComponents",
+      "from": "c4modelUiKitRenderingSystem",
+      "to": "c4modelUiKitComponents",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 686.5,
+            "top": 550.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 684.9706425017972,
+            "top": 800.0295308918301,
+            "angle": 179.66259242873213
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 684.81787109375,
+            "top": 680.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    },
+    {
+      "alias": "c4modelUiKitRelationshipRenderer",
+      "element_type": {
+        "Component": "Component"
+      },
+      "position": {
+        "left": 820.0,
+        "top": 360.0,
+        "z_index": 33,
+        "angle": 0.0
+      },
+      "size": {
+        "width": 221.0,
+        "height": 101.0,
+        "scale_x": 1.0,
+        "scale_y": 1.0
+      }
+    },
+    {
+      "alias": "c4modelUiKitComponents -> c4ModelUiKitModels",
+      "from": "c4modelUiKitComponents",
+      "to": "c4ModelUiKitModels",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 1056.5,
+            "top": 803.5
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 1050.2264210112307,
+            "top": 734.7628272500025,
+            "angle": -2.726627263874036
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 1049.81787109375,
+            "top": 770.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    },
+    {
+      "alias": "c4modelUiKitRenderingSystem -> c4ModelUiKitModels",
+      "from": "c4modelUiKitRenderingSystem",
+      "to": "c4ModelUiKitModels",
+      "shapes": [
+        {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
+          "shape_type": "DOT",
+          "position": {
+            "left": 1056.5,
+            "top": 550.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TRIANGLE",
+          "position": {
+            "left": 1054.9068553268016,
+            "top": 625.0949131161751,
+            "angle": 178.92242179179215
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        },
+        {
+          "shape_type": "TEXT",
+          "position": {
+            "left": 1054.81787109375,
+            "top": 590.3
+          },
+          "size": {
+            "scale_x": 1.0,
+            "scale_y": 1.0
+          }
+        }
+      ],
+      "element_type": {
+        "Relationship": "Rel"
+      }
+    }
+  ],
+  "shapes": []
+}

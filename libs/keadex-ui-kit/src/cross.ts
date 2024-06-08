@@ -77,3 +77,7 @@ export {
   type TagsInputProps,
 } from './components/cross/TagsInput/TagsInput'
 export { Tabs, type TabsProps, type Tab } from './components/cross/Tabs/Tabs'
+export {
+  NewsBanner,
+  type NewsBannerProps,
+} from './components/cross/NewsBanner/NewsBanner'

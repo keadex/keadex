@@ -175,7 +175,7 @@ const factory: WindowTitlebarMenuFactory<
   }
 
   const handleDocumentation = () => {
-    open('https://keadex.dev/en/docs/mina')
+    open('https://keadex.dev/en/docs/mina/introduction')
   }
 
   const handleC4Model = () => {

@@ -5,6 +5,13 @@
   "projectType": "library",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "libs/c4-model-ui-kit",
+        "command": "tsc -p tsconfig.lib.json"
+      }
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
@@ -20,6 +27,13 @@
         "jestConfig": "libs/c4-model-ui-kit/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "generate-api-docs": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nx generate @keadex/keadex-nx-plugin:api-docs-generator --project=libs/c4-model-ui-kit --outputPath=apps/keadex-battisti/src/pages/[lang]/docs/c4-model-ui-kit/api --entryMdFile=api.md"
+      },
+      "dependsOn": ["build"]
     }
   }
 }

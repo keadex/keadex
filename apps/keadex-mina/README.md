@@ -35,7 +35,7 @@ Discover the upcoming and planned features [here](https://github.com/users/keade
 
 ## Documentation
 
-Discover all the features and details in the [Keadex Mina documentation](https://keadex.dev/en/docs/mina).
+Discover all the features and details in the [Keadex Mina documentation](https://keadex.dev/en/docs/mina/introduction).
 
 ## Useful Links
 

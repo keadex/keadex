@@ -6,6 +6,8 @@ import { PropsWithChildren } from 'react'
 import { Trans } from 'react-i18next'
 import exportFeature from '../../../public/img/mina/mina-export.jpg'
 import organize from '../../../public/img/mina/mina-organize.jpg'
+import hooksHLD from '../../../public/img/docs/mina/hooks-hld.png'
+import minaTags from '../../../public/img/mina/mina-tags.png'
 import { useTranslation } from '../../app/i18n/client'
 
 export type MinaDetailsProps = {
@@ -29,6 +31,20 @@ export default function MinaDetails({
       video: 'https://www.youtube.com/embed/pfYGNEbJ9Kg',
     },
     { i18nKey: 'link', video: 'https://www.youtube.com/embed/z4oOFNrtzfU' },
+    {
+      i18nKey: 'low-coding',
+      video: 'https://www.youtube.com/embed/299HoVK1Y7Y',
+    },
+    {
+      i18nKey: 'hooks',
+      image: hooksHLD,
+      alt: 'High Level Design of Mina Hooks',
+    },
+    {
+      i18nKey: 'tags',
+      image: minaTags,
+      alt: 'Screenshots of Keadex Mina tags feature',
+    },
     { i18nKey: 'search', video: 'https://www.youtube.com/embed/oCje5uU8SXQ' },
     {
       i18nKey: 'export',
@@ -88,7 +104,12 @@ export default function MinaDetails({
       </span>
       <div className="flex flex-col md:flex-row">
         <div className="flex flex-col h-fit w-full md:w-1/2">
-          <Tabs tabs={tabs} tabClassName="!m-0" bodyClassName="px-0 pt-0" />
+          <Tabs
+            tabs={tabs}
+            className="mina-details__tabs"
+            tabClassName="!m-0"
+            bodyClassName="px-0 pt-0"
+          />
         </div>
         <div className="w-full mt-10 md:w-1/2 md:mt-0 pl-0 md:pl-10 flex flex-col">
           <div className="text-3xl leading-10 font-extralight">

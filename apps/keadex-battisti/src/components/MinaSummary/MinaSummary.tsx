@@ -38,7 +38,7 @@ export default function MinaSummary({
 
     if (direct) {
       const userAgent = navigator?.userAgent.toLowerCase()
-      
+
       const part1URL =
         'https://github.com/keadex/keadex/releases/download/keadex-mina-v'
       const part2URL = userAgent.includes('linux')
@@ -80,9 +80,6 @@ export default function MinaSummary({
             alt="Keadex Mina Logo"
             className="w-[15rem] md:w-[22rem]"
           />
-          <div className="ml-2 md:ml-5 bg-dark-brand1 rounded-md py-1 px-1 md:px-5 text-xs md:text-xl my-auto">
-            BETA
-          </div>
         </div>
         <div className="flex flex-col md:flex-row">
           <div className="flex flex-col w-full pr-0 md:pr-5 md:w-1/2 ">

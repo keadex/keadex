@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "api-docs-generator": {
+      "factory": "./src/generators/api-docs-generator/generator",
+      "schema": "./src/generators/api-docs-generator/schema.json",
+      "description": "api-docs-generator generator"
+    }
+  }
+}

@@ -1,5 +1,5 @@
 a {
-  @apply text-brand1 underline underline-offset-8 !important;
+  @apply text-brand1 underline underline-offset-[5px] !important;
 }
 
 input {
@@ -9,7 +9,11 @@ input {
 }
 
 .nextra-container h1,
-.nextra-container h2 {
+.nextra-container h2,
+.nextra-container h3,
+.nextra-container h4,
+.nextra-container h5,
+.nextra-container h6 {
   @apply text-accent-primary font-normal border-b-accent-third !important;
 }
 
@@ -147,6 +151,10 @@ input {
   @apply border-third text-accent-primary !important;
 }
 
+.toc-disabled .nextra-toc {
+  @apply hidden;
+}
+
 .nextra-toc > .nextra-scrollbar > p {
   @apply font-medium !important;
 }
@@ -161,4 +169,8 @@ input {
 
 .nextra-toc > .nextra-scrollbar div:last-child {
   @apply hidden !important;
+}
+
+.nextra-filetree > div {
+  @apply border-none;
 }

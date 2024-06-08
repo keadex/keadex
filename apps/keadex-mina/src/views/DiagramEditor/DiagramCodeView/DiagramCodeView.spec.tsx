@@ -6,7 +6,7 @@ describe('DiagramCodeView', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <DiagramCodeView
-        diagramEditorToolbarCommands={null}
+        diagramCodeViewToolbarCommands={null}
         saveDiagram={function (): void {
           console.log('Function not implemented.')
         }}

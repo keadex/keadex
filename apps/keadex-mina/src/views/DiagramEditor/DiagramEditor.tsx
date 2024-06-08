@@ -5,9 +5,13 @@ import { useTranslation } from 'react-i18next'
 import { ResizableBox } from 'react-resizable'
 import { NavigateOptions, useLocation, useNavigate } from 'react-router-dom'
 import { ToastOptions, toast } from 'react-toastify'
-import DiagramEditorToolbar, {
-  DiagramEditorToolbarCommands,
-} from '../../components/DiagramEditorToolbar/DiagramEditorToolbar'
+import DiagramCodeViewToolbar, {
+  DiagramCodeViewToolbarCommands,
+} from '../../components/DiagramCodeViewToolbar/DiagramCodeViewToolbar'
+import DiagramDesignViewToolbar, {
+  DiagramDesignViewToolbarCommands,
+} from '../../components/DiagramDesignViewToolbar/DiagramDesignViewToolbar'
+import DiagramEditorToolbar from '../../components/DiagramEditorToolbar/DiagramEditorToolbar'
 import AppEventContext, { AppEventType } from '../../context/AppEventContext'
 import { EDIT_DIAGRAM, HOME_PROJECT } from '../../core/router/routes'
 import {
@@ -52,7 +56,9 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
   const [error, setError] = useState<MinaError | undefined>()
   const diagramDesignViewRef = useRef<DiagramDesignViewCommands>(null)
   const diagramCodeViewRef = useRef<DiagramCodeViewCommands>(null)
-  const diagramEditorToolbarRef = useRef<DiagramEditorToolbarCommands>(null)
+  const diagramCodeViewToolbarRef = useRef<DiagramCodeViewToolbarCommands>(null)
+  const diagramDesignViewToolbarRef =
+    useRef<DiagramDesignViewToolbarCommands>(null)
   const context = useContext(AppEventContext)
 
   context?.useSubscription((event) => {
@@ -255,34 +261,42 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
     <div className="bg-dark-primary flex h-full w-full flex-col overflow-auto">
       {modal}
       <DiagramEditorToolbar
-        ref={diagramEditorToolbarRef}
         diagram={diagram}
-        diagramCodeViewCommands={diagramCodeViewRef.current}
-        diagramDesignViewCommands={diagramDesignViewRef.current}
         saveDiagram={handleSaveDiagram}
         closeDiagram={showConfirmationModalCloseDiagram}
       />
       <div className="flex w-full grow overflow-hidden">
         <div id="diagram-code-editor-box">
           <ResizableBox height={Infinity} width={500} resizeHandles={['e']}>
-            <div className="window__inner-border h-full w-full border-t">
+            <div className="window__inner-border h-full w-full border-t flex flex-col">
+              <DiagramCodeViewToolbar
+                ref={diagramCodeViewToolbarRef}
+                diagramCodeViewCommands={diagramCodeViewRef.current}
+              />
               <DiagramCodeView
                 ref={diagramCodeViewRef}
                 diagram={diagram}
                 error={error}
-                diagramEditorToolbarCommands={diagramEditorToolbarRef.current}
+                diagramCodeViewToolbarCommands={
+                  diagramCodeViewToolbarRef.current
+                }
                 saveDiagram={handleSaveDiagram}
                 isSaving={isSaving}
               />
             </div>
           </ResizableBox>
         </div>
-        <div className="window__inner-border h-full w-full border-t">
+        <div className="window__inner-border h-full w-full border-t flex flex-col overflow-x-auto">
+          <DiagramDesignViewToolbar
+            ref={diagramDesignViewToolbarRef}
+            diagramDesignViewCommands={diagramDesignViewRef}
+          />
           <DiagramDesignView
             ref={diagramDesignViewRef}
             diagramListener={diagramListener}
             diagram={diagram}
             error={error}
+            diagramDesignViewToolbarCommands={diagramDesignViewToolbarRef}
           />
         </div>
       </div>

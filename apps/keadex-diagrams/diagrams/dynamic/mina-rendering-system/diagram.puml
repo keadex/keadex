@@ -1,0 +1,47 @@
+@startuml
+
+Person(userMinaRendering, "User", "A user that manages the architectural diagrams.")
+
+Container_Boundary(mina, "Keadex Mina"){
+  Container(minaFrontendContainer, "Frontend", "React", "Frontend of Keadex Mina.")
+
+  Container_Boundary(minaBackend, "Backend"){
+    Container(minaBEControllers, "Controllers", "Rust", "Controllers that expose APIs to the frontend.")
+
+    Container(minaBERepositories, "Repositories", "Rust", "Repositories allow to query for data.")
+
+    Container(minaBEDAOs, "DAOs", "Rust", "DAOs allow to read and write data from the storages.")
+
+    Container(minaBEResolver, "Resolver", "Rust", "The resolver allows to store and resolve singletons.")
+
+    ContainerDb(minaBEFileSystem, "File System", "OS", "Local OS file system.")
+
+    Container(minaBESerDes, "SerDes", "Rust", "Serializer/Deserializer of data.")
+
+    Container(minaBEPlantUMLParser, "PlantUML Parser", "Pest", "PlantUML parser based on Pest.")
+
+    Rel(minaBEControllers, minaBERepositories, "[3] invokes to read the diagram specs and puml", "Rust")
+
+    Rel(minaBERepositories, minaBEResolver, "[4] invokes to resolve the diagram specs and puml DAOs", "Rust")
+
+    Rel(minaBEResolver, minaBEDAOs, "[5] resolves the diagram specs and puml DAOs", "Rust")
+
+    Rel(minaBEDAOs, minaBEFileSystem, "[6] reads the diagram specs and puml files", "Rust")
+
+    Rel(minaBEDAOs, minaBESerDes, "[7] invokes to deserialize diagram JSON specs and PlantUML code", "Rust")
+
+    Rel(minaBESerDes, minaBEPlantUMLParser, "[8] invokes to parse diagram PlantUML code", "Rust")
+  }
+
+  Rel(minaFEBridge, minaBEControllers, "[2] calls API to read the diagram data (specs and puml) as JSON data", "Tauri")
+}
+
+Container(minaC4modelUIKit, "C4 Model UI Kit", "Fabric.js", "Fabric.js components and modules to render C4 model diagrams.")
+
+Rel(userMinaRendering, minaFrontendContainer, "[1] opens a diagram", "UI")
+
+Rel(minaFrontend, minaC4modelUIKit, "[9] invokes to render the diagram with the given specs and puml", "Typescript")
+
+Rel(minaC4modelUIKit, minaC4modelUIKit, "[10] instantiates and renders the interactive C4 Model UI components", "Typescript")
+
+@enduml

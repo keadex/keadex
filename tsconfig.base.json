@@ -19,6 +19,7 @@
       "@keadex/docusaurus-plugin-mina": [
         "libs/docusaurus-plugin-mina/src/index.ts"
       ],
+      "@keadex/keadex-nx-plugin": ["libs/keadex-nx-plugin/src/index.ts"],
       "@keadex/keadex-ui-kit/components/cross/Accordion/Accordion": [
         "libs/keadex-ui-kit/src/components/cross/Accordion/Accordion.tsx"
       ],

@@ -1,0 +1,107 @@
+@startuml
+
+Container_Boundary(mina, "Keadex Mina"){
+  Container_Boundary(minaFrontend, "Frontend"){
+    Container(minaFEViews, "Views", "React", "Views of the Mina application.")
+
+    Container(minaFEComponents, "Components", "React", "Components of the Mina application.")
+
+    Container(minaFEBridge, "Tauri Bridge", "Typescript", "Bridge to invoke Tauri commands exposed by the Rust backend.")
+
+    Rel(minaFEViews, minaFEComponents, "imports", "Typescript")
+
+    Rel(minaFEViews, minaFEBridge, "uses to invoke Rust commands", "Typescript")
+
+    Rel(minaFEComponents, minaFEBridge, "uses to invoke Rust commands", "Typescript")
+  }
+
+  Container_Boundary(minaBackend, "Backend"){
+    Container(minaBEControllers, "Controllers", "Rust", "Controllers that expose APIs to the frontend.")
+
+    Container(minaBEServices, "Services", "Rust", "Services that contain the business logic.")
+
+    Container(minaBERepositories, "Repositories", "Rust", "Repositories allow to query for data.")
+
+    Container(minaBEDAOs, "DAOs", "Rust", "DAOs allow to read and write data from the storages.")
+
+    Container(minaBEResolver, "Resolver", "Rust", "The resolver allows to store and resolve singletons.")
+
+    ContainerDb(minaBEFileSystem, "File System", "OS", "Local OS file system.")
+
+    ContainerDb(minaBEMemory, "Memory", "OS", "Local OS memory.")
+
+    Container(minaBEProjectInitializer, "Project Initializer", "Rust", "Initialize a new Mina project.")
+
+    Container(minaBESerDes, "SerDes", "Rust", "Serializer/Deserializer of data.")
+
+    Container(minaBEPlantUMLParser, "PlantUML Parser", "Pest", "PlantUML parser based on Pest.")
+
+    Rel(minaBEControllers, minaBEServices, "uses", "Rust")
+
+    Rel(minaBEControllers, minaBERepositories, "uses", "Rust")
+
+    Rel(minaBEServices, minaBERepositories, "uses", "Rust")
+
+    Rel(minaBERepositories, minaBEResolver, "invokes to resolve", "Rust")
+
+    Rel(minaBEResolver, minaBEDAOs, "resolves", "Rust")
+
+    Rel(minaBEDAOs, minaBEFileSystem, "I/O", "Rust")
+
+    Rel(minaBEDAOs, minaBEMemory, "I/O", "Rust")
+
+    Rel(minaBEControllers, minaBEProjectInitializer, "invokes", "Rust")
+
+    Rel(minaBEProjectInitializer, minaBEDAOs, "invokes to write", "Rust")
+
+    Rel(minaBEControllers, minaBESerDes, "invokes to ser/des", "Rust")
+
+    Rel(minaBEDAOs, minaBESerDes, "invokes to ser/des", "Rust")
+
+    Rel(minaBEServices, minaBESerDes, "invokes to ser/des", "Rust")
+
+    Rel(minaBERepositories, minaBESerDes, "invokes to ser/des", "Rust")
+
+    Rel(minaBESerDes, minaBEPlantUMLParser, "invokes to parse", "Rust")
+  }
+
+  Rel(minaFEBridge, minaBEControllers, "calls APIs exposed by", "Tauri")
+}
+
+System_Ext(minaOS, "Operating System", "Local OS")
+
+Container(minaReact, "Mina React", "React", "Library that provides React components to render interactive C4 Model diagrams created with Keadex Mina.")
+
+Container(minaC4modelUIKit, "C4 Model UI Kit", "Fabric.js", "Fabric.js components and modules to render C4 model diagrams.")
+
+Container(minaKeadexUIKit, "Keadex UI Kit", "React", "Components, hooks, styles and utilities to render Keadex applications.")
+
+Container(minaKeadexUtils, "Keadex Utils", "Typescript", "Library with general purpose utilities.")
+
+Container(minaConfluenceApp, "Mina Confluence App", "React", "React application with a minimal configuration to render Mina diagrams in Atlassian Confluence.")
+
+Container(minaConfluencePlugin, "Mina Confluence Plugin", "Atlassian Forge", "Confluence plugin to render Mina diagrams in Atlassian Confluence.")
+
+Container(minaDocusaurusPlugin, "Mina Docusaurus Plugin", "Typescript", "Docusaurus plugin that injects Webpack configurations to render Mina diagrams in Docusaurus apps.")
+
+Rel(minaFrontend, minaC4modelUIKit, "imports", "Typescript")
+
+Rel(minaFrontend, minaKeadexUIKit, "imports", "Typescript")
+
+Rel(minaReact, minaFrontend, "uses subset features of", "React")
+
+Rel(minaReact, minaBackend, "uses subset features of", "Rust")
+
+Rel(minaFrontend, minaKeadexUtils, "imports", "Typescript")
+
+Rel(minaKeadexUIKit, minaKeadexUtils, "imports", "Typescript")
+
+Rel(minaReact, minaKeadexUtils, "imports", "Typescript")
+
+Rel(minaConfluenceApp, minaReact, "imports", "React")
+
+Rel(minaConfluencePlugin, minaConfluenceApp, "includes as a resource the static build of", "Forge")
+
+Rel(mina, minaOS, "interacts with", "OS")
+
+@enduml

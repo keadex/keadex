@@ -20,7 +20,7 @@ import keadexLogo from '../../../public/img/keadex-logo.png'
 import { useTranslation } from '../../app/i18n/client'
 import ROUTES, {
   ABOUT_ME,
-  DOCS,
+  DOCS_OVERVIEW,
   HOME,
   PROJECTS,
   PROJECTS_ROUTES,
@@ -88,9 +88,9 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
   return (
     // <!-- Main navigation container -->
     <header
-      className={`fixed top-0 w-full z-30 transition-all duration-500 ${
+      className={`fixed w-full z-30 transition-all duration-500 ${
         scrollActive || !menuCollapsed
-          ? ' shadow-md backdrop-blur-md bg-dark-primary/60'
+          ? ' top-0 shadow-md backdrop-blur-md bg-dark-primary/60'
           : ' bg-transparent'
       }`}
     >
@@ -144,9 +144,11 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
               </li>
               <li>
                 <Link
-                  href={ROUTES[DOCS].path}
+                  href={ROUTES[DOCS_OVERVIEW].path}
                   className={`${
-                    pathname?.endsWith(ROUTES[DOCS].path) ? ' active' : ''
+                    pathname?.endsWith(ROUTES[DOCS_OVERVIEW].path)
+                      ? ' active'
+                      : ''
                   }`}
                 >
                   Docs
@@ -167,7 +169,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
                   <FontAwesomeIcon icon={faGithub} className="text-xl" />
                 </Link>
                 <Link
-                  href="https://discord.gg/Hx9qDQTS"
+                  href="https://discord.gg/utCqK9jzJW"
                   target="_blank"
                   className="!ml-3 lg:!ml-0"
                 >
