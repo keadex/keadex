@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/keadex/keadex/compare/docusaurus-plugin-mina@1.0.1...docusaurus-plugin-mina@1.1.0) (2024-06-08)
+
+
+### Features
+
+* **libs/docusaurus-plugin-mina:** trigger lib release ([e4d57b8](https://github.com/keadex/keadex/commit/e4d57b8b48c58a6d4e4c64143513323a629a6dbe))
+
 ## [1.0.1](https://github.com/keadex/keadex/compare/docusaurus-plugin-mina@1.0.0...docusaurus-plugin-mina@1.0.1) (2024-03-16)
 
 
