@@ -16,24 +16,24 @@ export const C4Legend = (elementSpec?: DiagramElementSpec): C4BaseComponent => {
       'System/Person',
       BOX.COLORS.BG_COLOR_SOFTWARE_SYSTEM_PERSON,
       BOX.COLORS.TEXT_COLOR_SOFTWARE_SYSTEM_PERSON,
-      1
-    )
+      1,
+    ),
   )
   objects = objects.concat(
     createItem(
       'System/Person External',
       BOX.COLORS.BG_COLOR_SOFTWARE_SYSTEM_PERSON_EXT,
       BOX.COLORS.TEXT_COLOR_SOFTWARE_SYSTEM_PERSON_EXT,
-      2
-    )
+      2,
+    ),
   )
   objects = objects.concat(
     createItem(
       'Container',
       BOX.COLORS.BG_COLOR_CONTAINER,
       BOX.COLORS.TEXT_COLOR_CONTAINER,
-      3
-    )
+      3,
+    ),
   )
 
   objects = objects.concat(
@@ -41,8 +41,8 @@ export const C4Legend = (elementSpec?: DiagramElementSpec): C4BaseComponent => {
       'Container External',
       BOX.COLORS.BG_COLOR_CONTAINER_EXT,
       BOX.COLORS.TEXT_COLOR_CONTAINER_EXT,
-      4
-    )
+      4,
+    ),
   )
 
   objects = objects.concat(
@@ -50,8 +50,8 @@ export const C4Legend = (elementSpec?: DiagramElementSpec): C4BaseComponent => {
       'Component',
       BOX.COLORS.BG_COLOR_COMPONENT,
       BOX.COLORS.TEXT_COLOR_COMPONENT,
-      5
-    )
+      5,
+    ),
   )
 
   objects = objects.concat(
@@ -59,8 +59,8 @@ export const C4Legend = (elementSpec?: DiagramElementSpec): C4BaseComponent => {
       'Component External',
       BOX.COLORS.BG_COLOR_COMPONENT_EXT,
       BOX.COLORS.TEXT_COLOR_COMPONENT_EXT,
-      6
-    )
+      6,
+    ),
   )
 
   const defaults: DiagramElementSpec = {
@@ -71,7 +71,7 @@ export const C4Legend = (elementSpec?: DiagramElementSpec): C4BaseComponent => {
     },
   }
 
-  return new C4BaseComponent(undefined, elementSpec, defaults, objects)
+  return new C4BaseComponent(undefined, elementSpec, defaults, {}, objects)
 }
 
 const createTitle = (): fabric.Object => {
@@ -92,7 +92,7 @@ const createItem = (
   name: string,
   bgColor: string,
   textColor: string,
-  position: number
+  position: number,
 ): fabric.Object[] => {
   const objects: fabric.Object[] = []
 

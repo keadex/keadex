@@ -1,12 +1,15 @@
 import {
+  AUTO_LAYOUT_ORIENTATIONS,
   DIAGRAM_TYPES,
   Diagram,
+  DiagramOrientation,
   DiagramType,
   diagramTypeHumanName,
 } from '@keadex/c4-model-ui-kit'
 import {
   ButtonProps,
   Input,
+  Radio,
   Select,
   TagsInput,
   Textarea,
@@ -41,6 +44,8 @@ const emptyDiagram: Diagram = {
     tags: [],
     shapes: [],
     elements_specs: [],
+    auto_layout_enabled: false,
+    auto_layout_orientation: 'TopToBottom',
   },
 }
 
@@ -153,6 +158,54 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
             setNewDiagram({
               ...newDiagram,
               diagram_type: e.target.value as DiagramType,
+            })
+          }
+        />
+        <div
+          className={`flex flex-row mt-6 ${
+            props.mode === 'edit' || props.mode === 'readonly' ? 'hidden' : ''
+          }`}
+        >
+          <span>{`${t('common.auto_layout')}*`}:</span>
+          <Radio<boolean>
+            id="autolayout-status"
+            className="ml-5"
+            value={newDiagram.diagram_spec?.auto_layout_enabled}
+            options={[
+              { label: t('common.enabled'), value: true },
+              { label: t('common.disabled'), value: false },
+            ]}
+            onChange={(value: boolean) => {
+              setNewDiagram({
+                ...newDiagram,
+                diagram_spec: {
+                  ...newDiagram.diagram_spec!,
+                  auto_layout_enabled: value,
+                },
+              })
+            }}
+          />
+        </div>
+        <Select
+          id="autolayout-orientation-selector"
+          label={`${t('common.auto_layout')} ${t('common.orientation')}*`}
+          className={`mt-8 ${
+            props.mode === 'edit' || props.mode === 'readonly' ? 'hidden' : ''
+          }`}
+          value={newDiagram.diagram_spec?.auto_layout_orientation}
+          options={AUTO_LAYOUT_ORIENTATIONS.map((orientation) => {
+            return {
+              label: orientation,
+              value: orientation,
+            }
+          })}
+          onChange={(e) =>
+            setNewDiagram({
+              ...newDiagram,
+              diagram_spec: {
+                ...newDiagram.diagram_spec!,
+                auto_layout_orientation: e.target.value as DiagramOrientation,
+              },
             })
           }
         />

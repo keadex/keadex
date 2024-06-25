@@ -5,6 +5,7 @@ pub mod error_handling;
 pub mod helper;
 pub mod model;
 pub mod parser;
+pub mod rendering_system;
 #[cfg(feature = "desktop")]
 pub mod repository;
 #[cfg(feature = "desktop")]

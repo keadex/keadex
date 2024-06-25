@@ -31,6 +31,7 @@ use crate::model::diagram::Diagram;
 use crate::model::diagram::DiagramFormat;
 use crate::model::diagram::DiagramType;
 use crate::model::project_library::ProjectLibrary;
+use crate::rendering_system::renderer::generate_positions;
 use crate::repository::library::library_repository;
 use crate::resolve_to_write;
 use crate::service::diagram_service::validate_diagram;
@@ -94,7 +95,6 @@ pub fn open_diagram(diagram_name: &str, diagram_type: DiagramType) -> Result<Dia
   let raw_plantuml = serialize_diagram_to_plantuml(&diagram_plantuml);
   let (diagram_name, diagram_type) = diagram_name_type_from_path(&plantuml_path)?;
   let diagram_spec = resolve_to_write!(store, DiagramSpecFsDAO).get(Path::new(&spec_path))?;
-
   let metadata = fs::metadata(&plantuml_path)?;
   let last_modified = metadata
     .modified()
@@ -103,6 +103,14 @@ pub fn open_diagram(diagram_name: &str, diagram_type: DiagramType) -> Result<Dia
     .unwrap()
     .as_secs()
     .to_string();
+  let mut auto_layout = None;
+  if diagram_spec.auto_layout_enabled {
+    auto_layout = Some(generate_positions(
+      &diagram_plantuml.elements,
+      &diagram_spec.auto_layout_orientation,
+    ));
+  }
+
   Ok(Diagram {
     diagram_name: Some(diagram_name),
     diagram_type: Some(diagram_type),
@@ -110,6 +118,7 @@ pub fn open_diagram(diagram_name: &str, diagram_type: DiagramType) -> Result<Dia
     diagram_spec: Some(diagram_spec),
     raw_plantuml: Some(raw_plantuml),
     last_modified: Some(last_modified),
+    auto_layout,
   })
 }
 

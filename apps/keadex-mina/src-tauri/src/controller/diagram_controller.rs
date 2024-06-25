@@ -255,5 +255,6 @@ pub async fn diagram_name_type_from_path(path: &str) -> Result<Diagram, MinaErro
     diagram_plantuml: None,
     raw_plantuml: None,
     last_modified: None,
+    auto_layout: None,
   })
 }

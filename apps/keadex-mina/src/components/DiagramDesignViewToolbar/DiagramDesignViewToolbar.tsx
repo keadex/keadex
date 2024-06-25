@@ -9,11 +9,11 @@ import {
   useForceUpdate,
 } from '@keadex/keadex-ui-kit/cross'
 import {
-  useEffect,
-  forwardRef,
   Ref,
-  useImperativeHandle,
   RefObject,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from 'tw-elements'
@@ -94,6 +94,29 @@ export const DiagramDesignViewToolbar = forwardRef(
                 forceUpdate()
               }}
             />
+            <Separator />
+            <div
+              className={`${styleButton} w-fit px-3 cursor-pointer flex`}
+              data-te-toggle="tooltip"
+              data-te-placement="bottom"
+              title={`${t('diagram_editor.configure_auto_layout').toString()}`}
+              onClick={() => {
+                diagramDesignViewCommands?.current?.updateAutoLayoutOptions(
+                  diagramDesignViewCommands?.current?.isAutoLayoutEnabled(),
+                  diagramDesignViewCommands?.current?.autoLayoutOrientation(),
+                )
+                forceUpdate()
+              }}
+            >
+              <div
+                className={`my-auto w-3 h-3 mr-2 rounded-full ${
+                  diagramDesignViewCommands?.current?.isAutoLayoutEnabled()
+                    ? 'bg-green-700'
+                    : 'bg-red-700'
+                }`}
+              />
+              <span className="my-auto">Auto Layout</span>
+            </div>
             <Separator />
             <IconButton
               icon={faFileExport}

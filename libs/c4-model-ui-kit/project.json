@@ -10,7 +10,8 @@
       "options": {
         "cwd": "libs/c4-model-ui-kit",
         "command": "tsc -p tsconfig.lib.json"
-      }
+      },
+      "dependsOn": []
     },
     "lint": {
       "executor": "@nx/linter:eslint",

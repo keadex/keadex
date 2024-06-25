@@ -22,10 +22,7 @@ export default function MinaRendering({
       <div className="flex flex-col md:flex-row my-auto">
         <div className="w-full md:w-1/2 flex flex-col my-auto">
           <span className="mt-5 md:mt-0 font-bold italic">
-            <Trans
-              i18nKey="keadex_mina.rendering.semi_automated_rendering"
-              t={t}
-            />
+            <Trans i18nKey="keadex_mina.rendering.hybrid_layout" t={t} />
           </span>
           <Image
             src={clearDiagram}
@@ -33,10 +30,7 @@ export default function MinaRendering({
             alt="Example of clear diagram created with Mina"
           />
           <span className="mt-5 font-bold italic">
-            <Trans
-              i18nKey="keadex_mina.rendering.fully_automated_rendering"
-              t={t}
-            />
+            <Trans i18nKey="keadex_mina.rendering.auto_layout" t={t} />
           </span>
           <Image
             src={messyDiagram}
@@ -56,7 +50,7 @@ export default function MinaRendering({
             <Trans
               i18nKey="keadex_mina.rendering.description"
               t={t}
-              components={{ span: <span /> }}
+              components={{ span: <span />, ul: <ul />, li: <li /> }}
             />
           </div>
         </div>

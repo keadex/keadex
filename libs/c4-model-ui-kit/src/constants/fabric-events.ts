@@ -15,6 +15,8 @@ export const OBJECT_EVENTS = {
   MODIFIED: 'modified',
   MOVING: 'moving',
   SELECTED: 'selected',
+  SCALING: 'scaling',
+  ROTATING: 'rotating',
 }
 
 export const MOUSE_EVENTS = {
