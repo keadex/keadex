@@ -101,7 +101,7 @@ jobs:
           args: ${{ matrix.args }}
 
   update-latest-json:
-    if: ${{ ! startsWith(github.ref, ' refs/heads/prerelease/keadex-mina') }}
+    if: ${{ ! startsWith(github.ref, 'refs/heads/prerelease/keadex-mina') }}
     needs: release-mina
     runs-on: ubuntu-latest
     steps:
