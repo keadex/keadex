@@ -11,6 +11,9 @@ describe('DiagramDesignView', () => {
             console.log(`onOpenDiagramClick ${diagramLink}`)
           },
         }}
+        saveDiagram={() => {
+          console.log('test')
+        }}
       />,
     )
     expect(baseElement).toBeTruthy()
