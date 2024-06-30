@@ -9,6 +9,7 @@ import ROUTES, {
   MINA_AI,
   MINA_ARCH_MODULES,
   MINA_ARCH_OVERVIEW,
+  MINA_AUTOLAYOUT,
   MINA_CONFLUENCE_PLUGIN,
   MINA_DIAGRAMS_LINKS,
   MINA_DIAGRAMS_ORG,
@@ -90,6 +91,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               id: 'keadex-mina_ai',
               title: 'AI (alpha)',
               href: ROUTES[MINA_AI].path,
+              disableTOC: true,
+            },
+            {
+              id: 'keadex-mina_autolayout',
+              title: 'Auto Layout',
+              href: ROUTES[MINA_AUTOLAYOUT].path,
               disableTOC: true,
             },
             {

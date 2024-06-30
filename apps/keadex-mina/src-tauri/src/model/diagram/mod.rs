@@ -3,11 +3,14 @@ pub mod diagram_spec;
 pub mod graphic;
 
 use crate::model::diagram::{diagram_plantuml::DiagramPlantUML, diagram_spec::DiagramSpec};
+use crate::model::graph::element_data::ElementData;
 use bomboni_wasm::Wasm;
 use serde::{Deserialize, Serialize};
+use serde_wasm_bindgen::{from_value, Serializer};
+use std::collections::HashMap;
 use strum::{Display, EnumIter, EnumString};
 use ts_rs::TS;
-use wasm_bindgen::prelude::wasm_bindgen;
+use wasm_bindgen::prelude::{wasm_bindgen, JsValue};
 
 #[derive(TS)]
 #[ts(
@@ -102,6 +105,26 @@ pub struct Diagram {
   pub raw_plantuml: Option<String>,
   #[serde(skip_serializing_if = "Option::is_none")]
   pub last_modified: Option<String>,
+  #[serde(skip_serializing_if = "Option::is_none")]
+  #[wasm_bindgen(skip)]
+  pub auto_layout: Option<HashMap<String, ElementData>>,
+}
+
+#[wasm_bindgen]
+impl Diagram {
+  #[wasm_bindgen(getter)]
+  pub fn auto_layout(&self) -> JsValue {
+    // Using a custom serializer to serialize the Rust map
+    // into a plain JavaScript object instead of ES2015 map.
+    let serializer = Serializer::new().serialize_maps_as_objects(true);
+    self.auto_layout.serialize(&serializer).unwrap()
+    // to_value(&self.auto_layout).unwrap()
+  }
+
+  #[wasm_bindgen(setter)]
+  pub fn set_auto_layout(&mut self, auto_layout: JsValue) {
+    self.auto_layout = from_value(auto_layout).unwrap();
+  }
 }
 
 #[derive(TS)]

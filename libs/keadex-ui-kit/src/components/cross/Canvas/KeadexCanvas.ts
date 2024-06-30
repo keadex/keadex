@@ -63,6 +63,18 @@ export class KeadexCanvas extends fabric.Canvas {
     fabric.Object.prototype.lockSkewingY = true
   }
 
+  setReadAndWrite() {
+    fabric.Object.prototype.selectable = true
+    fabric.Object.prototype.lockMovementX = false
+    fabric.Object.prototype.lockMovementY = false
+    fabric.Object.prototype.lockRotation = false
+    fabric.Object.prototype.lockScalingFlip = false
+    fabric.Object.prototype.lockScalingX = false
+    fabric.Object.prototype.lockScalingY = false
+    fabric.Object.prototype.lockSkewingX = false
+    fabric.Object.prototype.lockSkewingY = false
+  }
+
   zoomIn() {
     this.setZoom(this.getZoom() * DELTA_ZOOM)
   }

@@ -404,7 +404,7 @@ dependencies = [
 
 [[package]]
 name = "keadex_mina"
-version = "1.0.0"
+version = "1.1.0"
 dependencies = [
  "bomboni_wasm",
  "convert_case",
@@ -412,11 +412,13 @@ dependencies = [
  "dotenv",
  "env_logger",
  "fancy-regex",
+ "layout-rs",
  "log",
  "notify",
  "pest",
  "pest_derive",
  "serde",
+ "serde-wasm-bindgen",
  "serde_json",
  "snailquote",
  "state",
@@ -436,6 +438,12 @@ dependencies = [
  "winapi 0.2.8",
  "winapi-build",
 ]
+
+[[package]]
+name = "layout-rs"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "84deb28a3a6c839ca42a7341664f32281416d69e2f29deb85aec5cc0243fdea8"
 
 [[package]]
 name = "lazy_static"

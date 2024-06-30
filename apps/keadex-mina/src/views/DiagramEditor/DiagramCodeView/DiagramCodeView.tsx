@@ -48,7 +48,7 @@ import ModalCRUDeploymentNode from '../../../components/ModalCRULibraryElement/M
 import ModalCRUPerson from '../../../components/ModalCRULibraryElement/ModalCRUPerson/ModalCRUPerson'
 import ModalCRURelationship from '../../../components/ModalCRULibraryElement/ModalCRURelationship/ModalCRURelationship'
 import ModalCRUSoftwareSystem from '../../../components/ModalCRULibraryElement/ModalCRUSoftwareSystem/ModalCRUSoftwareSystem'
-import { DiagramCodeViewToolbarCommands } from 'apps/keadex-mina/src/components/DiagramCodeViewToolbar/DiagramCodeViewToolbar'
+import { DiagramCodeViewToolbarCommands } from '../../../components/DiagramCodeViewToolbar/DiagramCodeViewToolbar'
 
 loader.config({ monaco })
 
@@ -549,13 +549,6 @@ export const DiagramCodeView = forwardRef(
           onChange={handleEditorChange}
           options={{ wordWrap: 'on', tabSize: 2 }}
         />
-        <div
-          className={`${
-            isSaving ? 'opacity-90' : 'opacity-0'
-          } bg-dark-brand1 z-[6] absolute bottom-5 left-1/2 -translate-x-1/2 text-center transition duration-200 ease-in-out px-10 py-1 rounded pointer-events-none`}
-        >
-          {t('common.saving')}...
-        </div>
         <AISpeechBubble
           aiHidden={aiHidden}
           addCodeAtCursorPosition={addCodeAtCursorPosition}

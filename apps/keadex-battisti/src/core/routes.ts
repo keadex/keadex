@@ -67,6 +67,7 @@ export const MINA_GS_PROJECT_STRUCTURE = `${MINA_GETTING_STARTED}/project-struct
 // --> Mina Features
 export const MINA_FEATURES = `${MINA_DOCS}/features`
 export const MINA_AI = `${MINA_FEATURES}/ai`
+export const MINA_AUTOLAYOUT = `${MINA_FEATURES}/autolayout`
 export const MINA_DIAGRAMS_LINKS = `${MINA_FEATURES}/diagrams-links`
 export const MINA_DIAGRAMS_ORG = `${MINA_FEATURES}/diagrams-organization`
 export const MINA_EXPORT = `${MINA_FEATURES}/export`
@@ -126,6 +127,9 @@ ROUTES[MINA_FEATURES] = {
 }
 ROUTES[MINA_AI] = {
   path: MINA_AI,
+}
+ROUTES[MINA_AUTOLAYOUT] = {
+  path: MINA_AUTOLAYOUT,
 }
 ROUTES[MINA_DIAGRAMS_LINKS] = {
   path: MINA_DIAGRAMS_LINKS,
