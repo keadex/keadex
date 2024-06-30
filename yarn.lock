@@ -2709,10 +2709,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@keadex/mina-react-npm@npm:@keadex/mina-react@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-1.3.0.tgz#a2e0169e957685ee62f5a3bfcb01199d06d5caad"
-  integrity sha512-v3cj6vme98QG0UXcZgPvh2RqiVSuKEEY1MGj5y5RdjrBwhEpg0AsXbFtgAcKZ6uSJQhdjTZlBc48TfcTc30Bmg==
+"@keadex/mina-react-npm@npm:@keadex/mina-react@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-1.4.0.tgz#78ca3539644c78ac00ed17bccdc74aa00bb6c599"
+  integrity sha512-qieul6u3WF5OGOzMiY+8F2lvW2wg57RgHRbmZsNjxCAskRe851D0bniAc1R45hMZUIXRo0Ihm4pnmDWm9ac+gA==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
