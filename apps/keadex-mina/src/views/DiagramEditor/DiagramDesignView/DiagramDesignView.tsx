@@ -51,7 +51,7 @@ export interface DiagramDesignViewProps {
   diagramListener: DiagramListener
   diagram?: Diagram
   error?: MinaError
-  saveDiagram: () => void
+  saveDiagram?: () => void
   readOnly?: boolean
 }
 
@@ -299,7 +299,7 @@ export const DiagramDesignView = forwardRef(
                   canvas.current.autoLayoutEnabled = enabled
                   canvas.current.autoLayoutOrientation = orientation
                   isDiagramChanged.current = true
-                  saveDiagram()
+                  if (saveDiagram) saveDiagram()
                 }
               }}
             />

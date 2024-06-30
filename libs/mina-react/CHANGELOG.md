@@ -1,3 +1,11 @@
+# [1.4.0](https://github.com/keadex/keadex/compare/mina-react@1.3.0...mina-react@1.4.0) (2024-06-30)
+
+
+### Features
+
+* **apps/keadex-battisti:** upgraded mina-react library ([5254531](https://github.com/keadex/keadex/commit/5254531175315b07e50840f09bd4565d1ab849b9))
+* **apps/keadex-mina:** Mina stable release ([34e3e1a](https://github.com/keadex/keadex/commit/34e3e1a43af58eb74ae2643e4a7e330eadf529af))
+
 # [1.3.0](https://github.com/keadex/keadex/compare/mina-react@1.2.0...mina-react@1.3.0) (2024-06-08)
 
 
