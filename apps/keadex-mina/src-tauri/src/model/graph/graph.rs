@@ -13,6 +13,7 @@ pub struct Graph {
   pub edges: Vec<Edge>,
   #[serde(skip_serializing_if = "Option::is_none")]
   pub graph_render_backend: Option<GraphRenderBackend>,
+  pub inter_graph_edges: Vec<Edge>,
 }
 
 impl Graph {
@@ -21,6 +22,7 @@ impl Graph {
       nodes,
       edges,
       graph_render_backend: None,
+      inter_graph_edges: vec![],
     }
   }
 }

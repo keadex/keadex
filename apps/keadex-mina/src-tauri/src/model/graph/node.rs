@@ -17,6 +17,19 @@ pub struct Node {
   pub subgraph: Option<Graph>,
 }
 
+#[derive(Debug, Clone)]
+pub enum NodePosition {
+  Top,
+  TopRight,
+  Right,
+  BottomRight,
+  Bottom,
+  BottomLeft,
+  Left,
+  TopLeft,
+  Center,
+}
+
 impl Node {
   pub fn new(alias: &str, element_type: DiagramElementType, subgraph: Option<Graph>) -> Self {
     Self {

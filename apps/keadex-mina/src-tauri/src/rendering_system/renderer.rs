@@ -1,6 +1,12 @@
+/*!
+Graph Renderer.
+Module which exposes the functions to auto-generate the positions of all the elements of a diagram.
+*/
+
 use crate::model::diagram::diagram_plantuml::DiagramElementType;
 use crate::model::diagram::diagram_spec::DiagramOrientation;
 use crate::model::graph::element_data::ElementData;
+use crate::model::graph::node::NodePosition;
 use crate::model::graph::node_handle::NodeHandle;
 use crate::model::graph::point::Point;
 use crate::model::graph::{edge::Edge, graph::Graph, node::Node};
@@ -35,15 +41,31 @@ pub fn generate_positions(
   diagram_orientation: &DiagramOrientation,
 ) -> HashMap<String, ElementData> {
   if elements.len() > 0 {
-    let orientation = DiagramOrientation::to_layout_orientation(diagram_orientation);
-    let mut graph = create_graph(elements);
-    let mut rendered_graph = render_graph(&mut graph, orientation);
-    let positions = recalculate_positions(
-      &mut rendered_graph,
-      ELEMENT_DEFAULT_LEFT,
-      ELEMENT_DEFAULT_TOP,
-    );
-    return positions;
+    let result_positions = std::panic::catch_unwind(|| {
+      let orientation = DiagramOrientation::to_layout_orientation(diagram_orientation);
+      let mut graph = create_graph(elements);
+      let mut rendered_graph = render_graph(&mut graph, orientation);
+      let mut positions = recalculate_positions(
+        &mut rendered_graph,
+        ELEMENT_DEFAULT_LEFT,
+        ELEMENT_DEFAULT_TOP,
+      );
+      let inter_graph_edges_position =
+        calculate_inter_graph_edges_positions(&mut rendered_graph, &positions);
+
+      positions.extend(inter_graph_edges_position);
+
+      return positions;
+    });
+    if let Ok(positions) = result_positions {
+      return positions;
+    } else {
+      log::error!(
+        "A panic occurred during the rendering of the diagram: {:?}",
+        result_positions.unwrap_err()
+      );
+      return HashMap::<String, ElementData>::new();
+    }
   } else {
     return HashMap::<String, ElementData>::new();
   }
@@ -279,6 +301,9 @@ pub fn render_graph(graph: &mut Graph, orientation: Orientation) -> Graph {
             .handle
             .unwrap(),
         );
+      } else if graph.nodes.contains_key(&edge.from) || graph.nodes.contains_key(&edge.to) {
+        // In this case only one side of the edge belongs to this graph. So this could be potentially a inter-graph edge.
+        graph.inter_graph_edges.push(edge.clone());
       }
     }
 
@@ -318,7 +343,6 @@ pub fn recalculate_positions(
       .position
       .unwrap();
     if let Some(subgraph) = node.subgraph.borrow_mut() {
-      // recalculate_positions(subgraph, node_position.x, node_position.y);
       updated_positions.extend(recalculate_positions(
         subgraph,
         node_position.x + BASE_ELASTIC_CONTAINER_PADDING_BOX,
@@ -327,4 +351,126 @@ pub fn recalculate_positions(
     }
   }
   return updated_positions;
+}
+
+/**
+Calculates the positions of the inter-graph edges that cannot be generated during the rendering of each graph/subgraph composing a diagram.
+# Arguments
+  * `root_graph` - Root graph.
+  * `positions` - Positions generated during the rendering of each graph/subgraph.
+*/
+pub fn calculate_inter_graph_edges_positions(
+  graph: &mut Graph,
+  positions: &HashMap<String, ElementData>,
+) -> HashMap<String, ElementData> {
+  let mut inter_graph_edges_positions = HashMap::new();
+
+  let inter_graph_edges_clone = graph.inter_graph_edges.clone();
+  for inter_graph_edge in inter_graph_edges_clone {
+    if positions.contains_key(&inter_graph_edge.from)
+      && positions.contains_key(&inter_graph_edge.to)
+    {
+      let node_from = positions.get_key_value(&inter_graph_edge.from).unwrap().1;
+      let node_to = positions.get_key_value(&inter_graph_edge.to).unwrap().1;
+
+      let edge_positions = adjust_rel_points_positions(
+        node_from.position.unwrap(),
+        node_from.size.unwrap(),
+        node_to.position.unwrap(),
+        node_to.size.unwrap(),
+      );
+      inter_graph_edges_positions.insert(
+        inter_graph_edge.alias,
+        ElementData::new(None, Some(edge_positions.0), Some(edge_positions.1), None),
+      );
+    }
+  }
+
+  let nodes_clone = graph.nodes.clone();
+  let nodes_aliases: Vec<&String> = nodes_clone.keys().collect();
+  for node_alias in nodes_aliases {
+    let node = graph.nodes.get_mut(node_alias).unwrap();
+    if let Some(subgraph) = node.subgraph.borrow_mut() {
+      inter_graph_edges_positions
+        .extend(calculate_inter_graph_edges_positions(subgraph, positions));
+    }
+  }
+
+  return inter_graph_edges_positions;
+}
+
+pub fn adjust_rel_points_positions(
+  node_position_from: Point,
+  node_size_from: Point,
+  node_position_to: Point,
+  node_size_to: Point,
+) -> (Point, Point) {
+  const MIN_DELTA: f64 = 50.0;
+
+  let mut rel_position_from = Point::new(node_position_from.x, node_position_from.y);
+  let mut rel_position_to = Point::new(node_position_to.x, node_position_to.y);
+
+  let position_to;
+
+  if (node_position_to.x >= node_position_from.x
+    && node_position_to.x < (node_position_from.x + node_size_from.x + MIN_DELTA))
+    || (node_position_to.x <= node_position_from.x
+      && node_position_from.x < (node_position_to.x + node_size_to.x + MIN_DELTA))
+  {
+    if node_position_from.y > (node_position_to.y + node_size_to.y + MIN_DELTA) {
+      position_to = NodePosition::Top;
+    } else if node_position_to.y > (node_position_from.y + node_size_from.y + MIN_DELTA) {
+      position_to = NodePosition::Bottom;
+    } else {
+      position_to = NodePosition::Center;
+    }
+  } else if node_position_to.x >= (node_position_from.x + node_size_from.x + MIN_DELTA) {
+    if node_position_from.y > (node_position_to.y + node_size_to.y + MIN_DELTA) {
+      position_to = NodePosition::TopRight;
+    } else if node_position_to.y > (node_position_from.y + node_size_from.y + MIN_DELTA) {
+      position_to = NodePosition::BottomRight;
+    } else {
+      position_to = NodePosition::Right;
+    }
+  } else {
+    if node_position_from.y > (node_position_to.y + node_size_to.y + MIN_DELTA) {
+      position_to = NodePosition::TopLeft;
+    } else if node_position_to.y > (node_position_from.y + node_size_from.y + MIN_DELTA) {
+      position_to = NodePosition::BottomLeft;
+    } else {
+      position_to = NodePosition::Left;
+    }
+  }
+
+  match position_to {
+    NodePosition::Top => {
+      rel_position_from.x = node_position_from.x + node_size_from.x / 2.0;
+      rel_position_from.y = node_position_from.y;
+      rel_position_to.x = node_position_to.x + node_size_to.x / 2.0;
+      rel_position_to.y = node_position_to.y + node_size_to.y;
+    }
+    NodePosition::TopRight | NodePosition::Right | NodePosition::BottomRight => {
+      rel_position_from.x = node_position_from.x + node_size_from.x;
+      rel_position_from.y = node_position_from.y + node_size_from.y / 2.0;
+      rel_position_to.x = node_position_to.x;
+      rel_position_to.y = node_position_to.y + node_size_to.y / 2.0;
+    }
+    NodePosition::Bottom => {
+      rel_position_from.x = node_position_from.x + node_size_from.x / 2.0;
+      rel_position_from.y = node_position_from.y + node_size_from.y;
+      rel_position_to.x = node_position_to.x + node_size_to.x / 2.0;
+      rel_position_to.y = node_position_to.y;
+    }
+    NodePosition::BottomLeft | NodePosition::Left | NodePosition::TopLeft => {
+      rel_position_from.x = node_position_from.x;
+      rel_position_from.y = node_position_from.y + node_size_from.y / 2.0;
+      rel_position_to.x = node_position_to.x + node_size_to.x;
+      rel_position_to.y = node_position_to.y + node_size_to.y / 2.0;
+    }
+    NodePosition::Center => {
+      // This case should not possible, so leave the positions as-is
+    }
+  }
+
+  return (rel_position_from, rel_position_to);
 }
