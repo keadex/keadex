@@ -11,6 +11,7 @@ use crate::model::graph::node_handle::NodeHandle;
 use crate::model::graph::point::Point;
 use crate::model::graph::{edge::Edge, graph::Graph, node::Node};
 use crate::rendering_system::graph_render_backend::GraphRenderBackend;
+use crate::rendering_system::graph_render_backend::GRAPH_PADDING;
 use crate::rendering_system::style_constants::{
   BASE_ELASTIC_CONTAINER_FOOTER_HEIGHT, BASE_ELASTIC_CONTAINER_MIN_HEIGHT,
   BASE_ELASTIC_CONTAINER_MIN_WIDTH, BASE_ELASTIC_CONTAINER_PADDING_BOX,
@@ -301,8 +302,8 @@ pub fn render_graph(graph: &mut Graph, orientation: Orientation) -> Graph {
             .handle
             .unwrap(),
         );
-      } else if graph.nodes.contains_key(&edge.from) || graph.nodes.contains_key(&edge.to) {
-        // In this case only one side of the edge belongs to this graph. So this could be potentially a inter-graph edge.
+      } else {
+        // In this case the edge could be potentially a inter-graph edge.
         graph.inter_graph_edges.push(edge.clone());
       }
     }
@@ -336,17 +337,34 @@ pub fn recalculate_positions(
   let nodes_clone = graph.nodes.clone();
   let nodes_aliases: Vec<&String> = nodes_clone.keys().collect();
   for node_alias in nodes_aliases {
-    let node = graph.nodes.get_mut(node_alias).unwrap();
-    let node_position = updated_positions
-      .get(&node.alias)
+    let parent_node = graph.nodes.get_mut(node_alias).unwrap();
+    let parent_node_position = updated_positions
+      .get(&parent_node.alias)
       .unwrap()
       .position
       .unwrap();
-    if let Some(subgraph) = node.subgraph.borrow_mut() {
+    if let Some(subgraph) = parent_node.subgraph.borrow_mut() {
+      let mut subgraph_position = Point::new(0.0, 0.0);
+      if let Some(subgraph_render_backend) = subgraph.graph_render_backend.as_ref() {
+        subgraph_position = Point::new(subgraph_render_backend.x, subgraph_render_backend.y);
+      }
+
+      // Before aligning the subgraph elements offsets to the parent node position, we need to remove
+      // the auto offset (subgraph_position.x and subgraph_position.y) applied by the "layout-rs" crate
+      // when rendering the subgraph (there could be cases in which the subgraph is not rendered at the [0,0] position).
+      // We need also to remove the GRAPH_PADDING constant added by the graph_render_backend.recalculate_positions() function.
+      // In this way we'll start to add the new offset (which is the position of the parent node + the container padding)
+      // starting from the [0,0] position.
       updated_positions.extend(recalculate_positions(
         subgraph,
-        node_position.x + BASE_ELASTIC_CONTAINER_PADDING_BOX,
-        node_position.y + BASE_ELASTIC_CONTAINER_PADDING_BOX,
+        -subgraph_position.x
+          + GRAPH_PADDING
+          + parent_node_position.x
+          + BASE_ELASTIC_CONTAINER_PADDING_BOX,
+        -subgraph_position.y
+          + GRAPH_PADDING
+          + parent_node_position.y
+          + BASE_ELASTIC_CONTAINER_PADDING_BOX,
       ));
     }
   }
