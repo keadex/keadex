@@ -18,7 +18,10 @@ export const renderRelationshipDiagramElement = (
   if (
     relationship.base_data &&
     relationship.base_data.alias &&
-    relationship.relationship_type
+    relationship.relationship_type &&
+    ((diagramSpec.auto_layout_enabled &&
+      autoLayout[relationship.base_data.alias]) ||
+      !diagramSpec.auto_layout_enabled)
   ) {
     const component = C4Relationship(
       relationship,

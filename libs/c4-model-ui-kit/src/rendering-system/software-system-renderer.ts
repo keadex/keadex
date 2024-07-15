@@ -17,7 +17,10 @@ export const renderSoftwareSystemDiagramElement = (
   if (
     softwareSystem.base_data &&
     softwareSystem.base_data.alias &&
-    softwareSystem.system_type
+    softwareSystem.system_type &&
+    ((diagramSpec.auto_layout_enabled &&
+      autoLayout[softwareSystem.base_data.alias]) ||
+      !diagramSpec.auto_layout_enabled)
   ) {
     let c4SoftwareSystem: C4BaseComponent | undefined
     switch (softwareSystem.system_type) {

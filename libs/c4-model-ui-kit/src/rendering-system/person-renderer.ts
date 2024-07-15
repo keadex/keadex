@@ -14,7 +14,13 @@ export const renderPersonDiagramElement = (
   autoLayout: Record<string, ElementData>,
   options?: RenderElementsOptions,
 ): C4BaseComponent | undefined => {
-  if (person.base_data && person.base_data.alias && person.person_type) {
+  if (
+    person.base_data &&
+    person.base_data.alias &&
+    person.person_type &&
+    ((diagramSpec.auto_layout_enabled && autoLayout[person.base_data.alias]) ||
+      !diagramSpec.auto_layout_enabled)
+  ) {
     let c4Person: C4BaseComponent | undefined
     switch (person.person_type) {
       case 'Person':
