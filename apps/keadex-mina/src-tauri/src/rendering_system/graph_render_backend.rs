@@ -89,7 +89,7 @@ impl GraphRenderBackend {
     * `offset_x` - Offset x.
     * `offset_y` - Offset y.
   */
-  pub fn recalculate_positions(&mut self, offset_x: f64, offset_y: f64) {
+  pub fn adjust_positions(&mut self, offset_x: f64, offset_y: f64) {
     for element in self.elements.borrow_mut() {
       if let Some(position) = element.1.position.borrow_mut() {
         position.x = position.x + offset_x - GRAPH_PADDING;

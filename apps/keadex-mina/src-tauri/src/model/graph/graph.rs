@@ -17,10 +17,10 @@ pub struct Graph {
 }
 
 impl Graph {
-  pub fn new(nodes: HashMap<String, Node>, edges: Vec<Edge>) -> Self {
+  pub fn new() -> Self {
     Self {
-      nodes,
-      edges,
+      nodes: HashMap::new(),
+      edges: vec![],
       graph_render_backend: None,
       inter_graph_edges: vec![],
     }

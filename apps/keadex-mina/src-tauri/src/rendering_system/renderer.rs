@@ -6,7 +6,7 @@ Module which exposes the functions to auto-generate the positions of all the ele
 use crate::model::diagram::diagram_plantuml::DiagramElementType;
 use crate::model::diagram::diagram_spec::DiagramOrientation;
 use crate::model::graph::element_data::ElementData;
-use crate::model::graph::node::NodePosition;
+use crate::model::graph::node::{LinkGraph, NodePosition};
 use crate::model::graph::node_handle::NodeHandle;
 use crate::model::graph::point::Point;
 use crate::model::graph::{edge::Edge, graph::Graph, node::Node};
@@ -28,8 +28,9 @@ use layout::{
   std_shapes::shapes::{Arrow, Element, LineEndKind, ShapeKind},
   topo::layout::VisualGraph,
 };
-use std::borrow::BorrowMut;
+use std::cell::{RefCell, RefMut};
 use std::collections::HashMap;
+use std::rc::Rc;
 
 /**
 Generates the positions of the diagram elements to lay out the diagram automatically.
@@ -44,16 +45,16 @@ pub fn generate_positions(
   if elements.len() > 0 {
     let result_positions = std::panic::catch_unwind(|| {
       let orientation = DiagramOrientation::to_layout_orientation(diagram_orientation);
-      let mut graph = create_graph(elements);
-      let mut rendered_graph = render_graph(&mut graph, orientation);
-      let mut positions = recalculate_positions(
-        &mut rendered_graph,
+      let graph = create_graph(elements, None);
+      add_inter_graph_edges_to_graph(graph.clone());
+      render_graph(&mut graph.borrow_mut(), orientation);
+      let mut positions = adjust_graph_positions(
+        &mut graph.borrow_mut(),
         ELEMENT_DEFAULT_LEFT,
         ELEMENT_DEFAULT_TOP,
       );
       let inter_graph_edges_position =
-        calculate_inter_graph_edges_positions(&mut rendered_graph, &positions);
-
+        generate_inter_graph_edges_positions(&mut graph.borrow_mut(), &positions);
       positions.extend(inter_graph_edges_position);
 
       return positions;
@@ -76,10 +77,17 @@ pub fn generate_positions(
 Creates a graph starting from an array of diagram elements.
 # Arguments
   * `elements` - The elements of the diagram for which will be generated the graph.
+  * `parent_graph_ref` - Reference to the parent graph (if any).
 */
-pub fn create_graph(elements: &Vec<DiagramElementType>) -> Graph {
+pub fn create_graph(
+  elements: &Vec<DiagramElementType>,
+  parent_graph_ref: LinkGraph,
+) -> Rc<RefCell<Graph>> {
   let mut nodes = HashMap::<String, Node>::new();
   let mut edges: Vec<Edge> = vec![];
+
+  let graph = Rc::new(RefCell::new(Graph::new()));
+
   for element in elements {
     match element {
       DiagramElementType::Person(person) => {
@@ -88,6 +96,7 @@ pub fn create_graph(elements: &Vec<DiagramElementType>) -> Graph {
           Node::new(
             person.base_data.alias.as_ref().unwrap(),
             DiagramElementType::Person(person.clone()),
+            None,
             None,
           ),
         );
@@ -99,6 +108,7 @@ pub fn create_graph(elements: &Vec<DiagramElementType>) -> Graph {
             software_system.base_data.alias.as_ref().unwrap(),
             DiagramElementType::SoftwareSystem(software_system.clone()),
             None,
+            None,
           ),
         );
       }
@@ -108,6 +118,7 @@ pub fn create_graph(elements: &Vec<DiagramElementType>) -> Graph {
           Node::new(
             container.base_data.alias.as_ref().unwrap(),
             DiagramElementType::Container(container.clone()),
+            None,
             None,
           ),
         );
@@ -119,28 +130,31 @@ pub fn create_graph(elements: &Vec<DiagramElementType>) -> Graph {
             component.base_data.alias.as_ref().unwrap(),
             DiagramElementType::Component(component.clone()),
             None,
+            None,
           ),
         );
       }
       DiagramElementType::Boundary(boundary) => {
-        let subgraph = create_graph(&boundary.sub_elements);
+        let subgraph = create_graph(&boundary.sub_elements, Some(graph.clone()));
         nodes.insert(
           String::from(boundary.base_data.alias.as_ref().unwrap()),
           Node::new(
             boundary.base_data.alias.as_ref().unwrap(),
             DiagramElementType::Boundary(boundary.clone()),
             Some(subgraph),
+            parent_graph_ref.clone(),
           ),
         );
       }
       DiagramElementType::DeploymentNode(deployment_node) => {
-        let subgraph = create_graph(&deployment_node.sub_elements);
+        let subgraph = create_graph(&deployment_node.sub_elements, Some(graph.clone()));
         nodes.insert(
           String::from(deployment_node.base_data.alias.as_ref().unwrap()),
           Node::new(
             deployment_node.base_data.alias.as_ref().unwrap(),
             DiagramElementType::DeploymentNode(deployment_node.clone()),
             Some(subgraph),
+            parent_graph_ref.clone(),
           ),
         );
       }
@@ -152,7 +166,45 @@ pub fn create_graph(elements: &Vec<DiagramElementType>) -> Graph {
       _ => {}
     }
   }
-  return Graph::new(nodes, edges);
+  graph.borrow_mut().nodes = nodes;
+  graph.borrow_mut().edges = edges;
+  return graph;
+}
+
+/**
+Stores into the given graph the inter-graph relationships (if any) and, if required, creates the
+implicit relationships to connect inter-graph elements.
+# Arguments
+  * `graph` - Reference to the graph to update.
+*/
+pub fn add_inter_graph_edges_to_graph(graph: Rc<RefCell<Graph>>) {
+  let mut graph_mut = graph.borrow_mut();
+  let nodes_clone = graph_mut.nodes.clone();
+  let nodes_aliases: Vec<&String> = nodes_clone.keys().collect();
+  for node_alias in nodes_aliases {
+    let node = graph_mut.nodes.get_mut(node_alias).unwrap();
+
+    // add the implicit relationships also for the subgraphs
+    if let Some(subgraph_ref) = node.subgraph.as_mut() {
+      add_inter_graph_edges_to_graph(subgraph_ref.clone());
+    }
+  }
+
+  let edges_clone = graph_mut.edges.clone();
+  for edge in edges_clone {
+    if !graph_mut.nodes.contains_key(&edge.from) || !graph_mut.nodes.contains_key(&edge.to) {
+      // In this case the edge could be potentially a inter-graph edge.
+      graph_mut.inter_graph_edges.push(edge);
+    }
+  }
+
+  // for node in graph.borrow_mut().nodes.clone() {
+  //   //
+  //   graph.borrow_mut().edges = vec![];
+  // }
+  // graph.borrow_mut().edges = vec![];
+  // let mutable_graph = graph.borrow_mut();
+  // return graph;
 }
 
 /**
@@ -237,11 +289,12 @@ pub fn add_rel(graph: &mut VisualGraph, label: &str, from: NodeHandle, to: NodeH
 }
 
 /**
-Renders a graph by using the [layout](https://github.com/nadavrot/layout) crate.
+Renders a graph by using the [layout](https://github.com/nadavrot/layout) crate and stores the
+result of the rendering (render backend) into the graph.
 # Arguments
-  * `graph` - Graph to render.
+  * `graph` - Reference of the graph to render.
 */
-pub fn render_graph(graph: &mut Graph, orientation: Orientation) -> Graph {
+pub fn render_graph(graph: &mut RefMut<Graph>, orientation: Orientation) {
   if graph.nodes.len() > 0 {
     let mut visual_graph: VisualGraph = VisualGraph::new(orientation);
 
@@ -253,9 +306,9 @@ pub fn render_graph(graph: &mut Graph, orientation: Orientation) -> Graph {
 
       // Render the subgraph, if any
       let mut size_subgraph = None;
-      if let Some(subgraph) = node.subgraph.borrow_mut() {
-        let rendered_subgraph = render_graph(subgraph, orientation);
-        if let Some(subgraph_render_backend) = rendered_subgraph.graph_render_backend {
+      if let Some(subgraph_ref) = node.subgraph.as_mut() {
+        render_graph(&mut subgraph_ref.borrow_mut(), orientation);
+        if let Some(subgraph_render_backend) = &subgraph_ref.borrow_mut().graph_render_backend {
           size_subgraph = Some(Point::new(
             subgraph_render_backend.get_width()
               + ELEMENT_BORDER_WIDTH
@@ -280,9 +333,10 @@ pub fn render_graph(graph: &mut Graph, orientation: Orientation) -> Graph {
     }
 
     // Adding relationships to the visual graph
-    for edge in &graph.edges {
+    for edge in graph.edges.clone() {
       // Since the user could potentially write PlantUML code of relationships between not existing
-      // elements, we have to check that they actually exist.
+      // elements, we have to check that they actually exist. There could be also cases of inter-graph
+      // relationships (so starting and ending node could not be part of the same graph)
       if graph.nodes.contains_key(&edge.from) && graph.nodes.contains_key(&edge.to) {
         add_rel(
           &mut visual_graph,
@@ -302,9 +356,6 @@ pub fn render_graph(graph: &mut Graph, orientation: Orientation) -> Graph {
             .handle
             .unwrap(),
         );
-      } else {
-        // In this case the edge could be potentially a inter-graph edge.
-        graph.inter_graph_edges.push(edge.clone());
       }
     }
 
@@ -312,25 +363,24 @@ pub fn render_graph(graph: &mut Graph, orientation: Orientation) -> Graph {
     visual_graph.do_it(false, false, false, &mut graph_render_backend);
     graph.graph_render_backend = Some(graph_render_backend);
   }
-  return graph.clone();
 }
 
 /**
-Recalculates the positions of all the elements of a graph by considering the given offsets.
+Adjusts the positions of all the elements of a graph by considering the given offsets.
 # Arguments
   * `graph` - Graph to update.
   * `offset_x` - Offset X.
   * `offset_y` - Offset Y.
 */
-pub fn recalculate_positions(
+pub fn adjust_graph_positions(
   graph: &mut Graph,
   offset_x: f64,
   offset_y: f64,
 ) -> HashMap<String, ElementData> {
   let mut updated_positions = HashMap::new();
 
-  if let Some(graph_render_backend) = graph.graph_render_backend.borrow_mut() {
-    graph_render_backend.recalculate_positions(offset_x, offset_y);
+  if let Some(graph_render_backend) = graph.graph_render_backend.as_mut() {
+    graph_render_backend.adjust_positions(offset_x, offset_y);
     updated_positions.extend(graph_render_backend.elements.clone());
   }
 
@@ -343,7 +393,8 @@ pub fn recalculate_positions(
       .unwrap()
       .position
       .unwrap();
-    if let Some(subgraph) = parent_node.subgraph.borrow_mut() {
+    if let Some(subgraph_ref) = parent_node.subgraph.as_mut() {
+      let mut subgraph = subgraph_ref.borrow_mut();
       let mut subgraph_position = Point::new(0.0, 0.0);
       if let Some(subgraph_render_backend) = subgraph.graph_render_backend.as_ref() {
         subgraph_position = Point::new(subgraph_render_backend.x, subgraph_render_backend.y);
@@ -352,11 +403,11 @@ pub fn recalculate_positions(
       // Before aligning the subgraph elements offsets to the parent node position, we need to remove
       // the auto offset (subgraph_position.x and subgraph_position.y) applied by the "layout-rs" crate
       // when rendering the subgraph (there could be cases in which the subgraph is not rendered at the [0,0] position).
-      // We need also to remove the GRAPH_PADDING constant added by the graph_render_backend.recalculate_positions() function.
+      // We need also to remove the GRAPH_PADDING constant added by the graph_render_backend.adjust_positions() function.
       // In this way we'll start to add the new offset (which is the position of the parent node + the container padding)
       // starting from the [0,0] position.
-      updated_positions.extend(recalculate_positions(
-        subgraph,
+      updated_positions.extend(adjust_graph_positions(
+        &mut subgraph,
         -subgraph_position.x
           + GRAPH_PADDING
           + parent_node_position.x
@@ -372,12 +423,13 @@ pub fn recalculate_positions(
 }
 
 /**
-Calculates the positions of the inter-graph edges that cannot be generated during the rendering of each graph/subgraph composing a diagram.
+Generates the positions of the inter-graph edges that cannot be generated during the rendering
+of each graph/subgraph composing a diagram.
 # Arguments
-  * `root_graph` - Root graph.
+  * `graph` - Reference of the graph.
   * `positions` - Positions generated during the rendering of each graph/subgraph.
 */
-pub fn calculate_inter_graph_edges_positions(
+pub fn generate_inter_graph_edges_positions(
   graph: &mut Graph,
   positions: &HashMap<String, ElementData>,
 ) -> HashMap<String, ElementData> {
@@ -391,7 +443,7 @@ pub fn calculate_inter_graph_edges_positions(
       let node_from = positions.get_key_value(&inter_graph_edge.from).unwrap().1;
       let node_to = positions.get_key_value(&inter_graph_edge.to).unwrap().1;
 
-      let edge_positions = adjust_rel_points_positions(
+      let edge_positions = adjust_inter_graph_edge_points_positions(
         node_from.position.unwrap(),
         node_from.size.unwrap(),
         node_to.position.unwrap(),
@@ -408,16 +460,29 @@ pub fn calculate_inter_graph_edges_positions(
   let nodes_aliases: Vec<&String> = nodes_clone.keys().collect();
   for node_alias in nodes_aliases {
     let node = graph.nodes.get_mut(node_alias).unwrap();
-    if let Some(subgraph) = node.subgraph.borrow_mut() {
-      inter_graph_edges_positions
-        .extend(calculate_inter_graph_edges_positions(subgraph, positions));
+    if let Some(subgraph_ref) = node.subgraph.as_mut() {
+      let mut subgraph = subgraph_ref.borrow_mut();
+      inter_graph_edges_positions.extend(generate_inter_graph_edges_positions(
+        &mut subgraph,
+        positions,
+      ));
     }
   }
 
   return inter_graph_edges_positions;
 }
 
-pub fn adjust_rel_points_positions(
+/**
+Adjusts the positions of the starting and ending points of a inter-graph edge
+in order to render a more clear arrow between two nodes.
+Returns the adjusted positions.
+# Arguments
+  * `node_position_from` - Position of the starting node.
+  * `node_size_from` - Size of the starting node.
+  * `node_position_to` - Position of the ending node.
+  * `node_size_to` - Size of the ending node.
+*/
+pub fn adjust_inter_graph_edge_points_positions(
   node_position_from: Point,
   node_size_from: Point,
   node_position_to: Point,
