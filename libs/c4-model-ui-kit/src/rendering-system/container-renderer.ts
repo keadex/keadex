@@ -17,7 +17,10 @@ export const renderContainerDiagramElement = (
   if (
     container.base_data &&
     container.base_data.alias &&
-    container.container_type
+    container.container_type &&
+    ((diagramSpec.auto_layout_enabled &&
+      autoLayout[container.base_data.alias]) ||
+      !diagramSpec.auto_layout_enabled)
   ) {
     let c4Container: C4BaseComponent | undefined
     switch (container.container_type) {

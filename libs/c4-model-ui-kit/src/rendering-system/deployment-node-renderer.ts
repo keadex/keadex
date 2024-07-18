@@ -18,7 +18,10 @@ export const renderDeploymentNodeDiagramElement = (
     deploymentNode.base_data &&
     deploymentNode.base_data.alias &&
     deploymentNode.base_data.label &&
-    deploymentNode.deployment_node_type
+    deploymentNode.deployment_node_type &&
+    ((diagramSpec.auto_layout_enabled &&
+      autoLayout[deploymentNode.base_data.alias]) ||
+      !diagramSpec.auto_layout_enabled)
   ) {
     const c4DeploymentNode = C4DeploymentNode(
       deploymentNode,

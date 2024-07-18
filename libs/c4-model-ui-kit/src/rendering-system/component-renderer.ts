@@ -17,7 +17,10 @@ export const renderComponentDiagramElement = (
   if (
     component.base_data &&
     component.base_data.alias &&
-    component.component_type
+    component.component_type &&
+    ((diagramSpec.auto_layout_enabled &&
+      autoLayout[component.base_data.alias]) ||
+      !diagramSpec.auto_layout_enabled)
   ) {
     let c4Component: C4BaseComponent | undefined
     switch (component.component_type) {

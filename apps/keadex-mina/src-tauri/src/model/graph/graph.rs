@@ -13,14 +13,16 @@ pub struct Graph {
   pub edges: Vec<Edge>,
   #[serde(skip_serializing_if = "Option::is_none")]
   pub graph_render_backend: Option<GraphRenderBackend>,
+  pub inter_graph_edges: Vec<Edge>,
 }
 
 impl Graph {
-  pub fn new(nodes: HashMap<String, Node>, edges: Vec<Edge>) -> Self {
+  pub fn new() -> Self {
     Self {
-      nodes,
-      edges,
+      nodes: HashMap::new(),
+      edges: vec![],
       graph_render_backend: None,
+      inter_graph_edges: vec![],
     }
   }
 }

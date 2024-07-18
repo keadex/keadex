@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 use std::{borrow::BorrowMut, collections::HashMap};
 use ts_rs::TS;
 
-const GRAPH_PADDING: f64 = 30.;
+pub const GRAPH_PADDING: f64 = 30.;
 
 #[derive(TS, Serialize, Deserialize, Debug, Clone)]
 pub struct GraphRenderBackend {
@@ -89,7 +89,7 @@ impl GraphRenderBackend {
     * `offset_x` - Offset x.
     * `offset_y` - Offset y.
   */
-  pub fn recalculate_positions(&mut self, offset_x: f64, offset_y: f64) {
+  pub fn adjust_positions(&mut self, offset_x: f64, offset_y: f64) {
     for element in self.elements.borrow_mut() {
       if let Some(position) = element.1.position.borrow_mut() {
         position.x = position.x + offset_x - GRAPH_PADDING;
@@ -146,6 +146,8 @@ impl RenderBackend for GraphRenderBackend {
     );
 
     self.temp_edges_aliases.remove(0);
+
+    // No need to update the graph size in the case of edges, since they cannot be outside the graph boundaries
 
     // println!(
     //   "canvas.add(new fabric.Line([{}, {}, {}, {}], {{ fill: '{}', stroke: '{}', strokeWidth: 2 }}))",

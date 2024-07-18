@@ -18,7 +18,10 @@ export const renderBoundaryDiagramElement = (
     boundary.base_data &&
     boundary.base_data.alias &&
     boundary.base_data.label &&
-    boundary.boundary_type
+    boundary.boundary_type &&
+    ((diagramSpec.auto_layout_enabled &&
+      autoLayout[boundary.base_data.alias]) ||
+      !diagramSpec.auto_layout_enabled)
   ) {
     const c4Boundary = C4Boundary(
       boundary,
