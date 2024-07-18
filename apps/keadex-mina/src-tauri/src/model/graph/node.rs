@@ -17,9 +17,9 @@ pub struct Node {
   pub element_type: DiagramElementType,
   #[serde(skip_serializing_if = "Option::is_none")]
   pub handle: Option<NodeHandle>,
-  #[serde(skip_serializing_if = "Option::is_none")]
+  #[serde(skip)]
   pub subgraph: LinkGraph,
-  #[serde(skip_serializing_if = "Option::is_none")]
+  #[serde(skip)]
   pub parent_graph: LinkGraph,
   #[serde(skip_serializing_if = "Option::is_none")]
   pub parent_node_alias: Option<String>,
