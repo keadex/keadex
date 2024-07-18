@@ -680,7 +680,8 @@ pub fn adjust_inter_graph_edge_points_positions(
   node_position_to: Point,
   node_size_to: Point,
 ) -> (Point, Point) {
-  const MIN_DELTA: f64 = 50.0;
+  const MIN_DELTA_X: f64 = BOX_WIDTH;
+  const MIN_DELTA_Y: f64 = BOX_MIN_HEIGHT;
 
   let mut rel_position_from = Point::new(node_position_from.x, node_position_from.y);
   let mut rel_position_to = Point::new(node_position_to.x, node_position_to.y);
@@ -688,29 +689,29 @@ pub fn adjust_inter_graph_edge_points_positions(
   let position_to;
 
   if (node_position_to.x >= node_position_from.x
-    && node_position_to.x < (node_position_from.x + node_size_from.x + MIN_DELTA))
+    && node_position_to.x < (node_position_from.x + node_size_from.x + MIN_DELTA_X))
     || (node_position_to.x <= node_position_from.x
-      && node_position_from.x < (node_position_to.x + node_size_to.x + MIN_DELTA))
+      && node_position_from.x < (node_position_to.x + node_size_to.x + MIN_DELTA_X))
   {
-    if node_position_from.y > (node_position_to.y + node_size_to.y + MIN_DELTA) {
+    if node_position_from.y > (node_position_to.y + node_size_to.y + MIN_DELTA_Y) {
       position_to = NodePosition::Top;
-    } else if node_position_to.y > (node_position_from.y + node_size_from.y + MIN_DELTA) {
+    } else if node_position_to.y > (node_position_from.y + node_size_from.y + MIN_DELTA_Y) {
       position_to = NodePosition::Bottom;
     } else {
       position_to = NodePosition::Center;
     }
-  } else if node_position_to.x >= (node_position_from.x + node_size_from.x + MIN_DELTA) {
-    if node_position_from.y > (node_position_to.y + node_size_to.y + MIN_DELTA) {
+  } else if node_position_to.x >= (node_position_from.x + node_size_from.x + MIN_DELTA_X) {
+    if node_position_from.y > (node_position_to.y + node_size_to.y + MIN_DELTA_Y) {
       position_to = NodePosition::TopRight;
-    } else if node_position_to.y > (node_position_from.y + node_size_from.y + MIN_DELTA) {
+    } else if node_position_to.y > (node_position_from.y + node_size_from.y + MIN_DELTA_Y) {
       position_to = NodePosition::BottomRight;
     } else {
       position_to = NodePosition::Right;
     }
   } else {
-    if node_position_from.y > (node_position_to.y + node_size_to.y + MIN_DELTA) {
+    if node_position_from.y > (node_position_to.y + node_size_to.y + MIN_DELTA_Y) {
       position_to = NodePosition::TopLeft;
-    } else if node_position_to.y > (node_position_from.y + node_size_from.y + MIN_DELTA) {
+    } else if node_position_to.y > (node_position_from.y + node_size_from.y + MIN_DELTA_Y) {
       position_to = NodePosition::BottomLeft;
     } else {
       position_to = NodePosition::Left;
