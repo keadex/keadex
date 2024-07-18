@@ -3,6 +3,7 @@ Graph Renderer.
 Module which exposes the functions to auto-generate the positions of all the elements of a diagram.
 */
 
+use crate::helper::relationship_helper::generate_relationship_alias;
 use crate::model::diagram::diagram_plantuml::DiagramElementType;
 use crate::model::diagram::diagram_spec::DiagramOrientation;
 use crate::model::graph::element_data::ElementData;
@@ -28,7 +29,7 @@ use layout::{
   std_shapes::shapes::{Arrow, Element, LineEndKind, ShapeKind},
   topo::layout::VisualGraph,
 };
-use std::cell::{RefCell, RefMut};
+use std::cell::{BorrowMutError, RefCell, RefMut};
 use std::collections::HashMap;
 use std::rc::Rc;
 
@@ -45,8 +46,8 @@ pub fn generate_positions(
   if elements.len() > 0 {
     let result_positions = std::panic::catch_unwind(|| {
       let orientation = DiagramOrientation::to_layout_orientation(diagram_orientation);
-      let graph = create_graph(elements, None);
-      add_inter_graph_edges_to_graph(graph.clone());
+      let (graph, all_nodes) = create_graph(elements, None, None);
+      add_inter_graph_edges_to_graph(graph.clone(), &all_nodes, &mut vec![]);
       render_graph(&mut graph.borrow_mut(), orientation);
       let mut positions = adjust_graph_positions(
         &mut graph.borrow_mut(),
@@ -82,7 +83,9 @@ Creates a graph starting from an array of diagram elements.
 pub fn create_graph(
   elements: &Vec<DiagramElementType>,
   parent_graph_ref: LinkGraph,
-) -> Rc<RefCell<Graph>> {
+  parent_node_alias: Option<String>,
+) -> (Rc<RefCell<Graph>>, HashMap<String, Node>) {
+  let mut all_nodes = HashMap::<String, Node>::new();
   let mut nodes = HashMap::<String, Node>::new();
   let mut edges: Vec<Edge> = vec![];
 
@@ -91,71 +94,117 @@ pub fn create_graph(
   for element in elements {
     match element {
       DiagramElementType::Person(person) => {
+        let node = Node::new(
+          person.base_data.alias.as_ref().unwrap(),
+          DiagramElementType::Person(person.clone()),
+          None,
+          None,
+          parent_node_alias.clone(),
+        );
         nodes.insert(
           String::from(person.base_data.alias.as_ref().unwrap()),
-          Node::new(
-            person.base_data.alias.as_ref().unwrap(),
-            DiagramElementType::Person(person.clone()),
-            None,
-            None,
-          ),
+          node.clone(),
+        );
+        all_nodes.insert(
+          String::from(person.base_data.alias.as_ref().unwrap()),
+          node.clone(),
         );
       }
       DiagramElementType::SoftwareSystem(software_system) => {
+        let node = Node::new(
+          software_system.base_data.alias.as_ref().unwrap(),
+          DiagramElementType::SoftwareSystem(software_system.clone()),
+          None,
+          None,
+          parent_node_alias.clone(),
+        );
         nodes.insert(
           String::from(software_system.base_data.alias.as_ref().unwrap()),
-          Node::new(
-            software_system.base_data.alias.as_ref().unwrap(),
-            DiagramElementType::SoftwareSystem(software_system.clone()),
-            None,
-            None,
-          ),
+          node.clone(),
+        );
+        all_nodes.insert(
+          String::from(software_system.base_data.alias.as_ref().unwrap()),
+          node.clone(),
         );
       }
       DiagramElementType::Container(container) => {
+        let node = Node::new(
+          container.base_data.alias.as_ref().unwrap(),
+          DiagramElementType::Container(container.clone()),
+          None,
+          None,
+          parent_node_alias.clone(),
+        );
         nodes.insert(
           String::from(container.base_data.alias.as_ref().unwrap()),
-          Node::new(
-            container.base_data.alias.as_ref().unwrap(),
-            DiagramElementType::Container(container.clone()),
-            None,
-            None,
-          ),
+          node.clone(),
+        );
+        all_nodes.insert(
+          String::from(container.base_data.alias.as_ref().unwrap()),
+          node.clone(),
         );
       }
       DiagramElementType::Component(component) => {
+        let node = Node::new(
+          component.base_data.alias.as_ref().unwrap(),
+          DiagramElementType::Component(component.clone()),
+          None,
+          None,
+          parent_node_alias.clone(),
+        );
         nodes.insert(
           String::from(component.base_data.alias.as_ref().unwrap()),
-          Node::new(
-            component.base_data.alias.as_ref().unwrap(),
-            DiagramElementType::Component(component.clone()),
-            None,
-            None,
-          ),
+          node.clone(),
+        );
+        all_nodes.insert(
+          String::from(component.base_data.alias.as_ref().unwrap()),
+          node.clone(),
         );
       }
       DiagramElementType::Boundary(boundary) => {
-        let subgraph = create_graph(&boundary.sub_elements, Some(graph.clone()));
+        let subgraph = create_graph(
+          &boundary.sub_elements,
+          Some(graph.clone()),
+          boundary.base_data.alias.clone(),
+        );
+        all_nodes.extend(subgraph.1);
+        let node = Node::new(
+          boundary.base_data.alias.as_ref().unwrap(),
+          DiagramElementType::Boundary(boundary.clone()),
+          Some(subgraph.0),
+          parent_graph_ref.clone(),
+          parent_node_alias.clone(),
+        );
         nodes.insert(
           String::from(boundary.base_data.alias.as_ref().unwrap()),
-          Node::new(
-            boundary.base_data.alias.as_ref().unwrap(),
-            DiagramElementType::Boundary(boundary.clone()),
-            Some(subgraph),
-            parent_graph_ref.clone(),
-          ),
+          node.clone(),
+        );
+        all_nodes.insert(
+          String::from(boundary.base_data.alias.as_ref().unwrap()),
+          node.clone(),
         );
       }
       DiagramElementType::DeploymentNode(deployment_node) => {
-        let subgraph = create_graph(&deployment_node.sub_elements, Some(graph.clone()));
+        let subgraph = create_graph(
+          &deployment_node.sub_elements,
+          Some(graph.clone()),
+          deployment_node.base_data.alias.clone(),
+        );
+        all_nodes.extend(subgraph.1);
+        let node = Node::new(
+          deployment_node.base_data.alias.as_ref().unwrap(),
+          DiagramElementType::DeploymentNode(deployment_node.clone()),
+          Some(subgraph.0),
+          parent_graph_ref.clone(),
+          parent_node_alias.clone(),
+        );
         nodes.insert(
           String::from(deployment_node.base_data.alias.as_ref().unwrap()),
-          Node::new(
-            deployment_node.base_data.alias.as_ref().unwrap(),
-            DiagramElementType::DeploymentNode(deployment_node.clone()),
-            Some(subgraph),
-            parent_graph_ref.clone(),
-          ),
+          node.clone(),
+        );
+        all_nodes.insert(
+          String::from(deployment_node.base_data.alias.as_ref().unwrap()),
+          node.clone(),
         );
       }
       DiagramElementType::Relationship(relationship) => edges.push(Edge::new(
@@ -168,7 +217,7 @@ pub fn create_graph(
   }
   graph.borrow_mut().nodes = nodes;
   graph.borrow_mut().edges = edges;
-  return graph;
+  return (graph, all_nodes);
 }
 
 /**
@@ -176,35 +225,178 @@ Stores into the given graph the inter-graph relationships (if any) and, if requi
 implicit relationships to connect inter-graph elements.
 # Arguments
   * `graph` - Reference to the graph to update.
+  * `all_nodes` - All nodes of the diagram.
 */
-pub fn add_inter_graph_edges_to_graph(graph: Rc<RefCell<Graph>>) {
+pub fn add_inter_graph_edges_to_graph(
+  graph: Rc<RefCell<Graph>>,
+  all_nodes: &HashMap<String, Node>,
+  added_inter_graph_edges: &mut Vec<String>,
+) {
   let mut graph_mut = graph.borrow_mut();
   let nodes_clone = graph_mut.nodes.clone();
   let nodes_aliases: Vec<&String> = nodes_clone.keys().collect();
   for node_alias in nodes_aliases {
     let node = graph_mut.nodes.get_mut(node_alias).unwrap();
 
-    // add the implicit relationships also for the subgraphs
     if let Some(subgraph_ref) = node.subgraph.as_mut() {
-      add_inter_graph_edges_to_graph(subgraph_ref.clone());
+      // add the implicit relationships also for the subgraphs
+      add_inter_graph_edges_to_graph(subgraph_ref.clone(), all_nodes, added_inter_graph_edges);
     }
   }
 
   let edges_clone = graph_mut.edges.clone();
   for edge in edges_clone {
-    if !graph_mut.nodes.contains_key(&edge.from) || !graph_mut.nodes.contains_key(&edge.to) {
-      // In this case the edge could be potentially a inter-graph edge.
+    if all_nodes.contains_key(&edge.from)
+      && all_nodes.contains_key(&edge.to)
+      && (!graph_mut.nodes.contains_key(&edge.from) || !graph_mut.nodes.contains_key(&edge.to))
+    {
+      // In this case both the nodes exist in the entire diagram (there could be cases in which the user creates
+      // a relationship between not existing nodes), and the edge could be potentially a inter-graph edge.
+      let mut node_from = all_nodes.get(&edge.from);
+      let mut node_to = all_nodes.get(&edge.to);
+      let mut edge_alias = generate_relationship_alias(&edge.from, &edge.to);
+
+      // First of all, store the potential inter-graph edge into the graph (it will be used
+      // later to calculate its position since it will not be rendered with the "layout-rs" crate)
       graph_mut.inter_graph_edges.push(edge);
+
+      let mut found = false;
+      let mut reached_end = false;
+      let mut parent_graph_from_mut: Option<Result<RefMut<Graph>, BorrowMutError>> = None;
+      let mut parent_graph_to_mut: Option<Result<RefMut<Graph>, BorrowMutError>> = None;
+
+      while !found && !reached_end {
+        let mut parent_graph_from_mut_ref = None; // = &graph_mut;
+        let mut parent_graph_to_mut_ref = None; // = &graph_mut;
+        if parent_graph_from_mut.is_some() {
+          if parent_graph_from_mut.as_ref().unwrap().is_ok() {
+            parent_graph_from_mut_ref =
+              Some(parent_graph_from_mut.as_mut().unwrap().as_mut().unwrap());
+          }
+        }
+        if parent_graph_to_mut.is_some() {
+          if parent_graph_to_mut.as_ref().unwrap().is_ok() {
+            parent_graph_to_mut_ref = Some(parent_graph_to_mut.as_mut().unwrap().as_mut().unwrap());
+          }
+        }
+
+        if parent_graph_from_mut_ref.is_none() && parent_graph_to_mut_ref.is_none() {
+          // In this case both the parents are empty, which means both the nodes are children
+          // of the same root graph
+          if graph_mut.nodes.contains_key(&node_from.unwrap().alias)
+            && graph_mut.nodes.contains_key(&node_to.unwrap().alias)
+            && !added_inter_graph_edges.contains(&edge_alias)
+          {
+            found = true;
+            // Add the implicit edge
+            log::debug!(
+              "Adding implicit edge between {:?} and {:?}: {:?}",
+              &node_from.unwrap().alias,
+              &node_to.unwrap().alias,
+              edge_alias
+            );
+
+            added_inter_graph_edges.push(edge_alias.clone());
+            graph_mut.edges.push(Edge::new(
+              &edge_alias,
+              &node_from.unwrap().alias,
+              &node_to.unwrap().alias,
+            ))
+          }
+        } else {
+          // In this case just one of the two nodes do not have a parent or they both have a parent,
+          // so use the root graph as the parent of the only node without parent (if any)
+          if parent_graph_from_mut_ref.is_none() {
+            parent_graph_from_mut_ref = Some(&mut graph_mut);
+          } else if parent_graph_to_mut_ref.is_none() {
+            parent_graph_to_mut_ref = Some(&mut graph_mut);
+          }
+
+          let parent_graph_from = parent_graph_from_mut_ref.unwrap();
+          let parent_graph_to = parent_graph_to_mut_ref.unwrap();
+          if parent_graph_from
+            .nodes
+            .contains_key(&node_from.unwrap().alias)
+            && parent_graph_from
+              .nodes
+              .contains_key(&node_to.unwrap().alias)
+            && parent_graph_to
+              .nodes
+              .contains_key(&node_from.unwrap().alias)
+            && parent_graph_to.nodes.contains_key(&node_to.unwrap().alias)
+            && !added_inter_graph_edges.contains(&edge_alias)
+          {
+            found = true;
+            // Add the implicit edge
+            log::debug!(
+              "Adding implicit edge between {:?} and {:?}: {:?}",
+              &node_from.unwrap().alias,
+              &node_to.unwrap().alias,
+              edge_alias
+            );
+
+            added_inter_graph_edges.push(edge_alias.clone());
+
+            // Both the nodes are part of the same parent, so we can use "parent_graph_from" or "parent_graph_to"
+            // to add the edge
+            parent_graph_from.edges.push(Edge::new(
+              &edge_alias,
+              &node_from.unwrap().alias,
+              &node_to.unwrap().alias,
+            ))
+          }
+        }
+
+        if !found {
+          reached_end = true;
+
+          // Update the starting node
+          let parent_node_alias_from = node_from.unwrap().parent_node_alias.clone();
+          if parent_node_alias_from.is_some() {
+            node_from = all_nodes.get(&parent_node_alias_from.unwrap());
+            if node_from.unwrap().parent_graph.as_ref().is_some() {
+              parent_graph_from_mut = Some(
+                node_from
+                  .as_ref()
+                  .unwrap()
+                  .parent_graph
+                  .as_ref()
+                  .unwrap()
+                  .try_borrow_mut(),
+              );
+            } else {
+              parent_graph_from_mut = None;
+            }
+            reached_end = false;
+          }
+
+          // Update the ending node
+          let parent_node_alias_to = node_to.unwrap().parent_node_alias.clone();
+          if parent_node_alias_to.is_some() {
+            node_to = all_nodes.get(&parent_node_alias_to.unwrap());
+            if node_to.unwrap().parent_graph.as_ref().is_some() {
+              parent_graph_to_mut = Some(
+                node_to
+                  .as_ref()
+                  .unwrap()
+                  .parent_graph
+                  .as_ref()
+                  .unwrap()
+                  .try_borrow_mut(),
+              );
+            } else {
+              parent_graph_to_mut = None;
+            }
+            reached_end = false;
+          }
+
+          // Update the edge alias
+          edge_alias =
+            generate_relationship_alias(&node_from.unwrap().alias, &node_to.unwrap().alias);
+        }
+      }
     }
   }
-
-  // for node in graph.borrow_mut().nodes.clone() {
-  //   //
-  //   graph.borrow_mut().edges = vec![];
-  // }
-  // graph.borrow_mut().edges = vec![];
-  // let mutable_graph = graph.borrow_mut();
-  // return graph;
 }
 
 /**
