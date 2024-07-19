@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/keadex/keadex/compare/mina-react@1.4.0...mina-react@1.5.0) (2024-07-19)
+
+
+### Features
+
+* **apps/keadex-battisti:** minor changes ([76df45e](https://github.com/keadex/keadex/commit/76df45ed2cae2d1f77359f2d337da6b6ca3af89c))
+
 # [1.4.0](https://github.com/keadex/keadex/compare/mina-react@1.3.0...mina-react@1.4.0) (2024-06-30)
 
 
