@@ -15,7 +15,7 @@ import {
   SystemType,
 } from '@keadex/c4-model-ui-kit'
 import * as monaco from 'monaco-editor'
-import { IRange } from 'monaco-editor'
+import { IMarkdownString, IRange } from 'monaco-editor'
 
 type AggregatedParameterInformation = monaco.languages.ParameterInformation & {
   numAggregatedParameters?: number
@@ -141,15 +141,18 @@ function aggregateOptionalParameters(
   let parameterDocumentation = ''
 
   parameterTypes.forEach((parameterType) => {
-    const label =
+    const label: string =
       typeof C4PLANTUML_PARAMETERS[parameterType].label === 'string'
-        ? C4PLANTUML_PARAMETERS[parameterType].label
+        ? (C4PLANTUML_PARAMETERS[parameterType].label as string)
         : ''
 
-    const documentation =
+    const documentation: string =
       typeof C4PLANTUML_PARAMETERS[parameterType].documentation === 'string'
-        ? C4PLANTUML_PARAMETERS[parameterType].documentation
-        : C4PLANTUML_PARAMETERS[parameterType].documentation!.value
+        ? (C4PLANTUML_PARAMETERS[parameterType].documentation as string)
+        : (
+            C4PLANTUML_PARAMETERS[parameterType]
+              .documentation as IMarkdownString
+          ).value
 
     parameters.push({ label, documentation })
   })
