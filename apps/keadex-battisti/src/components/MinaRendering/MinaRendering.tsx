@@ -26,15 +26,15 @@ export default function MinaRendering({
           </span>
           <Image
             src={clearDiagram}
-            className="w-full h-auto lg:w-auto lg:h-52 mx-auto mt-2 rounded-md"
+            className="w-full h-auto lg:w-auto lg:h-52 mx-auto mt-5 rounded-md"
             alt="Example of clear diagram created with Mina"
           />
-          <span className="mt-5 font-bold italic">
+          <span className="mt-10 font-bold italic">
             <Trans i18nKey="keadex_mina.rendering.auto_layout" t={t} />
           </span>
           <Image
             src={messyDiagram}
-            className="w-full h-auto lg:w-auto lg:h-80 mx-auto mt-2 rounded-md"
+            className="w-full h-auto lg:w-auto lg:h-80 mx-auto mt-5 rounded-md"
             alt="Example of messy diagram created with other tools"
           />
         </div>

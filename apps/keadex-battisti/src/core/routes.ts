@@ -72,6 +72,7 @@ export const MINA_DIAGRAMS_LINKS = `${MINA_FEATURES}/diagrams-links`
 export const MINA_DIAGRAMS_ORG = `${MINA_FEATURES}/diagrams-organization`
 export const MINA_EXPORT = `${MINA_FEATURES}/export`
 export const MINA_HOOKS = `${MINA_FEATURES}/hooks`
+export const MINA_INTELLISENSE = `${MINA_FEATURES}/intellisense`
 export const MINA_LIBRARY = `${MINA_FEATURES}/library`
 export const MINA_LOW_CODING = `${MINA_FEATURES}/low-coding`
 export const MINA_PLANTUML = `${MINA_FEATURES}/plantuml`
@@ -142,6 +143,9 @@ ROUTES[MINA_EXPORT] = {
 }
 ROUTES[MINA_HOOKS] = {
   path: MINA_HOOKS,
+}
+ROUTES[MINA_INTELLISENSE] = {
+  path: MINA_INTELLISENSE,
 }
 ROUTES[MINA_LIBRARY] = {
   path: MINA_LIBRARY,

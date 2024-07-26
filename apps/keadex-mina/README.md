@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://keadex.dev/en/projects/keadex-mina" target="_blank"><img src="./public/mina-logo-full.png" width="400" alt="Keadex Battisti Logo" /></a>
+  <a href="https://keadex.dev/en/projects/keadex-mina" target="_blank"><img src="./public/mina-logo-full.png" width="400" alt="Keadex Mina Logo" /></a>
 </p>
 <p align="center"><i>Desktop app to easily code and organize at a scale <a href="https://c4model.com/" target="_blank">C4 Model</a> diagrams</i></p>
 <div align="center">

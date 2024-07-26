@@ -17,6 +17,7 @@ import ROUTES, {
   MINA_GS_PROJECT_STRUCTURE,
   MINA_GS_QUICK_START,
   MINA_HOOKS,
+  MINA_INTELLISENSE,
   MINA_INTRODUCTION,
   MINA_LIBRARY,
   MINA_LOW_CODING,
@@ -119,6 +120,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               id: 'keadex-mina_hooks',
               title: 'Hooks',
               href: ROUTES[MINA_HOOKS].path,
+            },
+            {
+              id: 'keadex-mina_intellisense',
+              title: 'IntelliSense',
+              href: ROUTES[MINA_INTELLISENSE].path,
+              disableTOC: true,
             },
             {
               id: 'keadex-mina_library',

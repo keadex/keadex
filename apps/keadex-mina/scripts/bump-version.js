@@ -47,7 +47,8 @@ const filesToUpdate = [
 
 filesToUpdate.forEach((file) => {
   const path = join(rootRepo, file.path)
-  const data = fs.readFileSync(path).toString()
+  // Remove carriage return for windows, which uses CRLF (\r\n) instead of LF (\n)
+  const data = fs.readFileSync(path).toString().replace(/\r/g, '')
   const result = data.replace(
     new RegExp(file.pattern),
     file.pattern.replace(version, newVersion),

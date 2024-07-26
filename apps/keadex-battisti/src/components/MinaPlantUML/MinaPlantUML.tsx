@@ -20,7 +20,7 @@ export default function MinaPlantUML({
   return (
     <div className="px-10 py-28 align-middle">
       <div className="flex flex-col md:flex-row my-auto">
-        <div className="w-full md:w-1/2 flex flex-col">
+        <div className="w-full md:w-1/2 flex flex-col my-auto">
           <div className="text-3xl leading-10 font-extralight">
             <Trans
               i18nKey="keadex_mina.plantuml.title"

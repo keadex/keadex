@@ -8,6 +8,7 @@ import exportFeature from '../../../public/img/mina/mina-export.jpg'
 import organize from '../../../public/img/mina/mina-organize.jpg'
 import hooksHLD from '../../../public/img/docs/mina/hooks-hld.png'
 import minaTags from '../../../public/img/mina/mina-tags.png'
+import minaIntellisense from '../../../public/img/mina/mina-intellisense.gif'
 import { useTranslation } from '../../app/i18n/client'
 
 export type MinaDetailsProps = {
@@ -41,6 +42,11 @@ export default function MinaDetails({
       alt: 'High Level Design of Mina Hooks',
     },
     {
+      i18nKey: 'intellisense',
+      image: minaIntellisense,
+      alt: 'Animated gif showing how the C4 PlantUML IntelliSense works in the Mina code editor',
+    },
+    {
       i18nKey: 'tags',
       image: minaTags,
       alt: 'Screenshots of Keadex Mina tags feature',
@@ -62,7 +68,7 @@ export default function MinaDetails({
             <Trans
               i18nKey={`keadex_mina.details.features.${tabFeature.i18nKey}`}
               t={t}
-              components={{ span: <span /> }}
+              components={{ span: <span />, a: <a /> }}
             />
           </div>
           {tabFeature.image && (
@@ -103,15 +109,7 @@ export default function MinaDetails({
         />
       </span>
       <div className="flex flex-col md:flex-row">
-        <div className="flex flex-col h-fit w-full md:w-1/2">
-          <Tabs
-            tabs={tabs}
-            className="mina-details__tabs"
-            tabClassName="!m-0"
-            bodyClassName="px-0 pt-0"
-          />
-        </div>
-        <div className="w-full mt-10 md:w-1/2 md:mt-0 pl-0 md:pl-10 flex flex-col">
+        <div className="w-full md:w-1/2 flex flex-col">
           <div className="text-3xl leading-10 font-extralight">
             <Trans
               i18nKey="keadex_mina.details.title"
@@ -137,6 +135,15 @@ export default function MinaDetails({
               })}
             </ul>
           </div>
+        </div>
+
+        <div className="mt-10 md:my-0 pl-0 md:pl-10 flex flex-col h-fit w-full md:w-1/2">
+          <Tabs
+            tabs={tabs}
+            className="mina-details__tabs"
+            tabClassName="!m-0"
+            bodyClassName="px-0 pt-0"
+          />
         </div>
       </div>
     </div>

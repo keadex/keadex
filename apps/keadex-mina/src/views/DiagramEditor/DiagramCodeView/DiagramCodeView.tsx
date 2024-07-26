@@ -49,7 +49,12 @@ import ModalCRUPerson from '../../../components/ModalCRULibraryElement/ModalCRUP
 import ModalCRURelationship from '../../../components/ModalCRULibraryElement/ModalCRURelationship/ModalCRURelationship'
 import ModalCRUSoftwareSystem from '../../../components/ModalCRULibraryElement/ModalCRUSoftwareSystem/ModalCRUSoftwareSystem'
 import { DiagramCodeViewToolbarCommands } from '../../../components/DiagramCodeViewToolbar/DiagramCodeViewToolbar'
+import {
+  initC4PlantUMLLanguage,
+  PLANTUML_LANGUAGE,
+} from './c4plantuml-monaco-language'
 
+initC4PlantUMLLanguage()
 loader.config({ monaco })
 
 // https://github.com/opensumi/monaco-editor-core/blob/main/src/vs/platform/quickinput/common/quickInput.ts
@@ -121,11 +126,14 @@ export const DiagramCodeView = forwardRef(
     }, [diagram, editorPosition, saveDiagram])
 
     useEffect(() => {
-      editorRef?.current?.setPosition({ lineNumber: 0, column: 0 })
-      if (editorRef.current && editorPosition) {
-        editorRef.current.focus()
-        editorRef.current.setPosition(editorPosition)
-        editorRef.current.updateOptions({ readOnly: isSaving })
+      if (editorRef.current) {
+        if (editorPosition) {
+          editorRef.current.focus()
+          editorRef.current.setPosition(editorPosition)
+          editorRef.current.updateOptions({ readOnly: isSaving })
+        } else {
+          editorRef.current.setPosition({ lineNumber: 0, column: 0 })
+        }
       }
     })
 
@@ -542,7 +550,7 @@ export const DiagramCodeView = forwardRef(
         {modal}
         <Editor
           className={`h-full ${!diagram ? 'hidden' : ''}`}
-          language="plantuml"
+          language={PLANTUML_LANGUAGE}
           value={rawPlantuml}
           theme="vs-dark"
           onMount={handleEditorDidMount}
