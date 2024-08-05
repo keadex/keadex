@@ -3,7 +3,7 @@
   "description": "Docusaurus plugin to render C4 Model diagrams created with Keadex Mina.",
   "author": "Keadex <keadex.it@gmail.com>",
   "license": "MIT",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": false,
   "type": "commonjs",
   "main": "./src/index.js",

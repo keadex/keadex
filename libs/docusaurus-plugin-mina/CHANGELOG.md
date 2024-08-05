@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/keadex/keadex/compare/docusaurus-plugin-mina@1.4.0...docusaurus-plugin-mina@1.5.0) (2024-08-05)
+
+
+### Features
+
+* **apps/keadex-battisti:** updated mina-react library ([cd8f0d6](https://github.com/keadex/keadex/commit/cd8f0d61ef1dd5e2220d6575faf1fb5ad71f8687))
+
 # [1.4.0](https://github.com/keadex/keadex/compare/docusaurus-plugin-mina@1.3.0...docusaurus-plugin-mina@1.4.0) (2024-07-18)
 
 
