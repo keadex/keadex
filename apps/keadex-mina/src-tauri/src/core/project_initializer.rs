@@ -38,6 +38,7 @@ use std::fs::File;
 use std::io::Write;
 use std::path::{Path, MAIN_SEPARATOR};
 use strum::IntoEnumIterator;
+use convert_case::{Case, Casing};
 
 /**
 Loads a project
@@ -143,14 +144,16 @@ Unloads a project and cleans state of the app
   * `root` - root of the Mina project
 */
 pub fn create_empty_project(
-  project_settings: ProjectSettings,
+  mut project_settings: ProjectSettings,
 ) -> Result<ProjectSettings, MinaError> {
   log::info!("Create empty project {:?}", project_settings);
 
   let store = ROOT_RESOLVER.get().read().unwrap();
 
   // Validate the output path of the new project
-  validate_output_project_directory(&project_settings.root)?;
+  let project_folder = &project_settings.name.to_case(Case::Kebab);
+  let full_project_root = validate_output_project_directory(&project_settings.root, &project_folder)?;
+  project_settings.root = full_project_root;
 
   // Create diagrams folder, a folder for each diagram type and a file .gitkeep
   // to let git to keep it

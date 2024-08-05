@@ -7,9 +7,9 @@ use crate::dao::filesystem::library::{
   component_dao, container_dao, person_dao, software_system_dao,
 };
 use crate::error_handling::errors::{
-  DIRECTORY_NOT_EMPTY_ERROR_MSG, INVALID_NEW_PROJECT_PATH_ERROR_CODE,
+  EXISTING_PROJECT_DIRECTORY_ERROR_MSG, INVALID_NEW_PROJECT_PATH_ERROR_CODE,
   INVALID_PROJECT_STRUCTURE_ERROR_CODE, MISSING_MINA_CONFIG_ERROR_CODE,
-  MISSING_MINA_CONFIG_ERROR_MSG, NOT_A_DIRECTORY_ERROR_MSG, NOT_EXISTING_PATH_ERROR_MSG,
+  MISSING_MINA_CONFIG_ERROR_MSG, NOT_A_DIRECTORY_ERROR_MSG, NOT_EXISTING_PARENT_PATH_PROJECT_ERROR_MSG,
 };
 use crate::error_handling::mina_error::MinaError;
 use crate::helper::diagram_helper::diagrams_path;
@@ -17,7 +17,6 @@ use crate::helper::library_helper::project_library_path;
 use crate::helper::project_helper::project_settings_path;
 use std::fs::metadata;
 use std::path::{Path, MAIN_SEPARATOR};
-use walkdir::WalkDir;
 
 /**
 Checks if the provided root contains a valid Mina project.
@@ -109,12 +108,22 @@ fn contains_project_library(root: &str) -> Result<(), MinaError> {
 Checks if the provided path satisfies the requirement to contain a new project.
 # Arguments
   * `root` - root of the new project
+  * `project_folder` - folder of the new project
 */
-pub fn validate_output_project_directory(root: &str) -> Result<(), MinaError> {
+pub fn validate_output_project_directory(root: &str, project_folder: &str) -> Result<String, MinaError> {
+  let full_project_root = format!("{}{}{}", root, MAIN_SEPARATOR, project_folder);
+
   if !Path::new(root).exists() {
     return Err(MinaError::new(
       INVALID_NEW_PROJECT_PATH_ERROR_CODE,
-      NOT_EXISTING_PATH_ERROR_MSG,
+      NOT_EXISTING_PARENT_PATH_PROJECT_ERROR_MSG,
+    ));
+  }
+
+  if Path::new(&full_project_root).exists() {
+    return Err(MinaError::new(
+      INVALID_NEW_PROJECT_PATH_ERROR_CODE,
+      &format!("{}\"{}\"", EXISTING_PROJECT_DIRECTORY_ERROR_MSG, project_folder),
     ));
   }
 
@@ -125,12 +134,5 @@ pub fn validate_output_project_directory(root: &str) -> Result<(), MinaError> {
     ));
   }
 
-  // > 1 because the iterator contains at least the root itself
-  if WalkDir::new(root).into_iter().count() > 1 {
-    return Err(MinaError::new(
-      INVALID_NEW_PROJECT_PATH_ERROR_CODE,
-      DIRECTORY_NOT_EMPTY_ERROR_MSG,
-    ));
-  }
-  Ok(())
+  Ok(full_project_root)
 }

@@ -30,6 +30,7 @@ import DiagramDesignView, {
   KeadexCanvasState,
 } from './DiagramDesignView/DiagramDesignView'
 import './DiagramEditor.css'
+import { useAppSelector } from '../../core/store/hooks'
 
 const TOAST_ERROR_DEFAULT_CONFIGS: ToastOptions = {
   className: 'diagram-editor_toast--error',
@@ -60,6 +61,8 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
   const diagramDesignViewToolbarRef =
     useRef<DiagramDesignViewToolbarCommands>(null)
   const context = useContext(AppEventContext)
+  const project = useAppSelector((state) => state.project.value)
+  const [triggerSaveProject, setTriggerSaveProject] = useState(0)
 
   context?.useSubscription((event) => {
     if (event.type === AppEventType.OpenDiagram) {
@@ -137,6 +140,30 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
   useEffect(() => {
     handleOpenDiagram()
   }, [diagramEditorState])
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout | undefined
+    if (
+      project?.project_settings &&
+      project.project_settings.autosave_interval_seconds
+    ) {
+      if (project.project_settings.autosave_enabled) {
+        intervalId = setInterval(() => {
+          setTriggerSaveProject((prev) => prev + 1)
+        }, project.project_settings.autosave_interval_seconds * 1000)
+      }
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId)
+    }
+  }, [project])
+
+  useEffect(() => {
+    if (triggerSaveProject !== 0) {
+      handleSaveDiagram()
+    }
+  }, [triggerSaveProject])
 
   const isDiagramChanged = (
     prevDiagram: Diagram,

@@ -1,6 +1,7 @@
 import {
   IconButton,
   Input,
+  Radio,
   Textarea,
   renderButtons,
 } from '@keadex/keadex-ui-kit/cross'
@@ -33,6 +34,8 @@ const emptyProjectSettings: ProjectSettings = {
   description: '',
   version: '',
   openai_api_key: '',
+  autosave_enabled: false,
+  autosave_interval_seconds: 0,
 }
 
 export const ModalCRUProject = (props: ModalCRUProjectProps) => {
@@ -62,8 +65,23 @@ export const ModalCRUProject = (props: ModalCRUProjectProps) => {
     }
   }
 
+  function checkValues(projectSettings: ProjectSettings) {
+    if (
+      projectSettings.autosave_interval_seconds !== null &&
+      (projectSettings.autosave_interval_seconds < 0 ||
+        projectSettings.autosave_interval_seconds > 240)
+    ) {
+      toast.error(
+        `${t('common.invalid')} "${t('common.autosave'.toLowerCase())}" ${t(
+          'common.value',
+        ).toLowerCase()}`,
+      )
+    }
+  }
+
   function handleConfirmClick() {
     if (newProjectSettings) {
+      checkValues(newProjectSettings)
       if (props.mode === 'edit') {
         // Editing the project settings
         if (props.project?.project_settings) {
@@ -90,8 +108,7 @@ export const ModalCRUProject = (props: ModalCRUProjectProps) => {
           .then((result) => {
             toast.info(t('common.info.done'))
             props.hideModal()
-            if (props.onProjectCreated)
-              props.onProjectCreated(newProjectSettings.root)
+            if (props.onProjectCreated) props.onProjectCreated(result.root)
           })
           .catch((error: MinaError) => {
             toast.error(error.msg)
@@ -115,7 +132,7 @@ export const ModalCRUProject = (props: ModalCRUProjectProps) => {
             >
               {newProjectSettings.root.replace(/ /g, '').length > 0
                 ? newProjectSettings.root
-                : t('home.chose_project_dir')}
+                : t('home.chose_parent_dir_project')}
             </IconButton>
           )}
 
@@ -157,6 +174,46 @@ export const ModalCRUProject = (props: ModalCRUProjectProps) => {
                 description: e.target.value,
               })
             }
+          />
+          <div className={`flex flex-row mt-6`}>
+            <span>{`${t('common.autosave')}*`}:</span>
+            <Radio<boolean>
+              id="autosave-status"
+              className="ml-5"
+              value={newProjectSettings.autosave_enabled}
+              options={[
+                { label: t('common.enabled'), value: true },
+                { label: t('common.disabled'), value: false },
+              ]}
+              onChange={(value: boolean) => {
+                setNewProjectSettings({
+                  ...newProjectSettings,
+                  autosave_enabled: value,
+                  autosave_interval_seconds: value ? 60 : 0,
+                })
+              }}
+            />
+          </div>
+          <Input
+            type="number"
+            max={240}
+            label={`${t('common.autosave_interval_sec')}`}
+            info={`${t('common.max')} 240 ${t('common.seconds').toLowerCase()}`}
+            className="mt-6"
+            value={
+              newProjectSettings.autosave_interval_seconds !== null
+                ? newProjectSettings.autosave_interval_seconds
+                : 0
+            }
+            onChange={(e) => {
+              setNewProjectSettings({
+                ...newProjectSettings,
+                autosave_interval_seconds:
+                  e.target.value.length > 0
+                    ? Number.parseInt(e.target.value)
+                    : 0,
+              })
+            }}
           />
           {AI_ENABLED && (
             <Input

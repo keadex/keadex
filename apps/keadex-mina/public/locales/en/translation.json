@@ -4,6 +4,8 @@
     "alias": "Alias",
     "allowed_pattern": "Allowed pattern",
     "architecture": "Architecture",
+    "autosave": "Autosave",
+    "autosave_interval_sec": "Autosave Interval (seconds)",
     "auto_layout": "Auto Layout",
     "boundary": "Boundary",
     "cancel": "Cancel",
@@ -40,10 +42,12 @@
     "github_repo": "GitHub Repo",
     "help": "Help",
     "internal": "Internal",
+    "invalid": "Invalid",
     "kernel": "Kernel",
     "library": "Library",
     "label": "Label",
     "location": "Location",
+    "max": "Max",
     "name": "Name",
     "new": "New",
     "no": "No",
@@ -63,6 +67,7 @@
     "results": "Results",
     "save": "Save",
     "saving": "Saving",
+    "seconds": "Seconds",
     "search": "Search",
     "settings": "Settings",
     "software_system": "Software System",
@@ -74,6 +79,7 @@
     "type": "Type",
     "undo": "Undo",
     "unlink": "Unlink",
+    "value": "Value",
     "version": "Version",
     "yes": "Yes",
     "action": {
@@ -108,6 +114,7 @@
       "youre_up_to_date": "You're up to date!"
     },
     "question": {
+      "confirm_close_app": "Are you sure you want to close the application? Not saved changes will be lost.",
       "confirm_close_project": "Are you sure you want to close the project? Not saved changes will be lost.",
       "confirm_close_diagram": "Are you sure you want to close the diagram? Not saved changes will be lost.",
       "confirm_delete_diagram": "Are you sure you want to permanently delete the {{diagramType}} diagram \"{{diagramName}}\"?",
@@ -119,7 +126,7 @@
     }
   },
   "home": {
-    "chose_project_dir": "Choose project directory",
+    "chose_parent_dir_project": "Choose the parent directory of the project",
     "create_project": "Create a new project",
     "open_project": "Open an existing project"
   },

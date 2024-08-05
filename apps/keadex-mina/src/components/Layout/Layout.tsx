@@ -46,13 +46,13 @@ export const Layout = React.memo((props: LayoutProps) => {
     console.debug('Layout -> useEffect()')
     let unlisten: Promise<UnlistenFn> | null
     if (!rightButtons || rightButtons.length === 0) {
-      createButtons(setRightButtons, isOnResizedDisabled)
+      createButtons(setRightButtons, isOnResizedDisabled, showModal, t)
       unlisten = appWindow.listen(TauriEvent.WINDOW_RESIZED, () => {
         console.debug(
           `Layout -> on window resized() ${isOnResizedDisabled.current}`,
         )
         if (!isOnResizedDisabled.current) {
-          createButtons(setRightButtons, isOnResizedDisabled)
+          createButtons(setRightButtons, isOnResizedDisabled, showModal, t)
         }
       })
     }

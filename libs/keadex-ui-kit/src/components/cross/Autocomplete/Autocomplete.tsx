@@ -75,7 +75,7 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
       const inputEl = input as HTMLInputElement
       inputEl.removeAttribute('readonly')
       inputEl.removeAttribute('role')
-      inputEl.value = localInputValue
+      // inputEl.value = localInputValue
       inputEl.oninput = () => {
         setLocalInputValue(inputEl.value)
         props.onTyping(inputEl.value)

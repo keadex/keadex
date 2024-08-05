@@ -1,7 +1,4 @@
-import {
-  faArrowRightFromBracket,
-  faFloppyDisk,
-} from '@fortawesome/free-solid-svg-icons'
+import { faFloppyDisk, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Diagram, diagramTypeHumanName } from '@keadex/c4-model-ui-kit'
 import {
   IconButton,
@@ -90,8 +87,8 @@ export const DiagramEditorToolbar = (props: DiagramEditorToolbarProps) => {
             }}
           />
           <IconButton
-            icon={faArrowRightFromBracket}
-            className={`${styleButton}`}
+            icon={faXmark}
+            className={`${styleButton} hover:!bg-red-600`}
             data-te-toggle="tooltip"
             data-te-placement="bottom"
             title={`${t('common.close').toString()} ${t('common.diagram')

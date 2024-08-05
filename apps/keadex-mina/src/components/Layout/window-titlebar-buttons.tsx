@@ -6,12 +6,16 @@ import {
   faMinus,
 } from '@fortawesome/free-solid-svg-icons'
 import { appWindow } from '@tauri-apps/api/window'
+import { ModalProps } from '@keadex/keadex-ui-kit/cross'
+import { TFunction } from 'i18next'
 
 export function createButtons(
   setRightButtons: React.Dispatch<
     React.SetStateAction<WindowTitlebarButtonProps[]>
   >,
   isOnResizedDisabled: React.MutableRefObject<boolean>,
+  showModal: (modalContent: ModalProps) => void,
+  t: TFunction<'translation', undefined>,
 ) {
   const buttons: WindowTitlebarButtonProps[] = []
   isOnResizedDisabled.current = true
@@ -42,7 +46,28 @@ export function createButtons(
       id: 'restore-close',
       icon: faXmark,
       className: 'text-accent-primary hover:bg-red-600',
-      onClick: () => appWindow.close(),
+      onClick: () => {
+        showModal({
+          id: 'confirmSafeExitModal',
+          title: `${t('common.confirmation')}`,
+          body: `${t('common.question.confirm_close_app')}`,
+          buttons: [
+            {
+              key: 'button-cancel',
+              children: <span>{t('common.cancel')}</span>,
+              'data-te-modal-dismiss': true,
+            },
+            {
+              key: 'button-confirm',
+              children: <span>{t('common.confirm')}</span>,
+              className: 'button--dangerous',
+              onClick: () => {
+                appWindow.close()
+              },
+            },
+          ],
+        })
+      },
     })
     setRightButtons(buttons)
   })

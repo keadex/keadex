@@ -34,8 +34,8 @@ pub const CANNOT_OPEN_FILE_ERROR_MSG: &str = "Cannot open the file. Unknown reas
 pub const FILE_DOES_NOT_EXIST: &str = "File does not exist.";
 pub const PROJECT_NOT_LOADED_ERROR_MSG: &str = "Project not loaded.";
 pub const NOT_A_DIRECTORY_ERROR_MSG: &str = "Provided path is not a directory.";
-pub const DIRECTORY_NOT_EMPTY_ERROR_MSG: &str = "Provided directory is not empty.";
-pub const NOT_EXISTING_PATH_ERROR_MSG: &str = "Provided path does not exist.";
+pub const EXISTING_PROJECT_DIRECTORY_ERROR_MSG: &str = "The following project directory already exists: ";
+pub const NOT_EXISTING_PARENT_PATH_PROJECT_ERROR_MSG: &str = "Provided parent path of the project does not exist.";
 pub const INVALID_LIBRARY_PATH_ERROR_MSG: &str = "Invalid library's path.";
 pub const EXISTING_DIAGRAM_ERROR_MSG: &str =
   "A diagram with the given name and type already exists. Choose a different name or type.";

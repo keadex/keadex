@@ -19,4 +19,7 @@ pub struct ProjectSettings {
   pub description: String,
   pub version: String,
   pub openai_api_key: Option<String>,
+  #[serde(default="bool::default")]
+  pub autosave_enabled: bool,
+  pub autosave_interval_seconds: Option<u8>,
 }
