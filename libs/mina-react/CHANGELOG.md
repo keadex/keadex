@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/keadex/keadex/compare/mina-react@1.6.0...mina-react@1.7.0) (2024-08-07)
+
+
+### Features
+
+* **apps/keadex-battisti:** upgraded mina-react package ([43941e1](https://github.com/keadex/keadex/commit/43941e1fdbf80cd7461f577ee5cc41bc55495250))
+
 # [1.6.0](https://github.com/keadex/keadex/compare/mina-react@1.5.0...mina-react@1.6.0) (2024-08-05)
 
 
