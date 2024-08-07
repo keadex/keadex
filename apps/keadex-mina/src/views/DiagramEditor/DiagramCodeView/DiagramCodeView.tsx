@@ -93,6 +93,7 @@ export interface DiagramCodeViewCommands {
   ) => void
   addDiagramLink: () => void
   replaceLineContent: (lineNumber: number, newContent: string) => void
+  selectText: (text: string) => void
 }
 
 export const DiagramCodeView = forwardRef(
@@ -213,6 +214,7 @@ export const DiagramCodeView = forwardRef(
       addDiagramElement: addDiagramElement,
       addDiagramLink: addDiagramLink,
       replaceLineContent: replaceLineContent,
+      selectText: selectText,
     }))
 
     function handleEditorDidMount(editor: monaco.editor.IStandaloneCodeEditor) {
@@ -543,6 +545,26 @@ export const DiagramCodeView = forwardRef(
         }
       }
       toast.error(t('common.error.cannot_add_diagram_link'))
+    }
+
+    function selectText(text?: string) {
+      const editorModel = editorRef.current?.getModel()
+      if (text) {
+        const matches = editorModel?.findMatches(
+          text,
+          false,
+          false,
+          false,
+          null,
+          false,
+        )
+        if (matches) {
+          matches.forEach((match): void => {
+            editorRef.current?.setSelection(match.range)
+            editorRef.current?.revealLine(match.range.startLineNumber)
+          })
+        }
+      }
     }
 
     return (
