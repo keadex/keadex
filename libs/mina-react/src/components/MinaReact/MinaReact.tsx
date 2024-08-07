@@ -1,11 +1,4 @@
 import { Diagram, DiagramListener } from '@keadex/c4-model-ui-kit'
-import { useEffect, useRef, useState } from 'react'
-import {
-  diagram_plantuml_url_from_diagram_url,
-  diagram_spec_url_from_diagram_url,
-  diagram_url_from_link_string,
-  open_diagram,
-} from '../../../src-rust/pkg'
 import {
   DiagramDesignView,
   DiagramDesignViewCommands,
@@ -16,6 +9,13 @@ import {
   DropdownMenuItemProps,
   useAppBootstrap,
 } from '@keadex/keadex-ui-kit/cross'
+import { useEffect, useRef, useState } from 'react'
+import {
+  diagram_plantuml_url_from_diagram_url,
+  diagram_spec_url_from_diagram_url,
+  diagram_url_from_link_string,
+  open_diagram,
+} from '../../../src-rust/pkg'
 
 export interface MinaReactProps {
   projectRootUrl: string
@@ -122,6 +122,7 @@ export const MinaReact = (props: MinaReactProps) => {
           diagramListener={listener}
           diagram={diagram}
           ref={diagramDesignViewRef}
+          target="web"
           readOnly
         />
       )}
