@@ -142,9 +142,11 @@ export async function generatePlantUMLWithAI(
 
 export async function parsedElementToPlantUML(
   parsedElement: DiagramElementType,
+  elementLevel?: number,
 ): Promise<string> {
   return invoke('parsed_element_to_plantuml', {
     parsedElement,
+    elementLevel: elementLevel ?? 0,
   })
 }
 
