@@ -39,7 +39,6 @@ export class KeadexCanvas extends fabric.Canvas {
 
   isReadOnly() {
     return (
-      !fabric.Object.prototype.selectable &&
       fabric.Object.prototype.lockMovementX &&
       fabric.Object.prototype.lockMovementY &&
       fabric.Object.prototype.lockRotation &&
@@ -52,7 +51,6 @@ export class KeadexCanvas extends fabric.Canvas {
   }
 
   setReadOnly() {
-    fabric.Object.prototype.selectable = false
     fabric.Object.prototype.lockMovementX = true
     fabric.Object.prototype.lockMovementY = true
     fabric.Object.prototype.lockRotation = true
@@ -64,7 +62,6 @@ export class KeadexCanvas extends fabric.Canvas {
   }
 
   setReadAndWrite() {
-    fabric.Object.prototype.selectable = true
     fabric.Object.prototype.lockMovementX = false
     fabric.Object.prototype.lockMovementY = false
     fabric.Object.prototype.lockRotation = false
