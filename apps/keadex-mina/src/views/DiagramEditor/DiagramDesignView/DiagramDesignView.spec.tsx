@@ -14,6 +14,7 @@ describe('DiagramDesignView', () => {
         saveDiagram={() => {
           console.log('test')
         }}
+        target='desktop'
       />,
     )
     expect(baseElement).toBeTruthy()
