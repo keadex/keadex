@@ -187,13 +187,15 @@ pub async fn export_diagram_to_file(
 Serialize a parsed PlantUML object, into a PlantUML string.
 # Arguments
   * `parsed_element` - Parsed PlantUML object to serialize.
+  * `element_level` - Level of the PlantUML object to serialize (since it could be a child of another element). The level will affect the indentation.
 */
 #[tauri::command]
 pub async fn parsed_element_to_plantuml(
   parsed_element: DiagramElementType,
+  element_level: usize,
 ) -> Result<String, MinaError> {
   log::info!("Serialize {}", parsed_element);
-  Ok(serialize_elements_to_plantuml(&vec![parsed_element], 0))
+  Ok(serialize_elements_to_plantuml(&vec![parsed_element], element_level))
 }
 
 /**

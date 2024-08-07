@@ -53,6 +53,7 @@ export interface DiagramDesignViewProps {
   error?: MinaError
   saveDiagram?: () => void
   readOnly?: boolean
+  target: 'web' | 'desktop'
 }
 
 export interface DiagramDesignViewCommands {
@@ -146,6 +147,8 @@ export const DiagramDesignView = forwardRef(
         CANVAS_EVENTS.MOUSE_OUT,
         () => (mouseOnCanvas.current = false),
       )
+
+      localCanvas.codingFeaturesEnabled = props.target === 'desktop'
 
       isDiagramChanged.current = false
 

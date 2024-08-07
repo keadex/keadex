@@ -879,9 +879,29 @@ const createContextMenuItems = (
   event: IEvent<Event>,
   selectedObject: fabric.Object,
 ): DropdownMenuItemProps[] => {
-  if ((canvas as KeadexCanvas).isReadOnly()) {
-    return []
-  } else if (selectedObject instanceof fabric.ActiveSelection) {
+  if (selectedObject instanceof fabric.ActiveSelection) {
+    const subMenuItems = []
+    if (!(canvas as KeadexCanvas).isReadOnly()) {
+      subMenuItems.push(
+        {
+          isHeaderMenuItem: false,
+          id: 'addPoint',
+          label: 'Add point',
+          onClick: () => {
+            addNewPointToLine(selectedObject, event)
+          },
+        },
+        {
+          id: 'separatorCommon',
+          isSepator: true,
+        },
+        ...createBaseContextMenuItems(canvas, event, selectedObject, false),
+      )
+    } else if ((canvas as KeadexCanvas).codingFeaturesEnabled) {
+      subMenuItems.push(
+        ...createBaseContextMenuItems(canvas, event, selectedObject, false),
+      )
+    }
     return [
       {
         isHeaderMenuItem: true,
@@ -889,46 +909,33 @@ const createContextMenuItems = (
         label: '',
         hidden: true,
         alwaysOpen: true,
-        subMenuItems: [
-          {
-            isHeaderMenuItem: false,
-            id: 'addPoint',
-            label: 'Add point',
-            onClick: () => {
-              addNewPointToLine(selectedObject, event)
-            },
-          },
-          {
-            id: 'separatorCommon',
-            isSepator: true,
-          },
-          ...createBaseContextMenuItems(canvas, event, selectedObject, false),
-        ],
+        subMenuItems,
       },
     ]
   } else if (selectedObject.name === RelObjects.Dot) {
-    return [
-      {
-        isHeaderMenuItem: true,
-        id: 'dotContextMenu',
-        label: '',
-        hidden: true,
-        alwaysOpen: true,
-        subMenuItems: [
-          {
-            isHeaderMenuItem: false,
-            id: 'removePoint',
-            label: 'Remove point',
-            onClick: () => {
-              removeExistingPointFromLine(selectedObject as fabric.Circle)
+    if (!(canvas as KeadexCanvas).isReadOnly()) {
+      return [
+        {
+          isHeaderMenuItem: true,
+          id: 'dotContextMenu',
+          label: '',
+          hidden: true,
+          alwaysOpen: true,
+          subMenuItems: [
+            {
+              isHeaderMenuItem: false,
+              id: 'removePoint',
+              label: 'Remove point',
+              onClick: () => {
+                removeExistingPointFromLine(selectedObject as fabric.Circle)
+              },
             },
-          },
-        ],
-      },
-    ]
-  } else {
-    return []
+          ],
+        },
+      ]
+    }
   }
+  return []
 }
 
 const onRelationshipMouseUp = (
