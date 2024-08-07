@@ -1,8 +1,9 @@
 import {
+  Boundary,
   boundaryDiagramElement,
+  Component,
   componentDiagramElement,
   Container,
-  Component,
   containerDiagramElement,
   DeploymentNode,
   deploymentNodeDiagramElement,
@@ -10,19 +11,18 @@ import {
   DiagramListener,
   DiagramType,
   Person,
+  personDiagramElement,
   Relationship,
+  relationshipDiagramElement,
   SoftwareSystem,
   softwareSystemDiagramElement,
-  Boundary,
-  relationshipDiagramElement,
-  personDiagramElement,
 } from '@keadex/c4-model-ui-kit'
 import { useModal } from '@keadex/keadex-ui-kit/cross'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ResizableBox } from 'react-resizable'
 import { NavigateOptions, useLocation, useNavigate } from 'react-router-dom'
-import { ToastOptions, toast } from 'react-toastify'
+import { toast, ToastOptions } from 'react-toastify'
 import DiagramCodeViewToolbar, {
   DiagramCodeViewToolbarCommands,
 } from '../../components/DiagramCodeViewToolbar/DiagramCodeViewToolbar'
@@ -32,6 +32,7 @@ import DiagramDesignViewToolbar, {
 import DiagramEditorToolbar from '../../components/DiagramEditorToolbar/DiagramEditorToolbar'
 import AppEventContext, { AppEventType } from '../../context/AppEventContext'
 import { EDIT_DIAGRAM, HOME_PROJECT } from '../../core/router/routes'
+import { useAppSelector } from '../../core/store/hooks'
 import {
   closeDiagram,
   diagramFromLinkString,
@@ -49,7 +50,6 @@ import DiagramDesignView, {
   KeadexCanvasState,
 } from './DiagramDesignView/DiagramDesignView'
 import './DiagramEditor.css'
-import { useAppSelector } from '../../core/store/hooks'
 
 const TOAST_ERROR_DEFAULT_CONFIGS: ToastOptions = {
   className: 'diagram-editor_toast--error',
