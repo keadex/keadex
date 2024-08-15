@@ -40,6 +40,15 @@ const config = {
 export default config
 ```
 
+### Import the Mina React CSS
+
+`src\css\custom.css`
+
+```CSS
+/* Other CSS rules */
+@import "@keadex/mina-react/main.css";
+```
+
 ### Include the diagram into MDX files
 
 `my-mina-diagram.mdx`
