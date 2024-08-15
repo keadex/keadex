@@ -4,7 +4,7 @@
  * work well for content-centric websites.
  */
 
-@import '@keadex/mina-react/main.css';
+@import "@keadex/mina-react/main.css";
 
 /* You can override the default Infima variables here. */
 :root {
@@ -20,7 +20,7 @@
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
+[data-theme="dark"] {
   --ifm-color-primary: #25c2a0;
   --ifm-color-primary-dark: #21af90;
   --ifm-color-primary-darker: #1fa588;

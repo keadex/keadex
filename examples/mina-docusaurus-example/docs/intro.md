@@ -4,9 +4,7 @@ sidebar_position: 1
 
 # My Mina Diagram
 
-
 import MinaReact from '@keadex/mina-react'
-
 
 <div style={{height: '50rem'}}>
   <MinaReact
