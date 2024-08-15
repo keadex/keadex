@@ -37,6 +37,8 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@tanstack/react-table": "^8.10.7",
     "@tauri-apps/api": "^1.5.3",
+    "@yaireo/tagify": "^4.24.0",
+    "buffer": "^6.0.3",
     "change-case": "^5.4.3",
     "fabric": "^5.3.0",
     "fontfaceobserver": "^2.3.0",
