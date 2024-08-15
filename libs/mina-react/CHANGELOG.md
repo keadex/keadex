@@ -1,3 +1,15 @@
+# [1.8.0](https://github.com/keadex/keadex/compare/mina-react@1.7.0...mina-react@1.8.0) (2024-08-15)
+
+
+### Bug Fixes
+
+* **libs/mina-react:** added missing dependencies ([ccc5d9d](https://github.com/keadex/keadex/commit/ccc5d9d2ccb718ff3de93257e7e223936fe9358c))
+
+
+### Features
+
+* **apps/keadex-battisti:** upgraded mina-react package ([69d7dba](https://github.com/keadex/keadex/commit/69d7dba3ca2ca08e76bba324739b444c85b0167e))
+
 # [1.7.0](https://github.com/keadex/keadex/compare/mina-react@1.6.0...mina-react@1.7.0) (2024-08-07)
 
 
