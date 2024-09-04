@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { LoadContext, Plugin } from '@docusaurus/types'
-import { dirname, join } from 'path'
+import { dirname } from 'path'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const CopyPlugin = require('copy-webpack-plugin')
