@@ -27,8 +27,11 @@
     "mina"
   ],
   "dependencies": {
+    "bufferutil": "^4.0.8",
     "copy-webpack-plugin": "^9.1.0",
-    "tslib": "^2.6.2"
+    "node-loader": "^2.0.0",
+    "tslib": "^2.6.2",
+    "utf-8-validate": "^6.0.4"
   },
   "devDependencies": {
     "@docusaurus/types": "3.1.1"

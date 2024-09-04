@@ -12,30 +12,50 @@ function pluginMina({
   return {
     name: '@keadex/docusaurus-plugin-mina',
     configureWebpack(config, isServer) {
+      const newConfig: any = {}
+
       const minaReactPath = dirname(
         require.resolve('@keadex/mina-react', {
           paths: [process.cwd()],
         }),
       )
+
       if (minaReactPath) {
-        return {
-          plugins: [
-            new CopyPlugin({
-              patterns: [
-                {
-                  context: minaReactPath,
-                  from: '*.wasm',
-                  to() {
-                    return '[name][ext]'
-                  },
+        newConfig.plugins = [
+          new CopyPlugin({
+            patterns: [
+              {
+                context: minaReactPath,
+                from: '*.wasm',
+                to() {
+                  return `${
+                    config.mode === 'production' ? 'assets/js/' : ''
+                  }[name][ext]`
                 },
-              ],
-            }),
-          ],
-        }
+              },
+            ],
+          }),
+        ]
       } else {
         throw new Error('Module @keadex/mina-react not found.')
       }
+
+      if (isServer) {
+        newConfig.module = {
+          rules: [
+            {
+              test: /\.node$/,
+              loader: 'node-loader',
+            },
+          ],
+        }
+      }
+
+      newConfig.experiments = {
+        asyncWebAssembly: true,
+      }
+
+      return newConfig
     },
   }
 }
