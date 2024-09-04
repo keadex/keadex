@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/keadex/keadex/compare/docusaurus-plugin-mina@1.8.0...docusaurus-plugin-mina@1.9.0) (2024-09-04)
+
+
+### Features
+
+* **libs/docusaurus-plugin-mina:** minor change ([bb71c23](https://github.com/keadex/keadex/commit/bb71c238797ac1251f4c44c23167d65b4c53a8c1))
+
 # [1.8.0](https://github.com/keadex/keadex/compare/docusaurus-plugin-mina@1.7.0...docusaurus-plugin-mina@1.8.0) (2024-08-15)
 
 
