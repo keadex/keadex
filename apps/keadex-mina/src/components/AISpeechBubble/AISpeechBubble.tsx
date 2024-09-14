@@ -24,10 +24,15 @@ export const AISpeechBubble = React.memo((props: AISpeechBubbleProps) => {
 
   async function generatePlantUML() {
     if (
-      !project?.project_settings.openai_api_key ||
-      project.project_settings.openai_api_key.length === 0
+      !project?.project_settings.ai_settings?.api_key ||
+      project.project_settings.ai_settings.api_key.length === 0
     ) {
-      toast.error(t('common.error.missing_openai_api_key'))
+      toast.error(t('common.error.missing_ai_api_key'))
+    } else if (
+      !project?.project_settings.ai_settings?.api_base_url ||
+      project.project_settings.ai_settings.api_base_url.length === 0
+    ) {
+      toast.error(t('common.error.missing_ai_api_base_url'))
     } else if (diagram !== undefined) {
       setGeneratingPlantUML(true)
       await generatePlantUMLWithAI(AIQuestion)

@@ -28,9 +28,6 @@ export default function MinaAI({
                 components={{ span: <span /> }}
               />
             </div>
-            <div className="ml-5 bg-dark-brand1 rounded-md py-1 px-5 text-xl my-auto">
-              ALPHA
-            </div>
           </div>
           <div className="mt-5 font-light">
             <Trans
@@ -39,6 +36,7 @@ export default function MinaAI({
               components={{
                 span: <span />,
                 code: <code />,
+                a: <a />,
               }}
             />
           </div>

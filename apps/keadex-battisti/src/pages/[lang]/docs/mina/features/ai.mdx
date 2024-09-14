@@ -1,40 +1,64 @@
 import { Callout } from 'nextra/components'
 import Image from 'next/image'
-import minaLogo from '../../../../../../public/img/keadex-mina-logo-color.svg'
-import openaiLogo from '../../../../../../public/img/openai-logo.svg'
+import { faRobot } from '@fortawesome/free-solid-svg-icons'
+import { faKeadexMina } from '../../../../../../../keadex-mina/src/assets/icons'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import aiScreenshot from '../../../../../../public/img/mina/ai-powered.gif'
 
 # Diagram Generation w/ AI
 
-<Callout type="warning" emoji="🔬">
-  The AI integration is currently just an experyment in the early stages and is currently in **alpha version**. It may return incorrect results.
-</Callout>
-
-<div align="center" className="my-14 block md:flex items-center justify-center">
-  <Image src={minaLogo} alt="Keadex Mina Logo" height={55} />
-  <div className="text-5xl px-5">&plus;</div>
-  <Image src={openaiLogo} alt="OpenAI Logo" height={50} className="invert"/>
-</div>
-
 Mina integrates AI to **generate diagram code** based on a natural language description of your architecture.
 
 <p align="center">
-  <Image src={aiScreenshot} alt="Screenshot of Keadex Mina generatic diagrams with the AI" width={500} />
+  <Image
+    src={aiScreenshot}
+    alt="Screenshot of Keadex Mina generatic diagrams with the AI"
+    width={500}
+  />
 </p>
 
-The current implementation is a rudimentary integration with the OpenAI APIs: the Mina backend sends a completion request with your diagram description, to the `gpt-3.5-turbo-instruct` OpenAI model every time you ask Mina to generate a diagram.
+Since Mina strongly supports **open-source** technologies, it offers a **configurable AI integration** that allows you to choose the AI APIs and model you want to use.
 
-Since Mina is and always will be **open source and free**, and since the `gpt-3.5-turbo-instruct` **OpenAI model is not free**, you will need to configure your **OpenAI API Key** within Mina if you want to use this feature.
+Whatever AI APIs you decide to implement, make sure they are compatible with the **OpenAI format**. Tools like [LiteLLM](https://github.com/BerriAI/litellm) can be used to ensure the OpenAI format.
 
-If you want an idea of the costs you can consider the following data:
-  - OpenAI Model: **`gpt-3.5-turbo-instruct`**
-  - OpenAI pricing: https://openai.com/api/pricing/
-  - Number of OpenAI requests: **1 OpenAI request/diagram generation request**
-  - Max allowed tokens for each request: **2048**
+This flexibility allows you to leverage AI features **for free** by running an open-source AI model like [Llama](https://llama.meta.com/) locally, using tools such as [Ollama](https://ollama.com/).
 
+Keadex Mina will then interpret the AI's response and utilize its own [rendering system](/docs/mina/architecture/rendering-system) to render the generated diagram code.
 
-## What's Next?
+## Example of usage with Ollama
 
-There is a strong interest in evolving the integration of Keadex Mina with AI. The long-term goal is to provide a feature that can generate and render detailed, aesthetically pleasing, and linked C4 Model diagrams.
+In this example, we'll use [Ollama](https://ollama.com/) to run the [Code Llama LLM](https://ai.meta.com/blog/code-llama-large-language-model-coding/) locally and configure Mina to leverage it for enabling AI features, including generating diagrams from natural language prompts.
 
-We will soon plan the roadmap to achieve this goal.
+### Run the LLM locally
+
+1. Download Ollama from https://ollama.com/
+2. Install and run Ollama
+3. Open the terminal and run the following command: `ollama run codellama:7b-instruct`. This command will download and locally run the [Code Llama LLM](https://ai.meta.com/blog/code-llama-large-language-model-coding/), which can generate code from text prompts. In this case, we're downloading the smallest version of the model due to the hardware limitations of the local machine. However, you're free to choose a larger version or a different LLM based on your requirements.
+
+<Callout type="warning" emoji="⚠️">
+  Since we're running the **smallest** version of the LLM **locally**, code
+  generation may be slow and might not always produce valid results. For better
+  performance and more accurate outputs, consider running a **larger** version
+  of the LLM on more powerful hardware.
+</Callout>
+
+### Configure Mina to integrate with the locally running LLM
+
+4. Open your project in Mina
+5. Click on the _project_ icon (<FontAwesomeIcon icon={faKeadexMina} className="inline w-4 mx-2" />) in the sidebar
+6. Click on the _settings_ button
+7. In the _AI Integration_ section, fill in the following details:
+   - **AI API Key**: The API key for accessing the AI APIs. Enter `ollama` since we're using Ollama.
+   - **AI API (OpenAI compatible) Base URL**: The base URL of the AI APIs you're using (compatible with OpenAI). Ollama provides [OpenAI-compatible APIs](https://ollama.com/blog/openai-compatibility) at this base URL: http://localhost:11434/v1
+   - **AI Model**: Enter the name of the LLM you're using. Since we selected `codellama:7b-instruct` in step 3, you can use that name here.
+8. Click on the _save_ button
+9. Mina can now interact with the LLM to generate diagrams
+
+### Generate a diagram using AI assistance
+
+10. Open a diagram in Mina
+11. In the code editor, place the cursor where you want the generated code to appear
+12. In the code editor toolbar, click on the AI icon (<FontAwesomeIcon icon={faRobot} className="inline w-4 mx-2" />). This will open a text area where you can enter your prompt.
+13. Enter in the text area the description of the architecture for which you want to generate the C4 Model diagram
+14. Click on the _generate_ button

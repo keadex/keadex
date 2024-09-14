@@ -29,8 +29,10 @@
     "documentation": "Documentation",
     "duplicate": "Duplicate",
     "edit": "Edit",
+    "editor": "Editor",
     "empty": "Empty",
     "enabled": "Enabled",
+    "example": "Example",
     "exit": "Exit",
     "export": "Export",
     "external": "External",
@@ -48,13 +50,13 @@
     "label": "Label",
     "location": "Location",
     "max": "Max",
+    "model": "Model",
     "name": "Name",
     "new": "New",
     "no": "No",
     "note": "Note",
     "notes": "Notes",
     "open": "Open",
-    "openai_api_key": "OpenAI API Key",
     "orientation": "Orientation",
     "paste": "Paste",
     "path": "Path",
@@ -99,7 +101,8 @@
       "invalid_diagram_link": "Diagram not found. Check the diagram link.",
       "invalid_path": "Invalid path",
       "missing_project_root": "Missing project root",
-      "missing_openai_api_key": "Missing OpenAI API Key. Configure it in the project's settings.",
+      "missing_ai_api_base_url": "Missing AI API Base URL. Configure it in the project's settings.",
+      "missing_ai_api_key": "Missing AI API Key. Configure it in the project's settings.",
       "project_not_closed": "Project not closed: {{errorMessage}}",
       "project_not_opened": "Project not opened: {{errorMessage}}"
     },
@@ -125,10 +128,9 @@
       "confirm_exit": "Are you sure you want to exit? Not saved changes of the current project will be lost."
     }
   },
-  "home": {
-    "chose_parent_dir_project": "Choose the parent directory of the project",
-    "create_project": "Create a new project",
-    "open_project": "Open an existing project"
+  "about": {
+    "os_type": "OS Type",
+    "kernel_version": "Kernel Version"
   },
   "diagram_editor": {
     "add_diagram_element": "Add a diagram element",
@@ -143,12 +145,19 @@
     "select_element_type_to_import": "Select the C4 element type to import from the library",
     "warning_enable_autolayout": "You are enabling the auto layout. All the changes you made to the diagram layout will be discarded and replaced with the automatically generated layout."
   },
+  "home": {
+    "chose_parent_dir_project": "Choose the parent directory of the project",
+    "create_project": "Create a new project",
+    "open_project": "Open an existing project"
+  },
+  "project_settings": {
+    "ai_api_key": "AI API Key",
+    "ai_api_base_url": "AI API (OpenAI compatible) Base URL",
+    "ai_integration": "AI Integration",
+    "ai_model": "AI Model"
+  },
   "table": {
     "go_to_page": "Go to page",
     "current_page": "Page {{currentPage}} of {{totalPages}}"
-  },
-  "about": {
-    "os_type": "OS Type",
-    "kernel_version": "Kernel Version"
   }
 }

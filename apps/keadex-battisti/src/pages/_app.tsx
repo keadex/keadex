@@ -90,7 +90,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           children: [
             {
               id: 'keadex-mina_ai',
-              title: 'AI (alpha)',
+              title: 'AI',
               href: ROUTES[MINA_AI].path,
               disableTOC: true,
             },

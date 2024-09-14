@@ -1,3 +1,4 @@
+pub mod ai;
 pub mod c4_element;
 pub mod diagram;
 pub mod diagram_element_search_results;

@@ -5,6 +5,8 @@ Model representing settings of a Mina's project.
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
+use super::ai::ai_settings::AISettings;
+
 pub const NAME: &str = "mina";
 
 #[derive(TS)]
@@ -18,8 +20,9 @@ pub struct ProjectSettings {
   pub name: String,
   pub description: String,
   pub version: String,
-  pub openai_api_key: Option<String>,
-  #[serde(default="bool::default")]
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub ai_settings: Option<AISettings>,
+  #[serde(default = "bool::default")]
   pub autosave_enabled: bool,
   pub autosave_interval_seconds: Option<u8>,
 }

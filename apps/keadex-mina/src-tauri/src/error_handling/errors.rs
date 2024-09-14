@@ -22,6 +22,7 @@ pub const LIBRARY_ERROR_CODE: i32 = 6;
 pub const INVALID_NEW_DIAGRAM_PATH_ERROR_CODE: i32 = 7;
 pub const DUPLICATED_ALIASES_IN_DIAGRAM_ERROR_CODE: i32 = 8;
 pub const DUPLICATED_ALIASES_IN_PROJECT_ERROR_CODE: i32 = 9;
+pub const AI_ERROR_CODE: i32 = 10;
 
 // Error messages
 pub const GENERIC_ERROR_MSG: &str = "Generic error.";
@@ -34,9 +35,14 @@ pub const CANNOT_OPEN_FILE_ERROR_MSG: &str = "Cannot open the file. Unknown reas
 pub const FILE_DOES_NOT_EXIST: &str = "File does not exist.";
 pub const PROJECT_NOT_LOADED_ERROR_MSG: &str = "Project not loaded.";
 pub const NOT_A_DIRECTORY_ERROR_MSG: &str = "Provided path is not a directory.";
-pub const EXISTING_PROJECT_DIRECTORY_ERROR_MSG: &str = "The following project directory already exists: ";
-pub const NOT_EXISTING_PARENT_PATH_PROJECT_ERROR_MSG: &str = "Provided parent path of the project does not exist.";
+pub const EXISTING_PROJECT_DIRECTORY_ERROR_MSG: &str =
+  "The following project directory already exists: ";
+pub const NOT_EXISTING_PARENT_PATH_PROJECT_ERROR_MSG: &str =
+  "Provided parent path of the project does not exist.";
 pub const INVALID_LIBRARY_PATH_ERROR_MSG: &str = "Invalid library's path.";
 pub const EXISTING_DIAGRAM_ERROR_MSG: &str =
   "A diagram with the given name and type already exists. Choose a different name or type.";
 pub const INVALID_LIB_ELEMENT_ERROR_MSG: &str = "Provided element is not a valid library element.";
+pub const MISSING_AI_SETTINGS_ERROR_MSG: &str = "Missing AI settings.";
+pub const INVALID_GENERATED_DIAGRAM: &str =
+  "The AI-generated diagram contains errors. Try again providing a more detailed description.";
