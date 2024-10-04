@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/keadex/keadex/compare/mina-react@1.9.0...mina-react@1.9.1) (2024-10-04)
+
+
+### Bug Fixes
+
+* **libs/mina-react:** fixed missing deps ([5669058](https://github.com/keadex/keadex/commit/56690580d138b90594a3dc87619cce47625d25e2))
+
 # [1.9.0](https://github.com/keadex/keadex/compare/mina-react@1.8.0...mina-react@1.9.0) (2024-10-04)
 
 
