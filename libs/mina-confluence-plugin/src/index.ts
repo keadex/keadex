@@ -9,3 +9,5 @@ resolver.define('getText', (req) => {
 export const handler = resolver.getDefinitions()
 
 export { config, type MinaMacroConfig } from './Config'
+
+// trigger
