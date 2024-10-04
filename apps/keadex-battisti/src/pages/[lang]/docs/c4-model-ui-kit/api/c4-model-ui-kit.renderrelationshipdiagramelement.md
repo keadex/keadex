@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-renderRelationshipDiagramElement: (canvas: fabric.Canvas | undefined, relationship: Relationship, diagramSpec: DiagramSpec, options?: RenderElementsOptions) => C4RelationshipComponent | undefined
+renderRelationshipDiagramElement: (canvas: fabric.Canvas | undefined, relationship: Relationship, diagramSpec: DiagramSpec, autoLayout: Record<string, ElementData>, options?: RenderElementsOptions) => C4RelationshipComponent | undefined
 ```
 
 ## Parameters
@@ -64,6 +64,20 @@ diagramSpec
 </td><td>
 
 [DiagramSpec](./c4-model-ui-kit.diagramspec.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+autoLayout
+
+
+</td><td>
+
+Record&lt;string, ElementData&gt;
 
 
 </td><td>

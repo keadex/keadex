@@ -37,7 +37,7 @@ Description
 </td></tr>
 <tr><td>
 
-[C4Component(data, elementSpec, options)](./c4-model-ui-kit.c4component.md)
+[C4Component(data, elementSpec, autoLayout, options, renderElementsOptions)](./c4-model-ui-kit.c4component.md)
 
 
 </td><td>
@@ -46,7 +46,7 @@ Description
 </td></tr>
 <tr><td>
 
-[C4ComponentExt(data, elementSpec, options)](./c4-model-ui-kit.c4componentext.md)
+[C4ComponentExt(data, elementSpec, autoLayout, options, renderElementsOptions)](./c4-model-ui-kit.c4componentext.md)
 
 
 </td><td>
@@ -73,7 +73,7 @@ Description
 </td></tr>
 <tr><td>
 
-[C4Legend(elementSpec)](./c4-model-ui-kit.c4legend.md)
+[C4Legend(elementSpec, renderElementsOptions)](./c4-model-ui-kit.c4legend.md)
 
 
 </td><td>
@@ -82,7 +82,7 @@ Description
 </td></tr>
 <tr><td>
 
-[C4SoftwareSystem(data, elementSpec, options)](./c4-model-ui-kit.c4softwaresystem.md)
+[C4SoftwareSystem(data, elementSpec, autoLayout, options, renderElementsOptions)](./c4-model-ui-kit.c4softwaresystem.md)
 
 
 </td><td>
@@ -91,7 +91,7 @@ Description
 </td></tr>
 <tr><td>
 
-[C4SoftwareSystemExt(data, elementSpec, options)](./c4-model-ui-kit.c4softwaresystemext.md)
+[C4SoftwareSystemExt(data, elementSpec, autoLayout, options, renderElementsOptions)](./c4-model-ui-kit.c4softwaresystemext.md)
 
 
 </td><td>
@@ -199,6 +199,15 @@ Description
 </td></tr>
 <tr><td>
 
+[isDefaultDiagramElementSpec(diagramElementSpec)](./c4-model-ui-kit.isdefaultdiagramelementspec.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [locationEntityHumanName(locationEntity)](./c4-model-ui-kit.locationentityhumanname.md)
 
 
@@ -244,7 +253,7 @@ Description
 </td></tr>
 <tr><td>
 
-[renderBoundaryDiagramElement(canvas, boundary, diagramSpec, options)](./c4-model-ui-kit.renderboundarydiagramelement.md)
+[renderBoundaryDiagramElement(canvas, boundary, diagramSpec, autoLayout, options)](./c4-model-ui-kit.renderboundarydiagramelement.md)
 
 
 </td><td>
@@ -253,7 +262,7 @@ Description
 </td></tr>
 <tr><td>
 
-[renderComponentDiagramElement(canvas, component, diagramSpec, options)](./c4-model-ui-kit.rendercomponentdiagramelement.md)
+[renderComponentDiagramElement(canvas, component, diagramSpec, autoLayout, options)](./c4-model-ui-kit.rendercomponentdiagramelement.md)
 
 
 </td><td>
@@ -262,7 +271,7 @@ Description
 </td></tr>
 <tr><td>
 
-[renderContainerDiagramElement(canvas, container, diagramSpec, options)](./c4-model-ui-kit.rendercontainerdiagramelement.md)
+[renderContainerDiagramElement(canvas, container, diagramSpec, autoLayout, options)](./c4-model-ui-kit.rendercontainerdiagramelement.md)
 
 
 </td><td>
@@ -271,7 +280,7 @@ Description
 </td></tr>
 <tr><td>
 
-[renderDeploymentNodeDiagramElement(canvas, deploymentNode, diagramSpec, options)](./c4-model-ui-kit.renderdeploymentnodediagramelement.md)
+[renderDeploymentNodeDiagramElement(canvas, deploymentNode, diagramSpec, autoLayout, options)](./c4-model-ui-kit.renderdeploymentnodediagramelement.md)
 
 
 </td><td>
@@ -280,7 +289,7 @@ Description
 </td></tr>
 <tr><td>
 
-[renderDiagram(canvas, diagramListener, diagram)](./c4-model-ui-kit.renderdiagram.md)
+[renderDiagram(canvas, diagramListener, diagram, diagramsThemeSettings)](./c4-model-ui-kit.renderdiagram.md)
 
 
 </td><td>
@@ -289,7 +298,7 @@ Description
 </td></tr>
 <tr><td>
 
-[renderPersonDiagramElement(canvas, person, diagramSpec, options)](./c4-model-ui-kit.renderpersondiagramelement.md)
+[renderPersonDiagramElement(canvas, person, diagramSpec, autoLayout, options)](./c4-model-ui-kit.renderpersondiagramelement.md)
 
 
 </td><td>
@@ -298,7 +307,7 @@ Description
 </td></tr>
 <tr><td>
 
-[renderRelationshipDiagramElement(canvas, relationship, diagramSpec, options)](./c4-model-ui-kit.renderrelationshipdiagramelement.md)
+[renderRelationshipDiagramElement(canvas, relationship, diagramSpec, autoLayout, options)](./c4-model-ui-kit.renderrelationshipdiagramelement.md)
 
 
 </td><td>
@@ -307,7 +316,7 @@ Description
 </td></tr>
 <tr><td>
 
-[renderSoftwareSystemDiagramElement(canvas, softwareSystem, diagramSpec, options)](./c4-model-ui-kit.rendersoftwaresystemdiagramelement.md)
+[renderSoftwareSystemDiagramElement(canvas, softwareSystem, diagramSpec, autoLayout, options)](./c4-model-ui-kit.rendersoftwaresystemdiagramelement.md)
 
 
 </td><td>
@@ -439,6 +448,15 @@ Description
 </td></tr>
 <tr><td>
 
+[DiagramsThemeSettings](./c4-model-ui-kit.diagramsthemesettings.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [Person](./c4-model-ui-kit.person.md)
 
 
@@ -508,7 +526,25 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[AUTO\_LAYOUT\_ORIENTATIONS](./c4-model-ui-kit.auto_layout_orientations.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [BOUNDARY\_TYPES](./c4-model-ui-kit.boundary_types.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[BOX](./c4-model-ui-kit.box.md)
 
 
 </td><td>
@@ -580,7 +616,25 @@ Description
 </td></tr>
 <tr><td>
 
+[DIAGRAM](./c4-model-ui-kit.diagram.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [ELEMENT](./c4-model-ui-kit.element.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[LEGEND](./c4-model-ui-kit.legend.md)
 
 
 </td><td>
@@ -617,6 +671,15 @@ Description
 <tr><td>
 
 [RELATIONSHIP\_TYPES](./c4-model-ui-kit.relationship_types.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[RELATIONSHIP](./c4-model-ui-kit.relationship.md)
 
 
 </td><td>
@@ -704,6 +767,15 @@ Description
 <tr><td>
 
 [DiagramElementType](./c4-model-ui-kit.diagramelementtype.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[DiagramOrientation](./c4-model-ui-kit.diagramorientation.md)
 
 
 </td><td>

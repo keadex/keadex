@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-C4SoftwareSystemExt: (data: SoftwareSystem, elementSpec: DiagramElementSpec, options?: Partial<C4BaseComponentOptions>) => C4BaseComponent | undefined
+C4SoftwareSystemExt: (data: SoftwareSystem, elementSpec: DiagramElementSpec, autoLayout: Record<string, ElementData>, options: Partial<C4BaseComponentOptions> | undefined, renderElementsOptions: RenderElementsOptions | undefined) => C4BaseComponent | undefined
 ```
 
 ## Parameters
@@ -58,17 +58,43 @@ elementSpec
 </td></tr>
 <tr><td>
 
+autoLayout
+
+
+</td><td>
+
+Record&lt;string, ElementData&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 options
 
 
 </td><td>
 
-Partial&lt;C4BaseComponentOptions&gt;
+Partial&lt;C4BaseComponentOptions&gt; \| undefined
 
 
 </td><td>
 
-_(Optional)_
+
+</td></tr>
+<tr><td>
+
+renderElementsOptions
+
+
+</td><td>
+
+RenderElementsOptions \| undefined
+
+
+</td><td>
 
 
 </td></tr>

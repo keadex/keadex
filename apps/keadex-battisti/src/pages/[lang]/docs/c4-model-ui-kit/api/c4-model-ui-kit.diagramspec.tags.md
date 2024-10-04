@@ -7,5 +7,5 @@
 **Signature:**
 
 ```typescript
-tags: Array<string> | null;
+tags?: Array<string>;
 ```

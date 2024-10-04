@@ -8,3 +8,4 @@ pub mod hook;
 pub mod project;
 pub mod project_library;
 pub mod project_settings;
+pub mod themes;

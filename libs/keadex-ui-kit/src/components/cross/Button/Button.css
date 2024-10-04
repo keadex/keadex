@@ -5,3 +5,7 @@
 .button--dangerous {
   @apply bg-red-700 hover:bg-red-900 active:bg-red-900 disabled:opacity-50 disabled:hover:bg-red-700 !important;
 }
+
+.button--safe {
+  @apply bg-green-700 hover:bg-green-900 active:bg-green-900 disabled:opacity-50 disabled:hover:bg-green-700 !important;
+}

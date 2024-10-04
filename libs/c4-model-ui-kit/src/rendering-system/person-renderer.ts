@@ -34,6 +34,8 @@ export const renderPersonDiagramElement = (
             diagramSpec,
           ),
           autoLayout,
+          undefined,
+          options,
         )
         break
       case 'Person_Ext':
@@ -47,6 +49,8 @@ export const renderPersonDiagramElement = (
             diagramSpec,
           ),
           autoLayout,
+          undefined,
+          options,
         )
         break
     }

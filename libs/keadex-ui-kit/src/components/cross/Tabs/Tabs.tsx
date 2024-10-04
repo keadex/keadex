@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export type Tab = {
   id: string
@@ -7,26 +7,50 @@ export type Tab = {
 }
 
 export interface TabsProps {
+  id?: string
   className?: string
   tabClassName?: string
   bodyClassName?: string
+  orientation?: 'top' | 'left'
   tabs: Tab[]
 }
 
 export const Tabs = React.memo(
-  ({ tabs, tabClassName, bodyClassName, className }: TabsProps) => {
+  ({
+    id,
+    tabs,
+    tabClassName,
+    bodyClassName,
+    className,
+    orientation,
+  }: TabsProps) => {
+    if (!orientation) orientation = 'top'
+
+    const [selectedTabIndex, setSelectedTabIndex] = useState(-1)
+
     return (
-      <div className={`${className ?? ''}`}>
+      <div
+        id={`${id ?? ''}`}
+        className={`flex ${orientation === 'top' ? 'flex-col' : 'flex-row'} ${
+          className ?? ''
+        }`}
+      >
         {/* Tabs navigation */}
         <ul
-          className={`flex list-none flex-row flex-wrap border-b-0 pl-0`}
+          className={`list-none ${
+            orientation === 'top' ? 'flex flex-row flex-wrap' : 'block'
+          } border-b-0 pl-0`}
           role="tablist"
           data-te-nav-ref
         >
           {tabs.map((tab, index) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const active: any = {}
-            if (index === 0) active['data-te-nav-active'] = {}
+
+            // By default select the first tab if no other tabs have been selected
+            if (selectedTabIndex === -1 && index === 0)
+              active['data-te-nav-active'] = {}
+
             return (
               <li
                 role="presentation"
@@ -35,7 +59,10 @@ export const Tabs = React.memo(
               >
                 <a
                   href={`#${tab.id}`}
-                  className={`my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 font-medium leading-tight hover:isolate hover:border-transparent focus:isolate focus:border-transparent data-[te-nav-active]:border-link data-[te-nav-active]:text-white hover:text-white bg-primary hover:bg-link ${
+                  onClick={() => setSelectedTabIndex(index)}
+                  className={`my-2 block border-x-0 ${
+                    orientation === 'top' ? 'border-b-2' : 'border-l-2'
+                  } border-t-0 border-transparent px-7 pb-3.5 pt-4 font-medium leading-tight hover:isolate hover:border-transparent focus:isolate focus:border-transparent data-[te-nav-active]:border-link data-[te-nav-active]:text-white hover:text-white bg-primary hover:bg-link ${
                     tabClassName ?? ''
                   }`}
                   data-te-toggle="pill"
@@ -56,7 +83,11 @@ export const Tabs = React.memo(
           {tabs.map((tab, index) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const active: any = {}
-            if (index === 0) active['data-te-tab-active'] = {}
+
+            // By default select the first tab if no other tabs have been selected
+            if (selectedTabIndex === -1 && index === 0)
+              active['data-te-tab-active'] = {}
+
             return (
               <div
                 key={tab.id}

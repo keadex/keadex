@@ -4,7 +4,7 @@ use keadex_mina::controller::web_controller::{
   diagram_spec_url_from_diagram_url as diagram_spec_url_from_diagram_url_core,
   diagram_spec_url_from_link_string as diagram_spec_url_from_link_string_core,
   diagram_url_from_link_string as diagram_url_from_link_string_core,
-  open_diagram as open_diagram_core,
+  open_diagram as open_diagram_core, project_settings_url as project_settings_url_core,
 };
 use keadex_mina::error_handling::mina_error::MinaError;
 use keadex_mina::model::diagram::Diagram;
@@ -63,4 +63,9 @@ pub fn diagram_spec_url_from_diagram_url(
   diagram_url: &str,
 ) -> Result<String, MinaError> {
   diagram_spec_url_from_diagram_url_core(project_root_url, diagram_url)
+}
+
+#[wasm_bindgen]
+pub fn project_settings_url(project_root_url: &str) -> String {
+  project_settings_url_core(project_root_url)
 }

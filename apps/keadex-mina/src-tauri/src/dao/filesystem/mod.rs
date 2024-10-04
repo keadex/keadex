@@ -3,7 +3,6 @@ pub mod binary_dao;
 pub mod diagram;
 #[cfg(feature = "desktop")]
 pub mod library;
-#[cfg(feature = "desktop")]
 pub mod project_settings_dao;
 
 #[cfg(feature = "desktop")]

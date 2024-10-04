@@ -86,3 +86,8 @@ export {
   type RadioProps,
   type RadioOption,
 } from './components/cross/Radio/Radio'
+
+export {
+  ColorPicker,
+  type ColorPickerProps,
+} from './components/cross/ColorPicker/ColorPicker'

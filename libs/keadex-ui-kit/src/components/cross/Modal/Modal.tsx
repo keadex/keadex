@@ -102,7 +102,7 @@ export const Modal = forwardRef(
       >
         <div
           data-te-modal-dialog-ref
-          className="pointer-events-none relative flex min-h-[calc(100%-1rem)] w-auto translate-y-[-50px] items-center justify-center  opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:my-7 min-[576px]:min-h-[calc(100%-3.5rem)]"
+          className="pointer-events-none relative flex min-h-[calc(100%-1rem)] w-auto translate-y-[-50px] items-center justify-center  opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-5 min-[576px]:my-7 min-[576px]:min-h-[calc(100%-3.5rem)]"
         >
           <div
             className={`pointer-events-auto relative flex ${getSize()} ${

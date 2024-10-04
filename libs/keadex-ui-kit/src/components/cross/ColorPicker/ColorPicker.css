@@ -1,0 +1,3 @@
+.color-picker input {
+  @apply bg-white !text-gray-800 !shadow-none;
+}

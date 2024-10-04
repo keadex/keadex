@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-renderBoundaryDiagramElement: (canvas: fabric.Canvas | undefined, boundary: Boundary, diagramSpec: DiagramSpec, options?: RenderElementsOptions) => C4BaseElastiContainerComponent | undefined
+renderBoundaryDiagramElement: (canvas: fabric.Canvas | undefined, boundary: Boundary, diagramSpec: DiagramSpec, autoLayout: Record<string, ElementData>, options: RenderElementsOptions | undefined) => C4BaseElastiContainerComponent | undefined
 ```
 
 ## Parameters
@@ -72,17 +72,29 @@ diagramSpec
 </td></tr>
 <tr><td>
 
+autoLayout
+
+
+</td><td>
+
+Record&lt;string, ElementData&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 options
 
 
 </td><td>
 
-RenderElementsOptions
+RenderElementsOptions \| undefined
 
 
 </td><td>
-
-_(Optional)_
 
 
 </td></tr>

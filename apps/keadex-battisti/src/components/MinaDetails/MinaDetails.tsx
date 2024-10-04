@@ -1,15 +1,17 @@
 'use client'
 
-import { Tab, Tabs } from '@keadex/keadex-ui-kit/cross'
+import { Button, Tab, Tabs } from '@keadex/keadex-ui-kit/cross'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { PropsWithChildren } from 'react'
 import { Trans } from 'react-i18next'
-import exportFeature from '../../../public/img/mina/mina-export.jpg'
-import organize from '../../../public/img/mina/mina-organize.jpg'
 import hooksHLD from '../../../public/img/docs/mina/hooks-hld.png'
-import minaTags from '../../../public/img/mina/mina-tags.png'
+import exportFeature from '../../../public/img/mina/mina-export.jpg'
 import minaIntellisense from '../../../public/img/mina/mina-intellisense.gif'
+import organize from '../../../public/img/mina/mina-organize.jpg'
+import minaTags from '../../../public/img/mina/mina-tags.png'
 import { useTranslation } from '../../app/i18n/client'
+import ROUTES, { MINA_AI } from '../../core/routes'
 
 export type MinaDetailsProps = {
   lang: string
@@ -20,6 +22,7 @@ export default function MinaDetails({
   lang,
 }: PropsWithChildren<MinaDetailsProps>) {
   const { t } = useTranslation(lang)
+  const router = useRouter()
 
   const tabFeatures = [
     {
@@ -145,6 +148,14 @@ export default function MinaDetails({
             bodyClassName="px-0 pt-0"
           />
         </div>
+      </div>
+      <div className="text-center mt-12">
+        <Button
+          className="!text-sm"
+          onClick={() => router.push(ROUTES[MINA_AI].path)}
+        >
+          {t('keadex_mina.details.view_all_features')}
+        </Button>
       </div>
     </div>
   )

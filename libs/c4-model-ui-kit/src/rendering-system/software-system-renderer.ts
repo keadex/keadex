@@ -37,6 +37,8 @@ export const renderSoftwareSystemDiagramElement = (
             diagramSpec,
           ),
           autoLayout,
+          undefined,
+          options,
         )
         break
       case 'System_Ext':
@@ -52,6 +54,8 @@ export const renderSoftwareSystemDiagramElement = (
             diagramSpec,
           ),
           autoLayout,
+          undefined,
+          options,
         )
         break
     }

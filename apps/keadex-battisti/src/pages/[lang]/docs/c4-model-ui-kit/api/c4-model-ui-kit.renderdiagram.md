@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-renderDiagram: (canvas: fabric.Canvas, diagramListener: DiagramListener, diagram?: Diagram) => C4BaseComponent[] | undefined
+renderDiagram: (canvas: fabric.Canvas, diagramListener: DiagramListener, diagram: Diagram | undefined, diagramsThemeSettings: DiagramsThemeSettings | undefined) => C4BaseComponent[] | undefined
 ```
 
 ## Parameters
@@ -63,12 +63,24 @@ diagram
 
 </td><td>
 
-[Diagram](./c4-model-ui-kit.diagram.md)
+[Diagram](./c4-model-ui-kit.diagram.md) \| undefined
 
 
 </td><td>
 
-_(Optional)_
+
+</td></tr>
+<tr><td>
+
+diagramsThemeSettings
+
+
+</td><td>
+
+[DiagramsThemeSettings](./c4-model-ui-kit.diagramsthemesettings.md) \| undefined
+
+
+</td><td>
 
 
 </td></tr>

@@ -37,6 +37,8 @@ export const renderContainerDiagramElement = (
             diagramSpec,
           ),
           autoLayout,
+          undefined,
+          options,
         )
         break
       case 'Container_Ext':
@@ -52,6 +54,8 @@ export const renderContainerDiagramElement = (
             diagramSpec,
           ),
           autoLayout,
+          undefined,
+          options,
         )
         break
     }

@@ -97,8 +97,8 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
           },
           {
             key: 'button-confirm',
-            children: <span>{t('common.confirm')}</span>,
-            className: 'button--dangerous',
+            children: <span>{t('common.info.i_saved_my_changes')}</span>,
+            className: 'button--safe',
             onClick: async () => {
               handleCloseDiagram(false)
               hideModal()
@@ -126,8 +126,8 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
           },
           {
             key: 'button-confirm',
-            children: <span>{t('common.confirm')}</span>,
-            className: 'button--dangerous',
+            children: <span>{t('common.info.i_saved_my_changes')}</span>,
+            className: 'button--safe',
             onClick: async () => {
               let diagram
               try {
@@ -343,8 +343,8 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
         },
         {
           key: 'button-confirm',
-          children: <span>{t('common.confirm')}</span>,
-          className: 'button--dangerous',
+          children: <span>{t('common.info.i_saved_my_changes')}</span>,
+          className: 'button--safe',
           onClick: () => {
             hideModal()
             handleCloseDiagram(true)
@@ -392,6 +392,9 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
             ref={diagramDesignViewRef}
             diagramListener={diagramListener}
             diagram={diagram}
+            diagramsThemeSettings={
+              project?.project_settings.themes_settings?.diagrams_theme_settings
+            }
             error={error}
             diagramDesignViewToolbarCommands={diagramDesignViewToolbarRef}
             saveDiagram={handleSaveDiagram}

@@ -1,16 +1,16 @@
 import { render } from '@testing-library/react'
 
-import ModalCRUProject from './ModalCRUProject'
+import ModalCreateProject from './ModalCreateProject'
 
-describe('ModalCRUProject', () => {
+describe('ModalCreateProject', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
-      <ModalCRUProject
+      <ModalCreateProject
         mode="edit"
         hideModal={() => {
           console.log('test')
         }}
-      />
+      />,
     )
     expect(baseElement).toBeTruthy()
   })

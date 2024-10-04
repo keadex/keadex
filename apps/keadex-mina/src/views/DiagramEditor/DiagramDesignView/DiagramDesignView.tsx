@@ -5,6 +5,7 @@ import {
   DiagramListener,
   DiagramOrientation,
   DiagramSpec,
+  DiagramsThemeSettings,
   ELEMENT,
   getBoundingBox,
   getCanvasPan,
@@ -49,6 +50,7 @@ export interface KeadexCanvasState {
 export interface DiagramDesignViewProps {
   diagramDesignViewToolbarCommands?: RefObject<DiagramDesignViewToolbarCommands>
   diagramListener: DiagramListener
+  diagramsThemeSettings?: DiagramsThemeSettings
   diagram?: Diagram
   error?: MinaError
   saveDiagram?: () => void
@@ -82,6 +84,7 @@ export const DiagramDesignView = forwardRef(
       diagramListener,
       diagramDesignViewToolbarCommands,
       saveDiagram,
+      diagramsThemeSettings,
     } = props
 
     const { t } = useTranslation()
@@ -351,10 +354,15 @@ export const DiagramDesignView = forwardRef(
       if (canvas.current) {
         resetCanvas(getCanvasState())
         setCanvasMode()
-        renderDiagram(canvas.current, diagramListener, {
-          ...currentRenderedDiagram.current,
-          diagram_spec: history,
-        })
+        renderDiagram(
+          canvas.current,
+          diagramListener,
+          {
+            ...currentRenderedDiagram.current,
+            diagram_spec: history,
+          },
+          diagramsThemeSettings,
+        )
         canvas.current.renderAll()
         isDiagramChanged.current = true
       }
@@ -503,6 +511,7 @@ export const DiagramDesignView = forwardRef(
           canvas.current,
           diagramListener,
           currentRenderedDiagram.current,
+          diagramsThemeSettings,
         )
         canvas.current.renderAll()
         isDiagramChanged.current = false
@@ -519,7 +528,7 @@ export const DiagramDesignView = forwardRef(
     }, [readOnly, historyUndo, historyRedo, diagramDesignViewToolbarCommands])
 
     return (
-      <div className="relative h-full w-full border" ref={rootDiv}>
+      <div className="relative h-full w-full" ref={rootDiv}>
         {modal}
         <DiagramDesignViewFloatMenu canvas={canvas.current} />
         <div className="h-full w-full flex-row flex-wrap" ref={parentDivEl}>

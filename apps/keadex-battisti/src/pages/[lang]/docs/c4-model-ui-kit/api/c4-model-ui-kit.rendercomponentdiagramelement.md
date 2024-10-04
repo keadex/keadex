@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-renderComponentDiagramElement: (canvas: fabric.Canvas | undefined, component: Component, diagramSpec: DiagramSpec, options?: RenderElementsOptions) => C4BaseComponent | undefined
+renderComponentDiagramElement: (canvas: fabric.Canvas | undefined, component: Component, diagramSpec: DiagramSpec, autoLayout: Record<string, ElementData>, options?: RenderElementsOptions) => C4BaseComponent | undefined
 ```
 
 ## Parameters
@@ -64,6 +64,20 @@ diagramSpec
 </td><td>
 
 [DiagramSpec](./c4-model-ui-kit.diagramspec.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+autoLayout
+
+
+</td><td>
+
+Record&lt;string, ElementData&gt;
 
 
 </td><td>

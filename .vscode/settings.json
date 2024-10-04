@@ -4,5 +4,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "typescript.tsdk": "node_modules\\typescript\\lib",
-  "eslint.validate": ["json"]
+  "eslint.validate": [
+    "json"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "never"
+  },
 }

@@ -33,6 +33,7 @@ export const renderRelationshipDiagramElement = (
         diagramSpec,
       ),
       autoLayout,
+      options,
     )
     if ((!options || !options.skipAddToCanvas) && component)
       canvas?.add(component, ...(component.children ?? []))

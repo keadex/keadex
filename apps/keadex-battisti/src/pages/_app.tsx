@@ -26,6 +26,7 @@ import ROUTES, {
   MINA_RENDERING_SYSTEM,
   MINA_SEARCH,
   MINA_TAGS,
+  MINA_THEMES,
   MINA_VERSIONING,
 } from '../core/routes'
 import {
@@ -154,6 +155,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               id: 'keadex-mina_tags',
               title: 'Tags',
               href: ROUTES[MINA_TAGS].path,
+              disableTOC: true,
+            },
+            {
+              id: 'keadex-mina_themes',
+              title: 'Themes',
+              href: ROUTES[MINA_THEMES].path,
               disableTOC: true,
             },
             {

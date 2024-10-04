@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-C4Legend: (elementSpec?: DiagramElementSpec) => C4BaseComponent
+C4Legend: (elementSpec: DiagramElementSpec | undefined, renderElementsOptions: RenderElementsOptions | undefined) => C4BaseComponent
 ```
 
 ## Parameters
@@ -35,12 +35,24 @@ elementSpec
 
 </td><td>
 
-[DiagramElementSpec](./c4-model-ui-kit.diagramelementspec.md)
+[DiagramElementSpec](./c4-model-ui-kit.diagramelementspec.md) \| undefined
 
 
 </td><td>
 
-_(Optional)_
+
+</td></tr>
+<tr><td>
+
+renderElementsOptions
+
+
+</td><td>
+
+RenderElementsOptions \| undefined
+
+
+</td><td>
 
 
 </td></tr>

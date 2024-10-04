@@ -78,6 +78,7 @@ export const MINA_LOW_CODING = `${MINA_FEATURES}/low-coding`
 export const MINA_PLANTUML = `${MINA_FEATURES}/plantuml`
 export const MINA_SEARCH = `${MINA_FEATURES}/search`
 export const MINA_TAGS = `${MINA_FEATURES}/tags`
+export const MINA_THEMES = `${MINA_FEATURES}/themes`
 export const MINA_VERSIONING = `${MINA_FEATURES}/versioning`
 // --> Mina Plugins
 export const MINA_PLUGINS = `${MINA_DOCS}/plugins`
@@ -161,6 +162,9 @@ ROUTES[MINA_SEARCH] = {
 }
 ROUTES[MINA_TAGS] = {
   path: MINA_TAGS,
+}
+ROUTES[MINA_THEMES] = {
+  path: MINA_THEMES,
 }
 ROUTES[MINA_VERSIONING] = {
   path: MINA_VERSIONING,

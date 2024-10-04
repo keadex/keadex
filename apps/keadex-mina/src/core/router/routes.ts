@@ -17,10 +17,18 @@ ROUTES[HOME] = {
 
 // ----- Project Paths
 export const HOME_PROJECT = '/project/home'
+export const PROJECT_SETTINGS = '/project/settings'
 
 ROUTES[HOME_PROJECT] = {
   path: HOME_PROJECT,
   isAppMenuVisible: true,
+  titlebarMenuFactory,
+}
+
+ROUTES[PROJECT_SETTINGS] = {
+  path: PROJECT_SETTINGS,
+  isAppMenuVisible: true,
+  protectExit: true,
   titlebarMenuFactory,
 }
 
@@ -37,16 +45,16 @@ ROUTES[EDIT_DIAGRAM] = {
 // ----- Library paths
 export const BASE_PATH_LIBRARY = '/library/'
 export const PERSONS_LIBRARY = `${BASE_PATH_LIBRARY}${c4ElementTypePathName(
-  'Person'
+  'Person',
 )}`
 export const SOFTWARE_SYSTEMS_LIBRARY = `${BASE_PATH_LIBRARY}${c4ElementTypePathName(
-  'SoftwareSystem'
+  'SoftwareSystem',
 )}`
 export const CONTAINERS_LIBRARY = `${BASE_PATH_LIBRARY}${c4ElementTypePathName(
-  'Container'
+  'Container',
 )}`
 export const COMPONENTS_LIBRARY = `${BASE_PATH_LIBRARY}${c4ElementTypePathName(
-  'Component'
+  'Component',
 )}`
 
 ROUTES[PERSONS_LIBRARY] = {

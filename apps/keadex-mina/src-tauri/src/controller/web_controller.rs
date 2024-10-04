@@ -8,6 +8,7 @@ use crate::helper::diagram_helper::{
   diagram_spec_url_from_link_string as diagram_spec_url_from_link_string_helper,
   diagram_url_from_link_string as diagram_url_from_link_string_helper,
 };
+use crate::helper::project_helper::project_settings_url as project_settings_url_helper;
 use crate::model::diagram::diagram_spec::DiagramSpec;
 use crate::model::diagram::Diagram;
 use crate::rendering_system::renderer::generate_positions;
@@ -73,4 +74,8 @@ pub fn diagram_spec_url_from_diagram_url(
   diagram_url: &str,
 ) -> Result<String, MinaError> {
   diagram_spec_url_from_diagram_url_helper(project_root_url, diagram_url)
+}
+
+pub fn project_settings_url(project_root_url: &str) -> String {
+  project_settings_url_helper(project_root_url)
 }

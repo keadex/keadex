@@ -35,6 +35,40 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[auto\_layout\_enabled](./c4-model-ui-kit.diagramspec.auto_layout_enabled.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[auto\_layout\_orientation](./c4-model-ui-kit.diagramspec.auto_layout_orientation.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[DiagramOrientation](./c4-model-ui-kit.diagramorientation.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [description?](./c4-model-ui-kit.diagramspec.description.md)
 
 
@@ -88,7 +122,7 @@ Array&lt;[Shape](./c4-model-ui-kit.shape.md)<!-- -->&gt;
 </td></tr>
 <tr><td>
 
-[tags](./c4-model-ui-kit.diagramspec.tags.md)
+[tags?](./c4-model-ui-kit.diagramspec.tags.md)
 
 
 </td><td>
@@ -96,10 +130,12 @@ Array&lt;[Shape](./c4-model-ui-kit.shape.md)<!-- -->&gt;
 
 </td><td>
 
-Array&lt;string&gt; \| null
+Array&lt;string&gt;
 
 
 </td><td>
+
+_(Optional)_
 
 
 </td></tr>

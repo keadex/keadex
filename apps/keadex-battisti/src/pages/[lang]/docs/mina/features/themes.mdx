@@ -1,0 +1,43 @@
+import Image from 'next/image'
+import minaThemes1 from '../../../../../../public/img/mina/mina-themes1.png'
+import minaThemes2 from '../../../../../../public/img/mina/mina-themes2.png'
+import minaThemes3 from '../../../../../../public/img/mina/mina-themes3.png'
+import { faBook } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faKeadexMina } from '../../../../../../../keadex-mina/src/assets/icons'
+
+# Themes
+
+The C4 Model is **notation independent**, and doesn’t prescribe any particular notation. This means you can use colour to supplement the diagram, either to add additional information or to make the diagram more aesthetically pleasing.
+
+By default, Mina provides a **theme** for your diagrams. If you don't like it, you are free to **customize** it with your preferred colors.
+
+<div className="my-5 block md:flex md:flex-wrap items-center justify-center">
+  <Image
+    src={minaThemes1}
+    alt="Screenshot of Mina, showing a diagram with the default theme"
+    height={200}
+    className="mx-auto my-5 md:mx-5"
+  />
+  <Image
+    src={minaThemes2}
+    alt="Screenshot of Mina, showing a diagram with a custom theme"
+    height={200}
+    className="mx-auto my-5 md:mx-5"
+  />
+  <Image
+    src={minaThemes3}
+    alt="Screenshot of Mina, showing a diagram with a custom theme"
+    height={200}
+    className="mx-auto my-5 md:mx-5"
+  />
+</div>
+
+## Usage
+
+1. Click on the _project_ icon (<FontAwesomeIcon icon={faKeadexMina} className="inline w-4 mx-2" />) in the sidebar
+2. Click on the _settings_ button
+3. Click on the _themes_ tab
+4. Customize the colors with your preferred ones
+5. Click on the _save_ button
+6. Enjoy your customized diagrams theme

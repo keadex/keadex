@@ -2,10 +2,9 @@
 Model representing settings of a Mina's project.
 */
 
+use crate::model::{ai::ai_settings::AISettings, themes::themes_settings::ThemesSettings};
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
-
-use super::ai::ai_settings::AISettings;
 
 pub const NAME: &str = "mina";
 
@@ -25,4 +24,6 @@ pub struct ProjectSettings {
   #[serde(default = "bool::default")]
   pub autosave_enabled: bool,
   pub autosave_interval_seconds: Option<u8>,
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub themes_settings: Option<ThemesSettings>,
 }

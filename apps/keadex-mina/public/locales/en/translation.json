@@ -1,6 +1,7 @@
 {
   "common": {
     "about": "About",
+    "ai": "AI",
     "alias": "Alias",
     "allowed_pattern": "Allowed pattern",
     "architecture": "Architecture",
@@ -12,14 +13,17 @@
     "close": "Close",
     "commands": "Commands",
     "component": "Component",
+    "component_external": "Component External",
     "confirm": "Confirm",
     "confirmation": "Confirmation",
     "container": "Container",
+    "container_external": "Container External",
     "copy": "Copy",
     "create": "Create",
     "cut": "Cut",
     "c4_model": "C4 Model",
     "c4_plantuml": "C4 PlantUML",
+    "default": "Default",
     "delete": "Delete",
     "deployment_node": "Deployment Node",
     "description": "Description",
@@ -39,13 +43,16 @@
     "file": "File",
     "find": "Find",
     "from": "From",
+    "general": "General",
     "generate": "Generate",
     "generating": "Generating",
     "github_repo": "GitHub Repo",
+    "global": "Global",
     "help": "Help",
     "internal": "Internal",
     "invalid": "Invalid",
     "kernel": "Kernel",
+    "legend": "Legend",
     "library": "Library",
     "label": "Label",
     "location": "Location",
@@ -61,10 +68,12 @@
     "paste": "Paste",
     "path": "Path",
     "person": "Person",
+    "person_external": "Person External",
     "platform": "Platform",
     "project": "Project",
     "redo": "Redo",
     "relationship": "Relationship",
+    "reset": "Reset",
     "result": "Result",
     "results": "Results",
     "save": "Save",
@@ -73,10 +82,12 @@
     "search": "Search",
     "settings": "Settings",
     "software_system": "Software System",
+    "software_system_external": "Software System External",
     "status": "Status",
     "system": "System",
     "tags": "Tags",
     "technology": "Technology",
+    "themes": "Themes",
     "to": "To",
     "type": "Type",
     "undo": "Undo",
@@ -111,6 +122,7 @@
       "copied_to_clipboard": "Copied to clipboard!",
       "diagram_exported": "Diagram exported in {{pathExportedDiagram}}",
       "done": "Done",
+      "i_saved_my_changes": "I've saved my changes",
       "limit_results": "More than {{count}} matches. This list could contain a subset of the results.",
       "no_diagrams": "No diagrams",
       "no_results": "No results",
@@ -151,10 +163,22 @@
     "open_project": "Open an existing project"
   },
   "project_settings": {
-    "ai_api_key": "AI API Key",
-    "ai_api_base_url": "AI API (OpenAI compatible) Base URL",
-    "ai_integration": "AI Integration",
-    "ai_model": "AI Model"
+    "title": "Project Settings",
+    "ai": {
+      "api_key": "AI API Key",
+      "api_base_url": "AI API (OpenAI compatible) Base URL",
+      "integration": "AI Integration",
+      "model": "AI Model"
+    },
+    "themes": {
+      "diagrams_theme": {
+        "bg_color": "Background Color",
+        "border_color": "Border Color",
+        "line_color": "Line Color",
+        "text_color": "Text Color",
+        "title": "Diagrams Theme"
+      }
+    }
   },
   "table": {
     "go_to_page": "Go to page",

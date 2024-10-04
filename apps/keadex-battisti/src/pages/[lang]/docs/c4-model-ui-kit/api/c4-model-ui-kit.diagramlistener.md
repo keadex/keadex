@@ -50,4 +50,23 @@ Description
 
 
 </td></tr>
+<tr><td>
+
+[onSelectElementCode?](./c4-model-ui-kit.diagramlistener.onselectelementcode.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(diagramElement: C4BaseComponentData \| undefined, elementType: [ElementType](./c4-model-ui-kit.elementtype.md) \| undefined, diagramElementLevel: number) =&gt; void
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
 </tbody></table>

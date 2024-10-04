@@ -22,8 +22,8 @@ export function useSafeExit<T, K>(routes: Routes<T, K>) {
           },
           {
             key: 'button-confirm',
-            children: <span>{t('common.confirm')}</span>,
-            className: 'button--dangerous',
+            children: <span>{t('common.info.i_saved_my_changes')}</span>,
+            className: 'button--safe',
             onClick: () => {
               hideModal()
               navigate(destination, navigateOptions)

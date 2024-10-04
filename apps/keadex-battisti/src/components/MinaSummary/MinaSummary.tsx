@@ -7,8 +7,10 @@ import minaLogo from '../../../public/img/keadex-mina-logo-color.svg'
 import { useTranslation } from '../../app/i18n/client'
 import { Button } from '@keadex/keadex-ui-kit/cross'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDesktop } from '@fortawesome/free-solid-svg-icons'
+import { faBook, faDesktop } from '@fortawesome/free-solid-svg-icons'
 import { faConfluence, faNpm } from '@fortawesome/free-brands-svg-icons'
+import { useRouter } from 'next/navigation'
+import ROUTES, { MINA_INTRODUCTION } from '../../core/routes'
 
 export type MinaSummaryProps = {
   lang: string
@@ -20,6 +22,7 @@ export default function MinaSummary({
 }: PropsWithChildren<MinaSummaryProps>) {
   const { t } = useTranslation(lang)
   const [latestMinaVersion, setLatestMinaVersion] = useState('')
+  const router = useRouter()
 
   async function getLatestMinaVersion() {
     setLatestMinaVersion(
@@ -97,21 +100,32 @@ export default function MinaSummary({
                 components={{ span: <span /> }}
               />
             </div>
-            <Button
-              className="!text-lg w-fit mb-2"
-              onClick={() => download(true)}
-            >
-              <FontAwesomeIcon icon={faDesktop} className="mr-3" />
-              <span>Download </span>
-              <span className="text-xs">v{latestMinaVersion}</span>
-            </Button>
-            <a
-              onClick={() => download(false)}
-              href="#"
-              className="no-underline hover:underline w-fit"
-            >
-              <Trans i18nKey="keadex_mina.other_download_options" t={t} />
-            </a>
+            <div className="flex flex-col md:flex-row ">
+              <div className="flex flex-col">
+                <Button
+                  className="!text-sm w-fit h-fit mb-2"
+                  onClick={() => download(true)}
+                >
+                  <FontAwesomeIcon icon={faDesktop} className="mr-3" />
+                  <span>Download </span>
+                  <span className="text-xs">v{latestMinaVersion}</span>
+                </Button>
+                <a
+                  onClick={() => download(false)}
+                  href="#"
+                  className="no-underline hover:underline w-fit"
+                >
+                  <Trans i18nKey="keadex_mina.other_download_options" t={t} />
+                </a>
+              </div>
+              <Button
+                className="!text-sm w-fit h-fit ml-0 md:ml-2 mt-4 md:mt-0"
+                onClick={() => router.push(ROUTES[MINA_INTRODUCTION].path)}
+              >
+                <FontAwesomeIcon icon={faBook} className="mr-3" />
+                <span>{t('common.documentation')}</span>
+              </Button>
+            </div>
             <span className="font-light mt-5 mb-2">
               <Trans i18nKey="common.packages" t={t} />:
             </span>

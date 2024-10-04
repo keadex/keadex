@@ -1,0 +1,16 @@
+.project-settings__tabs > ul > li {
+  @apply mb-1 break-words;
+  text-wrap: nowrap;
+}
+
+.project-settings__tabs > ul > li > a {
+  @apply py-2 px-2 bg-dark-brand1 hover:bg-dark-brand1 no-underline text-accent-secondary;
+}
+
+.project-settings__diagrams-theme-settings {
+  @apply my-2 flex;
+}
+
+.project-settings__diagrams-theme-settings > div {
+  @apply ml-2 my-auto;
+}

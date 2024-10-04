@@ -96,7 +96,7 @@ export const DiagramDesignViewToolbar = forwardRef(
             />
             <Separator />
             <div
-              className={`${styleButton} w-fit px-3 cursor-pointer flex`}
+              className={`${styleButton} w-fit px-3 cursor-pointer flex truncate`}
               data-te-toggle="tooltip"
               data-te-placement="bottom"
               title={`${t('diagram_editor.configure_auto_layout').toString()}`}
@@ -115,7 +115,9 @@ export const DiagramDesignViewToolbar = forwardRef(
                     : 'bg-red-700'
                 }`}
               />
-              <span className="my-auto">Auto Layout</span>
+              <span className="my-auto truncate">
+                {t('common.auto_layout')}
+              </span>
             </div>
             <Separator />
             <IconButton

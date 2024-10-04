@@ -110,7 +110,8 @@
         "tags": "<p><span className='font-bold'>Tagging</span> your diagrams can be useful to: speed up and simplify the search for a specific diagram, filter diagrams by specific labels, group diagrams with common characteristics.</p>",
         "title": "A <span className='font-normal'>simple</span> IDE for coding C4 model diagrams.<br />Even <span className='font-normal'>offline</span>."
       },
-      "title": "A <span className='font-normal'>simple</span> IDE for coding C4 model diagrams.<br />Even <span className='font-normal'>offline</span>."
+      "title": "A <span className='font-normal'>simple</span> IDE for coding C4 model diagrams.<br />Even <span className='font-normal'>offline</span>.",
+      "view_all_features": "View all features"
     },
     "docs_integration": {
       "title": "<span className='font-normal'>Integrated</span> with the most common <span className='font-normal'>documentation</span> platforms.",
