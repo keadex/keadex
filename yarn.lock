@@ -2736,10 +2736,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@keadex/mina-react-npm@npm:@keadex/mina-react@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-1.8.0.tgz#0232c83cc2f1d98762af43eb949169ce3aa48fff"
-  integrity sha512-XtyvcnIuft1Bjw9ua6AHF1/iUaIrfuf3xWxJWH0ryFHR5SMKre66aj/g9WAN407LHVUA+htmPOEWoQJ+GYgj5Q==
+"@keadex/mina-react-npm@npm:@keadex/mina-react@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-1.9.1.tgz#575b7f3d24ad97a34085e5d28736a9f4b214c38b"
+  integrity sha512-4QWL9GFkI4Qeac0d4aI9uQJQ7e2VSdZXSM7nkqnbMHJ5AMj5PsUlihZN3cxFbZW8aJZ+T/HszmgJznEBlUDSIQ==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
@@ -2754,12 +2754,15 @@
     js-cookie "^3.0.5"
     lodash.clonedeep "^4.5.0"
     pluralize "^8.0.0"
+    react-color "^2.19.3"
     react-ga4 "^2.1.0"
+    react-hotkeys-hook "^4.4.1"
     react-html-parser "^2.0.2"
     react-i18next "^13.3.0"
     react-resize-detector "^9.1.0"
     react-toastify "^9.1.3"
     tailwindcss "^3.3.3"
+    ts-key-enum "^2.0.12"
     tw-elements "1.0.0"
     wasm-pack "^0.12.1"
 
