@@ -3,4 +3,4 @@ import { LazyMinaReact } from './src/components/MinaReact/LazyMinaReact'
 
 export default LazyMinaReact
 
-// trigger 1
+// trigger
