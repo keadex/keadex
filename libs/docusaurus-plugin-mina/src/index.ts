@@ -61,3 +61,5 @@ function pluginMina({
 }
 
 export default pluginMina
+
+// trigger
