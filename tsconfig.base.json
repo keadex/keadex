@@ -29,7 +29,8 @@
       "@keadex/keadex-utils": ["libs/keadex-utils/src/index.ts"],
       "@keadex/mina-confluence-plugin": [
         "libs/mina-confluence-plugin/src/index.ts"
-      ]
+      ],
+      "@keadex/mina-live": ["libs/mina-live/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
