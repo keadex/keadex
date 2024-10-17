@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createMemoryRouter } from 'react-router-dom'
 import Home from '../../views/Home/Home'
 import DiagramEditor from '../../views/DiagramEditor/DiagramEditor'
 import ROUTES, {
@@ -16,7 +16,7 @@ import Layout from '../../components/Layout/Layout'
 import LibraryElement from '../../views/LibraryElement/LibraryElement'
 import ProjectSettings from '../../views/ProjectSettings/ProjectSettings'
 
-export default createBrowserRouter([
+export default createMemoryRouter([
   {
     element: <Layout />,
     children: [
