@@ -14,8 +14,10 @@ import {
 import AppEventContext, { AppEvent } from './context/AppEventContext'
 import router from './core/router/router'
 import store from './core/store/store'
-import './i18n'
+import initi18n from './i18n'
 import './styles/index.css'
+
+initi18n()
 
 export const App = React.memo(() => {
   const teInitialized = useRef(false)
