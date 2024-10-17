@@ -6,8 +6,8 @@
   "license": "MIT",
   "version": "1.0.0",
   "exports": {
-    "./styles/base.css": "./src/styles/base.css",
-    "./styles/components/": "./src/components/",
+    "./src/styles/base.css": "./src/styles/base.css",
+    "./src/components/": "./src/components/",
     "./tailwind.config": "./tailwind.config.js",
     "./components/": "./src/components/",
     "./cross": "./src/cross.ts",
