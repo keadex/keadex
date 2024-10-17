@@ -1,4 +1,4 @@
-@import '@keadex/keadex-ui-kit/styles/base.css';
+@import '@keadex/keadex-ui-kit/src/styles/base.css';
 
 body {
   @apply select-none;
