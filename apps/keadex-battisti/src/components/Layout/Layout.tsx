@@ -4,6 +4,8 @@ import { NewsBanner, useAppBootstrap } from '@keadex/keadex-ui-kit/cross'
 import dynamic from 'next/dynamic'
 import { PropsWithChildren } from 'react'
 import { NEWS } from '../../core/news'
+import { usePathname } from 'next/navigation'
+import ROUTES from '../../core/routes'
 
 const Header = dynamic(() => import('../Header/Header'))
 const Footer = dynamic(() => import('../Footer/Footer'))
@@ -25,6 +27,8 @@ if (process.env.NODE_ENV === 'production') {
 export default function Layout(props: PropsWithChildren<LayourProps>) {
   const { lang, children } = props
 
+  const pathname = usePathname()?.replace(`/${lang}`, '')
+
   async function initializeTailwindElements() {
     const { initTE, Button, Collapse, Dropdown, Input, Modal, Select, Tab } =
       await import('tw-elements')
@@ -33,13 +37,29 @@ export default function Layout(props: PropsWithChildren<LayourProps>) {
 
   useAppBootstrap({ initGA: true, initTE: initializeTailwindElements })
 
+  function isHeaderVisible() {
+    return (
+      pathname &&
+      (ROUTES[pathname]?.isHeaderVisible ||
+        ROUTES[pathname]?.isHeaderVisible === undefined)
+    )
+  }
+
+  function isFooterVisible() {
+    return (
+      pathname &&
+      (ROUTES[pathname]?.isFooterVisible ||
+        ROUTES[pathname]?.isFooterVisible === undefined)
+    )
+  }
+
   return (
     <>
       {/* <TWElementsInit /> */}
       <NewsBanner content={NEWS} />
-      <Header lang={lang} />
+      {isHeaderVisible() && <Header lang={lang} />}
       <main>{children}</main>
-      <Footer lang={lang} />
+      {isFooterVisible() && <Footer lang={lang} />}
     </>
   )
 }

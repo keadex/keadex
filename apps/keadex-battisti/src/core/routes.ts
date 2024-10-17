@@ -18,7 +18,10 @@ ROUTES[ABOUT_ME] = {
 
 // ----- Projects Paths
 export const PROJECTS = '/projects'
+
 export const PROJECT_KEADEX_MINA = '/projects/keadex-mina'
+export const KEADEX_MINA_LIVE_EDITOR = `${PROJECT_KEADEX_MINA}/live-editor`
+
 export const PROJECT_KEADEX_BATTISTI = '/projects/keadex-battisti'
 export const PROJECT_KEADEX_DOCS = '/projects/keadex-docs'
 export const PROJECT_C4MODEL_UI_KIT = '/projects/c4model-ui-kit'
@@ -31,9 +34,16 @@ export const PROJECTS_ROUTES = [
 ROUTES[PROJECTS] = {
   path: PROJECTS,
 }
+
 ROUTES[PROJECT_KEADEX_MINA] = {
   path: PROJECT_KEADEX_MINA,
 }
+ROUTES[KEADEX_MINA_LIVE_EDITOR] = {
+  path: KEADEX_MINA_LIVE_EDITOR,
+  isHeaderVisible: false,
+  isFooterVisible: false,
+}
+
 ROUTES[PROJECT_KEADEX_BATTISTI] = {
   path: PROJECT_KEADEX_BATTISTI,
 }
