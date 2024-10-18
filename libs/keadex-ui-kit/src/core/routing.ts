@@ -8,6 +8,7 @@ export interface Route<T, K> {
   path: string
   titlebarMenuFactory?: WindowTitlebarMenuFactory<T, K>
   isAppMenuVisible?: boolean
+  isNewsbarVisible?: boolean
   isHeaderVisible?: boolean
   isFooterVisible?: boolean
   protectExit?: boolean
