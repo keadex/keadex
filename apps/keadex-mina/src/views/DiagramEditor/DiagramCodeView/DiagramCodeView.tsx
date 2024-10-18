@@ -530,7 +530,7 @@ export const DiagramCodeView = forwardRef(
                       }
                       replaceLineContent(
                         cursorPosition.lineNumber,
-                        updatedPlantUML.replaceAll('\n', ''),
+                        updatedPlantUML.replace(new RegExp('\\n', 'gi'), ''),
                       )
                       hideModal()
                     }}
