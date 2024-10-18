@@ -37,26 +37,37 @@ export default function Layout(props: PropsWithChildren<LayourProps>) {
 
   useAppBootstrap({ initGA: true, initTE: initializeTailwindElements })
 
+  function isNewsbarVisible() {
+    return (
+      !pathname ||
+      (pathname &&
+        (ROUTES[pathname]?.isNewsbarVisible ||
+          ROUTES[pathname]?.isNewsbarVisible === undefined))
+    )
+  }
+
   function isHeaderVisible() {
     return (
-      pathname &&
-      (ROUTES[pathname]?.isHeaderVisible ||
-        ROUTES[pathname]?.isHeaderVisible === undefined)
+      !pathname ||
+      (pathname &&
+        (ROUTES[pathname]?.isHeaderVisible ||
+          ROUTES[pathname]?.isHeaderVisible === undefined))
     )
   }
 
   function isFooterVisible() {
     return (
-      pathname &&
-      (ROUTES[pathname]?.isFooterVisible ||
-        ROUTES[pathname]?.isFooterVisible === undefined)
+      !pathname ||
+      (pathname &&
+        (ROUTES[pathname]?.isFooterVisible ||
+          ROUTES[pathname]?.isFooterVisible === undefined))
     )
   }
 
   return (
     <>
       {/* <TWElementsInit /> */}
-      <NewsBanner content={NEWS} />
+      {isNewsbarVisible() && <NewsBanner content={NEWS} />}
       {isHeaderVisible() && <Header lang={lang} />}
       <main>{children}</main>
       {isFooterVisible() && <Footer lang={lang} />}
