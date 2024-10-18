@@ -40,6 +40,7 @@ ROUTES[PROJECT_KEADEX_MINA] = {
 }
 ROUTES[KEADEX_MINA_LIVE_EDITOR] = {
   path: KEADEX_MINA_LIVE_EDITOR,
+  isNewsbarVisible: false,
   isHeaderVisible: false,
   isFooterVisible: false,
 }
