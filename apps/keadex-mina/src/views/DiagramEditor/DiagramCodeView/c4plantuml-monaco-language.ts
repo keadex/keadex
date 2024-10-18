@@ -44,6 +44,7 @@ type C4PlantUMLSignatureType =
 export const PLANTUML_LANGUAGE = 'plantuml'
 
 const SIGNATURE_ELEMENT_TEMPLATE = '${ELEMENT_TYPE}'
+const SIGNATURE_ELEMENT_TEMPLATE_REGEX = '\\${ELEMENT_TYPE}'
 const C4PLANTUML_PARAMETERS: Record<
   C4PlantUMLParameterType,
   AggregatedParameterInformation
@@ -163,7 +164,7 @@ function aggregateOptionalParameters(
   parameterDocumentation = `#### Optional inputs:\n\n\n${parameters
     .map(
       (parameter) =>
-        `• \`${parameter.label.replaceAll('?', '')}\`: ${
+        `• \`${parameter.label.replace(new RegExp('\\?', 'gi'), '')}\`: ${
           parameter.documentation
         }`,
     )
@@ -296,8 +297,8 @@ function getPlantUMLSignature(
 
     if (id && C4PLANTUML_SIGNATURES[id]) {
       const signature = { ...C4PLANTUML_SIGNATURES[id] }
-      signature.label = signature.label.replaceAll(
-        SIGNATURE_ELEMENT_TEMPLATE,
+      signature.label = signature.label.replace(
+        new RegExp(SIGNATURE_ELEMENT_TEMPLATE_REGEX, 'gi'),
         element,
       )
       return signature
@@ -431,7 +432,7 @@ export function initC4PlantUMLLanguage() {
         })
         const element = lineTextUntilPosition
           .substring(0, lineTextUntilPosition.indexOf('('))
-          .replaceAll(' ', '')
+          .replace(new RegExp(' ', 'gi'), '')
 
         const signature = getPlantUMLSignature(element)
 
