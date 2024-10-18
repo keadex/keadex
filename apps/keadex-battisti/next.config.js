@@ -71,7 +71,7 @@ const nextConfig = {
             },
           },
           {
-            from: './public/locales',
+            from: '../keadex-mina/public/locales',
             to() {
               return 'static/locales'
             },
