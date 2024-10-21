@@ -12,7 +12,6 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import icon from '../../../src-tauri/icons/icon.png'
 import AppEventContext from '../../context/AppEventContext'
 import ROUTES from '../../core/router/routes'
 import { useAppDispatch, useAppSelector } from '../../core/store/hooks'
@@ -107,7 +106,7 @@ export const Layout = React.memo((props: LayoutProps) => {
       <Window>
         <WindowTitlebar
           rightButtonsProps={rightButtons}
-          icon={icon}
+          icon={'mina-logo.svg'}
           menuProps={windowTitlebarMenu}
           title="Keadex Mina"
         />
