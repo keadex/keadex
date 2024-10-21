@@ -24,6 +24,12 @@
     "web"
   ],
   "main": "index.ts",
+  "exports": {
+    ".": "./indext.ts",
+    "./MinaLive": "./src/components/MinaLive/MinaLive.tsx",
+    "./nextjs/mina-plugin": "./src/nextjs/mina-plugin.js",
+    "./nextjs/mina-middleware": "./src/nextjs/mina-middleware.ts"
+  },
   "devDependencies": {
     "@nx/react": "18.2.4",
     "@nx/webpack": "18.2.4",

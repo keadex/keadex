@@ -3,7 +3,7 @@ import keadexMina from '../../../../../../public/img/keadex-mina-logo.svg'
 import { PageProps } from '../../../layout'
 import dynamic from 'next/dynamic'
 
-const MinaLive = dynamic(() => import('@keadex/mina-live'), {
+const MinaLive = dynamic(() => import('@keadex/mina-live/MinaLive'), {
   ssr: false,
 })
 
