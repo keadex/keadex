@@ -10,6 +10,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 const CopyPlugin = require('copy-webpack-plugin')
+const withMinaLive = require('@keadex/mina-live/nextjs/mina-plugin')
 
 const cspHeader = `
     default-src 'self';
@@ -60,7 +61,6 @@ const nextConfig = {
     ]
   },
   webpack: function (config, options) {
-    config.externals.push({ canvas: 'commonjs canvas' })
     config.plugins.push(
       new CopyPlugin({
         patterns: [
@@ -68,12 +68,6 @@ const nextConfig = {
             from: '../../node_modules/@keadex/mina-react-npm/*.wasm',
             to() {
               return 'static/chunks/[name][ext]'
-            },
-          },
-          {
-            from: '../keadex-mina/public/locales',
-            to() {
-              return 'static/locales'
             },
           },
         ],
@@ -88,6 +82,7 @@ const plugins = [
   withNx,
   withNextra,
   withBundleAnalyzer,
+  withMinaLive,
 ]
 
 module.exports = composePlugins(...plugins)(nextConfig)
