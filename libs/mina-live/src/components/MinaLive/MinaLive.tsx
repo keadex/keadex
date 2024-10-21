@@ -20,14 +20,20 @@ import router from '@keadex/keadex-mina/src//core/router/router'
 import store from '@keadex/keadex-mina/src//core/store/store'
 import initi18n from '@keadex/keadex-mina/src//i18n'
 import '@keadex/keadex-mina/src/styles/index.css'
+import { mockTauri } from '../../tauri/tauri-mock'
 
 initi18n({
   backend: {
-    loadPath: '/_next/static/locales/{{lng}}/{{ns}}.json',
+    loadPath: '/_next/static/keadex-mina/locales/{{lng}}/{{ns}}.json',
   },
 })
 
-export const MinaLive = React.memo(() => {
+mockTauri()
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type MinaLiveProps = {}
+
+export const MinaLive = React.memo<MinaLiveProps>((props) => {
   const teInitialized = useRef(false)
   const event$ = useEventEmitter<AppEvent>()
 
