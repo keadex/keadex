@@ -4,6 +4,30 @@
 
 ## c4-model-ui-kit package
 
+## Enumerations
+
+<table><thead><tr><th>
+
+Enumeration
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[DiagramExternalLinkVariables](./c4-model-ui-kit.diagramexternallinkvariables.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
 ## Functions
 
 <table><thead><tr><th>
@@ -145,6 +169,15 @@ Description
 </td></tr>
 <tr><td>
 
+[externalLinkVariableToPlaceholder(variable)](./c4-model-ui-kit.externallinkvariabletoplaceholder.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [getBoundingBox(objects, absolutePosition, transformMatrix)](./c4-model-ui-kit.getboundingbox.md)
 
 
@@ -200,6 +233,24 @@ Description
 <tr><td>
 
 [isDefaultDiagramElementSpec(diagramElementSpec)](./c4-model-ui-kit.isdefaultdiagramelementspec.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isExternalLink(diagramLink)](./c4-model-ui-kit.isexternallink.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[linkLabelFromExternalLink(diagramLink)](./c4-model-ui-kit.linklabelfromexternallink.md)
 
 
 </td><td>
@@ -317,6 +368,15 @@ Description
 <tr><td>
 
 [renderSoftwareSystemDiagramElement(canvas, softwareSystem, diagramSpec, autoLayout, options)](./c4-model-ui-kit.rendersoftwaresystemdiagramelement.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[replaceExternalLinkVariables(diagramLink, rawData)](./c4-model-ui-kit.replaceexternallinkvariables.md)
 
 
 </td><td>
@@ -599,6 +659,33 @@ Description
 <tr><td>
 
 [DIAGRAM\_ELEMENTS\_TYPES](./c4-model-ui-kit.diagram_elements_types.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[DIAGRAM\_EXTERNAL\_LINK\_PROTOCOLS](./c4-model-ui-kit.diagram_external_link_protocols.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[DIAGRAM\_INTERNAL\_LINK\_PROTOCOLS](./c4-model-ui-kit.diagram_internal_link_protocols.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[DIAGRAM\_LINKS\_SEPARATOR](./c4-model-ui-kit.diagram_links_separator.md)
 
 
 </td><td>
