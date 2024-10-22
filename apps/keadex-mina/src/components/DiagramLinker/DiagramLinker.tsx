@@ -1,5 +1,8 @@
 import {
+  DIAGRAM_EXTERNAL_LINK_PROTOCOLS,
   DIAGRAM_LINKS_SEPARATOR,
+  DiagramExternalLinkVariables,
+  externalLinkVariableToPlaceholder,
   isExternalLink,
 } from '@keadex/c4-model-ui-kit'
 import {
@@ -7,19 +10,30 @@ import {
   TagsInput,
   renderButtons,
 } from '@keadex/keadex-ui-kit/cross'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DiagramPicker from '../DiagramPicker/DiagramPicker'
 
 export type DiagramLinkerProps = {
   className?: string
   diagramPickerClassName?: string
+  disabled?: boolean
   link?: string
-  onLinkConfirmed: (link?: string) => void
+  hideButtons?: true
+  onLinkConfirmed?: (link?: string) => void
+  onLinkChanged?: (link?: string) => void
 }
 
 export const DiagramLinker = (props: DiagramLinkerProps) => {
-  const { className, diagramPickerClassName, link, onLinkConfirmed } = props
+  const {
+    className,
+    diagramPickerClassName,
+    disabled,
+    link,
+    hideButtons,
+    onLinkConfirmed,
+    onLinkChanged,
+  } = props
   const { t } = useTranslation()
 
   const [internalLink, setInternalLink] = useState(
@@ -68,24 +82,28 @@ export const DiagramLinker = (props: DiagramLinkerProps) => {
     )
   }
 
+  useEffect(() => {
+    if (onLinkChanged) {
+      onLinkChanged(buildLinkString())
+    }
+  }, [internalLink, externalLinks])
+
   return (
     <div>
       {/* Modal Body */}
-      <div className="modal__body">
-        <div className={`flex flex-col ${className ?? ''}`}>
-          {/* <span>Internal Link</span> */}
-          <div className="text-brand1 text-lg">{t('common.internal_link')}</div>
+      <div className={`modal__body ${className ?? ''}`}>
+        <div className={`flex flex-col`}>
           <DiagramPicker
+            disabled={disabled}
             className={`!mb-0 !mt-4 !p-0 ${diagramPickerClassName ?? ''}`}
             value={internalLink}
             onDiagramSelected={onInternalLinkChanged}
           />
-          <div className="mt-5 text-brand1 text-lg">
-            {t('common.external_links')}
-          </div>
           <TagsInput
             id="diagram-linker-external-links"
-            className="mt-4 cursor-text"
+            disabled={disabled}
+            className="mt-6 cursor-text"
+            label={t('common.external_links')}
             tags={externalLinks}
             settings={{
               callbacks: {
@@ -99,29 +117,40 @@ export const DiagramLinker = (props: DiagramLinkerProps) => {
           <div className="text-sm px-3">
             {t('diagram_editor.external_links_info', {
               maxNumExternalLinks: 5,
+              allowedLinks: DIAGRAM_EXTERNAL_LINK_PROTOCOLS.map((protocol) =>
+                protocol.replace('://', ''),
+              ).join(', '),
+              allowedVariables: Object.keys(DiagramExternalLinkVariables)
+                .map((variable) =>
+                  externalLinkVariableToPlaceholder(
+                    variable as DiagramExternalLinkVariables,
+                  ),
+                )
+                .join(', '),
             })}
           </div>
         </div>
       </div>
 
       {/* Modal footer */}
-      <div className="modal__footer">
-        {renderButtons([
-          {
-            key: 'button-cancel',
-            children: <span>{t('common.cancel')}</span>,
-            'data-te-modal-dismiss': true,
-          } as ButtonProps,
-
-          {
-            key: 'button-create',
-            children: <span>{t(`common.confirm`)}</span>,
-            onClick: () => {
-              onLinkConfirmed(buildLinkString())
+      {!hideButtons && (
+        <div className="modal__footer">
+          {renderButtons([
+            {
+              key: 'button-cancel',
+              children: <span>{t('common.cancel')}</span>,
+              'data-te-modal-dismiss': true,
+            } as ButtonProps,
+            {
+              key: 'button-create',
+              children: <span>{t(`common.confirm`)}</span>,
+              onClick: () => {
+                if (onLinkConfirmed) onLinkConfirmed(buildLinkString())
+              },
             },
-          },
-        ])}
-      </div>
+          ])}
+        </div>
+      )}
     </div>
   )
 }

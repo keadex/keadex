@@ -4,13 +4,7 @@ import DiagramLinker from './DiagramLinker'
 
 describe('DiagramLinker', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(
-      <DiagramLinker
-        onLinkConfirmed={(link?: string) => {
-          console.log('onLinkConfirmed')
-        }}
-      />,
-    )
+    const { baseElement } = render(<DiagramLinker />)
     expect(baseElement).toBeTruthy()
   })
 })
