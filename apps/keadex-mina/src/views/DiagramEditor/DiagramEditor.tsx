@@ -50,6 +50,7 @@ import DiagramDesignView, {
   KeadexCanvasState,
 } from './DiagramDesignView/DiagramDesignView'
 import './DiagramEditor.css'
+import { open } from '@tauri-apps/api/shell'
 
 const TOAST_ERROR_DEFAULT_CONFIGS: ToastOptions = {
   className: 'diagram-editor_toast--error',
@@ -153,6 +154,9 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
           },
         ],
       })
+    },
+    onOpenExternalLinkClick: (externalLink) => {
+      open(externalLink)
     },
     onSelectElementCode: async (
       diagramElement,
