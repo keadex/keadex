@@ -108,7 +108,7 @@
     },
     "error": {
       "internal": "Internal error: {{errorMessage}}",
-      "cannot_add_diagram_link": "Cannot add a diagram link to the selected PlantUML element. Move the cursor on a Software System, Container, or Component in the code editor. ",
+      "cannot_add_link": "Cannot add a link to the selected PlantUML element. Move the cursor on a Software System, Container, or Component in the code editor. ",
       "cannot_delete_diagram": "Cannot delete the diagram: {{errorMessage}}",
       "cannot_delete_element": "Cannot delete this element.",
       "invalid_diagram_link": "Diagram not found. Check the diagram link.",
@@ -148,13 +148,13 @@
   },
   "diagram_editor": {
     "add_diagram_element": "Add a diagram element",
-    "add_diagram_link": "Add a link to a diagram",
     "ai_diagram_generator": "AI diagram generator",
     "ai_hint": "Description of the diagram to generate",
     "configure_auto_layout": "Configure auto layout",
     "element_imported": "Element imported",
     "external_links_info": "Max {{maxNumExternalLinks}} links. Allowed links: {{allowedLinks}}. Allowed link variables: {{allowedVariables}}.",
     "import_from_library": "Import from the library",
+    "link_to": "Link to...",
     "plantuml_generated": "PlantUML generated",
     "saving_rendering_diagram": "Saving & Rendering",
     "select_element_type_to_import": "Select the C4 element type to import from the library",

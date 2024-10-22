@@ -19,3 +19,7 @@
 #diagram-code-editor-box .react-resizable {
   @apply h-full;
 }
+
+.monaco-icon-label-container a {
+  @apply no-underline;
+}

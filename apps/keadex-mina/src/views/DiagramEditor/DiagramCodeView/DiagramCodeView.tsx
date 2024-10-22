@@ -240,7 +240,7 @@ export const DiagramCodeView = forwardRef(
       })
       editor.addAction({
         id: 'add-diagram-link',
-        label: t('diagram_editor.add_diagram_link'),
+        label: t('diagram_editor.link_to'),
         contextMenuGroupId: '1_modification',
         contextMenuOrder: 1,
         run: function (ed) {
@@ -543,7 +543,7 @@ export const DiagramCodeView = forwardRef(
           }
         }
       }
-      toast.error(t('common.error.cannot_add_diagram_link'))
+      toast.error(t('common.error.cannot_add_link'))
     }
 
     function selectText(text?: string) {
@@ -570,7 +570,7 @@ export const DiagramCodeView = forwardRef(
       <div className="relative h-full w-full">
         {modal}
         <Editor
-          className={`h-full ${!diagram ? 'hidden' : ''}`}
+          className={`h-full ${!diagram ? 'hidden' : ''} no-underline`}
           language={PLANTUML_LANGUAGE}
           value={rawPlantuml}
           theme="vs-dark"
