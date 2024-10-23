@@ -14,5 +14,3 @@ pub mod service;
 pub mod templates;
 #[cfg(feature = "desktop")]
 pub mod validator;
-#[cfg(feature = "desktop")]
-pub mod view;

@@ -50,7 +50,7 @@ import DiagramDesignView, {
   KeadexCanvasState,
 } from './DiagramDesignView/DiagramDesignView'
 import './DiagramEditor.css'
-import { open } from '@tauri-apps/api/shell'
+import { open } from '@tauri-apps/plugin-shell'
 
 const TOAST_ERROR_DEFAULT_CONFIGS: ToastOptions = {
   className: 'diagram-editor_toast--error',

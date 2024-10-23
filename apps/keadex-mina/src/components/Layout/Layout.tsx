@@ -7,7 +7,7 @@ import {
 import type { WindowTitlebarButtonProps } from '@keadex/keadex-ui-kit/desktop'
 import { Window, WindowTitlebar } from '@keadex/keadex-ui-kit/desktop'
 import { TauriEvent, UnlistenFn } from '@tauri-apps/api/event'
-import { appWindow } from '@tauri-apps/api/window'
+import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
@@ -18,6 +18,8 @@ import ROUTES from '../../core/router/routes'
 import { useAppDispatch, useAppSelector } from '../../core/store/hooks'
 import AppMenu from '../AppMenu/AppMenu'
 import { createButtons } from './window-titlebar-buttons'
+
+const appWindow = getCurrentWebviewWindow()
 
 /* eslint-disable-next-line */
 export interface LayoutProps {}

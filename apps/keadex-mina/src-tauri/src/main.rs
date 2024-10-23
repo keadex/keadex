@@ -59,18 +59,28 @@ use keadex_mina::controller::project_controller::open_project;
 use keadex_mina::controller::project_controller::search;
 use keadex_mina::repository::project_repository::save_project_settings;
 use keadex_mina::service::hook_service::execute_hook;
-use tauri::WindowBuilder;
+use tauri::WebviewWindowBuilder;
 
 fn main() {
   dotenv().ok();
   keadex_mina::core::logger::init();
   let _app = keadex_mina::core::app::App::default();
   tauri::Builder::default()
+    .plugin(tauri_plugin_fs::init())
+    .plugin(tauri_plugin_shell::init())
+    .plugin(tauri_plugin_dialog::init())
+    .plugin(tauri_plugin_process::init())
+    .plugin(tauri_plugin_updater::Builder::new().build())
+    .plugin(tauri_plugin_notification::init())
+    .plugin(tauri_plugin_os::init())
+    .plugin(tauri_plugin_global_shortcut::Builder::new().build())
+    .plugin(tauri_plugin_clipboard_manager::init())
+    .plugin(tauri_plugin_http::init())
     .setup(|app| {
-      WindowBuilder::new(
+      WebviewWindowBuilder::new(
         app,
-        "home".to_string(),
-        tauri::WindowUrl::App("index.html".into()),
+        "main".to_string(),
+        tauri::WebviewUrl::App("index.html".into()),
       )
       .transparent(true)
       .decorations(false)

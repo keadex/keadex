@@ -72,6 +72,7 @@
     "person": "Person",
     "person_external": "Person External",
     "platform": "Platform",
+    "proceed": "Proceed",
     "project": "Project",
     "redo": "Redo",
     "relationship": "Relationship",
@@ -186,5 +187,8 @@
   "table": {
     "go_to_page": "Go to page",
     "current_page": "Page {{currentPage}} of {{totalPages}}"
+  },
+  "updater": {
+    "title": "Update to {{version}} available!"
   }
 }
