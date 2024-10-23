@@ -44,7 +44,7 @@
   "productName": "Keadex Mina",
   "mainBinaryName": "Keadex Mina",
   "version": "1.8.0",
-  "identifier": "io.keadex.mina",
+  "identifier": "dev.keadex.mina",
   "plugins": {
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEUyQTE3RjlGOEVGREI2NEEKUldSS3R2Mk9uMytoNG9jZTlMeFJTZXpTTGh2RmRXZzhwMndXRDIya3FkVU05aTV6dW1ydTVGYWsK",
