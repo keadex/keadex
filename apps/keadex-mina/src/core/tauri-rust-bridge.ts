@@ -160,7 +160,7 @@ export async function diagramToLinkString(
   })
 }
 
-export async function diagramFromLinkString(
+export async function diagramNameTypeFromLinkString(
   linkString: string,
 ): Promise<Diagram> {
   return invoke('diagram_from_link_string', {

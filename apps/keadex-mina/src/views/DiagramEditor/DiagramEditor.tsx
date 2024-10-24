@@ -18,6 +18,7 @@ import {
   softwareSystemDiagramElement,
 } from '@keadex/c4-model-ui-kit'
 import { useModal } from '@keadex/keadex-ui-kit/cross'
+import { open } from '@tauri-apps/plugin-shell'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ResizableBox } from 'react-resizable'
@@ -35,7 +36,7 @@ import { EDIT_DIAGRAM, HOME_PROJECT } from '../../core/router/routes'
 import { useAppSelector } from '../../core/store/hooks'
 import {
   closeDiagram,
-  diagramFromLinkString,
+  diagramNameTypeFromLinkString,
   executeHook,
   loadDiagram,
   parsedElementToPlantUML,
@@ -50,7 +51,6 @@ import DiagramDesignView, {
   KeadexCanvasState,
 } from './DiagramDesignView/DiagramDesignView'
 import './DiagramEditor.css'
-import { open } from '@tauri-apps/plugin-shell'
 
 const TOAST_ERROR_DEFAULT_CONFIGS: ToastOptions = {
   className: 'diagram-editor_toast--error',
@@ -132,7 +132,7 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
             onClick: async () => {
               let diagram
               try {
-                diagram = await diagramFromLinkString(diagramLink)
+                diagram = await diagramNameTypeFromLinkString(diagramLink)
               } catch (e) {
                 diagram = undefined
               }
