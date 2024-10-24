@@ -5,7 +5,14 @@ import titlebarMenuFactory, {
 import { c4ElementTypePathName } from '@keadex/c4-model-ui-kit'
 import { AppEvent } from '../../context/AppEventContext'
 
-const ROUTES: Routes<AppEvent, WindowTitlebarMenuFactoryData> = {}
+export type MinaRouteData = {
+  requiresProject: boolean
+}
+
+const ROUTES: Routes<AppEvent, WindowTitlebarMenuFactoryData, MinaRouteData> =
+  {}
+
+//---------------- INTERNAL ROUTES
 
 // ----- Home Paths
 export const HOME = '/'
@@ -76,6 +83,25 @@ ROUTES[COMPONENTS_LIBRARY] = {
   path: COMPONENTS_LIBRARY,
   isAppMenuVisible: true,
   titlebarMenuFactory,
+}
+
+//---------------- DEEP LINKS ROUTES
+export const DEEP_LINK_SCHEME = 'mina://'
+export const OPEN_DIAGRAM_DEEP_LINK = `${DEEP_LINK_SCHEME}open-diagram/`
+export const OPEN_DEPENDENCY_GRAPH_DEEP_LINK = `${DEEP_LINK_SCHEME}dependency-graph/`
+
+ROUTES[OPEN_DIAGRAM_DEEP_LINK] = {
+  path: OPEN_DIAGRAM_DEEP_LINK,
+  data: {
+    requiresProject: true,
+  },
+}
+
+ROUTES[OPEN_DEPENDENCY_GRAPH_DEEP_LINK] = {
+  path: OPEN_DEPENDENCY_GRAPH_DEEP_LINK,
+  data: {
+    requiresProject: true,
+  },
 }
 
 export default ROUTES

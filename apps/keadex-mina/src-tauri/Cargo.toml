@@ -59,6 +59,8 @@ tauri-plugin-shell = { version = "2", optional = true }
 tauri-plugin-fs = { version = "2", optional = true }
 tauri-plugin-global-shortcut = { version = "2", optional = true }
 tauri-plugin-updater = { version = "2", optional = true }
+tauri-plugin-deep-link = { version = "2", optional = true }
+tauri-plugin-single-instance = { version = "2", features = ["deep-link"], optional = true }
 
 [features]
 default = ["desktop", "custom-protocol"]
@@ -75,6 +77,8 @@ desktop = [
   "tauri-plugin-fs",
   "tauri-plugin-global-shortcut",
   "tauri-plugin-updater",
+  "tauri-plugin-deep-link",
+  "tauri-plugin-single-instance",
   "dep:uuid",
   "dep:async-openai",
   "dep:tauri-build",

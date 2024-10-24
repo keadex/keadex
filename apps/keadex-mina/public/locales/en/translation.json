@@ -147,6 +147,11 @@
     "os_type": "OS Type",
     "kernel_version": "Kernel Version"
   },
+  "deep_link": {
+    "invalid_diagram_path": "The deep link '{{deepLink}}' contains an invalid diagram link.",
+    "required_open_project": "The deep link '{{deepLink}}' requires an active project to be open.",
+    "unsupported_deep_link": "Unsupported deep link."
+  },
   "diagram_editor": {
     "add_diagram_element": "Add a diagram element",
     "ai_diagram_generator": "AI diagram generator",

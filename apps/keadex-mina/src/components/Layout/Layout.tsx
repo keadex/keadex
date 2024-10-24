@@ -8,12 +8,15 @@ import type { WindowTitlebarButtonProps } from '@keadex/keadex-ui-kit/desktop'
 import { Window, WindowTitlebar } from '@keadex/keadex-ui-kit/desktop'
 import { TauriEvent, UnlistenFn } from '@tauri-apps/api/event'
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
+import { onOpenUrl } from '@tauri-apps/plugin-deep-link'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import { v4 as uuidv4 } from 'uuid'
 import icon from '../../../src-tauri/icons/icon.png'
 import AppEventContext from '../../context/AppEventContext'
+import { useDeepLinkRouter } from '../../core/router/router'
 import ROUTES from '../../core/router/routes'
 import { useAppDispatch, useAppSelector } from '../../core/store/hooks'
 import AppMenu from '../AppMenu/AppMenu'
@@ -36,6 +39,7 @@ export const Layout = React.memo((props: LayoutProps) => {
   const { modal, showModal, hideModal } = useModal()
   const dispatch = useAppDispatch()
   const project = useAppSelector((state) => state.project.value)
+  const { routeDeepLink } = useDeepLinkRouter()
   const [rightButtons, setRightButtons] = useState<WindowTitlebarButtonProps[]>(
     [],
   )
@@ -43,23 +47,71 @@ export const Layout = React.memo((props: LayoutProps) => {
     useState<DropdownMenuProps>(emptyWindowTitlebarMenu)
   const [isAppMenuVisible, setIsAppMenuVisible] = useState(false)
   const isOnResizedDisabled = useRef(true)
+  const isDeepLinkInitializing = useRef(false)
+  const deepLinkListeners = useRef<{
+    [path: string]: { unsubscribed: boolean }
+  }>({})
+
+  function clearDeepLinkListeners() {
+    for (const id of Object.keys(deepLinkListeners.current)) {
+      if (deepLinkListeners.current[id].unsubscribed)
+        delete deepLinkListeners.current[id]
+    }
+  }
+
+  // The following "complex" deep link listener logic is required due to
+  // an unexpected behaviour of the onOpenUrl() Tauri api: it triggers
+  // the listener also during the initialization; the unlistener is
+  // asynchronus and this causes the listener triggering during the unlistening.
+  useEffect(() => {
+    console.debug('Deep link initializing')
+    const id = uuidv4()
+    deepLinkListeners.current[id] = { unsubscribed: false }
+    isDeepLinkInitializing.current = true
+    console.debug(deepLinkListeners.current)
+
+    const unlistenDeepLink = onOpenUrl((requestedUrls) => {
+      if (!deepLinkListeners.current[id].unsubscribed) {
+        if (!isDeepLinkInitializing.current) {
+          if (requestedUrls && requestedUrls.length > 0) {
+            const deepLink = requestedUrls[0]
+            routeDeepLink(deepLink)
+          }
+        }
+        console.debug('Deep link initialized')
+        isDeepLinkInitializing.current = false
+        clearDeepLinkListeners()
+      }
+    })
+
+    return () => {
+      console.debug('Deep link unlisten')
+      if (unlistenDeepLink) {
+        deepLinkListeners.current[id] = { unsubscribed: true }
+        unlistenDeepLink.then((f) => f())
+      }
+    }
+  }, [location])
 
   useEffect(() => {
     console.debug('Layout -> useEffect()')
-    let unlisten: Promise<UnlistenFn> | null
+    let unlistenWindowResized: Promise<UnlistenFn> | null
     if (!rightButtons || rightButtons.length === 0) {
       createButtons(setRightButtons, isOnResizedDisabled, showModal, t)
-      unlisten = appWindow.listen(TauriEvent.WINDOW_RESIZED, () => {
-        console.debug(
-          `Layout -> on window resized() ${isOnResizedDisabled.current}`,
-        )
-        if (!isOnResizedDisabled.current) {
-          createButtons(setRightButtons, isOnResizedDisabled, showModal, t)
-        }
-      })
+      unlistenWindowResized = appWindow.listen(
+        TauriEvent.WINDOW_RESIZED,
+        () => {
+          console.debug(
+            `Layout -> on window resized() ${isOnResizedDisabled.current}`,
+          )
+          if (!isOnResizedDisabled.current) {
+            createButtons(setRightButtons, isOnResizedDisabled, showModal, t)
+          }
+        },
+      )
     }
     return () => {
-      if (unlisten) unlisten.then((f) => f())
+      if (unlistenWindowResized) unlistenWindowResized.then((f) => f())
     }
   }, [])
 

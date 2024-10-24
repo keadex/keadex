@@ -51,6 +51,11 @@
       "endpoints": [
         "https://gist.githubusercontent.com/keadex/7f3ebbc2691dc83591c96a6662f37e94/raw/keadex-mina-latest.json"
       ]
+    },
+    "deep-link": {
+      "desktop": {
+        "schemes": ["mina"]
+      }
     }
   },
   "app": {

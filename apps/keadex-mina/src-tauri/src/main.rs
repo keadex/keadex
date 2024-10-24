@@ -59,6 +59,7 @@ use keadex_mina::controller::project_controller::open_project;
 use keadex_mina::controller::project_controller::search;
 use keadex_mina::repository::project_repository::save_project_settings;
 use keadex_mina::service::hook_service::execute_hook;
+use tauri::Manager;
 use tauri::WebviewWindowBuilder;
 
 fn main() {
@@ -66,6 +67,12 @@ fn main() {
   keadex_mina::core::logger::init();
   let _app = keadex_mina::core::app::App::default();
   tauri::Builder::default()
+    .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+      let _ = app
+        .get_webview_window("main")
+        .expect("no main window")
+        .set_focus();
+    }))
     .plugin(tauri_plugin_fs::init())
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_dialog::init())
@@ -76,7 +83,13 @@ fn main() {
     .plugin(tauri_plugin_global_shortcut::Builder::new().build())
     .plugin(tauri_plugin_clipboard_manager::init())
     .plugin(tauri_plugin_http::init())
+    .plugin(tauri_plugin_deep_link::init())
     .setup(|app| {
+      #[cfg(any(windows, target_os = "linux"))]
+      {
+        use tauri_plugin_deep_link::DeepLinkExt;
+        app.deep_link().register_all()?;
+      }
       WebviewWindowBuilder::new(
         app,
         "main".to_string(),
