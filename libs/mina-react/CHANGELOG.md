@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/keadex/keadex/compare/mina-react@1.10.1...mina-react@1.11.0) (2024-10-27)
+
+
+### Features
+
+* **apps/keadex-mina:** bump version ([fa8159f](https://github.com/keadex/keadex/commit/fa8159ff7b3c40e303755483f787427f47ce08e4))
+
 ## [1.10.1](https://github.com/keadex/keadex/compare/mina-react@1.10.0...mina-react@1.10.1) (2024-10-27)
 
 
