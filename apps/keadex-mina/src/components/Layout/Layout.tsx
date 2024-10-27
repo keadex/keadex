@@ -5,7 +5,11 @@ import {
   useModal,
 } from '@keadex/keadex-ui-kit/cross'
 import type { WindowTitlebarButtonProps } from '@keadex/keadex-ui-kit/desktop'
-import { Window, WindowTitlebar } from '@keadex/keadex-ui-kit/desktop'
+import {
+  Window,
+  WindowTitlebar,
+  findRoute,
+} from '@keadex/keadex-ui-kit/desktop'
 import { TauriEvent, UnlistenFn } from '@tauri-apps/api/event'
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import { onOpenUrl } from '@tauri-apps/plugin-deep-link'
@@ -117,26 +121,27 @@ export const Layout = React.memo((props: LayoutProps) => {
 
   useEffect(() => {
     console.debug('Location changed!', location.pathname)
-    if (ROUTES[location.pathname]) {
+    const foundRoute = findRoute(
+      location.pathname,
+      ROUTES,
+      (routeToFind: string, routeToCompare: string) => {
+        return routeToFind === routeToCompare.replace(/\/:.*(\?)/gi, '/')
+      },
+    )
+    if (foundRoute) {
       setWindowTitlebarMenu(
-        ROUTES[location.pathname].titlebarMenuFactory
-          ? ROUTES[location.pathname].titlebarMenuFactory!(
-              t,
-              context,
-              navigate,
-              location,
-              {
-                showModal,
-                hideModal,
-                dispatch,
-                currentProjectRoot: project?.project_settings.root,
-              },
-            )
+        foundRoute.titlebarMenuFactory
+          ? foundRoute.titlebarMenuFactory!(t, context, navigate, location, {
+              showModal,
+              hideModal,
+              dispatch,
+              currentProjectRoot: project?.project_settings.root,
+            })
           : emptyWindowTitlebarMenu,
       )
       setIsAppMenuVisible(
-        ROUTES[location.pathname].isAppMenuVisible !== undefined
-          ? ROUTES[location.pathname].isAppMenuVisible!
+        foundRoute.isAppMenuVisible !== undefined
+          ? foundRoute.isAppMenuVisible!
           : false,
       )
     } else {
