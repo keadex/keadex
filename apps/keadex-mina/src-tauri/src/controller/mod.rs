@@ -8,5 +8,7 @@ pub mod hook_controller;
 pub mod library_controller;
 #[cfg(feature = "desktop")]
 pub mod project_controller;
+#[cfg(feature = "desktop")]
+pub mod search_controller;
 #[cfg(feature = "web")]
 pub mod web_controller;

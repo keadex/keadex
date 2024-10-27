@@ -1,0 +1,21 @@
+import Image from 'next/image'
+import dependencyTableScreenshot from '../../../../../../public/img/mina/dependency-table.png'
+import { faSitemap } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+# Dependency Table
+
+When analyzing architectures — for instance, to identify bottlenecks, assess potential side-effects when planning refactoring, or examine the level of interdependence between architectural components — you may want to visualize **dependencies** between these components in your diagrams.
+
+Mina offers a **Dependency Table** feature that scans your diagrams to identify which ones rely on a **specified architectural component**. The **dependent diagrams** are then displayed in a table, allowing you to click on each row to **open the corresponding diagram** for a more detailed analysis of the dependency.
+
+To open the _Dependency Table_ feature click on the icon <FontAwesomeIcon icon={faSitemap} className="inline w-4 mx-2" /> in the sidebar.
+
+<div className="my-10 flex items-center justify-center">
+  <Image
+    src={dependencyTableScreenshot}
+    alt="Screenshot of the Dependency Table Mina feature"
+    height={500}
+    className="mx-auto my-5 md:mx-5"
+  />
+</div>

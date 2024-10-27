@@ -143,17 +143,19 @@ export const HomeProject = React.memo((props: HomeProjectProps) => {
   }
 
   useEffect(() => {
-    listDiagrams()
-      .then((diagrams) => {
-        const tableData = createData(diagrams, t, forceUpdate, openDiagram)
-        setData(tableData.data)
-        tableRef.current?.setPageSize(tableData.totalRows)
-      })
-      .catch((error: MinaError) => {
-        toast.error(
-          t('common.error.project_not_opened', { errorMessage: error.msg }),
-        )
-      })
+    if (project) {
+      listDiagrams()
+        .then((diagrams) => {
+          const tableData = createData(diagrams, t, forceUpdate, openDiagram)
+          setData(tableData.data)
+          tableRef.current?.setPageSize(tableData.totalRows)
+        })
+        .catch((error: MinaError) => {
+          toast.error(
+            t('common.error.project_not_opened', { errorMessage: error.msg }),
+          )
+        })
+    }
   }, [t, updatedCounter, project])
 
   return (

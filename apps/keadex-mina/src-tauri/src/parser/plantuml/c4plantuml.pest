@@ -202,7 +202,7 @@ name = { ( ASCII_ALPHANUMERIC | "." | "_" )+ }
 
 quoted_name = _{ "\"" ~ name ~ "\"" }
 
-uri = { (ASCII_ALPHANUMERIC | WHITESPACE | "-" | "_" | "/" | "\\" | "." | ":")+ }
+uri = { (ASCII_ALPHANUMERIC | WHITESPACE | "-" | "_" | "/" | "\\" | "." | ":" | ";" | "<" | ">")+ }
 
 string = { (!("\"" | NEWLINE) ~ ANY)+ }
 

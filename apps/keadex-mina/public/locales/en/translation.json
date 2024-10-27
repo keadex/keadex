@@ -25,10 +25,13 @@
     "c4_plantuml": "C4 PlantUML",
     "default": "Default",
     "delete": "Delete",
+    "dependency_table": "Dependency Table",
     "deployment_node": "Deployment Node",
     "description": "Description",
     "diagram": "Diagram",
     "diagrams": "Diagrams",
+    "diagram_name": "Diagram Name",
+    "diagram_type": "Diagram Type",
     "disabled": "Disabled",
     "documentation": "Documentation",
     "duplicate": "Duplicate",
@@ -40,6 +43,7 @@
     "exit": "Exit",
     "export": "Export",
     "external": "External",
+    "external_links": "External Links",
     "file": "File",
     "find": "Find",
     "from": "From",
@@ -50,6 +54,7 @@
     "global": "Global",
     "help": "Help",
     "internal": "Internal",
+    "internal_link": "Internal Link",
     "invalid": "Invalid",
     "kernel": "Kernel",
     "legend": "Legend",
@@ -70,6 +75,7 @@
     "person": "Person",
     "person_external": "Person External",
     "platform": "Platform",
+    "proceed": "Proceed",
     "project": "Project",
     "redo": "Redo",
     "relationship": "Relationship",
@@ -102,11 +108,12 @@
       "link_to_diagram": "Link \"{{alias}}\" to...",
       "new_project": "New Project",
       "open_project": "Open Project",
-      "report_issue": "Report Issue"
+      "report_issue": "Report Issue",
+      "share_deep_link": "Share deep link"
     },
     "error": {
       "internal": "Internal error: {{errorMessage}}",
-      "cannot_add_diagram_link": "Cannot add a diagram link to the selected PlantUML element. Move the cursor on a Software System, Container, or Component in the code editor. ",
+      "cannot_add_link": "Cannot add a link to the selected PlantUML element. Move the cursor on a Software System, Container, or Component in the code editor. ",
       "cannot_delete_diagram": "Cannot delete the diagram: {{errorMessage}}",
       "cannot_delete_element": "Cannot delete this element.",
       "invalid_diagram_link": "Diagram not found. Check the diagram link.",
@@ -144,17 +151,31 @@
     "os_type": "OS Type",
     "kernel_version": "Kernel Version"
   },
+  "deep_link": {
+    "invalid_diagram_path": "The deep link '{{deepLink}}' contains an invalid diagram link.",
+    "invalid_dependency_table_path": "The deep link '{{deepLink}}' contains an invalid dependency table parameter. It should contain only the alias parameter.",
+    "required_open_project": "The deep link '{{deepLink}}' requires an active project to be open.",
+    "unsupported_deep_link": "Unsupported deep link."
+  },
+  "dependency_table": {
+    "alias_hint": "Diagram Element Alias",
+    "dependencies_retrieval_error": "An error occured while retrieving the dependencies: {{errorMessage}}",
+    "description_feature": "This tool can be used to identify which diagrams include the architectural element with the specified alias.",
+    "no_dependencies_found": "No dependencies found."
+  },
   "diagram_editor": {
     "add_diagram_element": "Add a diagram element",
-    "add_diagram_link": "Add a link to a diagram",
     "ai_diagram_generator": "AI diagram generator",
     "ai_hint": "Description of the diagram to generate",
     "configure_auto_layout": "Configure auto layout",
     "element_imported": "Element imported",
+    "external_links_info": "Max {{maxNumExternalLinks}} links. Allowed links: {{allowedLinks}}. Allowed link variables: {{allowedVariables}}.",
     "import_from_library": "Import from the library",
+    "link_to": "Link to...",
     "plantuml_generated": "PlantUML generated",
     "saving_rendering_diagram": "Saving & Rendering",
     "select_element_type_to_import": "Select the C4 element type to import from the library",
+    "share_deep_link": "Share deep link of the diagram",
     "warning_enable_autolayout": "You are enabling the auto layout. All the changes you made to the diagram layout will be discarded and replaced with the automatically generated layout."
   },
   "home": {
@@ -183,5 +204,8 @@
   "table": {
     "go_to_page": "Go to page",
     "current_page": "Page {{currentPage}} of {{totalPages}}"
+  },
+  "updater": {
+    "title": "Update to {{version}} available!"
   }
 }

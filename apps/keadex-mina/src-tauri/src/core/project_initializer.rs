@@ -34,11 +34,11 @@ use crate::templates::hooks_js_file::generate_hooks_js_file;
 use crate::validator::project_validator::{
   validate_output_project_directory, validate_project_structure,
 };
+use convert_case::{Case, Casing};
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, MAIN_SEPARATOR};
 use strum::IntoEnumIterator;
-use convert_case::{Case, Casing};
 
 /**
 Loads a project
@@ -152,7 +152,8 @@ pub fn create_empty_project(
 
   // Validate the output path of the new project
   let project_folder = &project_settings.name.to_case(Case::Kebab);
-  let full_project_root = validate_output_project_directory(&project_settings.root, &project_folder)?;
+  let full_project_root =
+    validate_output_project_directory(&project_settings.root, &project_folder)?;
   project_settings.root = full_project_root;
 
   // Create diagrams folder, a folder for each diagram type and a file .gitkeep

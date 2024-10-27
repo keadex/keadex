@@ -4,7 +4,7 @@ export const NEWS = (
   <div>
     🎉&nbsp;
     <a className="!text-accent-primary" href={ROUTES[PROJECT_KEADEX_MINA].path}>
-      Keadex Mina 1.0
+      Keadex Mina v1
     </a>{' '}
     is now available!
   </div>

@@ -85,73 +85,75 @@ pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> Result<boo
   limit: i32,
 ) -> Result<bool, MinaError> {
   let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
-    .get()
-    .unwrap();
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
 
-  let temp_root_1 = String::from(&project_settings.root);
-  let temp_root_2 = String::from(&project_settings.root);
+  if let Some(project_settings) = project_settings {
+    let temp_root_1 = String::from(&project_settings.root);
+    let temp_root_2 = String::from(&project_settings.root);
 
-  let diagrams_directory = diagrams_path(&temp_root_2);
-  let library_directory = project_library_path(&temp_root_2);
+    let diagrams_directory = diagrams_path(&temp_root_2);
+    let library_directory = project_library_path(&temp_root_2);
 
-  let mut count = 0;
-  let mut reached_limit = false;
+    let mut count = 0;
+    let mut reached_limit = false;
 
-  // Unload the project since we need to unlock all the project's file in order to read them
-  unload_project(&project_settings.root)?;
+    // Unload the project since we need to unlock all the project's file in order to read them
+    unload_project(&project_settings.root)?;
 
-  // Search for the given string in all the project's files
-  for entry in WalkDir::new(temp_root_1)
-    .into_iter()
-    .filter_entry(|e| {
-      is_searchable_dir(
-        e,
-        &temp_root_2,
-        include_diagrams,
-        include_library,
-        &diagrams_directory,
-        &library_directory,
-      )
-    })
-    .filter_map(|e| e.ok())
-  {
-    if entry.file_type().is_file() {
-      let file = File::options().read(true).write(false).open(entry.path())?;
-      let reader = BufReader::new(file);
-      let path = entry.path().to_str().unwrap();
+    // Search for the given string in all the project's files
+    for entry in WalkDir::new(temp_root_1)
+      .into_iter()
+      .filter_entry(|e| {
+        is_searchable_dir(
+          e,
+          &temp_root_2,
+          include_diagrams,
+          include_library,
+          &diagrams_directory,
+          &library_directory,
+        )
+      })
+      .filter_map(|e| e.ok())
+    {
+      if entry.file_type().is_file() {
+        let file = File::options().read(true).write(false).open(entry.path())?;
+        let reader = BufReader::new(file);
+        let path = entry.path().to_str().unwrap();
 
-      for (line_num, line) in reader.lines().enumerate() {
-        if let Ok(line) = line {
-          if predicate(
-            line,
-            line_num,
-            path,
-            &diagrams_directory,
-            &library_directory,
-          )? {
-            count += 1;
-            if count > limit {
-              reached_limit = true;
-              count -= 1;
-              break;
+        for (line_num, line) in reader.lines().enumerate() {
+          if let Ok(line) = line {
+            if predicate(
+              line,
+              line_num,
+              path,
+              &diagrams_directory,
+              &library_directory,
+            )? {
+              count += 1;
+              if count > limit {
+                reached_limit = true;
+                count -= 1;
+                break;
+              }
             }
+          } else {
+            break;
           }
-        } else {
-          break;
         }
+      }
+
+      if reached_limit {
+        break;
       }
     }
 
-    if reached_limit {
-      break;
-    }
+    // (Re)load the project to make it available again to the client
+    load_project(&temp_root_2)?;
+
+    Ok(reached_limit)
+  } else {
+    Ok(true)
   }
-
-  // (Re)load the project to make it available again to the client
-  load_project(&temp_root_2)?;
-
-  Ok(reached_limit)
 }
 
 /**

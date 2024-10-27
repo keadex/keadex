@@ -68,12 +68,14 @@ export const MINA_GS_PROJECT_STRUCTURE = `${MINA_GETTING_STARTED}/project-struct
 export const MINA_FEATURES = `${MINA_DOCS}/features`
 export const MINA_AI = `${MINA_FEATURES}/ai`
 export const MINA_AUTOLAYOUT = `${MINA_FEATURES}/autolayout`
-export const MINA_DIAGRAMS_LINKS = `${MINA_FEATURES}/diagrams-links`
+export const MINA_DEPENDENCY_TABLE = `${MINA_FEATURES}/dependency-table`
+export const MINA_DEEP_LINKS = `${MINA_FEATURES}/deep-links`
 export const MINA_DIAGRAMS_ORG = `${MINA_FEATURES}/diagrams-organization`
 export const MINA_EXPORT = `${MINA_FEATURES}/export`
 export const MINA_HOOKS = `${MINA_FEATURES}/hooks`
 export const MINA_INTELLISENSE = `${MINA_FEATURES}/intellisense`
 export const MINA_LIBRARY = `${MINA_FEATURES}/library`
+export const MINA_LINKS = `${MINA_FEATURES}/links`
 export const MINA_LOW_CODING = `${MINA_FEATURES}/low-coding`
 export const MINA_PLANTUML = `${MINA_FEATURES}/plantuml`
 export const MINA_SEARCH = `${MINA_FEATURES}/search`
@@ -133,8 +135,11 @@ ROUTES[MINA_AI] = {
 ROUTES[MINA_AUTOLAYOUT] = {
   path: MINA_AUTOLAYOUT,
 }
-ROUTES[MINA_DIAGRAMS_LINKS] = {
-  path: MINA_DIAGRAMS_LINKS,
+ROUTES[MINA_DEEP_LINKS] = {
+  path: MINA_DEEP_LINKS,
+}
+ROUTES[MINA_DEPENDENCY_TABLE] = {
+  path: MINA_DEPENDENCY_TABLE,
 }
 ROUTES[MINA_DIAGRAMS_ORG] = {
   path: MINA_DIAGRAMS_ORG,
@@ -150,6 +155,9 @@ ROUTES[MINA_INTELLISENSE] = {
 }
 ROUTES[MINA_LIBRARY] = {
   path: MINA_LIBRARY,
+}
+ROUTES[MINA_LINKS] = {
+  path: MINA_LINKS,
 }
 ROUTES[MINA_LOW_CODING] = {
   path: MINA_LOW_CODING,

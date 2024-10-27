@@ -1,6 +1,10 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import { faBook, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { IconButton } from '@keadex/keadex-ui-kit/cross'
+import {
+  faBook,
+  faMagnifyingGlass,
+  faSitemap,
+} from '@fortawesome/free-solid-svg-icons'
+import { IconButton, useSafeExit } from '@keadex/keadex-ui-kit/cross'
 import React, {
   PropsWithChildren,
   useContext,
@@ -11,21 +15,25 @@ import { useTranslation } from 'react-i18next'
 import { Resizable, ResizeCallbackData } from 'react-resizable'
 import { Tooltip } from 'tw-elements'
 import { faKeadexMina } from '../../assets/icons'
+import AppEventContext, { AppEventType } from '../../context/AppEventContext'
+import { openDependencyTable } from '../../core/router/router'
+import ROUTES from '../../core/router/routes'
 import LibraryPanel from './Panels/LibraryPanel/LibraryPanel'
 import ProjectPanel from './Panels/ProjectPanel/ProjectPanel'
 import SearchPanel from './Panels/SearchPanel/SearchPanel'
-import AppEventContext, { AppEventType } from '../../context/AppEventContext'
 
 enum MenuItem {
   Project,
   Search,
   Library,
+  DependencyTable,
 }
 
 export interface AppMenuItem {
   menuItem: MenuItem
   icon: IconProp
   title: string
+  onClick?: () => void
 }
 
 export interface AppMenuProps {
@@ -36,6 +44,7 @@ export const AppMenu = React.memo((props: PropsWithChildren<AppMenuProps>) => {
   const { visible } = props
   const { t } = useTranslation()
   const context = useContext(AppEventContext)
+  const { modal: modalSafeExit, safeExit } = useSafeExit(ROUTES)
 
   const sidenavSlimWidth = 50
   const [sidenavPanelWidth, setSidenavPanelWidth] = useState(300)
@@ -58,21 +67,34 @@ export const AppMenu = React.memo((props: PropsWithChildren<AppMenuProps>) => {
       icon: faBook,
       title: t('common.library'),
     },
+    {
+      menuItem: MenuItem.DependencyTable,
+      icon: faSitemap,
+      title: t('common.dependency_table'),
+      onClick: () => {
+        openDependencyTable(safeExit, '')
+      },
+    },
   ]
 
-  const handleSlimTogglerClick = (menuItem: MenuItem) => {
-    if (
-      menuItem === activeMenuItem ||
-      (isSlimCollapsed && menuItem !== activeMenuItem)
-    ) {
-      setIsSlimCollapsed(!isSlimCollapsed)
+  const handleSlimTogglerClick = (appMenuItem: AppMenuItem) => {
+    if (appMenuItem.onClick) {
+      appMenuItem.onClick()
+      setIsSlimCollapsed(true)
+    } else {
+      if (
+        appMenuItem.menuItem === activeMenuItem ||
+        (isSlimCollapsed && appMenuItem.menuItem !== activeMenuItem)
+      ) {
+        setIsSlimCollapsed(!isSlimCollapsed)
+      }
     }
-    setActiveMenuItem(menuItem)
+    setActiveMenuItem(appMenuItem.menuItem)
   }
 
   const onSidenavPanelResize = (
     e: React.SyntheticEvent,
-    data: ResizeCallbackData
+    data: ResizeCallbackData,
   ) => {
     setSidenavPanelWidth(data.size.width)
   }
@@ -83,10 +105,10 @@ export const AppMenu = React.memo((props: PropsWithChildren<AppMenuProps>) => {
 
   useEffect(() => {
     const tooltipTriggerList = [].slice.call(
-      document.querySelectorAll('[data-te-toggle="tooltip"]')
+      document.querySelectorAll('[data-te-toggle="tooltip"]'),
     )
     tooltipTriggerList.map(
-      (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl, { trigger: 'hover' })
+      (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl, { trigger: 'hover' }),
     )
   }, [])
 
@@ -99,7 +121,7 @@ export const AppMenu = React.memo((props: PropsWithChildren<AppMenuProps>) => {
           className={`relative ${
             isMenuActive(appMenuItem.menuItem) ? 'active' : ''
           }`}
-          onClick={() => handleSlimTogglerClick(appMenuItem.menuItem)}
+          onClick={() => handleSlimTogglerClick(appMenuItem)}
           data-te-toggle="tooltip"
           data-te-placement="right"
           title={appMenuItem.title}
@@ -107,9 +129,9 @@ export const AppMenu = React.memo((props: PropsWithChildren<AppMenuProps>) => {
           <IconButton
             icon={appMenuItem.icon}
             className={`${isMenuActive(appMenuItem.menuItem) ? 'active' : ''}`}
-            onClick={() => handleSlimTogglerClick(appMenuItem.menuItem)}
+            onClick={() => handleSlimTogglerClick(appMenuItem)}
           />
-        </li>
+        </li>,
       )
     })
     return renderedItems
@@ -124,6 +146,7 @@ export const AppMenu = React.memo((props: PropsWithChildren<AppMenuProps>) => {
 
   return (
     <div className={`h-full ${!visible ? 'app-menu__parent--hidden' : ''}`}>
+      {modalSafeExit}
       {/* Sidenav */}
       <nav
         id="app-menu-sidenav"

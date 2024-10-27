@@ -15,6 +15,12 @@ export {
   AUTO_LAYOUT_ORIENTATIONS,
 } from './constants/diagram'
 export {
+  DIAGRAM_INTERNAL_LINK_PROTOCOLS,
+  DIAGRAM_EXTERNAL_LINK_PROTOCOLS,
+  DIAGRAM_LINKS_SEPARATOR,
+  DiagramExternalLinkVariables,
+} from './constants/diagram-link'
+export {
   CANVAS_EVENTS,
   OBJECT_EVENTS,
   MOUSE_EVENTS,
@@ -65,6 +71,12 @@ export {
   parseDiagramTypeHumanName,
   isDefaultDiagramElementSpec,
 } from './helper/diagram-helper'
+export {
+  externalLinkVariableToPlaceholder,
+  isExternalLink,
+  linkLabelFromExternalLink,
+  replaceExternalLinkVariables,
+} from './helper/diagram-link-helper'
 export {
   addObjectsToGroupAndKeepScale,
   getBoundingBox,

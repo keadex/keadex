@@ -10,11 +10,14 @@ describe('DiagramDesignView', () => {
           onOpenDiagramClick: (diagramLink: string) => {
             console.log(`onOpenDiagramClick ${diagramLink}`)
           },
+          onOpenExternalLinkClick: (externalLink: string) => {
+            console.log(`onOpenExternalLinkClick ${externalLink}`)
+          },
         }}
         saveDiagram={() => {
           console.log('test')
         }}
-        target='desktop'
+        target="desktop"
       />,
     )
     expect(baseElement).toBeTruthy()

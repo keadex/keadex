@@ -52,6 +52,23 @@ Description
 </td></tr>
 <tr><td>
 
+[onOpenExternalLinkClick](./c4-model-ui-kit.diagramlistener.onopenexternallinkclick.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(externalLink: string) =&gt; void
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [onSelectElementCode?](./c4-model-ui-kit.diagramlistener.onselectelementcode.md)
 
 

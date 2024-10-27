@@ -1,6 +1,6 @@
 [package]
 name = "keadex_mina"
-version = "1.7.1"
+version = "1.8.0"
 description = "Desktop application to draw, manage and share the architectures of software systems."
 authors = ["Keadex"]
 license = "MIT"
@@ -12,17 +12,11 @@ rust-version = "1.77.1"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.5.1", features = ["isolation"], optional = true }
+tauri-build = { version = "2", features = [], optional = true }
 
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.6.1", features = [
-  "macos-private-api",
-  "updater",
-  "api-all",
-  "isolation",
-], optional = true }
 log = { version = "0.4", features = ["serde"] }
 env_logger = "0.8.4"
 state = "0.6"
@@ -52,12 +46,39 @@ bomboni_wasm = { version = "0.1", features = [
 ], default-features = false }
 fancy-regex = "0.13.0"
 layout-rs = { version = "0.1.2", features = [] }
+tauri = { version = "2", features = [
+  "macos-private-api",
+], optional = true }
+tauri-plugin-http = { version = "2", optional = true }
+tauri-plugin-clipboard-manager = { version = "2.0.1", optional = true }
+tauri-plugin-os = { version = "2", optional = true }
+tauri-plugin-notification = { version = "2", optional = true }
+tauri-plugin-process = { version = "2", optional = true }
+tauri-plugin-dialog = { version = "2", optional = true }
+tauri-plugin-shell = { version = "2", optional = true }
+tauri-plugin-fs = { version = "2", optional = true }
+tauri-plugin-global-shortcut = { version = "2", optional = true }
+tauri-plugin-updater = { version = "2", optional = true }
+tauri-plugin-deep-link = { version = "2", optional = true }
+tauri-plugin-single-instance = { version = "2", features = ["deep-link"], optional = true }
 
 [features]
 default = ["desktop", "custom-protocol"]
 desktop = [
   "web",
   "tauri",
+  "tauri-plugin-http",
+  "tauri-plugin-clipboard-manager",
+  "tauri-plugin-os",
+  "tauri-plugin-notification",
+  "tauri-plugin-process",
+  "tauri-plugin-dialog",
+  "tauri-plugin-shell",
+  "tauri-plugin-fs",
+  "tauri-plugin-global-shortcut",
+  "tauri-plugin-updater",
+  "tauri-plugin-deep-link",
+  "tauri-plugin-single-instance",
   "dep:uuid",
   "dep:async-openai",
   "dep:tauri-build",

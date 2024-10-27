@@ -205,7 +205,7 @@ export const DiagramCodeViewToolbar = forwardRef(
               className={`${styleButton}`}
               data-te-toggle="tooltip"
               data-te-placement="bottom"
-              title={t('diagram_editor.add_diagram_link').toString()}
+              title={t('diagram_editor.link_to').toString()}
               onClick={() => {
                 diagramCodeViewCommands?.addDiagramLink()
               }}

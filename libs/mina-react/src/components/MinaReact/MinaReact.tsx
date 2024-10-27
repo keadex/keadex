@@ -53,6 +53,9 @@ export const MinaReact = (props: MinaReactProps) => {
       }
       if (diagramUrl) openDiagram(diagramUrl)
     },
+    onOpenExternalLinkClick: (externalLink: string) => {
+      window.open(externalLink, '_blank')
+    },
   }
 
   async function openDiagram(url: string) {

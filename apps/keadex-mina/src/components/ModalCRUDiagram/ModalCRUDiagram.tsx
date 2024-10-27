@@ -230,9 +230,12 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
           className="mt-6"
           label={t('common.tags')}
           tags={newDiagramTags}
-          callbacks={{
-            add: onTagsChanged,
-            remove: onTagsChanged,
+          settings={{
+            callbacks: {
+              add: onTagsChanged,
+              remove: onTagsChanged,
+            },
+            editTags: false,
           }}
         />
       </div>

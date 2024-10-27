@@ -9,7 +9,8 @@ use crate::dao::filesystem::library::{
 use crate::error_handling::errors::{
   EXISTING_PROJECT_DIRECTORY_ERROR_MSG, INVALID_NEW_PROJECT_PATH_ERROR_CODE,
   INVALID_PROJECT_STRUCTURE_ERROR_CODE, MISSING_MINA_CONFIG_ERROR_CODE,
-  MISSING_MINA_CONFIG_ERROR_MSG, NOT_A_DIRECTORY_ERROR_MSG, NOT_EXISTING_PARENT_PATH_PROJECT_ERROR_MSG,
+  MISSING_MINA_CONFIG_ERROR_MSG, NOT_A_DIRECTORY_ERROR_MSG,
+  NOT_EXISTING_PARENT_PATH_PROJECT_ERROR_MSG,
 };
 use crate::error_handling::mina_error::MinaError;
 use crate::helper::diagram_helper::diagrams_path;
@@ -110,7 +111,10 @@ Checks if the provided path satisfies the requirement to contain a new project.
   * `root` - root of the new project
   * `project_folder` - folder of the new project
 */
-pub fn validate_output_project_directory(root: &str, project_folder: &str) -> Result<String, MinaError> {
+pub fn validate_output_project_directory(
+  root: &str,
+  project_folder: &str,
+) -> Result<String, MinaError> {
   let full_project_root = format!("{}{}{}", root, MAIN_SEPARATOR, project_folder);
 
   if !Path::new(root).exists() {
@@ -123,7 +127,10 @@ pub fn validate_output_project_directory(root: &str, project_folder: &str) -> Re
   if Path::new(&full_project_root).exists() {
     return Err(MinaError::new(
       INVALID_NEW_PROJECT_PATH_ERROR_CODE,
-      &format!("{}\"{}\"", EXISTING_PROJECT_DIRECTORY_ERROR_MSG, project_folder),
+      &format!(
+        "{}\"{}\"",
+        EXISTING_PROJECT_DIRECTORY_ERROR_MSG, project_folder
+      ),
     ));
   }
 
