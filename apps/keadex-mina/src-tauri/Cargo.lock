@@ -2790,7 +2790,7 @@ dependencies = [
 
 [[package]]
 name = "keadex_mina"
-version = "1.8.1"
+version = "1.8.2"
 dependencies = [
  "async-openai",
  "bomboni_wasm",
