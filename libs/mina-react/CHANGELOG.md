@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/keadex/keadex/compare/mina-react@1.10.0...mina-react@1.10.1) (2024-10-27)
+
+
+### Bug Fixes
+
+* **libs/mina-react:** fixed missing dependency ([e138050](https://github.com/keadex/keadex/commit/e138050059fc00586261dbcd7501d75c16328334))
+
 # [1.10.0](https://github.com/keadex/keadex/compare/mina-react@1.9.1...mina-react@1.10.0) (2024-10-27)
 
 
