@@ -26,6 +26,7 @@ export function checkForUpdates(
             children: <span>{t('common.proceed')}</span>,
             className: 'button--safe',
             onClick: async () => {
+              toast.info(t('updater.updating'))
               await update.downloadAndInstall()
               await relaunch()
             },

@@ -206,6 +206,7 @@
     "current_page": "Page {{currentPage}} of {{totalPages}}"
   },
   "updater": {
-    "title": "Update to {{version}} available!"
+    "title": "Update to {{version}} available!",
+    "updating": "Updating Mina..."
   }
 }
