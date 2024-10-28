@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/keadex/keadex/compare/docusaurus-plugin-mina@1.10.0...docusaurus-plugin-mina@1.11.0) (2024-10-27)
+
+
+### Features
+
+* **common:** updated keadex libs versions ([c1d4557](https://github.com/keadex/keadex/commit/c1d4557d798685618be17ef78f175589b0c28bf9))
+
 # [1.10.0](https://github.com/keadex/keadex/compare/docusaurus-plugin-mina@1.9.0...docusaurus-plugin-mina@1.10.0) (2024-10-04)
 
 

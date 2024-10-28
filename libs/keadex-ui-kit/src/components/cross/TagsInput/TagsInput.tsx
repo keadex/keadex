@@ -1,20 +1,18 @@
 import { objectsAreEqual } from '@keadex/keadex-utils'
-import Tagify, { BaseTagData, EventDataMap, TagData } from '@yaireo/tagify'
+import Tagify, { BaseTagData, TagData } from '@yaireo/tagify'
 import React, { useEffect, useState } from 'react'
 
 export interface TagsInputProps<T extends BaseTagData = TagData> {
   id: string
   tags: string[]
-  callbacks?: {
-    [K in keyof EventDataMap]?: (event: CustomEvent<EventDataMap<T>[K]>) => void
-  }
   label?: string
   className?: string
   disabled?: boolean
+  settings?: Tagify.TagifySettings<Tagify.TagData>
 }
 
 export const TagsInput = React.memo(
-  ({ id, tags, callbacks, label, className, disabled }: TagsInputProps) => {
+  ({ id, tags, label, className, disabled, settings }: TagsInputProps) => {
     const [tagifiedInput, setTagifiedInput] = useState<Tagify | undefined>()
 
     useEffect(() => {
@@ -25,7 +23,7 @@ export const TagsInput = React.memo(
       if (inputElem && !tagifiedInput) {
         setTagifiedInput(
           new Tagify(inputElem, {
-            callbacks,
+            ...settings,
           }),
         )
       }

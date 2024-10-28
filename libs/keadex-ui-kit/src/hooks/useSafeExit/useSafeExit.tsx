@@ -2,7 +2,7 @@ import { Routes, useModal } from '@keadex/keadex-ui-kit/cross'
 import { NavigateOptions, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-export function useSafeExit<T, K>(routes: Routes<T, K>) {
+export function useSafeExit<T, K, D>(routes: Routes<T, K, D>) {
   const { modal, showModal, hideModal } = useModal()
   const navigate = useNavigate()
   const location = useLocation()

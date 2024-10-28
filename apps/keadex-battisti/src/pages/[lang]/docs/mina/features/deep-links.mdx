@@ -1,0 +1,49 @@
+import { faShareNodes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import deepExternalLink from '../../../../../../public/img/mina/deep-external-link.png'
+import Image from 'next/image'
+import { Callout } from 'nextra/components'
+
+# Deep Links
+
+In the context of desktop applications, **deep linking** consists of using a uniform resource identifier (URI) that links to a specific location within a desktop application rather than simply launching the app.
+
+By using [hooks](./hooks.mdx), [dynamic external links](./links.mdx) and **deep links**, you can connect Mina diagrams to the external world.
+
+For example, you could use an [dynamic external links](./links.mdx) to link an architectural element within your diagram to its corresponding service on your monitoring platform. A **deep link** could then be used to open the architectural diagram or dependency table in Mina directly from that service on the monitoring platform.
+
+<div className="my-10 flex items-center justify-center">
+  <Image
+    src={deepExternalLink}
+    alt="Representation of Mina's connection to the external world via deep links and dynamic external Links"
+    height={200}
+    className="mx-auto my-5 md:mx-5"
+  />
+</div>
+
+## Available Deep Links
+
+<Callout type="warning" emoji="⚠️">
+  Certain deep links may require an active, open project in Mina to function
+  correctly.
+</Callout>
+
+| Deep Link                            | Parameter                                                                                               | Description                                                                                                 | Example                                       |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| `mina://open-diagram/<DIAGRAM_LINK>` | `<DIAGRAM_LINK>`: Link of the diagram. See the [internal links documentation](./links) for the details. | Opens in Mina the given diagram.                                                                            | mina://open-diagram/system-context/my-diagram |
+| `mina://dependency-table/<ALIAS>`    | `<ALIAS>`: Alias of the architectural element.                                                          | Opens in Mina the [dependency table](./dependency-table) of the architectural element with the given alias. | mina://dependency-table/reactApp              |
+
+## Usage
+
+### Generating a "Open Diagram" deep link
+
+1. Open a diagram in Mina
+2. Click on the icon <FontAwesomeIcon icon={faShareNodes} className="inline w-4 mx-2" /> in the top bar
+3. The deep link will be copied to the clipboard
+
+### Generating a "Dependency Table" deep link
+
+1. Open the [Dependency Table](./dependency-table) feature
+2. Fill in the _"Diagram Element Alias"_ input field
+3. Click on the _"Share Deep Link"_ button
+4. The deep link will be copied to the clipboard

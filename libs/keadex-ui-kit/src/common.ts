@@ -4,6 +4,7 @@ import pluralize from 'pluralize'
 pluralize.addPluralRule(/Person/, 'Persons')
 
 export type { Route, Routes } from './core/routing'
+export { findRoute } from './core/routing'
 
 export type Size = 'sm' | 'md' | 'lg' | 'full'
 

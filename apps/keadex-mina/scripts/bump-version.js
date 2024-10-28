@@ -37,7 +37,7 @@ const filesToUpdate = [
   },
   {
     path: 'apps/keadex-mina/src-tauri/tauri.conf.json',
-    pattern: `"productName": "Keadex Mina",\n    "version": "${version}"`,
+    pattern: `"mainBinaryName": "Keadex Mina",\n  "version": "${version}"`,
   },
   {
     path: 'libs/mina-react/src-rust/Cargo.lock',

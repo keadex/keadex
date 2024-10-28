@@ -1,7 +1,7 @@
 <p align="center">
-  <a href="https://keadex.dev/en/projects/keadex-mina" target="_blank"><img src="./public/mina-logo-full.png" width="400" alt="Keadex Mina Logo" /></a>
+  <a href="https://keadex.dev/en/projects/keadex-mina" target="_blank"><img src="./public/mina-banner.svg" width="100%" alt="Keadex Mina Logo" /></a>
 </p>
-<p align="center"><i>Desktop app to easily code and organize at a scale <a href="https://c4model.com/" target="_blank">C4 Model</a> diagrams</i></p>
+
 <div align="center">
 
 ![Website](https://img.shields.io/website?url=https%3A%2F%2Fkeadex.dev%2Fen%2Fprojects%2Fkeadex-mina&label=website&up_message=keadex.dev)

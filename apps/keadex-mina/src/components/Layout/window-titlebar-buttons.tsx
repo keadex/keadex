@@ -5,9 +5,11 @@ import {
   faWindowRestore,
   faMinus,
 } from '@fortawesome/free-solid-svg-icons'
-import { appWindow } from '@tauri-apps/api/window'
+import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import { ModalProps } from '@keadex/keadex-ui-kit/cross'
 import { TFunction } from 'i18next'
+
+const appWindow = getCurrentWebviewWindow()
 
 export function createButtons(
   setRightButtons: React.Dispatch<

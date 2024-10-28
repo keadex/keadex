@@ -11,7 +11,7 @@ import ROUTES, {
   MINA_ARCH_OVERVIEW,
   MINA_AUTOLAYOUT,
   MINA_CONFLUENCE_PLUGIN,
-  MINA_DIAGRAMS_LINKS,
+  MINA_LINKS,
   MINA_DIAGRAMS_ORG,
   MINA_EXPORT,
   MINA_GS_PROJECT_STRUCTURE,
@@ -28,6 +28,8 @@ import ROUTES, {
   MINA_TAGS,
   MINA_THEMES,
   MINA_VERSIONING,
+  MINA_DEEP_LINKS,
+  MINA_DEPENDENCY_TABLE,
 } from '../core/routes'
 import {
   MenuItem,
@@ -102,9 +104,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               disableTOC: true,
             },
             {
-              id: 'keadex-mina_diagrams-links',
-              title: 'Diagrams Links',
-              href: ROUTES[MINA_DIAGRAMS_LINKS].path,
+              id: 'keadex-mina_deep-links',
+              title: 'Deep Links',
+              href: ROUTES[MINA_DEEP_LINKS].path,
+              disableTOC: true,
+            },
+            {
+              id: 'keadex-mina_dependency-table',
+              title: 'Dependency Table',
+              href: ROUTES[MINA_DEPENDENCY_TABLE].path,
+              disableTOC: true,
             },
             {
               id: 'keadex-mina_diagrams-org',
@@ -132,6 +141,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               id: 'keadex-mina_library',
               title: 'Library',
               href: ROUTES[MINA_LIBRARY].path,
+            },
+            {
+              id: 'keadex-mina_links',
+              title: 'Links',
+              href: ROUTES[MINA_LINKS].path,
             },
             {
               id: 'keadex-mina_low-coding',

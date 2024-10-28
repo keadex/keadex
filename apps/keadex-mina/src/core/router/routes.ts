@@ -1,11 +1,18 @@
+import { c4ElementTypePathName } from '@keadex/c4-model-ui-kit'
 import { Routes } from '@keadex/keadex-ui-kit/cross'
 import titlebarMenuFactory, {
   WindowTitlebarMenuFactoryData,
 } from '../../components/Layout/window-titlebar-menu'
-import { c4ElementTypePathName } from '@keadex/c4-model-ui-kit'
 import { AppEvent } from '../../context/AppEventContext'
 
-const ROUTES: Routes<AppEvent, WindowTitlebarMenuFactoryData> = {}
+export type MinaRouteData = {
+  requiresProject: boolean
+}
+
+const ROUTES: Routes<AppEvent, WindowTitlebarMenuFactoryData, MinaRouteData> =
+  {}
+
+//---------------- INTERNAL ROUTES
 
 // ----- Home Paths
 export const HOME = '/'
@@ -42,7 +49,7 @@ ROUTES[EDIT_DIAGRAM] = {
   titlebarMenuFactory,
 }
 
-// ----- Library paths
+// ----- Library Paths
 export const BASE_PATH_LIBRARY = '/library/'
 export const PERSONS_LIBRARY = `${BASE_PATH_LIBRARY}${c4ElementTypePathName(
   'Person',
@@ -76,6 +83,34 @@ ROUTES[COMPONENTS_LIBRARY] = {
   path: COMPONENTS_LIBRARY,
   isAppMenuVisible: true,
   titlebarMenuFactory,
+}
+
+// ----- Dependency Table Paths
+export const DEPENDENCY_TABLE_ALIAS_URL_PARAM = ':alias?'
+export const DEPENDENCY_TABLE = `/dependency-table/${DEPENDENCY_TABLE_ALIAS_URL_PARAM}`
+ROUTES[DEPENDENCY_TABLE] = {
+  path: DEPENDENCY_TABLE,
+  isAppMenuVisible: true,
+  titlebarMenuFactory,
+}
+
+//---------------- DEEP LINKS ROUTES
+export const DEEP_LINK_SCHEME = 'mina://'
+export const OPEN_DIAGRAM_DEEP_LINK = `${DEEP_LINK_SCHEME}open-diagram/`
+export const OPEN_DEPENDENCY_TABLE_DEEP_LINK = `${DEEP_LINK_SCHEME}dependency-table/`
+
+ROUTES[OPEN_DIAGRAM_DEEP_LINK] = {
+  path: OPEN_DIAGRAM_DEEP_LINK,
+  data: {
+    requiresProject: true,
+  },
+}
+
+ROUTES[OPEN_DEPENDENCY_TABLE_DEEP_LINK] = {
+  path: OPEN_DEPENDENCY_TABLE_DEEP_LINK,
+  data: {
+    requiresProject: true,
+  },
 }
 
 export default ROUTES

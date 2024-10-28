@@ -1,14 +1,14 @@
 import { renderButtons } from '@keadex/keadex-ui-kit/cross'
-import { useTranslation } from 'react-i18next'
-import { getVersion, getTauriVersion } from '@tauri-apps/api/app'
+import { getTauriVersion, getVersion } from '@tauri-apps/api/app'
+import { writeText } from '@tauri-apps/plugin-clipboard-manager'
 import {
   arch as archAPI,
   platform as platformAPI,
   type as typeAPI,
   version as versionAPI,
-} from '@tauri-apps/api/os'
-import { writeText } from '@tauri-apps/api/clipboard'
+} from '@tauri-apps/plugin-os'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 type AppDetails = {

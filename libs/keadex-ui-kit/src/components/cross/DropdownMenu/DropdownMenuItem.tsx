@@ -128,7 +128,6 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
             }
           `}
           id={`menu-${id}`}
-          aria-hidden="true"
           aria-labelledby={id}
           data-te-dropdown-menu-ref
         >

@@ -1,4 +1,8 @@
-import { faFloppyDisk, faXmark } from '@fortawesome/free-solid-svg-icons'
+import {
+  faFloppyDisk,
+  faShareNodes,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons'
 import { Diagram, diagramTypeHumanName } from '@keadex/c4-model-ui-kit'
 import {
   IconButton,
@@ -10,6 +14,9 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from 'tw-elements'
 import ModalCRUDiagram from '../ModalCRUDiagram/ModalCRUDiagram'
+import { writeText } from '@tauri-apps/plugin-clipboard-manager'
+import { toast } from 'react-toastify'
+import { generateDiagramDeepLink } from '../../helper/deep-link-helper'
 
 export interface DiagramEditorToolbarProps {
   diagram?: Diagram
@@ -69,6 +76,17 @@ export const DiagramEditorToolbar = (props: DiagramEditorToolbarProps) => {
     }
   }
 
+  async function handleShareDiagramDeepLink() {
+    if (diagram?.diagram_name && diagram?.diagram_type) {
+      const deepLink = await generateDiagramDeepLink(
+        diagram?.diagram_name,
+        diagram?.diagram_type,
+      )
+      writeText(deepLink)
+      toast.info(t('common.info.copied_to_clipboard'))
+    }
+  }
+
   return (
     <div id="diagram-editor-toolbar" className="w-full z-[6] flex">
       {modal}
@@ -85,6 +103,14 @@ export const DiagramEditorToolbar = (props: DiagramEditorToolbarProps) => {
             onClick={() => {
               props.saveDiagram()
             }}
+          />
+          <IconButton
+            icon={faShareNodes}
+            className={`${styleButton}`}
+            data-te-toggle="tooltip"
+            data-te-placement="bottom"
+            title={t('diagram_editor.share_deep_link')}
+            onClick={handleShareDiagramDeepLink}
           />
           <IconButton
             icon={faXmark}
