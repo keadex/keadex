@@ -2736,16 +2736,16 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@keadex/mina-react-npm@npm:@keadex/mina-react@^1.9.1":
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-1.9.1.tgz#575b7f3d24ad97a34085e5d28736a9f4b214c38b"
-  integrity sha512-4QWL9GFkI4Qeac0d4aI9uQJQ7e2VSdZXSM7nkqnbMHJ5AMj5PsUlihZN3cxFbZW8aJZ+T/HszmgJznEBlUDSIQ==
+"@keadex/mina-react-npm@npm:@keadex/mina-react@^1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-1.11.0.tgz#d508bb075a3a61585c860505f5363814247cc0bb"
+  integrity sha512-So++PaSSCVjtlcY4nL/N/TXmX3Um/aC54n+DO+hrxv1QSOO2x37y2A6X/PIETuYANMwsIWTaZhVYxkCRsKMsjQ==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
     "@fortawesome/react-fontawesome" "^0.2.0"
     "@tanstack/react-table" "^8.10.7"
-    "@tauri-apps/api" "^1.5.3"
+    "@tauri-apps/api" "^2.0.3"
     "@yaireo/tagify" "^4.24.0"
     buffer "^6.0.3"
     change-case "^5.4.3"
