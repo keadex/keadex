@@ -68,6 +68,7 @@ export const MINA_GS_PROJECT_STRUCTURE = `${MINA_GETTING_STARTED}/project-struct
 export const MINA_FEATURES = `${MINA_DOCS}/features`
 export const MINA_AI = `${MINA_FEATURES}/ai`
 export const MINA_AUTOLAYOUT = `${MINA_FEATURES}/autolayout`
+export const MINA_CONTINUOUS_INTEGRATION = `${MINA_FEATURES}/continuous-integration`
 export const MINA_DEPENDENCY_TABLE = `${MINA_FEATURES}/dependency-table`
 export const MINA_DEEP_LINKS = `${MINA_FEATURES}/deep-links`
 export const MINA_DIAGRAMS_ORG = `${MINA_FEATURES}/diagrams-organization`
@@ -82,6 +83,10 @@ export const MINA_SEARCH = `${MINA_FEATURES}/search`
 export const MINA_TAGS = `${MINA_FEATURES}/tags`
 export const MINA_THEMES = `${MINA_FEATURES}/themes`
 export const MINA_VERSIONING = `${MINA_FEATURES}/versioning`
+// ----> Mina Features: CLI
+export const MINA_CLI = `${MINA_FEATURES}/cli`
+export const MINA_CLI_OVERVIEW = `${MINA_CLI}/overview`
+export const MINA_CLI_COMMANDS = `${MINA_CLI}/commands`
 // --> Mina Plugins
 export const MINA_PLUGINS = `${MINA_DOCS}/plugins`
 export const MINA_PLUGINS_OVERVIEW = `${MINA_PLUGINS}/overview`
@@ -134,6 +139,15 @@ ROUTES[MINA_AI] = {
 }
 ROUTES[MINA_AUTOLAYOUT] = {
   path: MINA_AUTOLAYOUT,
+}
+ROUTES[MINA_CLI_OVERVIEW] = {
+  path: MINA_CLI_OVERVIEW,
+}
+ROUTES[MINA_CLI_COMMANDS] = {
+  path: MINA_CLI_COMMANDS,
+}
+ROUTES[MINA_CONTINUOUS_INTEGRATION] = {
+  path: MINA_CONTINUOUS_INTEGRATION,
 }
 ROUTES[MINA_DEEP_LINKS] = {
   path: MINA_DEEP_LINKS,

@@ -30,6 +30,9 @@ import ROUTES, {
   MINA_VERSIONING,
   MINA_DEEP_LINKS,
   MINA_DEPENDENCY_TABLE,
+  MINA_CLI_OVERVIEW,
+  MINA_CLI_COMMANDS,
+  MINA_CONTINUOUS_INTEGRATION,
 } from '../core/routes'
 import {
   MenuItem,
@@ -102,6 +105,28 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               title: 'Auto Layout',
               href: ROUTES[MINA_AUTOLAYOUT].path,
               disableTOC: true,
+            },
+            {
+              id: 'keadex-mina_cli',
+              title: 'CLI',
+              children: [
+                {
+                  id: 'keadex-mina_cli_overview',
+                  title: 'Overview',
+                  href: ROUTES[MINA_CLI_OVERVIEW].path,
+                  disableTOC: true,
+                },
+                {
+                  id: 'keadex-mina_cli_commands',
+                  title: 'Commands',
+                  href: ROUTES[MINA_CLI_COMMANDS].path,
+                },
+              ],
+            },
+            {
+              id: 'keadex-mina_continuous-integration',
+              title: 'Continuous Integration',
+              href: ROUTES[MINA_CONTINUOUS_INTEGRATION].path,
             },
             {
               id: 'keadex-mina_deep-links',

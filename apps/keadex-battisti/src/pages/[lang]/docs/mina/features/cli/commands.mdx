@@ -1,0 +1,129 @@
+# Command-Line Help for `mina-cli`
+
+This document contains the help content for the `mina-cli` command-line program.
+
+**Command Overview:**
+
+* [`mina-cli`↴](#mina-cli)
+* [`mina-cli search-library-element`↴](#mina-cli-search-library-element)
+* [`mina-cli update-person`↴](#mina-cli-update-person)
+* [`mina-cli update-system`↴](#mina-cli-update-system)
+* [`mina-cli update-container`↴](#mina-cli-update-container)
+* [`mina-cli update-component`↴](#mina-cli-update-component)
+
+## `mina-cli`
+
+CLI for interacting with Mina projects.
+
+**Usage:** `mina-cli --project-path <PROJECT_PATH> <COMMAND>`
+
+###### **Subcommands:**
+
+* `search-library-element` — Search in the project's library for an element with the given alias
+* `update-person` — Update a person in the project's library
+* `update-system` — Update a software system in the project's library
+* `update-container` — Update a container in the project's library
+* `update-component` — Update a component in the project's library
+
+###### **Options:**
+
+* `-p`, `--project-path <PROJECT_PATH>` — Path of the Mina project
+
+
+
+## `mina-cli search-library-element`
+
+Search in the project's library for an element with the given alias
+
+**Usage:** `mina-cli search-library-element --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+
+
+
+## `mina-cli update-person`
+
+Update a person in the project's library.
+
+This command will update a person in the project's library and will update all the diagrams that import it.
+
+**Usage:** `mina-cli update-person [OPTIONS] --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--new-label <NEW_LABEL>`
+* `--new-person-type <NEW_PERSON_TYPE>`
+* `--new-description <NEW_DESCRIPTION>`
+* `--new-notes <NEW_NOTES>`
+
+
+
+## `mina-cli update-system`
+
+Update a software system in the project's library.
+
+This command will update a software system in the project's library and will update all the diagrams that import it.
+
+**Usage:** `mina-cli update-system [OPTIONS] --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--new-label <NEW_LABEL>`
+* `--new-system-type <NEW_SYSTEM_TYPE>`
+* `--new-description <NEW_DESCRIPTION>`
+* `--new-link <NEW_LINK>`
+* `--new-notes <NEW_NOTES>`
+
+
+
+## `mina-cli update-container`
+
+Update a container in the project's library.
+
+This command will update a container in the project's library and will update all the diagrams that import it.
+
+**Usage:** `mina-cli update-container [OPTIONS] --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--new-label <NEW_LABEL>`
+* `--new-container-type <NEW_CONTAINER_TYPE>`
+* `--new-technology <NEW_TECHNOLOGY>`
+* `--new-description <NEW_DESCRIPTION>`
+* `--new-link <NEW_LINK>`
+* `--new-notes <NEW_NOTES>`
+
+
+
+## `mina-cli update-component`
+
+Update a component in the project's library.
+
+This command will update a component in the project's library and will update all the diagrams that import it.
+
+**Usage:** `mina-cli update-component [OPTIONS] --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--new-label <NEW_LABEL>`
+* `--new-component-type <NEW_COMPONENT_TYPE>`
+* `--new-technology <NEW_TECHNOLOGY>`
+* `--new-description <NEW_DESCRIPTION>`
+* `--new-link <NEW_LINK>`
+* `--new-notes <NEW_NOTES>`
+
+
+
+<hr/>
+
+<small><i>
+    This document was generated automatically by
+    <a href="https://crates.io/crates/clap-markdown"><code>clap-markdown</code></a>.
+</i></small>
+
