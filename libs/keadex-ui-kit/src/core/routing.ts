@@ -8,6 +8,9 @@ export interface Route<T, K, D = undefined> {
   path: string
   titlebarMenuFactory?: WindowTitlebarMenuFactory<T, K>
   isAppMenuVisible?: boolean
+  isNewsbarVisible?: boolean
+  isHeaderVisible?: boolean
+  isFooterVisible?: boolean
   protectExit?: boolean
   data?: D
 }

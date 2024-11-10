@@ -7,6 +7,7 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string
   info?: string
   allowedChars?: RegExp
+  classNameRoot?: string
 }
 
 export const Input = React.memo((props: InputProps) => {
@@ -14,7 +15,7 @@ export const Input = React.memo((props: InputProps) => {
     string | number | readonly string[] | undefined
   >(props.value)
 
-  const { label, info, allowedChars, ...otherProps } = {
+  const { label, info, allowedChars, classNameRoot, ...otherProps } = {
     ...props,
   }
 
@@ -43,7 +44,7 @@ export const Input = React.memo((props: InputProps) => {
   }
 
   return (
-    <div className={`relative mb-3`}>
+    <div className={`relative mb-3 ${classNameRoot ?? ''}`}>
       <input
         maxLength={200}
         {...otherProps}

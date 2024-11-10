@@ -60,6 +60,7 @@ const nextConfig = {
     ]
   },
   webpack: function (config, options) {
+    config.externals.push({ canvas: 'commonjs canvas' })
     config.plugins.push(
       new CopyPlugin({
         patterns: [

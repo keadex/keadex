@@ -22,6 +22,8 @@
     "organize": "Organize",
     "packages": "Packages",
     "projects": "Projects",
+    "required": "Required",
+    "render": "Render",
     "retail": "Retail",
     "reuse": "Reuse",
     "risk_analytics": "Risk Analytics",
@@ -33,7 +35,8 @@
     "technical": "Technical",
     "telecommunications": "Telecommunications",
     "action": {
-      "select_project": "Select a project"
+      "select_project": "Select a project",
+      "share_diagram": "Share a diagram"
     },
     "error": {},
     "info": {},
@@ -140,6 +143,14 @@
       "title": "<span className='font-normal'>Auto Layout</span> or <span className='font-normal'>Custom Layout</span>: it's your choice."
     },
     "slogan": "Code C4 model diagrams without giving up on software development best practices<br />and on power of freehand drawing.",
+    "share_diagram": {
+      "copy_link_to_share": "Copy link to share",
+      "description": "<p>Use this page to share architectural diagrams created with Keadex Mina.</p><p>If you like this page but prefer a self-hosted, customized version, you can create your own using the <a href='https://www.npmjs.com/package/@keadex/mina-react' target='_blank'>Mina React component</a>.</p>",
+      "diagram_url": "Mina Diagram URL",
+      "link_copied": "The link has been copied to your clipboard!",
+      "project_root_url": "Mina project root URL",
+      "title": "Share a Mina diagram"
+    },
     "title": "<span className='font-extralight'>Diagram as Code.</span><br />For real."
   },
   "not_found": {

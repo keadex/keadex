@@ -18,11 +18,12 @@ ROUTES[ABOUT_ME] = {
 
 // ----- Projects Paths
 export const PROJECTS = '/projects'
-export const PROJECT_KEADEX_MINA = '/projects/keadex-mina'
-export const PROJECT_KEADEX_BATTISTI = '/projects/keadex-battisti'
-export const PROJECT_KEADEX_DOCS = '/projects/keadex-docs'
-export const PROJECT_C4MODEL_UI_KIT = '/projects/c4model-ui-kit'
-export const PROJECT_KEADEX_UI_KIT = '/projects/keadex-ui-kit'
+export const PROJECT_KEADEX_MINA = `${PROJECTS}/keadex-mina`
+export const KEADEX_MINA_SHARE_DIAGRAM = `${PROJECT_KEADEX_MINA}/share-diagram`
+export const PROJECT_KEADEX_BATTISTI = `${PROJECTS}/keadex-battisti`
+export const PROJECT_KEADEX_DOCS = `${PROJECTS}/keadex-docs`
+export const PROJECT_C4MODEL_UI_KIT = `${PROJECTS}/c4model-ui-kit`
+export const PROJECT_KEADEX_UI_KIT = `${PROJECTS}/keadex-ui-kit`
 
 export const PROJECTS_ROUTES = [
   { name: 'Keadex Mina', path: PROJECT_KEADEX_MINA },
@@ -33,6 +34,11 @@ ROUTES[PROJECTS] = {
 }
 ROUTES[PROJECT_KEADEX_MINA] = {
   path: PROJECT_KEADEX_MINA,
+}
+ROUTES[KEADEX_MINA_SHARE_DIAGRAM] = {
+  path: KEADEX_MINA_SHARE_DIAGRAM,
+  isHeaderVisible: false,
+  isFooterVisible: false,
 }
 ROUTES[PROJECT_KEADEX_BATTISTI] = {
   path: PROJECT_KEADEX_BATTISTI,
