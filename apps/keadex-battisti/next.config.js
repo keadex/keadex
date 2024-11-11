@@ -13,7 +13,7 @@ const CopyPlugin = require('copy-webpack-plugin')
 
 const cspHeader = `
     default-src 'self';
-    connect-src 'self' https://vercel.live https://consentcdn.cookiebot.com https://region1.google-analytics.com https://gist.githubusercontent.com https://raw.githubusercontent.com;
+    connect-src 'self' https://vercel.live https://consentcdn.cookiebot.com https://region1.google-analytics.com https://gist.githubusercontent.com https://raw.githubusercontent.com https://keadex.dev;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://vercel.live https://www.googletagmanager.com;
     frame-src 'self' https://consentcdn.cookiebot.com https://vercel.live https://www.youtube.com;
     style-src 'self' 'unsafe-inline';
@@ -54,6 +54,16 @@ const nextConfig = {
           {
             key: 'Content-Security-Policy',
             value: cspHeader.replace(/\n/g, ''),
+          },
+        ],
+      },
+      {
+        source: '/api/download-gh-raw-file',
+        headers: [
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET',
           },
         ],
       },
