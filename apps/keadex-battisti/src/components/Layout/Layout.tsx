@@ -2,9 +2,10 @@
 
 import { NewsBanner, useAppBootstrap } from '@keadex/keadex-ui-kit/cross'
 import dynamic from 'next/dynamic'
-import { PropsWithChildren } from 'react'
-import { NEWS } from '../../core/news'
 import { usePathname } from 'next/navigation'
+import { PropsWithChildren } from 'react'
+import { ToastContainer } from 'react-toastify'
+import { NEWS } from '../../core/news'
 import ROUTES from '../../core/routes'
 
 const Header = dynamic(() => import('../Header/Header'))
@@ -67,6 +68,15 @@ export default function Layout(props: PropsWithChildren<LayourProps>) {
   return (
     <>
       {/* <TWElementsInit /> */}
+      <ToastContainer
+        autoClose={4000}
+        hideProgressBar={true}
+        closeOnClick={true}
+        pauseOnHover={true}
+        draggable={true}
+        theme={'dark'}
+        position={'bottom-right'}
+      />
       {isNewsbarVisible() && <NewsBanner content={NEWS} />}
       {isHeaderVisible() && <Header lang={lang} />}
       <main>{children}</main>

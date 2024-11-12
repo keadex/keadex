@@ -19,13 +19,14 @@ ROUTES[ABOUT_ME] = {
 // ----- Projects Paths
 export const PROJECTS = '/projects'
 
-export const PROJECT_KEADEX_MINA = '/projects/keadex-mina'
+export const PROJECT_KEADEX_MINA = `${PROJECTS}/keadex-mina`
 export const KEADEX_MINA_LIVE_EDITOR = `${PROJECT_KEADEX_MINA}/live-editor`
 
-export const PROJECT_KEADEX_BATTISTI = '/projects/keadex-battisti'
-export const PROJECT_KEADEX_DOCS = '/projects/keadex-docs'
-export const PROJECT_C4MODEL_UI_KIT = '/projects/c4model-ui-kit'
-export const PROJECT_KEADEX_UI_KIT = '/projects/keadex-ui-kit'
+export const KEADEX_MINA_SHARE_DIAGRAM = `${PROJECT_KEADEX_MINA}/share-diagram`
+export const PROJECT_KEADEX_BATTISTI = `${PROJECTS}/keadex-battisti`
+export const PROJECT_KEADEX_DOCS = `${PROJECTS}/keadex-docs`
+export const PROJECT_C4MODEL_UI_KIT = `${PROJECTS}/c4model-ui-kit`
+export const PROJECT_KEADEX_UI_KIT = `${PROJECTS}/keadex-ui-kit`
 
 export const PROJECTS_ROUTES = [
   { name: 'Keadex Mina', path: PROJECT_KEADEX_MINA },
@@ -41,6 +42,11 @@ ROUTES[PROJECT_KEADEX_MINA] = {
 ROUTES[KEADEX_MINA_LIVE_EDITOR] = {
   path: KEADEX_MINA_LIVE_EDITOR,
   isNewsbarVisible: false,
+  isHeaderVisible: false,
+  isFooterVisible: false,
+}
+ROUTES[KEADEX_MINA_SHARE_DIAGRAM] = {
+  path: KEADEX_MINA_SHARE_DIAGRAM,
   isHeaderVisible: false,
   isFooterVisible: false,
 }
@@ -79,6 +85,7 @@ export const MINA_GS_PROJECT_STRUCTURE = `${MINA_GETTING_STARTED}/project-struct
 export const MINA_FEATURES = `${MINA_DOCS}/features`
 export const MINA_AI = `${MINA_FEATURES}/ai`
 export const MINA_AUTOLAYOUT = `${MINA_FEATURES}/autolayout`
+export const MINA_CONTINUOUS_INTEGRATION = `${MINA_FEATURES}/continuous-integration`
 export const MINA_DEPENDENCY_TABLE = `${MINA_FEATURES}/dependency-table`
 export const MINA_DEEP_LINKS = `${MINA_FEATURES}/deep-links`
 export const MINA_DIAGRAMS_ORG = `${MINA_FEATURES}/diagrams-organization`
@@ -93,6 +100,10 @@ export const MINA_SEARCH = `${MINA_FEATURES}/search`
 export const MINA_TAGS = `${MINA_FEATURES}/tags`
 export const MINA_THEMES = `${MINA_FEATURES}/themes`
 export const MINA_VERSIONING = `${MINA_FEATURES}/versioning`
+// ----> Mina Features: CLI
+export const MINA_CLI = `${MINA_FEATURES}/cli`
+export const MINA_CLI_OVERVIEW = `${MINA_CLI}/overview`
+export const MINA_CLI_COMMANDS = `${MINA_CLI}/commands`
 // --> Mina Plugins
 export const MINA_PLUGINS = `${MINA_DOCS}/plugins`
 export const MINA_PLUGINS_OVERVIEW = `${MINA_PLUGINS}/overview`
@@ -145,6 +156,15 @@ ROUTES[MINA_AI] = {
 }
 ROUTES[MINA_AUTOLAYOUT] = {
   path: MINA_AUTOLAYOUT,
+}
+ROUTES[MINA_CLI_OVERVIEW] = {
+  path: MINA_CLI_OVERVIEW,
+}
+ROUTES[MINA_CLI_COMMANDS] = {
+  path: MINA_CLI_COMMANDS,
+}
+ROUTES[MINA_CONTINUOUS_INTEGRATION] = {
+  path: MINA_CONTINUOUS_INTEGRATION,
 }
 ROUTES[MINA_DEEP_LINKS] = {
   path: MINA_DEEP_LINKS,

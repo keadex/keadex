@@ -43,6 +43,14 @@ const filesToUpdate = [
     path: 'libs/mina-react/src-rust/Cargo.lock',
     pattern: `name = "keadex_mina"\nversion = "${version}"`,
   },
+  {
+    path: 'libs/mina-cli/Cargo.lock',
+    pattern: `name = "mina-cli"\nversion = "${version}"`,
+  },
+  {
+    path: 'libs/mina-cli/Cargo.toml',
+    pattern: `name = "mina-cli"\nversion = "${version}"`,
+  },
 ]
 
 filesToUpdate.forEach((file) => {

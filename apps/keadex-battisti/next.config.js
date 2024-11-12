@@ -14,7 +14,7 @@ const withMinaLive = require('@keadex/mina-live/nextjs/mina-plugin')
 
 const cspHeader = `
     default-src 'self';
-    connect-src 'self' https://vercel.live https://consentcdn.cookiebot.com https://region1.google-analytics.com https://gist.githubusercontent.com https://raw.githubusercontent.com;
+    connect-src 'self' https://vercel.live https://consentcdn.cookiebot.com https://region1.google-analytics.com https://gist.githubusercontent.com https://raw.githubusercontent.com https://keadex.dev;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://vercel.live https://www.googletagmanager.com;
     frame-src 'self' https://consentcdn.cookiebot.com https://vercel.live https://www.youtube.com;
     style-src 'self' 'unsafe-inline';
@@ -58,9 +58,24 @@ const nextConfig = {
           },
         ],
       },
+      {
+        source: '/api/download-gh-raw-file',
+        headers: [
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET',
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'Keadex-Gh-Url, Keadex-Gh-Authorization',
+          },
+        ],
+      },
     ]
   },
   webpack: function (config, options) {
+    config.externals.push({ canvas: 'commonjs canvas' })
     config.plugins.push(
       new CopyPlugin({
         patterns: [

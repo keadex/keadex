@@ -1,0 +1,76 @@
+import { Tabs } from 'nextra/components'
+import Image from 'next/image'
+import minaCLILogo from '../../../../../../../public/img/mina/mina-cli-logo-white.svg'
+
+<p align="center">
+  <Image src={minaCLILogo} alt="Mina CLI Logo" width={400} className="my-10" />
+</p>
+
+Mina provides a CLI for interacting with a Keadex Mina project.
+
+You can use the CLI to apply changes to your diagrams without using Keadex Mina's UI. For a complete list of available commands, see the [commands](./commands.mdx) page.
+
+## Use Case
+
+A typical use case is as follows: imagine a repository named `infra-code` containing information about your infrastructure systems, such as names, technologies, and other details. These details are then utilized in your Keadex Mina project, which is stored in a repository named `arch-diagrams`.
+
+By integrating the CLI within a CI workflow in the `infra-code` repository, you can automate the update of your Mina diagrams. This approach ensures your diagrams are always up to date without requiring manual adjustments.
+
+For further details, refer to the [Continuous Integration](../continuous-integration.mdx) documentation.
+
+## Usage
+
+1. Download the required version of `Mina CLI` from the release page of the Keadex repo: https://github.com/keadex/keadex/releases.
+2. Optionally add `mina-cli` to the `PATH` environment variable
+3. Use it! For a complete list of available commands, see the [commands](./commands.mdx) page.
+
+<Tabs items={['Windows', 'macOS', 'Linux']} defaultIndex="0">
+  <Tabs.Tab>
+    ```bat
+    : Download Mina CLI v1.9.0 or your required version
+    curl -L -O https://github.com/keadex/keadex/releases/download/mina-cli%401.9.0/mina-cli-Windows-msvc-x86_64.zip
+
+    : Unzip the archive
+    tar -xf mina-cli-Windows-msvc-x86_64.zip
+
+    : Use it, for example, to search for a container within the project's library
+    .\mina-cli.exe --project-path C:\mina-project search-library-element --alias androidapp
+    : Output:
+    : {"Container":{"base_data":{"alias":"androidapp","label":"Android App","description":"Android mobile app","uuid":"b1d22398-d9d4-4059-841d-2f69201a1ce8","notes":""},"technology":"Android","container_type":"Container"}}
+    : Done!
+    ```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bat
+    : Download Mina CLI v1.9.0 or your required version
+    curl -L -O https://github.com/keadex/keadex/releases/download/mina-cli%401.9.0/mina-cli-macOS-arm64.tar.gz
+
+    : Unzip the archive
+    tar -xf mina-cli-macOS-arm64.tar.gz
+
+    : Use it, for example, to search for a container within the project's library
+    ./mina-cli --project-path ~/mina-project search-library-element --alias androidapp
+    : Output:
+    : {"Container":{"base_data":{"alias":"androidapp","label":"Android App","description":"Android mobile app","uuid":"b1d22398-d9d4-4059-841d-2f69201a1ce8","notes":""},"technology":"Android","container_type":"Container"}}
+    : Done!
+    ```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bat
+    : Download Mina CLI v1.9.0 or your required version
+    curl -L -O https://github.com/keadex/keadex/releases/download/mina-cli%401.9.0/mina-cli-Linux-gnu-x86_64.tar.gz
+
+    : Unzip the archive
+    tar -xf mina-cli-Linux-gnu-x86_64.tar.gz
+
+    : Use it, for example, to search for a container within the project's library
+    ./mina-cli --project-path ~/mina-project search-library-element --alias androidapp
+    : Output:
+    : {"Container":{"base_data":{"alias":"androidapp","label":"Android App","description":"Android mobile app","uuid":"b1d22398-d9d4-4059-841d-2f69201a1ce8","notes":""},"technology":"Android","container_type":"Container"}}
+    : Done!
+    ```
+
+  </Tabs.Tab>
+</Tabs>

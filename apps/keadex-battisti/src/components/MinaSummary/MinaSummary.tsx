@@ -1,16 +1,23 @@
 'use client'
 
+import { faConfluence, faNpm } from '@fortawesome/free-brands-svg-icons'
+import {
+  faBook,
+  faDesktop,
+  faShareNodes,
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button } from '@keadex/keadex-ui-kit/cross'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { Trans } from 'react-i18next'
 import minaLogo from '../../../public/img/keadex-mina-logo-color.svg'
 import { useTranslation } from '../../app/i18n/client'
-import { Button } from '@keadex/keadex-ui-kit/cross'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBook, faDesktop } from '@fortawesome/free-solid-svg-icons'
-import { faConfluence, faNpm } from '@fortawesome/free-brands-svg-icons'
-import { useRouter } from 'next/navigation'
-import ROUTES, { MINA_INTRODUCTION } from '../../core/routes'
+import ROUTES, {
+  KEADEX_MINA_SHARE_DIAGRAM,
+  MINA_INTRODUCTION,
+} from '../../core/routes'
 
 export type MinaSummaryProps = {
   lang: string
@@ -124,6 +131,15 @@ export default function MinaSummary({
               >
                 <FontAwesomeIcon icon={faBook} className="mr-3" />
                 <span>{t('common.documentation')}</span>
+              </Button>
+              <Button
+                className="!text-sm w-fit h-fit ml-0 md:ml-2 mt-4 md:mt-0"
+                onClick={() =>
+                  window.open(ROUTES[KEADEX_MINA_SHARE_DIAGRAM].path)
+                }
+              >
+                <FontAwesomeIcon icon={faShareNodes} className="mr-3" />
+                <span>{t('common.action.share_diagram')}</span>
               </Button>
             </div>
             <span className="font-light mt-5 mb-2">

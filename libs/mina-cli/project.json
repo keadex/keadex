@@ -1,0 +1,24 @@
+{
+  "name": "mina-cli",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mina-cli/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "wasm-pack build ./src-rust --target bundler"
+      },
+      "dependsOn": []
+    },
+    "generate-api-docs": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "libs/mina-cli",
+        "command": "cargo run -- --project-path test --markdown-help search-library-element --alias test > ../../apps/keadex-battisti/src/pages/[lang]/docs/mina/features/cli/commands.mdx"
+      },
+      "dependsOn": []
+    }
+  }
+}

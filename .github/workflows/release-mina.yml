@@ -85,7 +85,7 @@ jobs:
         if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
       - name: install frontend dependencies
         run: yarn --frozen-lockfile
       - uses: tauri-apps/tauri-action@v0
@@ -116,3 +116,102 @@ jobs:
           gist_id: 7f3ebbc2691dc83591c96a6662f37e94
           file_path: latest.json
           gist_file_name: keadex-mina-latest.json
+
+  build-mina-cli:
+    needs: update-latest-json
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: true
+      matrix:
+        platform:
+          - os-name: Linux-x86_64-musl
+            runs-on: ubuntu-22.04
+            target: x86_64-unknown-linux-musl
+
+          - os-name: Linux-x86_64-gnu
+            runs-on: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+
+          - os-name: Windows-x86_64
+            runs-on: windows-latest
+            target: x86_64-pc-windows-msvc
+
+          - os-name: macOS-x86_64
+            runs-on: macos-latest
+            target: x86_64-apple-darwin
+
+          - os-name: macOS-aarch64
+            runs-on: macos-latest
+            target: aarch64-apple-darwin
+
+    runs-on: ${{ matrix.platform.runs-on }}
+    env:
+      PKG_CONFIG_ALLOW_CROSS: 1
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform.runs-on == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libgtk-3-dev  build-essential libssl-dev librsvg2-dev libglib2.0-dev
+
+      - name: Build binary
+        uses: houseabsolute/actions-rust-cross@v0
+        with:
+          target: ${{ matrix.platform.target }}
+          args: '--locked --release'
+          strip: true
+          working-directory: './libs/mina-cli'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Waiting for https://github.com/houseabsolute/actions-rust-release/pull/2
+      - name: Workaround for uploading a sub-package
+        run: cp -R ./libs/mina-cli/target ./
+
+      - name: Upload artifacts
+        uses: houseabsolute/actions-rust-release@v0
+        with:
+          executable-name: mina-cli
+          target: ${{ matrix.platform.target }}
+          changes-file: 'Mina-CLI-Changes.md'
+
+  release-mina-cli:
+    needs: build-mina-cli
+    permissions:
+      contents: write
+    runs-on: ubuntu-22.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: mina-cli-artifacts
+          pattern: mina-cli-*
+          merge-multiple: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Retrieve Mina CLI Version
+        id: mina_version
+        uses: SebRollen/toml-action@v1.2.0
+        with:
+          file: 'libs/mina-cli/Cargo.toml'
+          field: 'package.version'
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: false
+          name: mina-cli@${{steps.mina_version.outputs.value}}
+          tag_name: mina-cli@${{steps.mina_version.outputs.value}}
+          files: mina-cli-artifacts/*
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -19,10 +19,11 @@ export function App() {
 
   useAppBootstrap({ initTE: initializeTailwindElements })
 
-  let height, projectRootUrl, diagramUrl
+  let height, ghToken, projectRootUrl, diagramUrl
   if (context?.extension && context?.extension.config) {
     const config = context?.extension.config as MinaMacroConfig
     height = config.height
+    ghToken = config.ghToken
     projectRootUrl = config.projectRootUrl
     diagramUrl = config.diagramUrl
   }
@@ -38,7 +39,11 @@ export function App() {
               : '50rem',
         }}
       >
-        <MinaReact projectRootUrl={projectRootUrl} diagramUrl={diagramUrl} />
+        <MinaReact
+          projectRootUrl={projectRootUrl}
+          diagramUrl={diagramUrl}
+          ghToken={ghToken}
+        />
       </div>
     )
   } else {

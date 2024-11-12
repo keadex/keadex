@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/keadex/keadex/compare/mina-react@1.11.0...mina-react@1.12.0) (2024-11-12)
+
+
+### Features
+
+* **libs/mina-react:** trigger release ([b47353e](https://github.com/keadex/keadex/commit/b47353e3638c475a5832df18e6ddb51c48d0fba9))
+
 # [1.11.0](https://github.com/keadex/keadex/compare/mina-react@1.10.1...mina-react@1.11.0) (2024-10-27)
 
 
