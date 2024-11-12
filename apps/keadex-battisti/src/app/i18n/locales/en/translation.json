@@ -10,6 +10,7 @@
     "experience": "Experience",
     "faq": "FAQ",
     "functional": "Functional",
+    "gh_token": "GitHub Token",
     "healthcare": "Healthcare",
     "hobbies": "Hobbies",
     "hooks": "Hooks",
@@ -147,6 +148,8 @@
       "copy_link_to_share": "Copy link to share",
       "description": "<p>Use this page to share architectural diagrams created with Keadex Mina.</p><p>If you like this page but prefer a self-hosted, customized version, you can create your own using the <a href='https://www.npmjs.com/package/@keadex/mina-react' target='_blank'>Mina React component</a>.</p>",
       "diagram_url": "Mina Diagram URL",
+      "gh_token_copy_warning": "The link you copied contains the GitHub token, which is SENSITIVE INFORMATION. Please share it only with trusted stakeholders to ensure security.",
+      "gh_token_info": "Required only for private repositories. Refer to the GitHub documentation for details on generating a GitHub token. Ensure you keep it secure and do not share it, as it is SENSITIVE INFORMATION!",
       "link_copied": "The link has been copied to your clipboard!",
       "project_root_url": "Mina project root URL",
       "title": "Share a Mina diagram"
