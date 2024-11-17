@@ -6,18 +6,17 @@ import {
 import { Diagram, diagramTypeHumanName } from '@keadex/c4-model-ui-kit'
 import {
   IconButton,
-  Tags,
   useForceUpdate,
   useModal,
 } from '@keadex/keadex-ui-kit/cross'
+import { writeText } from '@tauri-apps/plugin-clipboard-manager'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Tooltip } from 'tw-elements'
-import ModalCRUDiagram from '../ModalCRUDiagram/ModalCRUDiagram'
-import { writeText } from '@tauri-apps/plugin-clipboard-manager'
 import { toast } from 'react-toastify'
+import { Tooltip } from 'tw-elements'
 import { generateDiagramDeepLink } from '../../helper/deep-link-helper'
-
+import DiagramHeader from '../DiagramHeader/DiagramHeader'
+import ModalCRUDiagram from '../ModalCRUDiagram/ModalCRUDiagram'
 export interface DiagramEditorToolbarProps {
   diagram?: Diagram
   saveDiagram: () => void
@@ -55,7 +54,7 @@ export const DiagramEditorToolbar = (props: DiagramEditorToolbarProps) => {
     })
   })
 
-  function handleProjectInfoClick() {
+  function handleDiagramHeaderClick() {
     if (diagram && diagram.diagram_type && diagram.diagram_name) {
       showModal({
         id: `showInfoDiargamModal`,
@@ -126,32 +125,12 @@ export const DiagramEditorToolbar = (props: DiagramEditorToolbarProps) => {
           />
         </div>
       </div>
-      {diagram && diagram.diagram_type && (
-        <div
-          className="w-full flex flex-col items-center py-1 pr-3 cursor-pointer"
-          onClick={handleProjectInfoClick}
-        >
-          <div className="flex w-full my-auto">
-            <div className="text-lg grow truncate">
-              {diagramTypeHumanName(diagram.diagram_type)} {t('common.diagram')}{' '}
-              - {diagram.diagram_name}
-            </div>
-            {diagram.diagram_spec?.tags && (
-              <div>
-                <Tags
-                  tags={diagram.diagram_spec.tags}
-                  className="float-right top-1/2 -translate-y-1/2"
-                />
-              </div>
-            )}
-          </div>
-          {diagram.diagram_spec?.description && (
-            <div className="w-full text-sm line-clamp-3">
-              {diagram.diagram_spec?.description}
-            </div>
-          )}
-        </div>
-      )}
+      <DiagramHeader
+        diagram={diagram}
+        handleDiagramHeaderClick={handleDiagramHeaderClick}
+        tagsDirection="right"
+        scrollable={false}
+      />
     </div>
   )
 }

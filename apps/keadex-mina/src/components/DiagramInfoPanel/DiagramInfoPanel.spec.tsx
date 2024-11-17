@@ -1,12 +1,11 @@
 import { render } from '@testing-library/react'
-import DiagramDesignViewFloatMenu from './DiagramDesignViewFloatMenu'
+import DiagramInfoPanel from './DiagramInfoPanel'
 import { SetStateAction } from 'react'
 
-describe('DiagramDesignViewFloatMenu', () => {
+describe('DiagramInfoPanel', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
-      <DiagramDesignViewFloatMenu
-        diagramInfoPanelVisible={false}
+      <DiagramInfoPanel
         setDiagramInfoPanelVisible={function (
           value: SetStateAction<boolean>,
         ): void {
