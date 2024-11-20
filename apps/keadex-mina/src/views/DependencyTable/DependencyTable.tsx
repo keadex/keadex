@@ -197,7 +197,7 @@ export const DependencyTable = (props: DependencyTableProps) => {
           {isGenerating ? (
             <Spinner className="icon !h-4 !w-4" />
           ) : (
-            `${t('common.generate')} ${t('common.dependency_table')}`
+            t('common.generate')
           )}
         </Button>
         <Button
@@ -206,7 +206,7 @@ export const DependencyTable = (props: DependencyTableProps) => {
           onClick={() => handleShareDeepLink(alias)}
         >
           <FontAwesomeIcon icon={faShareNodes} />
-          <span className="ml-2">{t('common.action.share_deep_link')}</span>
+          <span className="ml-2">{t('common.action.copy_deep_link')}</span>
         </Button>
       </div>
       {dependencies && dependencies.length > 0 && (

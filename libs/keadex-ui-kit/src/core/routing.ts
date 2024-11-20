@@ -1,3 +1,4 @@
+import { matchPath } from 'react-router-dom'
 import { WindowTitlebarMenuFactory } from '../desktop'
 
 export interface Routes<T, K, D = undefined> {
@@ -8,6 +9,7 @@ export interface Route<T, K, D = undefined> {
   path: string
   titlebarMenuFactory?: WindowTitlebarMenuFactory<T, K>
   isAppMenuVisible?: boolean
+  isAppMenuCollapsed?: boolean
   isNewsbarVisible?: boolean
   isHeaderVisible?: boolean
   isFooterVisible?: boolean
@@ -16,20 +18,17 @@ export interface Route<T, K, D = undefined> {
 }
 
 export function findRoute<T, K, D = undefined>(
-  routeToFind: string,
+  pathname: string,
   routes: Routes<T, K, D>,
-  predicate?: (routeToFind: string, routeToCompare: string) => boolean,
+  customPredicate?: (pathname: string, pattern: string) => boolean,
 ): Route<T, K, D> | undefined {
-  const defaultPredicate = (routeToFind: string, routeToCompare: string) => {
-    return routeToFind.startsWith(routeToCompare)
+  const defaultPredicate = (pathname: string, pattern: string) => {
+    return matchPath(pattern, pathname) !== null
   }
-  for (const route of Object.keys(routes)) {
-    if (
-      predicate
-        ? predicate(routeToFind, route)
-        : defaultPredicate(routeToFind, route)
-    ) {
-      return routes[route]
+  for (const pattern of Object.keys(routes)) {
+    const predicate = customPredicate ?? defaultPredicate
+    if (predicate(pathname, pattern)) {
+      return routes[pattern]
     }
   }
   return

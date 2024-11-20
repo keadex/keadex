@@ -61,7 +61,7 @@
     "wasm-pack": "^0.12.1"
   },
   "peerDependencies": {
-    "react-router-dom": "^6.17.0",
+    "react-router-dom": "^6.28.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }

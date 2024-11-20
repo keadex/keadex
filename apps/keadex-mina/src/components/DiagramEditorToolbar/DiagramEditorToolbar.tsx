@@ -108,7 +108,7 @@ export const DiagramEditorToolbar = (props: DiagramEditorToolbarProps) => {
             className={`${styleButton}`}
             data-te-toggle="tooltip"
             data-te-placement="bottom"
-            title={t('diagram_editor.share_deep_link')}
+            title={t('diagram_editor.copy_deep_link')}
             onClick={handleShareDiagramDeepLink}
           />
           <IconButton

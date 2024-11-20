@@ -23,7 +23,7 @@ import AppEventContext from '../../context/AppEventContext'
 import { useDeepLinkRouter } from '../../core/router/router'
 import ROUTES from '../../core/router/routes'
 import { useAppDispatch, useAppSelector } from '../../core/store/hooks'
-import AppMenu from '../AppMenu/AppMenu'
+import AppMenu, { AppMenuCommands } from '../AppMenu/AppMenu'
 import { createButtons } from './window-titlebar-buttons'
 
 const appWindow = getCurrentWebviewWindow()
@@ -44,6 +44,7 @@ export const Layout = React.memo((props: LayoutProps) => {
   const dispatch = useAppDispatch()
   const project = useAppSelector((state) => state.project.value)
   const { routeDeepLink, modalSafeExit } = useDeepLinkRouter()
+
   const [rightButtons, setRightButtons] = useState<WindowTitlebarButtonProps[]>(
     [],
   )
@@ -55,6 +56,7 @@ export const Layout = React.memo((props: LayoutProps) => {
   const deepLinkListeners = useRef<{
     [path: string]: { unsubscribed: boolean }
   }>({})
+  const appMenuRef = useRef<AppMenuCommands>(null)
 
   function clearDeepLinkListeners() {
     for (const id of Object.keys(deepLinkListeners.current)) {
@@ -121,13 +123,7 @@ export const Layout = React.memo((props: LayoutProps) => {
 
   useEffect(() => {
     console.debug('Location changed!', location.pathname)
-    const foundRoute = findRoute(
-      location.pathname,
-      ROUTES,
-      (routeToFind: string, routeToCompare: string) => {
-        return routeToFind === routeToCompare.replace(/\/:.*(\?)/gi, '/')
-      },
-    )
+    const foundRoute = findRoute(location.pathname, ROUTES)
     if (foundRoute) {
       setWindowTitlebarMenu(
         foundRoute.titlebarMenuFactory
@@ -141,9 +137,12 @@ export const Layout = React.memo((props: LayoutProps) => {
       )
       setIsAppMenuVisible(
         foundRoute.isAppMenuVisible !== undefined
-          ? foundRoute.isAppMenuVisible!
+          ? foundRoute.isAppMenuVisible
           : false,
       )
+      // Force the collapse of the app menu only if it is strictly required
+      // by the new route, otherwise leave it as-is.
+      if (foundRoute.isAppMenuCollapsed) appMenuRef.current?.collapse()
     } else {
       setIsAppMenuVisible(true)
       setWindowTitlebarMenu(emptyWindowTitlebarMenu)
@@ -173,7 +172,7 @@ export const Layout = React.memo((props: LayoutProps) => {
           title="Keadex Mina"
         />
         <div className="absolute bottom-0 left-0 right-0 top-8 overflow-auto">
-          <AppMenu visible={isAppMenuVisible}>
+          <AppMenu visible={isAppMenuVisible} ref={appMenuRef}>
             <Outlet />
           </AppMenu>
         </div>

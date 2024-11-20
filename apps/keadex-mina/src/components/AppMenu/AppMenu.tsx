@@ -7,8 +7,11 @@ import {
 import { IconButton, useSafeExit } from '@keadex/keadex-ui-kit/cross'
 import React, {
   PropsWithChildren,
+  Ref,
+  forwardRef,
   useContext,
   useEffect,
+  useImperativeHandle,
   useState,
 } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -36,184 +39,197 @@ export interface AppMenuItem {
   onClick?: () => void
 }
 
+export type AppMenuCommands = {
+  collapse: () => void
+}
+
 export interface AppMenuProps {
   visible: boolean
 }
 
-export const AppMenu = React.memo((props: PropsWithChildren<AppMenuProps>) => {
-  const { visible } = props
-  const { t } = useTranslation()
-  const context = useContext(AppEventContext)
-  const { modal: modalSafeExit, safeExit } = useSafeExit(ROUTES)
+export const AppMenu = forwardRef(
+  (props: PropsWithChildren<AppMenuProps>, ref: Ref<AppMenuCommands>) => {
+    const { visible } = props
+    const { t } = useTranslation()
+    const context = useContext(AppEventContext)
+    const { modal: modalSafeExit, safeExit } = useSafeExit(ROUTES)
 
-  const sidenavSlimWidth = 50
-  const [sidenavPanelWidth, setSidenavPanelWidth] = useState(300)
-  const [isSlimCollapsed, setIsSlimCollapsed] = useState(true)
-  const [activeMenuItem, setActiveMenuItem] = useState(MenuItem.Project)
+    const sidenavSlimWidth = 50
+    const [sidenavPanelWidth, setSidenavPanelWidth] = useState(300)
+    const [isSlimCollapsed, setIsSlimCollapsed] = useState(false)
+    const [activeMenuItem, setActiveMenuItem] = useState(MenuItem.Project)
 
-  const APP_MENU_ITEMS: AppMenuItem[] = [
-    {
-      menuItem: MenuItem.Project,
-      icon: faKeadexMina,
-      title: t('common.project'),
-    },
-    {
-      menuItem: MenuItem.Search,
-      icon: faMagnifyingGlass,
-      title: t('common.search'),
-    },
-    {
-      menuItem: MenuItem.Library,
-      icon: faBook,
-      title: t('common.library'),
-    },
-    {
-      menuItem: MenuItem.DependencyTable,
-      icon: faSitemap,
-      title: t('common.dependency_table'),
-      onClick: () => {
-        openDependencyTable(safeExit, '')
+    const APP_MENU_ITEMS: AppMenuItem[] = [
+      {
+        menuItem: MenuItem.Project,
+        icon: faKeadexMina,
+        title: t('common.project'),
       },
-    },
-  ]
+      {
+        menuItem: MenuItem.Search,
+        icon: faMagnifyingGlass,
+        title: t('common.search'),
+      },
+      {
+        menuItem: MenuItem.Library,
+        icon: faBook,
+        title: t('common.library'),
+      },
+      {
+        menuItem: MenuItem.DependencyTable,
+        icon: faSitemap,
+        title: t('common.dependency_table'),
+        onClick: () => {
+          openDependencyTable(safeExit, '')
+        },
+      },
+    ]
 
-  const handleSlimTogglerClick = (appMenuItem: AppMenuItem) => {
-    if (appMenuItem.onClick) {
-      appMenuItem.onClick()
-      setIsSlimCollapsed(true)
-    } else {
-      if (
-        appMenuItem.menuItem === activeMenuItem ||
-        (isSlimCollapsed && appMenuItem.menuItem !== activeMenuItem)
-      ) {
-        setIsSlimCollapsed(!isSlimCollapsed)
+    const handleSlimTogglerClick = (appMenuItem: AppMenuItem) => {
+      if (appMenuItem.onClick) {
+        appMenuItem.onClick()
+        setIsSlimCollapsed(true)
+      } else {
+        if (
+          appMenuItem.menuItem === activeMenuItem ||
+          (isSlimCollapsed && appMenuItem.menuItem !== activeMenuItem)
+        ) {
+          setIsSlimCollapsed(!isSlimCollapsed)
+        }
       }
+      setActiveMenuItem(appMenuItem.menuItem)
     }
-    setActiveMenuItem(appMenuItem.menuItem)
-  }
 
-  const onSidenavPanelResize = (
-    e: React.SyntheticEvent,
-    data: ResizeCallbackData,
-  ) => {
-    setSidenavPanelWidth(data.size.width)
-  }
+    const onSidenavPanelResize = (
+      e: React.SyntheticEvent,
+      data: ResizeCallbackData,
+    ) => {
+      setSidenavPanelWidth(data.size.width)
+    }
 
-  const isMenuActive = (menuItem: MenuItem) => {
-    return activeMenuItem === menuItem && !isSlimCollapsed
-  }
+    const isMenuActive = (menuItem: MenuItem) => {
+      return activeMenuItem === menuItem && !isSlimCollapsed
+    }
 
-  useEffect(() => {
-    const tooltipTriggerList = [].slice.call(
-      document.querySelectorAll('[data-te-toggle="tooltip"]'),
-    )
-    tooltipTriggerList.map(
-      (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl, { trigger: 'hover' }),
-    )
-  }, [])
-
-  const renderAppMenuItems = () => {
-    const renderedItems: JSX.Element[] = []
-    APP_MENU_ITEMS.forEach((appMenuItem) => {
-      renderedItems.push(
-        <li
-          key={appMenuItem.menuItem}
-          className={`relative ${
-            isMenuActive(appMenuItem.menuItem) ? 'active' : ''
-          }`}
-          onClick={() => handleSlimTogglerClick(appMenuItem)}
-          data-te-toggle="tooltip"
-          data-te-placement="right"
-          title={appMenuItem.title}
-        >
-          <IconButton
-            icon={appMenuItem.icon}
-            className={`${isMenuActive(appMenuItem.menuItem) ? 'active' : ''}`}
+    const renderAppMenuItems = () => {
+      const renderedItems: JSX.Element[] = []
+      APP_MENU_ITEMS.forEach((appMenuItem) => {
+        renderedItems.push(
+          <li
+            key={appMenuItem.menuItem}
+            className={`relative ${
+              isMenuActive(appMenuItem.menuItem) ? 'active' : ''
+            }`}
             onClick={() => handleSlimTogglerClick(appMenuItem)}
-          />
-        </li>,
-      )
-    })
-    return renderedItems
-  }
-
-  context?.useSubscription((event) => {
-    if (event.type === AppEventType.OpenSearch) {
-      setActiveMenuItem(MenuItem.Search)
-      setIsSlimCollapsed(false)
-    }
-  })
-
-  return (
-    <div className={`h-full ${!visible ? 'app-menu__parent--hidden' : ''}`}>
-      {modalSafeExit}
-      {/* Sidenav */}
-      <nav
-        id="app-menu-sidenav"
-        className={`absolute h-full ${
-          !visible ? '!hidden' : ''
-        }  bg-dark-primary group fixed left-0 overflow-hidden shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)]`}
-      >
-        <div className="flex h-full flex-row">
-          <div
-            style={{ width: `${sidenavSlimWidth}px` }}
-            className="window__inner-border border-b-0 border-l-0 border-t-0"
+            data-te-toggle="tooltip"
+            data-te-placement="right"
+            title={appMenuItem.title}
           >
-            <ul className="relative m-0 list-none text-center text-lg">
-              {renderAppMenuItems()}
-            </ul>
-          </div>
-          <Resizable
-            height={Infinity}
-            width={sidenavPanelWidth}
-            onResize={onSidenavPanelResize}
-            resizeHandles={['e']}
-          >
-            <div
-              style={{ width: `${sidenavPanelWidth}px`, height: `${100}%` }}
-              className={`window__inner-border box border-b-0 border-l-0 border-t-0 ${
-                isSlimCollapsed ? `hidden` : ``
+            <IconButton
+              icon={appMenuItem.icon}
+              className={`${
+                isMenuActive(appMenuItem.menuItem) ? 'active' : ''
               }`}
+              onClick={() => handleSlimTogglerClick(appMenuItem)}
+            />
+          </li>,
+        )
+      })
+      return renderedItems
+    }
+
+    context?.useSubscription((event) => {
+      if (event.type === AppEventType.OpenSearch) {
+        setActiveMenuItem(MenuItem.Search)
+        setIsSlimCollapsed(false)
+      }
+    })
+
+    useEffect(() => {
+      const tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-te-toggle="tooltip"]'),
+      )
+      tooltipTriggerList.map(
+        (tooltipTriggerEl) =>
+          new Tooltip(tooltipTriggerEl, { trigger: 'hover' }),
+      )
+    }, [])
+
+    useImperativeHandle(ref, () => ({
+      collapse: () => setIsSlimCollapsed(true),
+    }))
+
+    return (
+      <div className={`h-full ${!visible ? 'app-menu__parent--hidden' : ''}`}>
+        {modalSafeExit}
+        {/* Sidenav */}
+        <nav
+          id="app-menu-sidenav"
+          className={`absolute h-full ${
+            !visible ? '!hidden' : ''
+          }  bg-dark-primary group fixed left-0 overflow-hidden shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)]`}
+        >
+          <div className="flex h-full flex-row">
+            <div
+              style={{ width: `${sidenavSlimWidth}px` }}
+              className="window__inner-border border-b-0 border-l-0 border-t-0"
+            >
+              <ul className="relative m-0 list-none text-center text-lg">
+                {renderAppMenuItems()}
+              </ul>
+            </div>
+            <Resizable
+              height={Infinity}
+              width={sidenavPanelWidth}
+              onResize={onSidenavPanelResize}
+              resizeHandles={['e']}
             >
               <div
-                className="h-full"
-                hidden={activeMenuItem !== MenuItem.Project}
+                style={{ width: `${sidenavPanelWidth}px`, height: `${100}%` }}
+                className={`window__inner-border box border-b-0 border-l-0 border-t-0 ${
+                  isSlimCollapsed ? `hidden` : ``
+                }`}
               >
-                <ProjectPanel />
+                <div
+                  className="h-full"
+                  hidden={activeMenuItem !== MenuItem.Project}
+                >
+                  <ProjectPanel />
+                </div>
+                <div
+                  className="h-full"
+                  hidden={activeMenuItem !== MenuItem.Search}
+                >
+                  <SearchPanel />
+                </div>
+                <div
+                  className="h-full"
+                  hidden={activeMenuItem !== MenuItem.Library}
+                >
+                  <LibraryPanel />
+                </div>
               </div>
-              <div
-                className="h-full"
-                hidden={activeMenuItem !== MenuItem.Search}
-              >
-                <SearchPanel />
-              </div>
-              <div
-                className="h-full"
-                hidden={activeMenuItem !== MenuItem.Library}
-              >
-                <LibraryPanel />
-              </div>
-            </div>
-          </Resizable>
-        </div>
-      </nav>
-      {/* Sidenav */}
+            </Resizable>
+          </div>
+        </nav>
+        {/* Sidenav */}
 
-      {/* Content */}
-      <div
-        id="slim-content"
-        className={`flex h-full`}
-        style={{
-          paddingLeft: isSlimCollapsed
-            ? `${sidenavSlimWidth}px`
-            : `${sidenavPanelWidth + sidenavSlimWidth}px`,
-        }}
-      >
-        <div className="h-full w-full overflow-auto">{props.children}</div>
+        {/* Content */}
+        <div
+          id="slim-content"
+          className={`flex h-full`}
+          style={{
+            paddingLeft: isSlimCollapsed
+              ? `${sidenavSlimWidth}px`
+              : `${sidenavPanelWidth + sidenavSlimWidth}px`,
+          }}
+        >
+          <div className="h-full w-full overflow-auto">{props.children}</div>
+        </div>
+        {/* Content */}
       </div>
-      {/* Content */}
-    </div>
-  )
-})
+    )
+  },
+)
 
 export default AppMenu

@@ -91,6 +91,7 @@ export const DEPENDENCY_TABLE = `/dependency-table/${DEPENDENCY_TABLE_ALIAS_URL_
 ROUTES[DEPENDENCY_TABLE] = {
   path: DEPENDENCY_TABLE,
   isAppMenuVisible: true,
+  isAppMenuCollapsed: true,
   titlebarMenuFactory,
 }
 

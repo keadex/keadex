@@ -106,12 +106,12 @@
     "action": {
       "check_for_updates": "Check for Updates...",
       "close_project": "Close Project",
+      "copy_deep_link": "Copy deep link",
       "link_existing_diagram": "Link an existing diagram",
       "link_to_diagram": "Link \"{{alias}}\" to...",
       "new_project": "New Project",
       "open_project": "Open Project",
-      "report_issue": "Report Issue",
-      "share_deep_link": "Share deep link"
+      "report_issue": "Report Issue"
     },
     "error": {
       "internal": "Internal error: {{errorMessage}}",
@@ -170,6 +170,7 @@
     "ai_diagram_generator": "AI diagram generator",
     "ai_hint": "Description of the diagram to generate",
     "configure_auto_layout": "Configure auto layout",
+    "copy_deep_link": "Copy deep link of the diagram",
     "element_imported": "Element imported",
     "external_links_info": "Max {{maxNumExternalLinks}} links. Allowed links: {{allowedLinks}}. Allowed link variables: {{allowedVariables}}.",
     "import_from_library": "Import from the library",
@@ -177,7 +178,6 @@
     "plantuml_generated": "PlantUML generated",
     "saving_rendering_diagram": "Saving & Rendering",
     "select_element_type_to_import": "Select the C4 element type to import from the library",
-    "share_deep_link": "Share deep link of the diagram",
     "warning_enable_autolayout": "You are enabling the auto layout. All the changes you made to the diagram layout will be discarded and replaced with the automatically generated layout."
   },
   "home": {
