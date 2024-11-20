@@ -5,7 +5,10 @@ use crate::model::commands::update_system::UpdateSystem;
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 
-use super::commands::search_library_element::SearchLibraryElement;
+use super::commands::{
+  find_dependent_elements::FindDependentElements, read_diagram::ReadDiagram,
+  search_diagram_element::SearchDiagramElement, search_library_element::SearchLibraryElement,
+};
 
 /// A CLI for interacting with a Keadex Mina project.
 ///
@@ -26,6 +29,18 @@ pub struct Cli {
 
 #[derive(Subcommand, Debug)]
 pub enum Commands {
+  /// Returns the dependents of a an architectural element with the given alias in the given diagram.
+  FindDependentElements(FindDependentElements),
+
+  /// Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names.
+  ListDiagrams,
+
+  /// Read a diagram
+  ReadDiagram(ReadDiagram),
+
+  /// Search for the project's diagrams that include the element with the given alias.
+  SearchDiagramElement(SearchDiagramElement),
+
   /// Search in the project's library for an element with the given alias.
   SearchLibraryElement(SearchLibraryElement),
 

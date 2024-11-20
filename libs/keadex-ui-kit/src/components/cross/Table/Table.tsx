@@ -29,6 +29,7 @@ export interface TableColumn<T> {
   label: string
   size?: number | string
   className?: string
+  enableResizing?: boolean
 }
 
 export type TableData<T> = {
@@ -96,6 +97,7 @@ export const Table = forwardRef(
         result.push({
           ...accessor,
           size: column.size,
+          enableResizing: column.enableResizing,
           header: (props) =>
             !hideHeader ? (
               <Header

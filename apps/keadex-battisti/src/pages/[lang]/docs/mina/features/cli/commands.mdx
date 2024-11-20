@@ -5,6 +5,10 @@ This document contains the help content for the `mina-cli` command-line program.
 **Command Overview:**
 
 * [`mina-cli`↴](#mina-cli)
+* [`mina-cli find-dependent-elements`↴](#mina-cli-find-dependent-elements)
+* [`mina-cli list-diagrams`↴](#mina-cli-list-diagrams)
+* [`mina-cli read-diagram`↴](#mina-cli-read-diagram)
+* [`mina-cli search-diagram-element`↴](#mina-cli-search-diagram-element)
 * [`mina-cli search-library-element`↴](#mina-cli-search-library-element)
 * [`mina-cli update-person`↴](#mina-cli-update-person)
 * [`mina-cli update-system`↴](#mina-cli-update-system)
@@ -19,6 +23,10 @@ CLI for interacting with Mina projects.
 
 ###### **Subcommands:**
 
+* `find-dependent-elements` — Returns the dependents of a an architectural element with the given alias in the given diagram
+* `list-diagrams` — Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names
+* `read-diagram` — Read a diagram
+* `search-diagram-element` — Search for the project's diagrams that include the element with the given alias
 * `search-library-element` — Search in the project's library for an element with the given alias
 * `update-person` — Update a person in the project's library
 * `update-system` — Update a software system in the project's library
@@ -28,6 +36,53 @@ CLI for interacting with Mina projects.
 ###### **Options:**
 
 * `-p`, `--project-path <PROJECT_PATH>` — Path of the Mina project
+
+
+
+## `mina-cli find-dependent-elements`
+
+Returns the dependents of a an architectural element with the given alias in the given diagram
+
+**Usage:** `mina-cli find-dependent-elements --alias <ALIAS> --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
+
+###### **Options:**
+
+* `--alias <ALIAS>` — Alias of the architectural element to analyze
+* `--diagram-name <DIAGRAM_NAME>` — Name of the diagram in lowercase and kebab-case (e.g., "my-diagram")
+* `--diagram-type <DIAGRAM_TYPE>` — Type of the diagram in uppercase and snake-case (e.g., "SYSTEM_CONTEXT")
+
+
+
+## `mina-cli list-diagrams`
+
+Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names
+
+**Usage:** `mina-cli list-diagrams`
+
+
+
+## `mina-cli read-diagram`
+
+Read a diagram
+
+**Usage:** `mina-cli read-diagram --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
+
+###### **Options:**
+
+* `--diagram-name <DIAGRAM_NAME>` — Name of the diagram in lowercase and kebab-case (e.g., "my-diagram")
+* `--diagram-type <DIAGRAM_TYPE>` — Type of the diagram in uppercase and snake-case (e.g., "SYSTEM_CONTEXT")
+
+
+
+## `mina-cli search-diagram-element`
+
+Search for the project's diagrams that include the element with the given alias
+
+**Usage:** `mina-cli search-diagram-element --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>` — Alias of the architectural element to search
 
 
 

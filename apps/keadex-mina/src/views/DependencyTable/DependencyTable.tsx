@@ -24,6 +24,7 @@ import { EDIT_DIAGRAM } from '../../core/router/routes'
 import {
   diagramNameTypeFromPath,
   diagramToLinkString,
+  dependentElementsInDiagram,
   searchDiagramElementAlias,
 } from '../../core/tauri-rust-bridge'
 import { generateDependencyTableDeepLink } from '../../helper/deep-link-helper'
@@ -39,6 +40,7 @@ type Dependency = {
   type: DiagramType
   humanType: string
   link: string
+  dependents: string[]
 }
 
 type DependencyData = TableData<Partial<Dependency>>
@@ -60,10 +62,25 @@ export const DependencyTable = (props: DependencyTableProps) => {
     {
       accessorKey: 'name',
       label: t('common.diagram_name'),
+      size: 400,
+      className: 'max-w-[400px] truncate',
+      enableResizing: false,
     },
     {
       accessorKey: 'humanType',
       label: t('common.diagram_type'),
+      size: 300,
+      className: 'max-w-[300px] truncate',
+      enableResizing: false,
+    },
+    {
+      id: 'dependents',
+      accessorFn: (data) => {
+        return data.dependents?.join(', ')
+      },
+      label: t('common.dependent_elements'),
+      className: 'text-ellipsis',
+      enableResizing: false,
     },
   ]
 
@@ -92,11 +109,17 @@ export const DependencyTable = (props: DependencyTableProps) => {
                 diagram.diagram_name,
                 diagram.diagram_type,
               )
+              const dependents = await dependentElementsInDiagram(
+                alias,
+                diagram.diagram_name,
+                diagram.diagram_type,
+              )
               diagrams.push({
                 name: diagram.diagram_name,
                 type: diagram.diagram_type,
                 humanType: diagramTypeHumanName(diagram.diagram_type),
                 link,
+                dependents,
               })
             }
           }
@@ -107,6 +130,7 @@ export const DependencyTable = (props: DependencyTableProps) => {
         }
       })
       .catch((error: MinaError) => {
+        console.error(error)
         setIsGenerating(false)
         setDependencies([])
         toast.error(

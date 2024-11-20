@@ -15,6 +15,8 @@ use crate::model::diagram::diagram_spec::DiagramSpec;
 use crate::model::diagram::{Diagram, DiagramFormat, DiagramType};
 use crate::model::project_library::ProjectLibrary;
 use crate::repository::diagram_repository;
+use crate::service::diagram_service::dependent_elements_in_diagram as dependent_elements_in_diagram_service;
+use crate::service::diagram_service::get_diagram as get_diagram_service;
 use std::collections::HashMap;
 
 /**
@@ -36,9 +38,7 @@ pub async fn get_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
 ) -> Result<Diagram, MinaError> {
-  let diagram = diagram_repository::open_diagram(diagram_name, diagram_type.clone())?;
-  diagram_repository::close_diagram(diagram_name, diagram_type.clone())?;
-  Ok(diagram)
+  return get_diagram_service(diagram_name, diagram_type);
 }
 
 /**
@@ -262,4 +262,20 @@ pub async fn diagram_name_type_from_path(path: &str) -> Result<Diagram, MinaErro
     last_modified: None,
     auto_layout: None,
   })
+}
+
+/**
+Retrieves the dependents of an architectural element with the given alias in the given diagram.
+# Arguments
+  * `alias` - Alias of the architectural element.
+  * `diagram_name` - Name of the diagram.
+  * `diagram_type` - Type of the diagram.
+*/
+#[tauri::command]
+pub async fn dependent_elements_in_diagram(
+  alias: &str,
+  diagram_name: &str,
+  diagram_type: DiagramType,
+) -> Result<Vec<String>, MinaError> {
+  return dependent_elements_in_diagram_service(alias, diagram_name, diagram_type);
 }

@@ -200,6 +200,18 @@ export async function diagramNameTypeFromPath(path: string): Promise<Diagram> {
   })
 }
 
+export async function dependentElementsInDiagram(
+  alias: string,
+  diagramName: string,
+  diagramType: DiagramType,
+): Promise<string[]> {
+  return invoke('dependent_elements_in_diagram', {
+    alias,
+    diagramName,
+    diagramType,
+  })
+}
+
 /*########################*/
 /*    LIBRARY COMMANDS    */
 /*########################*/

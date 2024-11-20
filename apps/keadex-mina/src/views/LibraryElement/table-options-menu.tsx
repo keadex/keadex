@@ -18,11 +18,12 @@ function menu(
     mode: 'c' | 'u',
     libraryElement: LibraryElementType | undefined,
     project: Project | undefined,
-    enableEdit?: boolean
+    enableEdit?: boolean,
   ) => void,
+  openLibraryElementDependencyTable: (alias: string) => void,
   showModal: (modalContent: ModalProps) => void,
   hideModal: () => void,
-  forceUpdate: () => void
+  forceUpdate: () => void,
 ): DropdownMenuProps {
   const id = `${libraryElement.base_data?.alias}`
 
@@ -53,7 +54,7 @@ function menu(
                   toast.error(
                     t('common.error.cannot_delete_element', {
                       errorMessage: error.msg,
-                    })
+                    }),
                   )
                 })
             }
@@ -65,6 +66,11 @@ function menu(
 
   function handleOpenLibraryElement() {
     openLibraryElement('u', libraryElement, project)
+  }
+
+  function handleCheckDependencies() {
+    if (libraryElement.base_data?.alias)
+      openLibraryElementDependencyTable(libraryElement.base_data.alias)
   }
 
   return {
@@ -86,6 +92,12 @@ function menu(
             id: `${id}_delete`,
             label: t('common.delete').toString(),
             onClick: handleDeleteLibraryElement,
+          },
+          {
+            isHeaderMenuItem: false,
+            id: `${id}_check-dependencies`,
+            label: t('common.check_dependencies').toString(),
+            onClick: handleCheckDependencies,
           },
         ],
       },

@@ -9,14 +9,29 @@ use crate::helper::diagram_helper::{
   diagram_name_type_from_path, diagram_to_link_string, get_all_elements_aliases,
 };
 use crate::helper::library_helper::element_type_from_path;
+use crate::model::c4_element::relationship::RelationshipType;
 use crate::model::diagram::diagram_plantuml::{
   serialize_elements_to_plantuml, DiagramElementType, DiagramPlantUML,
 };
+use crate::model::diagram::Diagram;
 use crate::model::diagram::DiagramType;
 use crate::model::file_search_results::FileSearchCategory;
+use crate::repository::diagram_repository::{close_diagram, open_diagram};
 use crate::service::search_service::search_diagram_element;
 use convert_case::Case::Lower;
 use convert_case::Casing;
+
+/**
+Returns the data of a diagram.
+# Arguments
+  * `diagram_name` - Name of the diagram to open.
+  * `diagram_type` - Type of the diagram to open.
+*/
+pub fn get_diagram(diagram_name: &str, diagram_type: DiagramType) -> Result<Diagram, MinaError> {
+  let diagram = open_diagram(diagram_name, diagram_type.clone())?;
+  close_diagram(diagram_name, diagram_type.clone())?;
+  Ok(diagram)
+}
 
 /**
 Checks a diagram satisfies all the requirements to be considerated as valid (e.g. syntax) .
@@ -175,4 +190,100 @@ pub fn check_cross_diagrams_elements_aliases(
     }
   }
   Ok(())
+}
+
+/**
+Retrieves the dependents of an architectural element with the given alias in the given diagram elements.
+# Arguments
+  * `alias` - Alias of the architectural element.
+  * `diagram_plantuml_elements` - PlantUML elements of the diagram.
+*/
+pub fn find_dependent_elements_in_diagram(
+  alias: &str,
+  diagram_plantuml_elements: &Vec<DiagramElementType>,
+) -> Result<Vec<String>, MinaError> {
+  let l_to_r_rels = vec![
+    RelationshipType::Rel,
+    RelationshipType::RelNeighbor,
+    RelationshipType::RelDown,
+    RelationshipType::RelD,
+    RelationshipType::RelUp,
+    RelationshipType::RelU,
+    RelationshipType::RelLeft,
+    RelationshipType::RelL,
+    RelationshipType::RelRight,
+    RelationshipType::RelR,
+  ];
+  let r_to_l_rels = vec![RelationshipType::RelBackNeighbor, RelationshipType::RelBack];
+  let bi_rels = vec![
+    RelationshipType::BiRelNeighbor,
+    RelationshipType::BiRelDown,
+    RelationshipType::BiRelD,
+    RelationshipType::BiRelUp,
+    RelationshipType::BiRelU,
+    RelationshipType::BiRelLeft,
+    RelationshipType::BiRelL,
+    RelationshipType::BiRelRight,
+    RelationshipType::BiRelR,
+    RelationshipType::BiRel,
+  ];
+  let mut dependents = vec![];
+  for element in diagram_plantuml_elements.clone() {
+    match element {
+      DiagramElementType::Relationship(relationship) => {
+        if let Some(rel_type) = relationship.relationship_type {
+          if l_to_r_rels.contains(&rel_type) {
+            if relationship.from == Some(alias.to_string()) && relationship.to.is_some() {
+              dependents.push(relationship.to.unwrap());
+            }
+          } else if r_to_l_rels.contains(&rel_type) {
+            if relationship.from.is_some() && relationship.to == Some(alias.to_string()) {
+              dependents.push(relationship.from.unwrap());
+            }
+          } else if bi_rels.contains(&rel_type) {
+            if relationship.from == Some(alias.to_string()) && relationship.to.is_some() {
+              dependents.push(relationship.to.unwrap());
+            } else if relationship.from.is_some() && relationship.to == Some(alias.to_string()) {
+              dependents.push(relationship.from.unwrap());
+            }
+          }
+        }
+      }
+      DiagramElementType::Boundary(boundary) => {
+        dependents.append(&mut find_dependent_elements_in_diagram(
+          alias,
+          &boundary.sub_elements,
+        )?);
+      }
+      DiagramElementType::DeploymentNode(deployment_node) => {
+        dependents.append(&mut find_dependent_elements_in_diagram(
+          alias,
+          &deployment_node.sub_elements,
+        )?);
+      }
+      _ => (),
+    }
+  }
+  return Ok(dependents);
+}
+
+/**
+Retrieves the dependents of an architectural element with the given alias in the given diagram.
+# Arguments
+  * `alias` - Alias of the architectural element.
+  * `diagram_name` - Name of the diagram.
+  * `diagram_type` - Type of the diagram.
+*/
+pub fn dependent_elements_in_diagram(
+  alias: &str,
+  diagram_name: &str,
+  diagram_type: DiagramType,
+) -> Result<Vec<String>, MinaError> {
+  let diagram = get_diagram(diagram_name, diagram_type)?;
+  if let Some(diagram_plantuml) = diagram.diagram_plantuml {
+    let dependents = find_dependent_elements_in_diagram(alias, &diagram_plantuml.elements)?;
+    return Ok(dependents);
+  } else {
+    return Ok(vec![]);
+  }
 }
