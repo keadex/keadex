@@ -35,6 +35,9 @@ pub enum Commands {
   /// Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names.
   ListDiagrams,
 
+  /// Returns the elements in the project's library. The returned object is a map where the keys represent the elements' types, and the values represent the elements in the library.
+  ListLibraryElements,
+
   /// Read a diagram
   ReadDiagram(ReadDiagram),
 

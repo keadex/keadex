@@ -7,6 +7,7 @@ This document contains the help content for the `mina-cli` command-line program.
 * [`mina-cli`↴](#mina-cli)
 * [`mina-cli find-dependent-elements`↴](#mina-cli-find-dependent-elements)
 * [`mina-cli list-diagrams`↴](#mina-cli-list-diagrams)
+* [`mina-cli list-library-elements`↴](#mina-cli-list-library-elements)
 * [`mina-cli read-diagram`↴](#mina-cli-read-diagram)
 * [`mina-cli search-diagram-element`↴](#mina-cli-search-diagram-element)
 * [`mina-cli search-library-element`↴](#mina-cli-search-library-element)
@@ -25,6 +26,7 @@ CLI for interacting with Mina projects.
 
 * `find-dependent-elements` — Returns the dependents of a an architectural element with the given alias in the given diagram
 * `list-diagrams` — Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names
+* `list-library-elements` — Returns the elements in the project's library. The returned object is a map where the keys represent the elements' types, and the values represent the elements in the library
 * `read-diagram` — Read a diagram
 * `search-diagram-element` — Search for the project's diagrams that include the element with the given alias
 * `search-library-element` — Search in the project's library for an element with the given alias
@@ -58,6 +60,14 @@ Returns the dependents of a an architectural element with the given alias in the
 Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names
 
 **Usage:** `mina-cli list-diagrams`
+
+
+
+## `mina-cli list-library-elements`
+
+Returns the elements in the project's library. The returned object is a map where the keys represent the elements' types, and the values represent the elements in the library
+
+**Usage:** `mina-cli list-library-elements`
 
 
 

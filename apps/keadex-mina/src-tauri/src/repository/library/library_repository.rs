@@ -8,7 +8,7 @@ use crate::core::app::ROOT_RESOLVER;
 use crate::core::resolver::ResolvableModules::ProjectLibraryIMDAO;
 use crate::dao::inmemory::InMemoryDAO;
 use crate::error_handling::errors::{
-  INVALID_LIB_ELEMENT_ERROR_CODE, INVALID_LIB_ELEMENT_ERROR_MSG,
+  EXISTING_LIB_ELEMENT_ERROR_MSG, INVALID_LIB_ELEMENT_ERROR_CODE, INVALID_LIB_ELEMENT_ERROR_MSG,
 };
 use crate::error_handling::mina_error::MinaError;
 use crate::helper::diagram_helper::clean_plantuml_diagram_element;
@@ -72,21 +72,50 @@ pub fn create_element(diagram_element: &DiagramElementType) -> Result<ProjectLib
     msg: INVALID_LIB_ELEMENT_ERROR_MSG.to_string(),
   };
 
+  let error_existing_element = MinaError {
+    code: INVALID_LIB_ELEMENT_ERROR_CODE,
+    msg: EXISTING_LIB_ELEMENT_ERROR_MSG.to_string(),
+  };
+
   // Create the element
   match diagram_element {
     DiagramElementType::Person(person) => {
-      return Ok(person_repository::create_person(person.clone())?)
+      if search_library_element(person.base_data.alias.as_ref().unwrap())
+        .is_ok_and(|result| result.is_some())
+      {
+        return Err(error_existing_element);
+      } else {
+        return Ok(person_repository::create_person(person.clone())?);
+      }
     }
     DiagramElementType::SoftwareSystem(software_system) => {
-      return Ok(software_system_repository::create_software_system(
-        software_system.clone(),
-      )?)
+      if search_library_element(software_system.base_data.alias.as_ref().unwrap())
+        .is_ok_and(|result| result.is_some())
+      {
+        return Err(error_existing_element);
+      } else {
+        return Ok(software_system_repository::create_software_system(
+          software_system.clone(),
+        )?);
+      }
     }
     DiagramElementType::Container(container) => {
-      return Ok(container_repository::create_container(container.clone())?)
+      if search_library_element(container.base_data.alias.as_ref().unwrap())
+        .is_ok_and(|result| result.is_some())
+      {
+        return Err(error_existing_element);
+      } else {
+        return Ok(container_repository::create_container(container.clone())?);
+      }
     }
     DiagramElementType::Component(component) => {
-      return Ok(component_repository::create_component(component.clone())?)
+      if search_library_element(component.base_data.alias.as_ref().unwrap())
+        .is_ok_and(|result| result.is_some())
+      {
+        return Err(error_existing_element);
+      } else {
+        return Ok(component_repository::create_component(component.clone())?);
+      }
     }
     DiagramElementType::Boundary(_) => return Err(error),
     DiagramElementType::DeploymentNode(_) => return Err(error),

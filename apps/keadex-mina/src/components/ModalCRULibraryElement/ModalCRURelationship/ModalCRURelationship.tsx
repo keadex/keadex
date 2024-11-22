@@ -139,7 +139,7 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
         <Textarea
           id="relationship-description"
           disabled={!props.enableEdit}
-          label={`${t('common.description')}`}
+          label={t('common.description')}
           className="mt-6"
           value={newRelationship?.base_data?.description}
           onChange={(e) =>

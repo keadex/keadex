@@ -376,6 +376,7 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
               />
               <DiagramCodeView
                 ref={diagramCodeViewRef}
+                project={project}
                 diagram={diagram}
                 error={error}
                 diagramCodeViewToolbarCommands={

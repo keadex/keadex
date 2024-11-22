@@ -40,6 +40,8 @@ import menu from './table-options-menu'
 import { openDependencyTable } from '../../core/router/router'
 import ROUTES from '../../core/router/routes'
 
+// This type contains also the Boundary, DeploymentNode and Relationship types
+// because it is used also for serializing those elements in the code editor.
 export type LibraryElementType =
   | Person
   | SoftwareSystem

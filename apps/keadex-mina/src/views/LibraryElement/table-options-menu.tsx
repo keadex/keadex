@@ -65,7 +65,7 @@ function menu(
   }
 
   function handleOpenLibraryElement() {
-    openLibraryElement('u', libraryElement, project)
+    openLibraryElement('u', libraryElement, project, true)
   }
 
   function handleCheckDependencies() {
@@ -84,7 +84,7 @@ function menu(
           {
             isHeaderMenuItem: false,
             id: `${id}_open`,
-            label: t('common.open').toString(),
+            label: t('common.edit').toString(),
             onClick: handleOpenLibraryElement,
           },
           {

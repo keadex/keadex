@@ -116,6 +116,7 @@
     "error": {
       "internal": "Internal error: {{errorMessage}}",
       "cannot_add_link": "Cannot add a link to the selected PlantUML element. Move the cursor on a Software System, Container, or Component in the code editor. ",
+      "cannot_add_to_library": "Cannot add the selected PlantUML element to the library. Move the cursor on a Person, Software System, Container, or Component in the code editor. ",
       "cannot_delete_diagram": "Cannot delete the diagram: {{errorMessage}}",
       "cannot_delete_element": "Cannot delete this element.",
       "invalid_diagram_link": "Diagram not found. Check the diagram link.",
@@ -167,6 +168,8 @@
   },
   "diagram_editor": {
     "add_diagram_element": "Add a diagram element",
+    "add_to_library": "Add to the library",
+    "add_to_library_detailed_title": "Add the {{elementType}} \"{{alias}}\" to the library",
     "ai_diagram_generator": "AI diagram generator",
     "ai_hint": "Description of the diagram to generate",
     "configure_auto_layout": "Configure auto layout",

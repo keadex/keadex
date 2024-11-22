@@ -24,12 +24,11 @@ export interface ModalImportLibraryElementProps {
 export const ModalImportLibraryElement = React.memo(
   (props: ModalImportLibraryElementProps) => {
     const { t } = useTranslation()
-    const [c4ElementType, setC4ElementType] =
-      useState<C4ElementType>('SoftwareSystem')
+    const [c4ElementType, setC4ElementType] = useState<C4ElementType>('Person')
 
     function handleRowClick(
       e: React.MouseEvent<HTMLTableCellElement>,
-      data: TableData<ElementData>
+      data: TableData<ElementData>,
     ) {
       const { menu, ...libraryElementData } = data
       let libraryElement: DiagramElementType | undefined
@@ -80,7 +79,7 @@ export const ModalImportLibraryElement = React.memo(
                     label: pluralize(c4ElementTypeHumanName(c4ElementType)),
                     value: c4ElementType,
                   }
-                })
+                }),
               ),
             ]}
             onChange={(e) => setC4ElementType(e.target.value as C4ElementType)}
@@ -105,7 +104,7 @@ export const ModalImportLibraryElement = React.memo(
         </div>
       </div>
     )
-  }
+  },
 )
 
 export default ModalImportLibraryElement

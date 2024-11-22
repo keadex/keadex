@@ -43,6 +43,8 @@ pub const INVALID_LIBRARY_PATH_ERROR_MSG: &str = "Invalid library's path.";
 pub const EXISTING_DIAGRAM_ERROR_MSG: &str =
   "A diagram with the given name and type already exists. Choose a different name or type.";
 pub const INVALID_LIB_ELEMENT_ERROR_MSG: &str = "Provided element is not a valid library element.";
+pub const EXISTING_LIB_ELEMENT_ERROR_MSG: &str =
+  "An element with the specified alias already exists in the library.";
 pub const MISSING_AI_SETTINGS_ERROR_MSG: &str = "Missing AI settings.";
 pub const INVALID_GENERATED_DIAGRAM: &str =
   "The AI-generated diagram contains errors. Try again providing a more detailed description.";

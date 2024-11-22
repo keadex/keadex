@@ -32,7 +32,7 @@ export type LibraryElementConfigs = {
 
 export function buildLibraryElementConfigs(
   c4ElementType: C4ElementType,
-  t: TFunction
+  t: TFunction,
 ): LibraryElementConfigs {
   // i18n key
   const i18nKey = `${snakeCase(c4ElementType).toLowerCase()}` as i18nKeyType
@@ -45,7 +45,7 @@ export function buildLibraryElementConfigs(
   // the property of the object is "system_type").
   const typeColumnId = `${i18nKey.replace(
     'software_',
-    ''
+    '',
   )}_type` as TypeAccessorType
 
   // Type Accessor Fn
