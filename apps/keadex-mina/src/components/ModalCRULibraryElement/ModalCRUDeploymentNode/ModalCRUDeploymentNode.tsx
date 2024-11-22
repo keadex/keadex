@@ -34,6 +34,14 @@ export const ModalCRUDeploymentNode = (props: ModalCRULibraryElementProps) => {
       : emptyDeploymentNode,
   )
 
+  function missingRequiredFields() {
+    return (
+      !newDeploymentNode?.base_data?.alias ||
+      !newDeploymentNode?.base_data?.label ||
+      !newDeploymentNode.deployment_node_type
+    )
+  }
+
   useEffect(() => {
     emptyDeploymentNode.base_data.uuid = uuidv4()
   }, [])
@@ -126,6 +134,13 @@ export const ModalCRUDeploymentNode = (props: ModalCRULibraryElementProps) => {
             }
           />
         )}
+        <span
+          className={`text-sm text-orange-500 mt-2 ${
+            missingRequiredFields() ? 'block' : 'hidden'
+          }`}
+        >
+          * {t('common.info.fill_required_fields')}
+        </span>
       </div>
 
       {/* Modal footer */}
@@ -139,10 +154,7 @@ export const ModalCRUDeploymentNode = (props: ModalCRULibraryElementProps) => {
           {
             key: 'button-save',
             children: <span>{t('common.save')}</span>,
-            disabled:
-              !newDeploymentNode?.base_data?.alias ||
-              !newDeploymentNode?.base_data?.label ||
-              !newDeploymentNode.deployment_node_type,
+            disabled: missingRequiredFields(),
             onClick: () => {
               if (props.mode === 'serializer') {
                 if (props.onElementCreated) {

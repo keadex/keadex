@@ -132,6 +132,7 @@
       "copied_to_clipboard": "Copied to clipboard!",
       "diagram_exported": "Diagram exported in {{pathExportedDiagram}}",
       "done": "Done",
+      "fill_required_fields": "Please fill in all required fields.",
       "i_saved_my_changes": "I've saved my changes",
       "limit_results": "More than {{count}} matches. This list could contain a subset of the results.",
       "no_diagrams": "No diagrams",
