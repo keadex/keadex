@@ -9,8 +9,8 @@ import { capitalCase, noCase } from 'change-case'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
-import { ModalCRULibraryElementProps } from '../ModalCRULibraryElements'
 import { ALIAS_REGEX, NAME_REGEX } from '../../../constants/regex'
+import { ModalCRULibraryElementProps } from '../ModalCRULibraryElements'
 
 const emptyBoundary: Boundary = {
   base_data: {
@@ -31,6 +31,14 @@ export const ModalCRUBoundary = (props: ModalCRULibraryElementProps) => {
   useEffect(() => {
     emptyBoundary.base_data.uuid = uuidv4()
   }, [])
+
+  function missingRequiredFields() {
+    return (
+      !newBoundary?.base_data?.alias ||
+      !newBoundary?.base_data?.label ||
+      !newBoundary.boundary_type
+    )
+  }
 
   return (
     <div>
@@ -120,6 +128,13 @@ export const ModalCRUBoundary = (props: ModalCRULibraryElementProps) => {
             }
           />
         )}
+        <span
+          className={`text-sm text-orange-500 mt-2 ${
+            missingRequiredFields() ? 'block' : 'hidden'
+          }`}
+        >
+          * {t('common.info.fill_required_fields')}
+        </span>
       </div>
 
       {/* Modal footer */}
@@ -133,10 +148,7 @@ export const ModalCRUBoundary = (props: ModalCRULibraryElementProps) => {
           {
             key: 'button-save',
             children: <span>{t('common.save')}</span>,
-            disabled:
-              !newBoundary?.base_data?.alias ||
-              !newBoundary?.base_data?.label ||
-              !newBoundary.boundary_type,
+            disabled: missingRequiredFields(),
             onClick: () => {
               if (props.mode === 'serializer') {
                 if (props.onElementCreated) {

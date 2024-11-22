@@ -88,6 +88,15 @@ export const ModalCRUContainer = (props: ModalCRULibraryElementProps) => {
       })
   }
 
+  function missingRequiredFields() {
+    return (
+      !newContainer?.base_data?.alias ||
+      !newContainer?.base_data?.label ||
+      !newContainer.container_type ||
+      !newContainer.technology
+    )
+  }
+
   useEffect(() => {
     emptyContainer.base_data.uuid = uuidv4()
   }, [])
@@ -226,6 +235,13 @@ export const ModalCRUContainer = (props: ModalCRULibraryElementProps) => {
             }
           />
         )}
+        <span
+          className={`text-sm text-orange-500 mt-2 ${
+            missingRequiredFields() ? 'block' : 'hidden'
+          }`}
+        >
+          * {t('common.info.fill_required_fields')}
+        </span>
       </div>
 
       {/* Modal footer */}
@@ -239,11 +255,7 @@ export const ModalCRUContainer = (props: ModalCRULibraryElementProps) => {
           {
             key: 'button-save',
             children: <span>{t('common.save')}</span>,
-            disabled:
-              !newContainer?.base_data?.alias ||
-              !newContainer?.base_data?.label ||
-              !newContainer.container_type ||
-              !newContainer.technology,
+            disabled: missingRequiredFields(),
             onClick: () => {
               if (props.mode === 'serializer') {
                 if (props.onElementCreated) {

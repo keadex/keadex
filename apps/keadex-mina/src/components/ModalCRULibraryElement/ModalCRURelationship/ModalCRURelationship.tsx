@@ -35,6 +35,16 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
       : emptyRelationship,
   )
 
+  function missingRequiredFields() {
+    return (
+      !newRelationship?.from ||
+      !newRelationship?.to ||
+      !newRelationship?.base_data?.label ||
+      !newRelationship.relationship_type ||
+      !newRelationship.technology
+    )
+  }
+
   useEffect(() => {
     emptyRelationship.base_data.uuid = uuidv4()
   }, [])
@@ -170,6 +180,13 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
             }
           />
         )}
+        <span
+          className={`text-sm text-orange-500 mt-2 ${
+            missingRequiredFields() ? 'block' : 'hidden'
+          }`}
+        >
+          * {t('common.info.fill_required_fields')}
+        </span>
       </div>
 
       {/* Modal footer */}
@@ -183,12 +200,7 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
           {
             key: 'button-save',
             children: <span>{t('common.save')}</span>,
-            disabled:
-              !newRelationship?.from ||
-              !newRelationship?.to ||
-              !newRelationship?.base_data?.label ||
-              !newRelationship.relationship_type ||
-              !newRelationship.technology,
+            disabled: missingRequiredFields(),
             onClick: () => {
               if (props.mode === 'serializer') {
                 if (props.onElementCreated) {

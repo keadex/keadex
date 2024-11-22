@@ -82,6 +82,14 @@ export const ModalCRUPerson = (props: ModalCRULibraryElementProps) => {
       })
   }
 
+  function missingRequiredFields() {
+    return (
+      !newPerson?.base_data?.alias ||
+      !newPerson?.base_data?.label ||
+      !newPerson.person_type
+    )
+  }
+
   useEffect(() => {
     emptyPerson.base_data.uuid = uuidv4()
   }, [])
@@ -186,6 +194,13 @@ export const ModalCRUPerson = (props: ModalCRULibraryElementProps) => {
             }
           />
         )}
+        <span
+          className={`text-sm text-orange-500 mt-2 ${
+            missingRequiredFields() ? 'block' : 'hidden'
+          }`}
+        >
+          * {t('common.info.fill_required_fields')}
+        </span>
       </div>
 
       {/* Modal footer */}
@@ -199,10 +214,7 @@ export const ModalCRUPerson = (props: ModalCRULibraryElementProps) => {
           {
             key: 'button-save',
             children: <span>{t('common.save')}</span>,
-            disabled:
-              !newPerson?.base_data?.alias ||
-              !newPerson?.base_data?.label ||
-              !newPerson.person_type,
+            disabled: missingRequiredFields(),
             onClick: () => {
               if (props.mode === 'serializer') {
                 if (props.onElementCreated) {
