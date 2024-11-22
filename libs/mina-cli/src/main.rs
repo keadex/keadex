@@ -3,6 +3,10 @@ pub mod model;
 
 use crate::list_diagrams::list_diagrams;
 use clap::Parser;
+use commands::create_component::create_component;
+use commands::create_container::create_container;
+use commands::create_person::create_person;
+use commands::create_system::create_system;
 use commands::find_dependent_elements::find_dependent_elements;
 use commands::list_diagrams;
 use commands::list_library_elements::list_library_elements;
@@ -39,6 +43,18 @@ fn main() {
       eprintln!("Error: {}", error.msg)
     } else {
       match args.cmd {
+        Commands::CreateComponent(args) => {
+          result = create_component(args);
+        }
+        Commands::CreateContainer(args) => {
+          result = create_container(args);
+        }
+        Commands::CreatePerson(args) => {
+          result = create_person(args);
+        }
+        Commands::CreateSystem(args) => {
+          result = create_system(args);
+        }
         Commands::FindDependentElements(args) => {
           result = find_dependent_elements(&args.alias, &args.diagram_name, args.diagram_type);
         }

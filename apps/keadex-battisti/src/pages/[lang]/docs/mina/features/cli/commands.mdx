@@ -5,6 +5,10 @@ This document contains the help content for the `mina-cli` command-line program.
 **Command Overview:**
 
 * [`mina-cli`↴](#mina-cli)
+* [`mina-cli create-person`↴](#mina-cli-create-person)
+* [`mina-cli create-system`↴](#mina-cli-create-system)
+* [`mina-cli create-container`↴](#mina-cli-create-container)
+* [`mina-cli create-component`↴](#mina-cli-create-component)
 * [`mina-cli find-dependent-elements`↴](#mina-cli-find-dependent-elements)
 * [`mina-cli list-diagrams`↴](#mina-cli-list-diagrams)
 * [`mina-cli list-library-elements`↴](#mina-cli-list-library-elements)
@@ -24,6 +28,10 @@ CLI for interacting with Mina projects.
 
 ###### **Subcommands:**
 
+* `create-person` — Create a person in the project's library
+* `create-system` — Create a software system in the project's library
+* `create-container` — Create a container in the project's library
+* `create-component` — Create a component in the project's library
 * `find-dependent-elements` — Returns the dependents of a an architectural element with the given alias in the given diagram
 * `list-diagrams` — Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names
 * `list-library-elements` — Returns the elements in the project's library. The returned object is a map where the keys represent the elements' types, and the values represent the elements in the library
@@ -38,6 +46,75 @@ CLI for interacting with Mina projects.
 ###### **Options:**
 
 * `-p`, `--project-path <PROJECT_PATH>` — Path of the Mina project
+
+
+
+## `mina-cli create-person`
+
+Create a person in the project's library
+
+**Usage:** `mina-cli create-person [OPTIONS] --alias <ALIAS> --label <LABEL> --person-type <PERSON_TYPE>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--label <LABEL>`
+* `--person-type <PERSON_TYPE>`
+* `--description <DESCRIPTION>`
+* `--notes <NOTES>`
+
+
+
+## `mina-cli create-system`
+
+Create a software system in the project's library
+
+**Usage:** `mina-cli create-system [OPTIONS] --alias <ALIAS> --label <LABEL> --system-type <SYSTEM_TYPE>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--label <LABEL>`
+* `--system-type <SYSTEM_TYPE>`
+* `--description <DESCRIPTION>`
+* `--link <LINK>`
+* `--notes <NOTES>`
+
+
+
+## `mina-cli create-container`
+
+Create a container in the project's library
+
+**Usage:** `mina-cli create-container [OPTIONS] --alias <ALIAS> --label <LABEL> --container-type <CONTAINER_TYPE> --technology <TECHNOLOGY>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--label <LABEL>`
+* `--container-type <CONTAINER_TYPE>`
+* `--technology <TECHNOLOGY>`
+* `--description <DESCRIPTION>`
+* `--link <LINK>`
+* `--notes <NOTES>`
+
+
+
+## `mina-cli create-component`
+
+Create a component in the project's library
+
+**Usage:** `mina-cli create-component [OPTIONS] --alias <ALIAS> --label <LABEL> --component-type <COMPONENT_TYPE> --technology <TECHNOLOGY>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--label <LABEL>`
+* `--component-type <COMPONENT_TYPE>`
+* `--technology <TECHNOLOGY>`
+* `--description <DESCRIPTION>`
+* `--link <LINK>`
+* `--notes <NOTES>`
 
 
 

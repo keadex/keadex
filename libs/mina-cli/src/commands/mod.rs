@@ -1,3 +1,7 @@
+pub mod create_component;
+pub mod create_container;
+pub mod create_person;
+pub mod create_system;
 pub mod find_dependent_elements;
 pub mod list_diagrams;
 pub mod list_library_elements;

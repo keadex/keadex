@@ -1,3 +1,7 @@
+use crate::model::commands::create_component::CreateComponent;
+use crate::model::commands::create_container::CreateContainer;
+use crate::model::commands::create_person::CreatePerson;
+use crate::model::commands::create_system::CreateSystem;
 use crate::model::commands::update_component::UpdateComponent;
 use crate::model::commands::update_container::UpdateContainer;
 use crate::model::commands::update_person::UpdatePerson;
@@ -29,6 +33,18 @@ pub struct Cli {
 
 #[derive(Subcommand, Debug)]
 pub enum Commands {
+  /// Create a person in the project's library.
+  CreatePerson(CreatePerson),
+
+  /// Create a software system in the project's library.
+  CreateSystem(CreateSystem),
+
+  /// Create a container in the project's library.
+  CreateContainer(CreateContainer),
+
+  /// Create a component in the project's library.
+  CreateComponent(CreateComponent),
+
   /// Returns the dependents of a an architectural element with the given alias in the given diagram.
   FindDependentElements(FindDependentElements),
 
