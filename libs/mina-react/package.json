@@ -3,7 +3,7 @@
   "description": "React library to render C4 Model diagrams created with Keadex Mina.",
   "author": "Keadex <keadex.it@gmail.com>",
   "license": "MIT",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "private": false,
   "homepage": "https://keadex.dev",
   "repository": {
