@@ -26,6 +26,7 @@ import {
   VirtualGroupSelection,
   createBaseContextMenuItems,
 } from './C4BaseComponent'
+import { unescape } from '@keadex/keadex-utils'
 
 export enum RelObjects {
   Dot = 'DOT',
@@ -741,10 +742,11 @@ const createText = (
       RELATIONSHIP.COLORS.TEXT_COLOR,
   }
   if (data.base_data?.label) {
-    const label = new fabric.Text(data.base_data.label, {
+    const label = new fabric.Text(unescape(data.base_data.label)!, {
       ...textOptions,
       fontSize: RELATIONSHIP.FONT.SIZE_LABEL,
       fontWeight: 'bold',
+      textAlign: 'center',
     })
     label.top = data.technology
       ? -(label.height ?? 0)
@@ -758,6 +760,7 @@ const createText = (
     const technology = new fabric.Text(`[${data.technology}]`, {
       ...textOptions,
       fontSize: RELATIONSHIP.FONT.SIZE_TECHNOLOGY,
+      textAlign: 'center',
     })
     technology.left =
       (line.width ?? 0) / 2 -
