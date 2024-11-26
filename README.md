@@ -19,8 +19,8 @@
 > [!IMPORTANT]
 > Maintaining open-source solutions demands significant effort, especially since it’s not my primary job. However, Keadex is my passion, and I genuinely enjoy working on it.
 >
-> If you appreciate Keadex applications or libraries, I’m not asking for a coffee or a donation.</br>
-> Instead, simply ⭐ **star** this repository and 📣 **share** it with your teams, colleagues, or community!
+> If you like Keadex applications or libraries, I’m not asking for a coffee or a donation.</br>
+> Instead, I'd appreciate if you just ⭐ **star** this repository and 📣 **share** it with your teams, colleagues, or community! Thank you!
 
 ## Introduction
 
