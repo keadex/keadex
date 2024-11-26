@@ -22,7 +22,12 @@
 
 Some of the packages in this repo are experiments ( :microscope: ), some under development ( :hourglass_flowing_sand: ), while others are ready to use open source solutions ( :white_check_mark: ).
 
-If you're interested in knowing more about Keadex, me or the provided solutions please visit [keadex.dev](https://keadex.dev), the [documentation](https://keadex.dev/docs) section or the [Discord channel](https://discord.gg/utCqK9jzJW).
+💡 Do you have ideas you’d like to share? Are you interested in contributing to Keadex or learning more about it?
+Feel free to reach out to me on my [Discord channel](https://discord.gg/utCqK9jzJW), or explore the Keadex [website](https://keadex.dev) and [documentation](https://keadex.dev/docs) for more information!
+
+> [!IMPORTANT]
+> Maintaining open-source solutions demands significant effort, especially since it’s not my primary job. However, Keadex is my passion, and I genuinely enjoy working on it.
+> If you appreciate Keadex applications or libraries, I’m not asking for a coffee or a donation. Instead, simply star ⭐ this repository and share 📣 it with your teams, colleagues, or community!
 
 ## Packages
 
