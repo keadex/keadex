@@ -133,12 +133,16 @@ impl RenderBackend for GraphRenderBackend {
     &mut self,
     raw_path: &[(LayoutPoint, LayoutPoint)],
     _dashed: bool,
-    _head: (bool, bool),
+    head: (bool, bool),
     _look: &StyleAttr,
     _text: &str,
   ) {
-    let start = Point::from(raw_path[0].0);
-    let end = Point::from(raw_path[raw_path.len() - 1].1);
+    let mut start = Point::from(raw_path[0].0);
+    let mut end = Point::from(raw_path[raw_path.len() - 1].1);
+    if head.1 {
+      start = Point::from(raw_path[raw_path.len() - 1].1);
+      end = Point::from(raw_path[0].0);
+    };
 
     self.elements.insert(
       String::from(&self.temp_edges_aliases[0]),
