@@ -2736,10 +2736,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@keadex/mina-react-npm@npm:@keadex/mina-react@^1.13.0":
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-1.13.0.tgz#aa776d46e9ccd34b164e0150990aed55198b08b9"
-  integrity sha512-GjdBDA9IRuhv/iPmAkgbTpAYpdT085lyAXfmMVZFPkzl7f3rcffcgCPSlisBu9MxKkESb51dCuMCH+q83Y2X2g==
+"@keadex/mina-react-npm@npm:@keadex/mina-react@^1.15.0":
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-1.15.0.tgz#44e94630608f75232b67681b21d33dd520b913bc"
+  integrity sha512-qfsAN3QbAJvGplPdJTFoBJlw/UoOWVcYkCrMZIqNGLdVy2ioP2CWuzsupt1L/hBGoQfZGUIK9YxSwRdCmIfR9A==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
@@ -4490,6 +4490,11 @@
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.0.0.tgz#637bee36f0cabf96a1d436887c90f138a7e9378b"
   integrity sha512-SYXOBTjJb05rXa2vl55TTwO40A6wKu0R5i1qQwhJYNDIqaIGF7D0HsLw+pJAyi2OvntlEIVusx3xtbbgSUi6zg==
+
+"@tauri-apps/api@^1.5.3":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.6.0.tgz#745b7e4e26782c3b2ad9510d558fa5bb2cf29186"
+  integrity sha512-rqI++FWClU5I2UBp4HXFvl+sBWkdigBkxnpJDQUWttNyG7IZP4FwQGhTNL5EOw0vI8i6eSAJ5frLqO7n7jbJdg==
 
 "@tauri-apps/api@^2.0.0", "@tauri-apps/api@^2.0.3":
   version "2.0.3"
