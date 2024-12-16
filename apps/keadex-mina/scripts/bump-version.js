@@ -44,6 +44,18 @@ const filesToUpdate = [
     pattern: `name = "keadex_mina"\nversion = "${version}"`,
   },
   {
+    path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/cli/overview.mdx',
+    pattern: `/mina-cli%40${version}/`,
+  },
+  {
+    path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/cli/overview.mdx',
+    pattern: `Download Mina CLI v${version}`,
+  },
+  {
+    path: 'libs/mina-cli/Cargo.lock',
+    pattern: `name = "keadex_mina"\nversion = "${version}"`,
+  },
+  {
     path: 'libs/mina-cli/Cargo.lock',
     pattern: `name = "mina-cli"\nversion = "${version}"`,
   },
@@ -58,7 +70,7 @@ filesToUpdate.forEach((file) => {
   // Remove carriage return for windows, which uses CRLF (\r\n) instead of LF (\n)
   const data = fs.readFileSync(path).toString().replace(/\r/g, '')
   const result = data.replace(
-    new RegExp(file.pattern),
+    new RegExp(file.pattern, 'g'),
     file.pattern.replace(version, newVersion),
   )
   fs.writeFileSync(path, result)

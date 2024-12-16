@@ -1,7 +1,17 @@
 pub mod commands;
 pub mod model;
 
+use crate::list_diagrams::list_diagrams;
 use clap::Parser;
+use commands::create_component::create_component;
+use commands::create_container::create_container;
+use commands::create_person::create_person;
+use commands::create_system::create_system;
+use commands::find_dependent_elements::find_dependent_elements;
+use commands::list_diagrams;
+use commands::list_library_elements::list_library_elements;
+use commands::read_diagram::read_diagram;
+use commands::search_diagram_element::search_diagram_element;
 use commands::search_library_element::search_library_element;
 use commands::update_component::update_component;
 use commands::update_container::update_container;
@@ -33,6 +43,36 @@ fn main() {
       eprintln!("Error: {}", error.msg)
     } else {
       match args.cmd {
+        Commands::CreateComponent(args) => {
+          result = create_component(args);
+        }
+        Commands::CreateContainer(args) => {
+          result = create_container(args);
+        }
+        Commands::CreatePerson(args) => {
+          result = create_person(args);
+        }
+        Commands::CreateSystem(args) => {
+          result = create_system(args);
+        }
+        Commands::FindDependentElements(args) => {
+          result = find_dependent_elements(&args.alias, &args.diagram_name, args.diagram_type);
+        }
+        Commands::ListDiagrams => {
+          result = list_diagrams();
+        }
+        Commands::ListLibraryElements => {
+          result = list_library_elements();
+        }
+        Commands::ReadDiagram(read_diagram_args) => {
+          result = read_diagram(
+            &read_diagram_args.diagram_name,
+            read_diagram_args.diagram_type,
+          );
+        }
+        Commands::SearchDiagramElement(args) => {
+          result = search_diagram_element(&args.alias);
+        }
         Commands::SearchLibraryElement(search_args) => {
           result = search_library_element(&search_args.alias);
         }
@@ -51,8 +91,6 @@ fn main() {
       }
       if let Err(error) = result {
         eprintln!("Error: {}", error.msg)
-      } else {
-        println!("Done!")
       }
       clear_keadex_mina(&args.project_path);
     }

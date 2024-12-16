@@ -46,6 +46,6 @@
     "tw-elements": "1.0.0"
   },
   "peerDependencies": {
-    "react-router-dom": "^6.17.0"
+    "react-router-dom": "^6.28.0"
   }
 }

@@ -3,6 +3,7 @@ import {
   faCaretLeft,
   faCaretRight,
   faCaretUp,
+  faCircleInfo,
   faMagnifyingGlassMinus,
   faMagnifyingGlassPlus,
   faRotateLeft,
@@ -12,6 +13,9 @@ import React from 'react'
 
 export interface DiagramDesignViewFloatMenuProps {
   canvas?: KeadexCanvas
+  readOnly?: boolean
+  diagramInfoPanelVisible: boolean
+  setDiagramInfoPanelVisible: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const styleButton = `text-5xl text-dark-primary hover:text-third`
@@ -19,10 +23,32 @@ const styleCenterButtons = `text-2xl text-dark-primary hover:text-third`
 
 export const DiagramDesignViewFloatMenu = React.memo(
   (props: DiagramDesignViewFloatMenuProps) => {
-    const { canvas } = props
+    const {
+      canvas,
+      readOnly,
+      diagramInfoPanelVisible,
+      setDiagramInfoPanelVisible,
+    } = props
+
+    function isDiagramInfoActive() {
+      return readOnly
+    }
+
+    function handleToggleDiagramInfoPanelBtnClick() {
+      if (isDiagramInfoActive()) {
+        setDiagramInfoPanelVisible(!diagramInfoPanelVisible)
+      }
+    }
 
     return (
       <div className="absolute bottom-0 left-0 z-[1] scale-[85%] opacity-20 transition hover:scale-[100%] hover:opacity-100 flex flex-row mx-2">
+        <IconButton
+          className={`${styleCenterButtons} ${
+            isDiagramInfoActive() ? 'absolute' : 'hidden'
+          }`}
+          icon={faCircleInfo}
+          onClick={handleToggleDiagramInfoPanelBtnClick}
+        />
         <div className="flex flex-col">
           <IconButton
             className={`${styleButton} !my-auto`}

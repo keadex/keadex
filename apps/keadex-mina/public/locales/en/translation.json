@@ -10,6 +10,7 @@
     "auto_layout": "Auto Layout",
     "boundary": "Boundary",
     "cancel": "Cancel",
+    "check_dependencies": "Check Dependencies",
     "close": "Close",
     "commands": "Commands",
     "component": "Component",
@@ -26,6 +27,7 @@
     "default": "Default",
     "delete": "Delete",
     "dependency_table": "Dependency Table",
+    "dependent_elements": "Dependent Elements",
     "deployment_node": "Deployment Node",
     "description": "Description",
     "diagram": "Diagram",
@@ -104,16 +106,17 @@
     "action": {
       "check_for_updates": "Check for Updates...",
       "close_project": "Close Project",
+      "copy_deep_link": "Copy deep link",
       "link_existing_diagram": "Link an existing diagram",
       "link_to_diagram": "Link \"{{alias}}\" to...",
       "new_project": "New Project",
       "open_project": "Open Project",
-      "report_issue": "Report Issue",
-      "share_deep_link": "Share deep link"
+      "report_issue": "Report Issue"
     },
     "error": {
       "internal": "Internal error: {{errorMessage}}",
       "cannot_add_link": "Cannot add a link to the selected PlantUML element. Move the cursor on a Software System, Container, or Component in the code editor. ",
+      "cannot_add_to_library": "Cannot add the selected PlantUML element to the library. Move the cursor on a Person, Software System, Container, or Component in the code editor. ",
       "cannot_delete_diagram": "Cannot delete the diagram: {{errorMessage}}",
       "cannot_delete_element": "Cannot delete this element.",
       "invalid_diagram_link": "Diagram not found. Check the diagram link.",
@@ -129,6 +132,7 @@
       "copied_to_clipboard": "Copied to clipboard!",
       "diagram_exported": "Diagram exported in {{pathExportedDiagram}}",
       "done": "Done",
+      "fill_required_fields": "Please fill in all required fields.",
       "i_saved_my_changes": "I've saved my changes",
       "limit_results": "More than {{count}} matches. This list could contain a subset of the results.",
       "no_diagrams": "No diagrams",
@@ -165,9 +169,12 @@
   },
   "diagram_editor": {
     "add_diagram_element": "Add a diagram element",
+    "add_to_library": "Add to the library",
+    "add_to_library_detailed_title": "Add the {{elementType}} \"{{alias}}\" to the library",
     "ai_diagram_generator": "AI diagram generator",
     "ai_hint": "Description of the diagram to generate",
     "configure_auto_layout": "Configure auto layout",
+    "copy_deep_link": "Copy deep link of the diagram",
     "element_imported": "Element imported",
     "external_links_info": "Max {{maxNumExternalLinks}} links. Allowed links: {{allowedLinks}}. Allowed link variables: {{allowedVariables}}.",
     "import_from_library": "Import from the library",
@@ -175,7 +182,6 @@
     "plantuml_generated": "PlantUML generated",
     "saving_rendering_diagram": "Saving & Rendering",
     "select_element_type_to_import": "Select the C4 element type to import from the library",
-    "share_deep_link": "Share deep link of the diagram",
     "warning_enable_autolayout": "You are enabling the auto layout. All the changes you made to the diagram layout will be discarded and replaced with the automatically generated layout."
   },
   "home": {

@@ -1,3 +1,7 @@
+use crate::model::commands::create_component::CreateComponent;
+use crate::model::commands::create_container::CreateContainer;
+use crate::model::commands::create_person::CreatePerson;
+use crate::model::commands::create_system::CreateSystem;
 use crate::model::commands::update_component::UpdateComponent;
 use crate::model::commands::update_container::UpdateContainer;
 use crate::model::commands::update_person::UpdatePerson;
@@ -5,7 +9,10 @@ use crate::model::commands::update_system::UpdateSystem;
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 
-use super::commands::search_library_element::SearchLibraryElement;
+use super::commands::{
+  find_dependent_elements::FindDependentElements, read_diagram::ReadDiagram,
+  search_diagram_element::SearchDiagramElement, search_library_element::SearchLibraryElement,
+};
 
 /// A CLI for interacting with a Keadex Mina project.
 ///
@@ -26,6 +33,33 @@ pub struct Cli {
 
 #[derive(Subcommand, Debug)]
 pub enum Commands {
+  /// Create a person in the project's library.
+  CreatePerson(CreatePerson),
+
+  /// Create a software system in the project's library.
+  CreateSystem(CreateSystem),
+
+  /// Create a container in the project's library.
+  CreateContainer(CreateContainer),
+
+  /// Create a component in the project's library.
+  CreateComponent(CreateComponent),
+
+  /// Returns the dependents of a an architectural element with the given alias in the given diagram.
+  FindDependentElements(FindDependentElements),
+
+  /// Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names.
+  ListDiagrams,
+
+  /// Returns the elements in the project's library. The returned object is a map where the keys represent the elements' types, and the values represent the elements in the library.
+  ListLibraryElements,
+
+  /// Read a diagram
+  ReadDiagram(ReadDiagram),
+
+  /// Search for the project's diagrams that include the element with the given alias.
+  SearchDiagramElement(SearchDiagramElement),
+
   /// Search in the project's library for an element with the given alias.
   SearchLibraryElement(SearchLibraryElement),
 

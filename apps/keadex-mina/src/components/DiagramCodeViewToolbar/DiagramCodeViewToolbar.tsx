@@ -37,6 +37,9 @@ export interface DiagramCodeViewToolbarCommands {
 const styleButton =
   'container-link-bg hover:bg-secondary disabled:hover:bg-transparent w-10 h-10'
 
+const styleDropdownButton =
+  'text-accent-secondary hover:text-accent-primary [&.active]:text-accent-primary disabled:hover:text-accent-secondary disabled:opacity-50 leading-6'
+
 export const DiagramCodeViewToolbar = forwardRef(
   (
     props: DiagramCodeViewToolbarProps,
@@ -79,9 +82,7 @@ export const DiagramCodeViewToolbar = forwardRef(
         {
           id: 'dropdown-add-diagram-element',
           label: (
-            <div
-              className={`${styleButton} text-accent-secondary hover:text-accent-primary [&.active]:text-accent-primary disabled:hover:text-accent-secondary disabled:opacity-50 text-base`}
-            >
+            <div className={`${styleButton} ${styleDropdownButton} text-base`}>
               <FontAwesomeIcon
                 icon={faPlus}
                 data-te-toggle="tooltip"
@@ -106,6 +107,39 @@ export const DiagramCodeViewToolbar = forwardRef(
       })
 
       return addDiagramElementMenuItems
+    }
+
+    function generateLibraryMenu() {
+      const libraryMenuItems: DropdownMenuItemProps[] = [
+        {
+          id: 'dropdown-library',
+          label: (
+            <div className={`${styleButton} ${styleDropdownButton}`}>
+              <FontAwesomeIcon
+                icon={faBook}
+                data-te-toggle="tooltip"
+                data-te-placement="bottom"
+                title={t('common.library').toString()}
+              />
+            </div>
+          ),
+          isHeaderMenuItem: true,
+          buttonClassName: '!p-0 !bg-transparent',
+          subMenuItems: [
+            {
+              id: `add-to-library`,
+              label: t('diagram_editor.add_to_library'),
+              onClick: () => diagramCodeViewCommands?.addToLibrary(),
+            },
+            {
+              id: `import-from-library`,
+              label: t('diagram_editor.import_from_library'),
+              onClick: () => diagramCodeViewCommands?.importFromLibrary(),
+            },
+          ],
+        },
+      ]
+      return libraryMenuItems
     }
 
     return (
@@ -190,16 +224,7 @@ export const DiagramCodeViewToolbar = forwardRef(
             />
             <Separator />
             <DropdownMenu menuItemsProps={generateAddDiagramElementMenu()} />
-            <IconButton
-              icon={faBook}
-              className={`${styleButton}`}
-              data-te-toggle="tooltip"
-              data-te-placement="bottom"
-              title={t('diagram_editor.import_from_library').toString()}
-              onClick={() => {
-                diagramCodeViewCommands?.importFromLibrary()
-              }}
-            />
+            <DropdownMenu menuItemsProps={generateLibraryMenu()} />
             <IconButton
               icon={faLink}
               className={`${styleButton}`}

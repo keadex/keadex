@@ -250,6 +250,15 @@ Description
 </td></tr>
 <tr><td>
 
+[linkableDiagramElement(element)](./c4-model-ui-kit.linkablediagramelement.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [linkLabelFromExternalLink(diagramLink)](./c4-model-ui-kit.linklabelfromexternallink.md)
 
 

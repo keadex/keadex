@@ -16,13 +16,20 @@
 
 <br>
 
+> [!IMPORTANT]
+> Maintaining open-source solutions demands significant effort, especially since it’s not my primary job. However, Keadex is my passion, and I genuinely enjoy working on it.
+>
+> If you like Keadex applications or libraries, I’m not asking for a coffee or a donation.</br>
+> Instead, I'd appreciate if you just ⭐ **star** this repository and 📣 **share** it with your teams, colleagues, or community! Thank you!
+
 ## Introduction
 
 **Keadex** is a project that aims to **experiment**, **learn** and provide **open source** solutions.
 
 Some of the packages in this repo are experiments ( :microscope: ), some under development ( :hourglass_flowing_sand: ), while others are ready to use open source solutions ( :white_check_mark: ).
 
-If you're interested in knowing more about Keadex, me or the provided solutions please visit [keadex.dev](https://keadex.dev), the [documentation](https://keadex.dev/docs) section or the [Discord channel](https://discord.gg/utCqK9jzJW).
+💡 Do you have ideas you’d like to share? Are you interested in contributing to Keadex or learning more about it?
+Feel free to reach out to me on my [Discord channel](https://discord.gg/utCqK9jzJW), or explore the Keadex [website](https://keadex.dev) and [documentation](https://keadex.dev/docs) for more information!
 
 ## Packages
 
@@ -31,7 +38,7 @@ If you're interested in knowing more about Keadex, me or the provided solutions 
 | Type               | Package                                                                                         | Short Description                                                | Version                                                                                                                                                               | Language(s)      | Framework(s)                  |
 | ------------------ | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ----------------------------- |
 | :white_check_mark: | [apps/keadex-battisti](https://github.com/keadex/keadex/tree/main/apps/keadex-battisti)         | Keadex Website & Documentation Platform.                         | ![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=apps%2Fkeadex-battisti%2Fpackage.json)     | Typescript, MDX  | Next.js, Nextra, Tailwing CSS |
-| :white_check_mark: | [apps/keadex-diagrams](https://github.com/keadex/keadex/tree/main/apps/keadex-diagrams)         | Keadex architectural diagrams.                                   | 1.0.0                                                                                                                                                                 | PlantUML, JSON   | Keadex Mina                   |
+| :white_check_mark: | [apps/keadex-diagrams](https://github.com/keadex/keadex/tree/main/apps/keadex-diagrams)         | Keadex architectural diagrams.                                   | ![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=apps%2Fkeadex-diagrams%2Fmina.json)        | PlantUML, JSON   | Keadex Mina                   |
 | :white_check_mark: | [apps/keadex-mina](https://github.com/keadex/keadex/tree/main/apps/keadex-mina)                 | Desktop app to create and manage C4 Model diagrams.              | ![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=apps%2Fkeadex-mina%2Fpackage.json)         | Typescript, Rust | Tauri, React, Tailwind CSS    |
 | :white_check_mark: | [apps/mina-confluence-app](https://github.com/keadex/keadex/tree/main/apps/mina-confluence-app) | Custom Confluence UI integrated into the Confluence Mina plugin. | ![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=apps%2Fmina-confluence-app%2Fpackage.json) | Typescript       | React, Atlassian Forge        |
 

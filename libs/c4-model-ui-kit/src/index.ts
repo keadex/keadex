@@ -74,6 +74,7 @@ export {
 export {
   externalLinkVariableToPlaceholder,
   isExternalLink,
+  linkableDiagramElement,
   linkLabelFromExternalLink,
   replaceExternalLinkVariables,
 } from './helper/diagram-link-helper'

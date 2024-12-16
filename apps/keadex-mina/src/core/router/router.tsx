@@ -89,7 +89,13 @@ export function useDeepLinkRouter() {
   const location = useLocation()
 
   async function routeDeepLink(deepLink: string) {
-    const foundRoute = findRoute(deepLink, ROUTES)
+    const foundRoute = findRoute(
+      deepLink,
+      ROUTES,
+      (pathname: string, pattern: string) => {
+        return pathname.startsWith(pattern)
+      },
+    )
     if (foundRoute) {
       if (foundRoute.data?.requiresProject) {
         if (store.getState().project.value) {

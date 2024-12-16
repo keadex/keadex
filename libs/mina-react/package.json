@@ -3,7 +3,7 @@
   "description": "React library to render C4 Model diagrams created with Keadex Mina.",
   "author": "Keadex <keadex.it@gmail.com>",
   "license": "MIT",
-  "version": "1.12.0",
+  "version": "1.15.0",
   "private": false,
   "homepage": "https://keadex.dev",
   "repository": {
@@ -61,7 +61,7 @@
     "wasm-pack": "^0.12.1"
   },
   "peerDependencies": {
-    "react-router-dom": "^6.17.0",
+    "react-router-dom": "^6.28.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
