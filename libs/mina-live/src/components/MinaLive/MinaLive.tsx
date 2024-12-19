@@ -1,5 +1,6 @@
 'use client'
 
+import '../../tauri/tauri-web-adapter'
 import useEventEmitter from 'ahooks/lib/useEventEmitter'
 import React, { useEffect, useRef } from 'react'
 import { Provider } from 'react-redux'
@@ -16,19 +17,16 @@ import {
 import AppEventContext, {
   AppEvent,
 } from '@keadex/keadex-mina/src/context/AppEventContext'
-import router from '@keadex/keadex-mina/src//core/router/router'
-import store from '@keadex/keadex-mina/src//core/store/store'
-import initi18n from '@keadex/keadex-mina/src//i18n'
+import { router } from '@keadex/keadex-mina/src/core/router/router'
+import store from '@keadex/keadex-mina/src/core/store/store'
+import initi18n from '@keadex/keadex-mina/src/i18n'
 import '@keadex/keadex-mina/src/styles/index.css'
-import { mockTauri } from '../../tauri/tauri-mock'
 
 initi18n({
   backend: {
     loadPath: '/_next/static/keadex-mina/locales/{{lng}}/{{ns}}.json',
   },
 })
-
-mockTauri()
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type MinaLiveProps = {}
