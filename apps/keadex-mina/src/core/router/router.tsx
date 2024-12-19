@@ -38,7 +38,7 @@ import ROUTES, {
   SOFTWARE_SYSTEMS_LIBRARY,
 } from './routes'
 
-export const browserRouter = createMemoryRouter([
+export const router = createMemoryRouter([
   {
     element: <Layout />,
     children: [

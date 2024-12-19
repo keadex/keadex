@@ -12,7 +12,7 @@ import {
   initTE,
 } from 'tw-elements'
 import AppEventContext, { AppEvent } from './context/AppEventContext'
-import { browserRouter } from './core/router/router'
+import { router } from './core/router/router'
 import store from './core/store/store'
 import initi18n from './i18n'
 import './styles/index.css'
@@ -39,7 +39,7 @@ export const App = React.memo(() => {
   return (
     <Provider store={store}>
       <AppEventContext.Provider value={event$}>
-        <RouterProvider router={browserRouter} />
+        <RouterProvider router={router} />
       </AppEventContext.Provider>
     </Provider>
   )
