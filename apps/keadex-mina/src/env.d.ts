@@ -1,7 +1,8 @@
 /// <reference types="vite/client" />
 
-interface ImportMetaEnv {
+export interface ImportMetaEnv {
   readonly VITE_AI_ENABLED: string
+  readonly VITE_WEB_MODE: string
 }
 
 interface ImportMeta {
