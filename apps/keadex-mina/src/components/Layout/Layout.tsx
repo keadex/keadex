@@ -24,6 +24,7 @@ import ROUTES from '../../core/router/routes'
 import { useAppDispatch, useAppSelector } from '../../core/store/hooks'
 import AppMenu, { AppMenuCommands } from '../AppMenu/AppMenu'
 import { createButtons } from './window-titlebar-buttons'
+import { ENV_SETTINGS } from '../../core/env-settings'
 
 const appWindow = getCurrentWebviewWindow()
 
@@ -164,12 +165,14 @@ export const Layout = React.memo((props: LayoutProps) => {
       />
       <ModalRoot />
       <Window>
-        <WindowTitlebar
-          rightButtonsProps={rightButtons}
-          icon={'mina-logo.svg'}
-          menuProps={windowTitlebarMenu}
-          title="Keadex Mina"
-        />
+        {!ENV_SETTINGS.WEB_MODE && (
+          <WindowTitlebar
+            rightButtonsProps={rightButtons}
+            icon={'mina-logo.svg'}
+            menuProps={windowTitlebarMenu}
+            title="Keadex Mina"
+          />
+        )}
         <div className="absolute bottom-0 left-0 right-0 top-8 overflow-auto">
           <AppMenu visible={isAppMenuVisible} ref={appMenuRef}>
             <Outlet />
