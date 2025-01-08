@@ -1,1 +1,1 @@
-pub mod web_controller;
+pub mod web_viewer_controller;

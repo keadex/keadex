@@ -65,7 +65,7 @@ tauri-plugin-single-instance = { version = "2", features = ["deep-link"], option
 [features]
 default = ["desktop", "custom-protocol"]
 desktop = [
-  "web",
+  "mina-web-viewer",
   "tauri",
   "tauri-plugin-http",
   "tauri-plugin-clipboard-manager",
@@ -85,4 +85,4 @@ desktop = [
   "dep:fs2",
 ]
 custom-protocol = ["tauri/custom-protocol"]
-web = []
+mina-web-viewer = []

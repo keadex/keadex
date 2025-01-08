@@ -1,4 +1,4 @@
-use keadex_mina::controller::web_controller::{
+use keadex_mina::controller::web_viewer_controller::{
   diagram_plantuml_url_from_diagram_url as diagram_plantuml_url_from_diagram_url_core,
   diagram_plantuml_url_from_link_string as diagram_plantuml_url_from_link_string_core,
   diagram_spec_url_from_diagram_url as diagram_spec_url_from_diagram_url_core,

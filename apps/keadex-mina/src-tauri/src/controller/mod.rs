@@ -10,5 +10,5 @@ pub mod library_controller;
 pub mod project_controller;
 #[cfg(feature = "desktop")]
 pub mod search_controller;
-#[cfg(feature = "web")]
-pub mod web_controller;
+#[cfg(feature = "mina-web-viewer")]
+pub mod web_viewer_controller;
