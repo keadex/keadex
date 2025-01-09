@@ -3,8 +3,8 @@ use crate::error_handling::errors::{
   STRUM_PARSING_ERROR_CODE, WALKDIR_ERROR_CODE,
 };
 use crate::parser::plantuml::plantuml_parser::Rule;
-#[cfg(feature = "desktop")]
-use async_openai::error::OpenAIError;
+#[cfg(cross)]
+use async_openai_wasm::error::OpenAIError;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 use ts_rs::TS;
@@ -67,7 +67,7 @@ impl From<serde_json::Error> for MinaError {
   }
 }
 
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 impl From<OpenAIError> for MinaError {
   fn from(err: OpenAIError) -> MinaError {
     MinaError::new(OPENAI_ERROR_CODE, err.to_string().as_str())
