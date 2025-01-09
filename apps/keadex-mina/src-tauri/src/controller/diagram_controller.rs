@@ -22,7 +22,7 @@ use std::collections::HashMap;
 /**
 Returns the list of the diagrams in the opened project.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn list_diagrams() -> Result<HashMap<DiagramType, Vec<String>>, MinaError> {
   Ok(diagram_repository::list_diagrams()?)
 }
@@ -33,7 +33,7 @@ Returns the data of a diagram.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn get_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
@@ -48,7 +48,7 @@ Returns the opened and parsed diagram.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn open_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
@@ -65,7 +65,7 @@ Closes a diagram and and unlocks its files.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn close_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
@@ -82,7 +82,7 @@ Deletes a diagram.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn delete_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
@@ -98,7 +98,7 @@ Creates a diagram.
 # Arguments
   * `new_diagram` - New diagram to create.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn create_diagram(new_diagram: Diagram) -> Result<bool, MinaError> {
   diagram_repository::create_diagram(new_diagram)?;
   Ok(true)
@@ -114,7 +114,7 @@ Returns the saved diagram.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn save_spec_diagram_raw_plantuml(
   raw_plantuml: &str,
   diagram_spec: DiagramSpec,
@@ -141,7 +141,7 @@ Returns the saved diagram.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-// #[tauri::command]
+// #[cfg_attr(desktop, tauri::command)]
 // pub async fn save_spec_diagram_parsed_plantuml(
 //   diagram_plantuml: DiagramPlantUML,
 //   diagram_spec: DiagramSpec,
@@ -167,7 +167,7 @@ to a file in the given format.
   * `diagram_name` - Name of the diagram to export.
   * `diagram_type` - Type of the diagram to export.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn export_diagram_to_file(
   diagram_data_url: &str,
   format: DiagramFormat,
@@ -189,7 +189,7 @@ Serialize a parsed PlantUML object, into a PlantUML string.
   * `parsed_element` - Parsed PlantUML object to serialize.
   * `element_level` - Level of the PlantUML object to serialize (since it could be a child of another element). The level will affect the indentation.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn parsed_element_to_plantuml(
   parsed_element: DiagramElementType,
   element_level: usize,
@@ -208,7 +208,7 @@ Example: container/diagram-name
   * `diagram_human_name` - Human name of the diagram
   * `diagram_type` - Type of the diagram
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn diagram_to_link_string(
   diagram_human_name: &str,
   diagram_type: DiagramType,
@@ -225,7 +225,7 @@ to extract the diagram's name and type.
 # Arguments
   * `link_string` - Diagram's link
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn diagram_from_link_string(link_string: &str) -> Result<Diagram, MinaError> {
   Ok(diagram_from_link_string_helper(link_string)?)
 }
@@ -235,7 +235,7 @@ Deserializes a PlantUML string
 # Arguments
   * `raw_plantuml` - Raw PlantUML content
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn deserialize_plantuml_by_string(
   raw_plantuml: &str,
 ) -> Result<DiagramPlantUML, MinaError> {
@@ -250,7 +250,7 @@ Example: <PROJECT_ROOT>/diagrams/<DIAGRAM_TYPE>/<DIAGRAM_NAME>/diagram.puml -> (
 # Arguments
   * `path` - Path to process
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn diagram_name_type_from_path(path: &str) -> Result<Diagram, MinaError> {
   let (diagram_name, diagram_type) = diagram_name_type_from_path_helper(path)?;
   Ok(Diagram {
@@ -271,7 +271,7 @@ Retrieves the dependents of an architectural element with the given alias in the
   * `diagram_name` - Name of the diagram.
   * `diagram_type` - Type of the diagram.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn dependent_elements_in_diagram(
   alias: &str,
   diagram_name: &str,

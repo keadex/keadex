@@ -9,7 +9,7 @@ Creates an empty Mina project.
 # Arguments
   * `project_settings` - Settings of the project to create.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn create_project(
   project_settings: ProjectSettings,
 ) -> Result<ProjectSettings, MinaError> {
@@ -24,7 +24,7 @@ Returns data of the opened project.
 # Arguments
   * `root` - Path of the root's project.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn open_project(root: &str) -> Result<Project, MinaError> {
   log::info!("Open project {}", root);
   load_project(root)
@@ -35,7 +35,7 @@ Closes a project and clears the internal state of the application, by unlocking 
 # Arguments
   * `root` - Path of the root's project.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn close_project(root: &str) -> Result<bool, MinaError> {
   log::info!("Close project {}", root);
   unload_project(root)?;
@@ -47,7 +47,7 @@ Saves project settings.
 # Arguments
   * `project_settings` - Project settings.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn save_project_settings(
   project_settings: ProjectSettings,
 ) -> Result<ProjectSettings, MinaError> {

@@ -6,7 +6,7 @@ Returns a string containing the PlantUML.
 # Arguments
   * `description` - Description of the digram to generate.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn generate_plantuml(description: &str) -> Result<String, MinaError> {
   let result = crate::service::ai_service::generate_plantuml(description).await?;
   Ok(result)

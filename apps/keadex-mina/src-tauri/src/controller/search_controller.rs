@@ -16,7 +16,7 @@ Searches for the given string in the project's files.
   * `include_library_dir` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn search(
   string_to_search: &str,
   include_diagrams_dir: bool,
@@ -45,7 +45,7 @@ Searches for the given diagram element alias in the project's files.
   * `include_library_dir` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
 pub async fn search_diagram_element_alias(
   alias: &str,
   include_diagrams_dir: bool,
