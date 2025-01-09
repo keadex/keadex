@@ -36,9 +36,9 @@ uuid = { version = "1.4.1", features = [
   "fast-rng",
   "macro-diagnostics",
   "js"
-], optional = true }
+] }
 data-url = "0.2.0"
-async-openai-wasm = { version = "0.26.0", optional = true }
+async-openai-wasm = { version = "0.26.0" }
 dotenv = "0.15.0"
 wasm-bindgen = "0.2"
 serde-wasm-bindgen = "0.6"
@@ -67,8 +67,8 @@ tauri-plugin-single-instance = { version = "2", features = ["deep-link"], option
 
 [features]
 default = ["desktop", "custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
 desktop = [
-  "mina-web-viewer",
   "tauri",
   "tauri-plugin-http",
   "tauri-plugin-clipboard-manager",
@@ -82,15 +82,8 @@ desktop = [
   "tauri-plugin-updater",
   "tauri-plugin-deep-link",
   "tauri-plugin-single-instance",
-  "dep:uuid",
-  "dep:async-openai-wasm",
   "dep:tauri-build",
   "dep:fs2",
 ]
-web = [
-  "mina-web-viewer",
-  "dep:uuid",
-  "dep:async-openai-wasm"
-]
-custom-protocol = ["tauri/custom-protocol"]
+web = []
 mina-web-viewer = []
