@@ -1,5 +1,5 @@
 use crate::dao::filesystem::project_settings_dao::FILE_NAME;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use std::path::MAIN_SEPARATOR;
 
 /**
@@ -7,7 +7,7 @@ Utility which generates the full project settings path.
 # Arguments
   * `root` - Root of the Mina project
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn project_settings_path(root: &str) -> String {
   format!("{}{}{}", root, MAIN_SEPARATOR, FILE_NAME)
 }

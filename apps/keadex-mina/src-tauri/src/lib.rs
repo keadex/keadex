@@ -6,11 +6,11 @@ pub mod helper;
 pub mod model;
 pub mod parser;
 pub mod rendering_system;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod repository;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod service;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod templates;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod validator;

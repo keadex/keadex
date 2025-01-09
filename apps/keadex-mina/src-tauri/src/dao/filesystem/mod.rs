@@ -1,39 +1,39 @@
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod binary_dao;
 pub mod diagram;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod library;
 pub mod project_settings_dao;
 
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use crate::core::serializer::{deserialize_json_by_file, serialize_obj_to_json_string};
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use crate::dao::DAO;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use crate::error_handling::errors::{
   CANNOT_OPEN_FILE_ERROR_MSG, FILE_DOES_NOT_EXIST, IO_ERROR_CODE, NO_CACHED_FILE_ERROR_MSG,
 };
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use crate::error_handling::mina_error::MinaError;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use fs2::FileExt;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use serde::de;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use std::collections::hash_map::Entry;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use std::collections::HashMap;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use std::fs::{File, OpenOptions};
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use std::io::Write;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use std::path::Path;
 
 /**
 Specialization of the DAO to interact with data stored in the file system.
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
   /*
     I need to cache the opened files because in order to lock a file for the entire

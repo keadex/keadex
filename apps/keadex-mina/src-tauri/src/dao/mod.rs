@@ -1,9 +1,9 @@
 pub mod filesystem;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod inmemory;
 
 /**
 Generic DAO interface
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub trait DAO {}

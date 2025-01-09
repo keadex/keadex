@@ -1,11 +1,11 @@
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod app;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod logger;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod project_initializer;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod resolver;
 pub mod serializer;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod state;

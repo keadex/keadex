@@ -1,14 +1,14 @@
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod ai_controller;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod diagram_controller;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod hook_controller;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod library_controller;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod project_controller;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub mod search_controller;
-#[cfg(feature = "mina-web-viewer")]
+#[cfg(mina_web_viewer)]
 pub mod web_viewer_controller;

@@ -2,31 +2,31 @@
 Helper module which exports utilities for diagrams.
 */
 
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use crate::core::app::ROOT_RESOLVER;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use crate::core::resolver::ResolvableModules::ProjectSettingsIMDAO;
 use crate::dao::filesystem::diagram::diagram_plantuml_dao::FILE_NAME as DIAGRAM_PLANTUML_FILE_NAME;
 use crate::dao::filesystem::diagram::diagram_spec_dao::FILE_NAME as DIAGRAM_SPEC_FILE_NAME;
 use crate::dao::filesystem::diagram::DIAGRAMS_FOLDER;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use crate::dao::inmemory::InMemoryDAO;
 use crate::error_handling::errors::{
   GENERIC_PARSING_ERROR_CODE, PARSING_DIAGRAM_PATH_ERROR_MSG, PROJECT_NOT_LOADED_ERROR_CODE,
   PROJECT_NOT_LOADED_ERROR_MSG,
 };
 use crate::error_handling::mina_error::MinaError;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use crate::helper::distribution_helper::dist_path;
 use crate::model::c4_element::base_element::BaseElement;
 use crate::model::diagram::diagram_plantuml::{DiagramElementType, DiagramPlantUML};
 use crate::model::diagram::diagram_spec::DiagramSpec;
 use crate::model::diagram::Diagram;
 use crate::model::diagram::DiagramType;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use crate::resolve_to_write;
 use convert_case::{Case, Casing};
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use std::path::MAIN_SEPARATOR;
 use std::str::FromStr;
 
@@ -56,7 +56,7 @@ Example: <PROJECT_ROOT>/diagrams/<DIAGRAM_TYPE>/<DIAGRAM_NAME>/diagram.puml -> (
 # Arguments
   * `path` - Path to process
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn diagram_name_type_from_path(path: &str) -> Result<(String, DiagramType), MinaError> {
   /*
   A diagram's path has the following syntax: "<PROJECT_ROOT>/diagrams/<DIAGRAM_TYPE>/<DIAGRAM_NAME>/diagram.puml"
@@ -137,7 +137,7 @@ Example: ROOT/diagrams
 # Arguments
   * `root` - Root of the Mina project
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn diagrams_path(root: &str) -> String {
   diagrams_path_separator(root, MAIN_SEPARATOR)
 }
@@ -166,7 +166,7 @@ of a specific type: e.g., ROOT/diagrams/container
   * `root` - Root of the Mina project
   * `dir_type_name` - Name of the diagram's type directory
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn diagram_type_path(root: &str, dir_type_name: &str) -> String {
   diagram_type_path_separator(root, dir_type_name, MAIN_SEPARATOR)
 }
@@ -178,7 +178,7 @@ Example: ROOT/diagrams/container/diagram-name
   * `name` - Name of the diagram
   * `diagram_type` - Type of the diagram
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn diagram_dir_path_from_name_type(
   diagram_name: &str,
   diagram_type: &DiagramType,
@@ -208,7 +208,7 @@ Example: ROOT/diagrams/container/diagram-name/diagram.puml
   * `name` - Name of the diagram
   * `diagram_type` - Type of the diagram
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn diagram_plantuml_path_from_name_type(
   diagram_name: &str,
   diagram_type: &DiagramType,
@@ -228,7 +228,7 @@ Example: ROOT/diagrams/container/diagram-name/diagram.spec.json
   * `name` - Name of the diagram
   * `diagram_type` - Type of the diagram
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn diagram_spec_path_from_name_type(
   diagram_name: &str,
   diagram_type: &DiagramType,
@@ -241,7 +241,7 @@ pub fn diagram_spec_path_from_name_type(
   ))
 }
 
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn get_all_elements_aliases(elements: &Vec<DiagramElementType>) -> Vec<String> {
   let mut aliases: Vec<String> = vec![];
 
@@ -310,7 +310,7 @@ pub fn get_all_elements_aliases(elements: &Vec<DiagramElementType>) -> Vec<Strin
   aliases
 }
 
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn clean_diagram_specs(
   diagram_plantuml: &DiagramPlantUML,
   diagram_spec: &DiagramSpec,
@@ -338,7 +338,7 @@ Example: ROOT/dist/diagrams/container/diagram-name
   * `name` - Name of the diagram
   * `diagram_type` - Type of the diagram
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn diagram_dist_dir_path_from_name_type(
   diagram_name: &str,
   diagram_type: &DiagramType,
@@ -370,7 +370,7 @@ Example: container/diagram-name
   * `diagram_human_name` - Human name of the diagram
   * `diagram_type` - Type of the diagram
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn diagram_to_link_string(
   diagram_human_name: &str,
   diagram_type: &DiagramType,
@@ -415,7 +415,7 @@ Utility which deletes all the references of the given diagram, from the base dat
   * `diagram_type` - Type of the diagram to delete
   * `base_data` - Base data of the diagram's element from which remove the references
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn delete_references_from_base_data(
   diagram_human_name: &str,
   diagram_type: &DiagramType,

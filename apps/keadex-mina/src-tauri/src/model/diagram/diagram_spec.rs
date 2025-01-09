@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use strum::Display;
 use strum::EnumString;
 use ts_rs::TS;
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 use uuid::Uuid;
 use wasm_bindgen::prelude::wasm_bindgen;
 
@@ -66,7 +66,7 @@ pub struct DiagramSpec {
 impl Default for DiagramSpec {
   fn default() -> Self {
     DiagramSpec {
-      #[cfg(feature = "desktop")]
+      #[cfg(cross)]
       uuid: Uuid::new_v4().to_string(),
       #[cfg(not(feature = "desktop"))]
       uuid: String::from("null"),

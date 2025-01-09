@@ -43,7 +43,7 @@ Deserializes a JSON file by giving its path
 # Arguments
   * `path` - Path of the file
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn deserialize_json_by_path<T>(path: &Path) -> Result<T, MinaError>
 where
   T: de::DeserializeOwned,
@@ -57,7 +57,7 @@ Deserializes a JSON file
 # Arguments
   * `file` - File
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn deserialize_json_by_file<T>(file: &File, path: &Path) -> Result<T, MinaError>
 where
   T: de::DeserializeOwned,
@@ -77,7 +77,7 @@ Deserializes a PlantUML file
 # Arguments
   * `file` - File
 */
-#[cfg(feature = "desktop")]
+#[cfg(cross)]
 pub fn deserialize_plantuml_by_file(file: &File) -> Result<DiagramPlantUML, MinaError> {
   let mut reader = BufReader::new(file);
   let mut buffer = String::new();
