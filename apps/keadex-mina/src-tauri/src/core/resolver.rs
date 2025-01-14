@@ -2,6 +2,10 @@
 This module contains the logic to store/resolve modules can be shared across the app.
 */
 
+#[cfg(desktop)]
+use crate::api::filesystem::native_fs::NativeFileSystemAPI;
+#[cfg(web)]
+use crate::api::filesystem::web_fs::WebFileSystemAPI;
 use crate::dao::filesystem::binary_dao::BinaryDAO as BinaryFsDAO;
 use crate::dao::filesystem::diagram::diagram_plantuml_dao::DiagramPlantUMLDAO as DiagramPlantUMLFsDAO;
 use crate::dao::filesystem::diagram::diagram_spec_dao::DiagramSpecDAO as DiagramSpecFsDAO;
@@ -62,6 +66,10 @@ pub enum ResolvableModules {
   PersonFsDAO(Resolver<PersonFsDAO>),
   SoftwareSystemFsDAO(Resolver<SoftwareSystemFsDAO>),
   ProjectLibraryIMDAO(Resolver<ProjectLibraryIMDAO>),
+  #[cfg(any(all(desktop, web), all(desktop, not(web))))]
+  FileSystemAPI(Resolver<NativeFileSystemAPI>),
+  #[cfg(all(web, not(desktop)))]
+  FileSystemAPI(Resolver<WebFileSystemAPI>),
 }
 
 /**
@@ -117,6 +125,19 @@ impl Default for RootResolver {
       stringify!(DiagramSpecFsDAO).to_string(),
       ResolvableModules::DiagramSpecFsDAO(Default::default()),
     );
+    if cfg!(any(all(desktop, web), all(desktop, not(web)))) {
+      resolvers.insert(
+        stringify!(NativeFileSystemAPI).to_string(),
+        ResolvableModules::FileSystemAPI(Default::default()),
+      );
+    }
+    if cfg!(all(web, not(desktop))) {
+      resolvers.insert(
+        stringify!(WebFileSystemAPI).to_string(),
+        ResolvableModules::FileSystemAPI(Default::default()),
+      );
+    }
+
     RootResolver { resolvers }
   }
 }
