@@ -48,7 +48,8 @@ bomboni_wasm = { version = "0.1", features = [
 ], default-features = false }
 fancy-regex = "0.13.0"
 layout-rs = { version = "0.1.2", features = [] }
-js-sys = "0.3.76"
+js-sys = "0.3"
+web-sys = { version = "0.3", features = ["File"], optional = true }
 tauri = { version = "2", features = [
   "macos-private-api",
 ], optional = true }
@@ -85,5 +86,7 @@ desktop = [
   "dep:tauri-build",
   "dep:fs2",
 ]
-web = []
+web = [
+  "dep:web-sys"
+]
 mina-web-viewer = []
