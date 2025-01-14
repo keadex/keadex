@@ -969,6 +969,7 @@ dependencies = [
  "uuid",
  "walkdir",
  "wasm-bindgen",
+ "web-sys",
 ]
 
 [[package]]
