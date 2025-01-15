@@ -5,20 +5,24 @@ This document contains the help content for the `mina-cli` command-line program.
 **Command Overview:**
 
 * [`mina-cli`↴](#mina-cli)
-* [`mina-cli create-person`↴](#mina-cli-create-person)
-* [`mina-cli create-system`↴](#mina-cli-create-system)
-* [`mina-cli create-container`↴](#mina-cli-create-container)
-* [`mina-cli create-component`↴](#mina-cli-create-component)
 * [`mina-cli find-dependent-elements`↴](#mina-cli-find-dependent-elements)
 * [`mina-cli list-diagrams`↴](#mina-cli-list-diagrams)
 * [`mina-cli list-library-elements`↴](#mina-cli-list-library-elements)
 * [`mina-cli read-diagram`↴](#mina-cli-read-diagram)
 * [`mina-cli search-diagram-element`↴](#mina-cli-search-diagram-element)
 * [`mina-cli search-library-element`↴](#mina-cli-search-library-element)
+* [`mina-cli create-person`↴](#mina-cli-create-person)
+* [`mina-cli create-system`↴](#mina-cli-create-system)
+* [`mina-cli create-container`↴](#mina-cli-create-container)
+* [`mina-cli create-component`↴](#mina-cli-create-component)
 * [`mina-cli update-person`↴](#mina-cli-update-person)
 * [`mina-cli update-system`↴](#mina-cli-update-system)
 * [`mina-cli update-container`↴](#mina-cli-update-container)
 * [`mina-cli update-component`↴](#mina-cli-update-component)
+* [`mina-cli upsert-person`↴](#mina-cli-upsert-person)
+* [`mina-cli upsert-system`↴](#mina-cli-upsert-system)
+* [`mina-cli upsert-container`↴](#mina-cli-upsert-container)
+* [`mina-cli upsert-component`↴](#mina-cli-upsert-component)
 
 ## `mina-cli`
 
@@ -28,24 +32,95 @@ CLI for interacting with Mina projects.
 
 ###### **Subcommands:**
 
-* `create-person` — Create a person in the project's library
-* `create-system` — Create a software system in the project's library
-* `create-container` — Create a container in the project's library
-* `create-component` — Create a component in the project's library
 * `find-dependent-elements` — Returns the dependents of a an architectural element with the given alias in the given diagram
 * `list-diagrams` — Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names
 * `list-library-elements` — Returns the elements in the project's library. The returned object is a map where the keys represent the elements' types, and the values represent the elements in the library
 * `read-diagram` — Read a diagram
 * `search-diagram-element` — Search for the project's diagrams that include the element with the given alias
 * `search-library-element` — Search in the project's library for an element with the given alias
+* `create-person` — Create a person in the project's library
+* `create-system` — Create a software system in the project's library
+* `create-container` — Create a container in the project's library
+* `create-component` — Create a component in the project's library
 * `update-person` — Update a person in the project's library
 * `update-system` — Update a software system in the project's library
 * `update-container` — Update a container in the project's library
 * `update-component` — Update a component in the project's library
+* `upsert-person` — Create or update a person (and the dependent diagrams) in the project's library
+* `upsert-system` — Create or update a software system (and the dependent diagrams) in the project's library
+* `upsert-container` — Create or update a container (and the dependent diagrams) in the project's library
+* `upsert-component` — Create or update a component (and the dependent diagrams) in the project's library
 
 ###### **Options:**
 
 * `-p`, `--project-path <PROJECT_PATH>` — Path of the Mina project
+
+
+
+## `mina-cli find-dependent-elements`
+
+Returns the dependents of a an architectural element with the given alias in the given diagram
+
+**Usage:** `mina-cli find-dependent-elements --alias <ALIAS> --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
+
+###### **Options:**
+
+* `--alias <ALIAS>` — Alias of the architectural element to analyze
+* `--diagram-name <DIAGRAM_NAME>` — Name of the diagram in lowercase and kebab-case (e.g., "my-diagram")
+* `--diagram-type <DIAGRAM_TYPE>` — Type of the diagram in uppercase and snake-case (e.g., "SYSTEM_CONTEXT")
+
+
+
+## `mina-cli list-diagrams`
+
+Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names
+
+**Usage:** `mina-cli list-diagrams`
+
+
+
+## `mina-cli list-library-elements`
+
+Returns the elements in the project's library. The returned object is a map where the keys represent the elements' types, and the values represent the elements in the library
+
+**Usage:** `mina-cli list-library-elements`
+
+
+
+## `mina-cli read-diagram`
+
+Read a diagram
+
+**Usage:** `mina-cli read-diagram --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
+
+###### **Options:**
+
+* `--diagram-name <DIAGRAM_NAME>` — Name of the diagram in lowercase and kebab-case (e.g., "my-diagram")
+* `--diagram-type <DIAGRAM_TYPE>` — Type of the diagram in uppercase and snake-case (e.g., "SYSTEM_CONTEXT")
+
+
+
+## `mina-cli search-diagram-element`
+
+Search for the project's diagrams that include the element with the given alias
+
+**Usage:** `mina-cli search-diagram-element --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>` — Alias of the architectural element to search
+
+
+
+## `mina-cli search-library-element`
+
+Search in the project's library for an element with the given alias
+
+**Usage:** `mina-cli search-library-element --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
 
 
 
@@ -118,73 +193,6 @@ Create a component in the project's library
 
 
 
-## `mina-cli find-dependent-elements`
-
-Returns the dependents of a an architectural element with the given alias in the given diagram
-
-**Usage:** `mina-cli find-dependent-elements --alias <ALIAS> --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
-
-###### **Options:**
-
-* `--alias <ALIAS>` — Alias of the architectural element to analyze
-* `--diagram-name <DIAGRAM_NAME>` — Name of the diagram in lowercase and kebab-case (e.g., "my-diagram")
-* `--diagram-type <DIAGRAM_TYPE>` — Type of the diagram in uppercase and snake-case (e.g., "SYSTEM_CONTEXT")
-
-
-
-## `mina-cli list-diagrams`
-
-Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names
-
-**Usage:** `mina-cli list-diagrams`
-
-
-
-## `mina-cli list-library-elements`
-
-Returns the elements in the project's library. The returned object is a map where the keys represent the elements' types, and the values represent the elements in the library
-
-**Usage:** `mina-cli list-library-elements`
-
-
-
-## `mina-cli read-diagram`
-
-Read a diagram
-
-**Usage:** `mina-cli read-diagram --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
-
-###### **Options:**
-
-* `--diagram-name <DIAGRAM_NAME>` — Name of the diagram in lowercase and kebab-case (e.g., "my-diagram")
-* `--diagram-type <DIAGRAM_TYPE>` — Type of the diagram in uppercase and snake-case (e.g., "SYSTEM_CONTEXT")
-
-
-
-## `mina-cli search-diagram-element`
-
-Search for the project's diagrams that include the element with the given alias
-
-**Usage:** `mina-cli search-diagram-element --alias <ALIAS>`
-
-###### **Options:**
-
-* `--alias <ALIAS>` — Alias of the architectural element to search
-
-
-
-## `mina-cli search-library-element`
-
-Search in the project's library for an element with the given alias
-
-**Usage:** `mina-cli search-library-element --alias <ALIAS>`
-
-###### **Options:**
-
-* `--alias <ALIAS>`
-
-
-
 ## `mina-cli update-person`
 
 Update a person in the project's library.
@@ -249,6 +257,75 @@ Update a component in the project's library.
 This command will update a component in the project's library and will update all the diagrams that import it.
 
 **Usage:** `mina-cli update-component [OPTIONS] --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--new-label <NEW_LABEL>`
+* `--new-component-type <NEW_COMPONENT_TYPE>`
+* `--new-technology <NEW_TECHNOLOGY>`
+* `--new-description <NEW_DESCRIPTION>`
+* `--new-link <NEW_LINK>`
+* `--new-notes <NEW_NOTES>`
+
+
+
+## `mina-cli upsert-person`
+
+Create or update a person (and the dependent diagrams) in the project's library
+
+**Usage:** `mina-cli upsert-person [OPTIONS] --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--new-label <NEW_LABEL>`
+* `--new-person-type <NEW_PERSON_TYPE>`
+* `--new-description <NEW_DESCRIPTION>`
+* `--new-notes <NEW_NOTES>`
+
+
+
+## `mina-cli upsert-system`
+
+Create or update a software system (and the dependent diagrams) in the project's library
+
+**Usage:** `mina-cli upsert-system [OPTIONS] --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--new-label <NEW_LABEL>`
+* `--new-system-type <NEW_SYSTEM_TYPE>`
+* `--new-description <NEW_DESCRIPTION>`
+* `--new-link <NEW_LINK>`
+* `--new-notes <NEW_NOTES>`
+
+
+
+## `mina-cli upsert-container`
+
+Create or update a container (and the dependent diagrams) in the project's library
+
+**Usage:** `mina-cli upsert-container [OPTIONS] --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--new-label <NEW_LABEL>`
+* `--new-container-type <NEW_CONTAINER_TYPE>`
+* `--new-technology <NEW_TECHNOLOGY>`
+* `--new-description <NEW_DESCRIPTION>`
+* `--new-link <NEW_LINK>`
+* `--new-notes <NEW_NOTES>`
+
+
+
+## `mina-cli upsert-component`
+
+Create or update a component (and the dependent diagrams) in the project's library
+
+**Usage:** `mina-cli upsert-component [OPTIONS] --alias <ALIAS>`
 
 ###### **Options:**
 
