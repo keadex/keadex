@@ -3,16 +3,20 @@ import { getDataAttributes } from '@keadex/keadex-utils'
 import React, { useEffect, useState } from 'react'
 import { Select as SelectTE } from 'tw-elements'
 
+export type AutocompleteOption = {
+  value: string | number | readonly string[] | undefined
+  label: string
+}
+
 export type AutocompleteProps =
   React.SelectHTMLAttributes<HTMLSelectElement> & {
     [key: `data-${string}`]: unknown
     key?: string
     label: string
-    options: {
-      value: string | number | readonly string[] | undefined
-      label: string
-    }[]
+    options: AutocompleteOption[]
     initialValue?: string
+    allowedChars?: RegExp
+    info?: string
     onTyping: (value: string) => void
     onDefaultOptionSelected?: (value: string) => void
   }
@@ -24,6 +28,8 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
     onTyping,
     initialValue,
     onDefaultOptionSelected,
+    allowedChars,
+    info,
     ...otherProps
   } = {
     ...props,
@@ -50,6 +56,14 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
     return renderedOptions
   }
 
+  function getDefaultOptionElement() {
+    const options = document.querySelectorAll(
+      `.${props.id}[data-te-select-option-ref]`,
+    )
+    if (options && options.length > 0) return options[0] as HTMLDivElement
+    return
+  }
+
   useEffect(() => {
     const element = document.querySelector(`#${props.id}`)
     const selectInstance = SelectTE.getInstance(element)
@@ -68,26 +82,43 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
         },
       )
     }
-    const input = document.querySelector(
+
+    const inputEl = document.querySelector(
       `.${props.id} [data-te-select-input-ref]`,
-    )
-    if (input) {
-      const inputEl = input as HTMLInputElement
+    ) as HTMLInputElement | undefined
+
+    if (inputEl) {
       inputEl.removeAttribute('readonly')
       inputEl.removeAttribute('role')
       // inputEl.value = localInputValue
       inputEl.oninput = () => {
+        if (props.allowedChars && inputEl.value !== '') {
+          if (!props.allowedChars.test(inputEl.value)) {
+            if (localInputValue) inputEl.value = localInputValue
+            return
+          }
+        }
         setLocalInputValue(inputEl.value)
         props.onTyping(inputEl.value)
       }
+      if (onDefaultOptionSelected) {
+        inputEl.onkeydown = (e) => {
+          if (e.key === 'Enter') {
+            const defaultOptionEl = getDefaultOptionElement()
+            if (
+              defaultOptionEl &&
+              defaultOptionEl.hasAttribute('data-te-input-state-active')
+            ) {
+              onDefaultOptionSelected(localInputValue)
+            }
+          }
+        }
+      }
     }
     if (onDefaultOptionSelected) {
-      const options = document.querySelectorAll(
-        `.${props.id}[data-te-select-option-ref]`,
-      )
-      if (options && options.length > 0) {
-        const optionEl = options[0] as HTMLDivElement
-        optionEl.onclick = () => onDefaultOptionSelected(localInputValue)
+      const defaultOptionEl = getDefaultOptionElement()
+      if (defaultOptionEl) {
+        defaultOptionEl.onclick = () => onDefaultOptionSelected(localInputValue)
       }
     }
   })
@@ -107,6 +138,7 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
         {renderOptions()}
       </select>
       <label data-te-select-label-ref>{label}</label>
+      {info && <div className="text-sm px-3">{info}</div>}
     </div>
   )
 })

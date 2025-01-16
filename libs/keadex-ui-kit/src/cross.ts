@@ -47,6 +47,7 @@ export { Select, type SelectProps } from './components/cross/Select/Select'
 export {
   Autocomplete,
   type AutocompleteProps,
+  type AutocompleteOption,
 } from './components/cross/Autocomplete/Autocomplete'
 export {
   Separator,
