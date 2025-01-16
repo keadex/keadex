@@ -5,6 +5,7 @@ import {
   faBook,
   faDesktop,
   faShareNodes,
+  faTerminal,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button } from '@keadex/keadex-ui-kit/cross'
@@ -43,7 +44,7 @@ export default function MinaSummary({
     )
   }
 
-  async function download(direct: boolean) {
+  async function downloadMina(direct: boolean) {
     let url
 
     if (direct) {
@@ -77,6 +78,37 @@ export default function MinaSummary({
     window.open(url, '_blank')
   }
 
+  async function downloadMinaCLI(direct: boolean) {
+    let url
+
+    if (direct) {
+      const userAgent = navigator?.userAgent.toLowerCase()
+
+      const part1URL =
+        'https://github.com/keadex/keadex/releases/download/mina-cli%40'
+      const part2URL = '/mina-cli-'
+      const baseURL = `${part1URL}${latestMinaVersion}${part2URL}`
+
+      const windows64 = `${baseURL}Windows-msvc-x86_64.zip`
+      const macOS = `${baseURL}macOS-arm64.tar.gz`
+      const linux64 = `${baseURL}Linux-gnu-x86_64.tar.gz`
+
+      url = windows64 // default windows x64
+
+      // You can add more checks for specific OS if needed
+      if (userAgent.includes('win')) {
+        url = windows64
+      } else if (userAgent.includes('mac')) {
+        url = macOS
+      } else if (userAgent.includes('linux')) {
+        url = linux64
+      }
+    } else {
+      url = `https://github.com/keadex/keadex/releases/mina-cli%40${latestMinaVersion}`
+    }
+    window.open(url, '_blank')
+  }
+
   useEffect(() => {
     getLatestMinaVersion()
   }, [])
@@ -107,26 +139,45 @@ export default function MinaSummary({
                 components={{ span: <span /> }}
               />
             </div>
-            <div className="flex flex-col md:flex-row ">
+            <div className="flex flex-col md:flex-row">
               <div className="flex flex-col">
                 <Button
                   className="!text-sm w-fit h-fit mb-2"
-                  onClick={() => download(true)}
+                  onClick={() => downloadMina(true)}
                 >
                   <FontAwesomeIcon icon={faDesktop} className="mr-3" />
-                  <span>Download </span>
+                  <span>Download Keadex Mina </span>
                   <span className="text-xs">v{latestMinaVersion}</span>
                 </Button>
                 <a
-                  onClick={() => download(false)}
+                  onClick={() => downloadMina(false)}
                   href="#"
                   className="no-underline hover:underline w-fit"
                 >
                   <Trans i18nKey="keadex_mina.other_download_options" t={t} />
                 </a>
               </div>
+              <div className="flex flex-col ml-0 md:ml-2 mt-4 md:mt-0">
+                <Button
+                  className="!text-sm w-fit h-fit mb-2"
+                  onClick={() => downloadMinaCLI(true)}
+                >
+                  <FontAwesomeIcon icon={faTerminal} className="mr-3" />
+                  <span>Download Mina CLI </span>
+                  <span className="text-xs">v{latestMinaVersion}</span>
+                </Button>
+                <a
+                  onClick={() => downloadMinaCLI(false)}
+                  href="#"
+                  className="no-underline hover:underline w-fit"
+                >
+                  <Trans i18nKey="keadex_mina.other_download_options" t={t} />
+                </a>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row mt-5">
               <Button
-                className="!text-sm w-fit h-fit ml-0 md:ml-2 mt-4 md:mt-0"
+                className="!text-sm w-fit"
                 onClick={() => router.push(ROUTES[MINA_INTRODUCTION].path)}
               >
                 <FontAwesomeIcon icon={faBook} className="mr-3" />
@@ -186,7 +237,7 @@ export default function MinaSummary({
           </div>
           <iframe
             src="https://www.youtube.com/embed/Cy6KzhWjNLo"
-            className="w-full mt-10 md:w-1/2 md:mt-0 h-80 border-0"
+            className="w-full mt-10 md:w-1/2 md:mt-0 h-80 border-0 pl-0 md:pl-8"
             frameBorder="0"
             allowFullScreen
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
