@@ -116,6 +116,7 @@ export const DiagramCodeView = forwardRef(
     const [aiHidden, setAiHidden] = useState(true)
     const canEditorUndo = useRef(false)
     const canEditorRedo = useRef(false)
+    const diagramAliases = useRef<string[]>([])
 
     useEffect(() => {
       function handle(e: KeyboardEvent) {
@@ -143,6 +144,7 @@ export const DiagramCodeView = forwardRef(
     useEffect(() => {
       if (diagram) {
         canEditorUndo.current = true
+        diagramAliases.current = diagram.diagram_plantuml?.aliases ?? []
         const { raw_plantuml } = diagram
         setRawPlantuml(raw_plantuml ?? '')
       }
@@ -425,11 +427,12 @@ export const DiagramCodeView = forwardRef(
             })}`,
             body: (
               <Modal
+                mode="createLibraryElement"
                 enableEdit={true}
                 project={project}
                 libraryElement={elementToAdd.element}
                 hideModal={hideModal}
-                mode="createLibraryElement"
+                diagramAliases={[]}
               />
             ),
             buttons: false,
@@ -522,6 +525,7 @@ export const DiagramCodeView = forwardRef(
             hideModal={hideModal}
             forceUpdate={forceUpdate}
             onElementCreated={onElementCreated}
+            diagramAliases={diagramAliases.current}
           />
         ),
         buttons: false,

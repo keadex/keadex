@@ -193,6 +193,7 @@ export const LibraryElement = (props: LibraryElementProps) => {
           libraryElement={libraryElement}
           hideModal={hideModal}
           forceUpdate={forceUpdate}
+          diagramAliases={[]}
         />
       ),
       buttons: false,

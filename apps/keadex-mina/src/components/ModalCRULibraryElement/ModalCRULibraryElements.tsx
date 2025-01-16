@@ -6,6 +6,7 @@ export interface ModalCRULibraryElementProps {
   mode?: 'createLibraryElement' | 'updateLibraryElement' | 'serializer'
   libraryElement?: Partial<LibraryElementType>
   project?: Project
+  diagramAliases: string[]
   enableEdit: boolean
   forceUpdate?: () => void
   hideModal: () => void
