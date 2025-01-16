@@ -44,6 +44,10 @@ const filesToUpdate = [
     pattern: `name = "keadex_mina"\nversion = "${version}"`,
   },
   {
+    path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/continuous-integration.mdx',
+    pattern: `/mina-cli%40${version}/`,
+  },
+  {
     path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/cli/overview.mdx',
     pattern: `/mina-cli%40${version}/`,
   },

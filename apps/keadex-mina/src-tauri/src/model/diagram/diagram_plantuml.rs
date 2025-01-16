@@ -3,6 +3,7 @@ Model representing the root of a PlantUML diagram.
 */
 
 use crate::core::serializer::format_with_indent;
+use crate::helper::diagram_helper::get_all_elements_aliases;
 use crate::model::c4_element::boundary::Boundary;
 use crate::model::c4_element::component::{Component, ComponentType};
 use crate::model::c4_element::container::{Container, ContainerType};
@@ -54,6 +55,7 @@ pub struct DiagramPlantUML {
   #[serde(skip_serializing_if = "Option::is_none")]
   pub diagram_id: Option<String>,
   pub elements: Vec<DiagramElementType>,
+  pub aliases: Vec<String>,
 }
 
 impl<'i> TryFrom<Pair<'i, Rule>> for DiagramPlantUML {
@@ -74,9 +76,11 @@ impl<'i> TryFrom<Pair<'i, Rule>> for DiagramPlantUML {
         _ => {}
       }
     }
+    let aliases = get_all_elements_aliases(&elements);
     Ok(Self {
       diagram_id,
       elements,
+      aliases,
     })
   }
 }

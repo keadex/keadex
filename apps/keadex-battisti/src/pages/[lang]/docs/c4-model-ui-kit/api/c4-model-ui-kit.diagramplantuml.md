@@ -35,6 +35,23 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[aliases](./c4-model-ui-kit.diagramplantuml.aliases.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Array&lt;string&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [diagram\_id?](./c4-model-ui-kit.diagramplantuml.diagram_id.md)
 
 

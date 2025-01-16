@@ -13,7 +13,8 @@ describe('ModalCRUPerson', () => {
         forceUpdate={() => {
           console.log('test')
         }}
-      />
+        diagramAliases={[]}
+      />,
     )
     expect(baseElement).toBeTruthy()
   })

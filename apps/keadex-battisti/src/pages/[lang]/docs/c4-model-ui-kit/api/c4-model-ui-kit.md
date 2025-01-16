@@ -250,6 +250,24 @@ Description
 </td></tr>
 <tr><td>
 
+[isLegendAlias(alias)](./c4-model-ui-kit.islegendalias.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isRelationshipAlias(alias)](./c4-model-ui-kit.isrelationshipalias.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [linkableDiagramElement(element)](./c4-model-ui-kit.linkablediagramelement.md)
 
 

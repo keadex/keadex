@@ -33,18 +33,6 @@ pub struct Cli {
 
 #[derive(Subcommand, Debug)]
 pub enum Commands {
-  /// Create a person in the project's library.
-  CreatePerson(CreatePerson),
-
-  /// Create a software system in the project's library.
-  CreateSystem(CreateSystem),
-
-  /// Create a container in the project's library.
-  CreateContainer(CreateContainer),
-
-  /// Create a component in the project's library.
-  CreateComponent(CreateComponent),
-
   /// Returns the dependents of a an architectural element with the given alias in the given diagram.
   FindDependentElements(FindDependentElements),
 
@@ -62,6 +50,18 @@ pub enum Commands {
 
   /// Search in the project's library for an element with the given alias.
   SearchLibraryElement(SearchLibraryElement),
+
+  /// Create a person in the project's library.
+  CreatePerson(CreatePerson),
+
+  /// Create a software system in the project's library.
+  CreateSystem(CreateSystem),
+
+  /// Create a container in the project's library.
+  CreateContainer(CreateContainer),
+
+  /// Create a component in the project's library.
+  CreateComponent(CreateComponent),
 
   /// Update a person in the project's library.
   ///
@@ -86,4 +86,16 @@ pub enum Commands {
   /// This command will update a component in the project's library
   /// and will update all the diagrams that import it.
   UpdateComponent(UpdateComponent),
+
+  /// Create or update a person (and the dependent diagrams) in the project's library.
+  UpsertPerson(UpdatePerson),
+
+  /// Create or update a software system (and the dependent diagrams) in the project's library.
+  UpsertSystem(UpdateSystem),
+
+  /// Create or update a container (and the dependent diagrams) in the project's library.
+  UpsertContainer(UpdateContainer),
+
+  /// Create or update a component (and the dependent diagrams) in the project's library.
+  UpsertComponent(UpdateComponent),
 }

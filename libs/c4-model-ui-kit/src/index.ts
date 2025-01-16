@@ -70,6 +70,8 @@ export {
   personTypeHumanName,
   parseDiagramTypeHumanName,
   isDefaultDiagramElementSpec,
+  isRelationshipAlias,
+  isLegendAlias,
 } from './helper/diagram-helper'
 export {
   externalLinkVariableToPlaceholder,

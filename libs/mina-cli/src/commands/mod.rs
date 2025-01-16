@@ -12,3 +12,7 @@ pub mod update_component;
 pub mod update_container;
 pub mod update_person;
 pub mod update_system;
+pub mod upsert_component;
+pub mod upsert_container;
+pub mod upsert_person;
+pub mod upsert_system;

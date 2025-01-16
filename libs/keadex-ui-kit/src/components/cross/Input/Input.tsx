@@ -25,13 +25,6 @@ export const Input = React.memo((props: InputProps) => {
     setValue(props.value)
   }, [props.value])
 
-  function handleOnKeyDown(e: KeyboardEvent) {
-    if (props.allowedChars) {
-      if (!props.allowedChars.test(e.key)) e.preventDefault()
-      // console.log(e.key)
-    }
-  }
-
   function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
     if (props.allowedChars && e.currentTarget.value !== '') {
       if (!props.allowedChars.test(e.currentTarget.value)) {

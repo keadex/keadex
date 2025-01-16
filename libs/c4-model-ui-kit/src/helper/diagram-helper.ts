@@ -243,3 +243,11 @@ export const getAutoPosition = (
     top: ELEMENT.SIZES.DEFAULT_TOP,
   }
 }
+
+export const isRelationshipAlias = (alias: string) => {
+  return alias.includes(' -> ')
+}
+
+export const isLegendAlias = (alias: string) => {
+  return alias === 'legend'
+}
