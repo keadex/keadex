@@ -115,10 +115,10 @@ export const ProjectPanel = React.memo((props: ProjectPanelProps) => {
       </div>
       <div className="flex-grow">
         <Button
-          className="button--dangerous absolute bottom-8 left-1/2 w-24 -translate-x-1/2"
+          className="button--dangerous absolute bottom-8 left-1/2 w-36 -translate-x-1/2"
           onClick={handleCloseProject}
         >
-          {t('common.close')}
+          {t('common.action.close_project')}
         </Button>
       </div>
     </div>
