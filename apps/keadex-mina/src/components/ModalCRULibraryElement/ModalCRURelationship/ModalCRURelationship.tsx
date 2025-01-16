@@ -64,12 +64,15 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
       : []
 
     // Options for each alias
-    const filteredAliases = _diagramAliases.filter(
-      (alias) =>
-        !isLegendAlias(alias) &&
-        !isRelationshipAlias(alias) &&
-        (!value || alias.toLowerCase().includes(value.toLowerCase())),
-    )
+    const filteredAliases = _diagramAliases
+      .filter(
+        (alias) =>
+          !isLegendAlias(alias) &&
+          !isRelationshipAlias(alias) &&
+          (!value || alias.toLowerCase().includes(value.toLowerCase())),
+      )
+      .sort((a, b) => a.localeCompare(b))
+
     options = options.concat(
       filteredAliases.map((alias) => {
         return {
