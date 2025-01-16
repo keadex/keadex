@@ -241,7 +241,6 @@ pub fn diagram_spec_path_from_name_type(
   ))
 }
 
-#[cfg(feature = "desktop")]
 pub fn get_all_elements_aliases(elements: &Vec<DiagramElementType>) -> Vec<String> {
   let mut aliases: Vec<String> = vec![];
 
