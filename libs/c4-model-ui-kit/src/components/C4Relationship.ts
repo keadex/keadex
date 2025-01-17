@@ -924,7 +924,7 @@ const createContextMenuItems = (
           },
         },
         {
-          id: 'separatorCommon',
+          id: 'separatorRel',
           isSepator: true,
         },
         ...createBaseContextMenuItems(canvas, event, selectedObject, false),

@@ -2,15 +2,19 @@ import {
   RELATIONSHIP_TYPES,
   Relationship,
   RelationshipType,
+  isLegendAlias,
+  isRelationshipAlias,
 } from '@keadex/c4-model-ui-kit'
 import {
+  Autocomplete,
+  AutocompleteOption,
   Input,
   Select,
   Textarea,
   renderButtons,
 } from '@keadex/keadex-ui-kit/cross'
 import { capitalCase, noCase } from 'change-case'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, SetStateAction, Dispatch } from 'react'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { ModalCRULibraryElementProps } from '../ModalCRULibraryElements'
@@ -27,13 +31,64 @@ const emptyRelationship: Relationship = {
   technology: '',
 }
 
+const MAX_OPTIONS = 5
+
 export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
+  const { libraryElement, diagramAliases } = props
+
   const { t } = useTranslation()
   const [newRelationship, setNewRelationship] = useState(
-    props.libraryElement
-      ? (props.libraryElement as Relationship)
-      : emptyRelationship,
+    libraryElement ? (libraryElement as Relationship) : emptyRelationship,
   )
+  const [fromAliasOptions, setFromAliasOptions] = useState<
+    AutocompleteOption[]
+  >([])
+  const [toAliasOptions, setToAliasOptions] = useState<AutocompleteOption[]>([])
+
+  function handleOnTyping(
+    setOptions: Dispatch<SetStateAction<AutocompleteOption[]>>,
+    addDefaultOption: boolean,
+    value: string,
+    inputDiagramAliases?: string[],
+  ) {
+    const _diagramAliases = diagramAliases ?? inputDiagramAliases
+
+    // Default option
+    let options = addDefaultOption
+      ? [
+          {
+            label: value,
+            value: value,
+          },
+        ]
+      : []
+
+    // Options for each alias
+    const filteredAliases = _diagramAliases
+      .filter(
+        (alias) =>
+          !isLegendAlias(alias) &&
+          !isRelationshipAlias(alias) &&
+          (!value || alias.toLowerCase().includes(value.toLowerCase())),
+      )
+      .sort((a, b) => a.localeCompare(b))
+
+    options = options.concat(
+      filteredAliases.map((alias) => {
+        return {
+          label: alias,
+          value: alias,
+        }
+      }),
+    )
+
+    // Set top x results
+    if (options.length >= MAX_OPTIONS) {
+      options = options.slice(0, MAX_OPTIONS)
+    }
+
+    setOptions(options)
+  }
 
   function missingRequiredFields() {
     return (
@@ -47,6 +102,18 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
 
   useEffect(() => {
     emptyRelationship.base_data.uuid = uuidv4()
+    handleOnTyping(
+      setFromAliasOptions,
+      !newRelationship.from || newRelationship.from === '',
+      newRelationship.from ?? '',
+      diagramAliases,
+    )
+    handleOnTyping(
+      setToAliasOptions,
+      !newRelationship.to || newRelationship.to === '',
+      newRelationship.to ?? '',
+      diagramAliases,
+    )
   }, [])
 
   return (
@@ -60,35 +127,55 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
           className="mt-2"
           value={newRelationship?.base_data?.uuid}
         />
-        <Input
+        <Autocomplete
+          id="rel-from-autocomplete"
           disabled={props.libraryElement !== undefined || !props.enableEdit}
-          type="text"
           label={`${t('common.from')}*`}
           className="mt-6"
           allowedChars={ALIAS_REGEX}
           info={`${t('common.allowed_pattern')}: ${ALIAS_REGEX}`}
           value={newRelationship?.from}
-          onChange={(e) =>
+          options={fromAliasOptions}
+          onChange={(e) => {
             setNewRelationship({
               ...newRelationship,
               from: e.target.value.replace(' ', ''),
             })
-          }
+          }}
+          onDefaultOptionSelected={(value) => {
+            setNewRelationship({
+              ...newRelationship,
+              from: value,
+            })
+          }}
+          onTyping={(value) => {
+            handleOnTyping(setFromAliasOptions, true, value)
+          }}
         />
-        <Input
+        <Autocomplete
+          id="rel-to-autocomplete"
           disabled={props.libraryElement !== undefined || !props.enableEdit}
-          type="text"
           label={`${t('common.to')}*`}
           className="mt-6"
           allowedChars={ALIAS_REGEX}
           info={`${t('common.allowed_pattern')}: ${ALIAS_REGEX}`}
           value={newRelationship?.to}
+          options={toAliasOptions}
           onChange={(e) =>
             setNewRelationship({
               ...newRelationship,
               to: e.target.value.replace(' ', ''),
             })
           }
+          onDefaultOptionSelected={(value) => {
+            setNewRelationship({
+              ...newRelationship,
+              to: value,
+            })
+          }}
+          onTyping={(value) => {
+            handleOnTyping(setToAliasOptions, true, value)
+          }}
         />
         <Input
           disabled={!props.enableEdit}

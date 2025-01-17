@@ -1,7 +1,9 @@
 pub mod commands;
+pub mod constants;
 pub mod model;
 
 use crate::list_diagrams::list_diagrams;
+use crate::model::response::Response;
 use clap::Parser;
 use commands::create_component::create_component;
 use commands::create_container::create_container;
@@ -17,7 +19,12 @@ use commands::update_component::update_component;
 use commands::update_container::update_container;
 use commands::update_person::update_person;
 use commands::update_system::update_system;
+use commands::upsert_component::upsert_component;
+use commands::upsert_container::upsert_container;
+use commands::upsert_person::upsert_person;
+use commands::upsert_system::upsert_system;
 use keadex_mina::core::project_initializer::{load_project, unload_project};
+use keadex_mina::core::serializer::serialize_obj_to_json_string;
 use keadex_mina::error_handling::mina_error::MinaError;
 use model::cli::{Cli, Commands};
 use std::path::PathBuf;
@@ -43,18 +50,6 @@ fn main() {
       eprintln!("Error: {}", error.msg)
     } else {
       match args.cmd {
-        Commands::CreateComponent(args) => {
-          result = create_component(args);
-        }
-        Commands::CreateContainer(args) => {
-          result = create_container(args);
-        }
-        Commands::CreatePerson(args) => {
-          result = create_person(args);
-        }
-        Commands::CreateSystem(args) => {
-          result = create_system(args);
-        }
         Commands::FindDependentElements(args) => {
           result = find_dependent_elements(&args.alias, &args.diagram_name, args.diagram_type);
         }
@@ -76,6 +71,18 @@ fn main() {
         Commands::SearchLibraryElement(search_args) => {
           result = search_library_element(&search_args.alias);
         }
+        Commands::CreateComponent(args) => {
+          result = create_component(args);
+        }
+        Commands::CreateContainer(args) => {
+          result = create_container(args);
+        }
+        Commands::CreatePerson(args) => {
+          result = create_person(args);
+        }
+        Commands::CreateSystem(args) => {
+          result = create_system(args);
+        }
         Commands::UpdatePerson(update_person_args) => {
           result = update_person(update_person_args);
         }
@@ -88,9 +95,26 @@ fn main() {
         Commands::UpdateComponent(update_component_args) => {
           result = update_component(update_component_args);
         }
+        Commands::UpsertPerson(upsert_person_args) => {
+          result = upsert_person(upsert_person_args);
+        }
+        Commands::UpsertSystem(upsert_system_args) => {
+          result = upsert_system(upsert_system_args);
+        }
+        Commands::UpsertContainer(upsert_container_args) => {
+          result = upsert_container(upsert_container_args);
+        }
+        Commands::UpsertComponent(upsert_component_args) => {
+          result = upsert_component(upsert_component_args);
+        }
       }
       if let Err(error) = result {
-        eprintln!("Error: {}", error.msg)
+        let response = Response {
+          code: error.code,
+          message: error.msg,
+        };
+        let json = serialize_obj_to_json_string(&response, false).unwrap();
+        eprintln!("{}", json);
       }
       clear_keadex_mina(&args.project_path);
     }
