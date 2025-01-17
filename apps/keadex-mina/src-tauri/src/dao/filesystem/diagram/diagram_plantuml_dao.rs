@@ -1,22 +1,12 @@
-#[cfg(cross)]
 use crate::core::serializer::{deserialize_plantuml_by_file, serialize_diagram_to_plantuml};
-#[cfg(cross)]
 use crate::dao::filesystem::FileSystemDAO;
-#[cfg(cross)]
 use crate::dao::DAO;
-#[cfg(cross)]
 use crate::error_handling::errors::{FILE_DOES_NOT_EXIST, IO_ERROR_CODE};
-#[cfg(cross)]
 use crate::error_handling::mina_error::MinaError;
-#[cfg(cross)]
 use crate::model::diagram::diagram_plantuml::DiagramPlantUML;
-#[cfg(cross)]
 use std::collections::HashMap;
-#[cfg(cross)]
 use std::fs::File;
-#[cfg(cross)]
 use std::io::Write;
-#[cfg(cross)]
 use std::path::Path;
 
 pub const FILE_NAME: &str = "diagram.puml";
@@ -24,12 +14,10 @@ pub const FILE_NAME: &str = "diagram.puml";
 /**
 Allows to read/write PlantUML diagrams from/to the file system.
 */
-#[cfg(cross)]
 pub struct DiagramPlantUMLDAO {
   opened_files: HashMap<String, File>,
 }
 
-#[cfg(cross)]
 impl Default for DiagramPlantUMLDAO {
   fn default() -> Self {
     DiagramPlantUMLDAO {
@@ -38,10 +26,8 @@ impl Default for DiagramPlantUMLDAO {
   }
 }
 
-#[cfg(cross)]
 impl DAO for DiagramPlantUMLDAO {}
 
-#[cfg(cross)]
 impl FileSystemDAO<DiagramPlantUML> for DiagramPlantUMLDAO {
   fn get_opened_files(&mut self) -> &mut HashMap<String, File> {
     &mut self.opened_files
