@@ -1,5 +1,6 @@
 pub mod diagram_helper;
 pub mod distribution_helper;
+pub mod fs_helper;
 pub mod hook_helper;
 pub mod library_helper;
 pub mod project_helper;
