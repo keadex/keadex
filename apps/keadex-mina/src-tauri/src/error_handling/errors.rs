@@ -48,3 +48,4 @@ pub const EXISTING_LIB_ELEMENT_ERROR_MSG: &str =
 pub const MISSING_AI_SETTINGS_ERROR_MSG: &str = "Missing AI settings.";
 pub const INVALID_GENERATED_DIAGRAM: &str =
   "The AI-generated diagram contains errors. Try again providing a more detailed description.";
+pub const MISSING_ROOT_DIR_HANDLE: &str = "Missing root directory handler";
