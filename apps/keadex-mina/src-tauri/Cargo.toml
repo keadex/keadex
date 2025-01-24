@@ -49,7 +49,7 @@ bomboni_wasm = { version = "0.1", features = [
 fancy-regex = "0.13.0"
 layout-rs = { version = "0.1.2", features = [] }
 js-sys = "0.3"
-web-sys = { version = "0.3", features = ["File"], optional = true }
+web-sys = { version = "0.3", features = ["File", "FileSystemDirectoryHandle"], optional = true }
 tauri = { version = "2", features = [
   "macos-private-api",
 ], optional = true }

@@ -10,4 +10,13 @@ pub trait CrossFile {
   fn lock_exclusive(&mut self) -> Result<(), Error>;
 }
 
-pub trait FileSystemAPI {}
+pub trait FileSystemAPI {
+  fn open(
+    &mut self,
+    read: bool,
+    write: bool,
+    append: bool,
+    truncate: bool,
+    path: &str,
+  ) -> Result<impl CrossFile, Error>;
+}
