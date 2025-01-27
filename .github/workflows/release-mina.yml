@@ -94,6 +94,8 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
+          releaseDraft: ${{ startsWith(github.ref, 'refs/heads/prerelease/keadex-mina') }}
+          prerelease: ${{ startsWith(github.ref, 'refs/heads/prerelease/keadex-mina') }}
           tagName: keadex-mina-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
           releaseName: 'Keadex Mina v__VERSION__'
           releaseBody: ${{ github.event.head_commit.message }}
@@ -210,7 +212,9 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          draft: false
+          draft: ${{ startsWith(github.ref, 'refs/heads/prerelease/keadex-mina') }}
+          prerelease: ${{ startsWith(github.ref, 'refs/heads/prerelease/keadex-mina') }}
+          make_latest: ${{ ! startsWith(github.ref, 'refs/heads/prerelease/keadex-mina') }}
           name: mina-cli@${{steps.mina_version.outputs.value}}
           tag_name: mina-cli@${{steps.mina_version.outputs.value}}
           files: mina-cli-artifacts/*
