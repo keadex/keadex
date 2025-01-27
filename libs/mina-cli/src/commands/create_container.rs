@@ -5,7 +5,7 @@ use keadex_mina::model::diagram::diagram_plantuml::DiagramElementType;
 use keadex_mina::repository::library::library_repository::create_element;
 use uuid::Uuid;
 
-pub fn create_container(args: CreateContainer) -> Result<(), MinaError> {
+pub async fn create_container(args: CreateContainer) -> Result<(), MinaError> {
   let mut container = Container::default();
   container.base_data.uuid = Some(Uuid::new_v4().to_string());
   container.base_data.alias = Some(args.alias);
@@ -16,6 +16,6 @@ pub fn create_container(args: CreateContainer) -> Result<(), MinaError> {
   container.container_type = Some(args.container_type);
   container.technology = Some(args.technology);
 
-  create_element(&DiagramElementType::Container(container))?;
+  create_element(&DiagramElementType::Container(container)).await?;
   return Ok(());
 }

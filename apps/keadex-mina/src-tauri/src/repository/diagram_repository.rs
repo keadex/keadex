@@ -45,9 +45,12 @@ use strum::IntoEnumIterator;
 /**
 Returns the list of the diagrams in the opened project.
 */
-pub fn list_diagrams() -> Result<HashMap<DiagramType, Vec<String>>, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
+pub async fn list_diagrams() -> Result<HashMap<DiagramType, Vec<String>>, MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .get()
+    .await;
   let project_root = project_settings.unwrap().root;
 
   let mut result = HashMap::new();
@@ -85,16 +88,24 @@ Returns the opened and parsed diagram.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-pub fn open_diagram(diagram_name: &str, diagram_type: DiagramType) -> Result<Diagram, MinaError> {
-  let plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, &diagram_type)?;
-  let spec_path = diagram_spec_path_from_name_type(diagram_name, &diagram_type)?;
+pub async fn open_diagram(
+  diagram_name: &str,
+  diagram_type: DiagramType,
+) -> Result<Diagram, MinaError> {
+  let plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, &diagram_type).await?;
+  let spec_path = diagram_spec_path_from_name_type(diagram_name, &diagram_type).await?;
   log::info!("Opening the diagram {}", plantuml_path);
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let diagram_plantuml =
-    resolve_to_write!(store, DiagramPlantUMLFsDAO).get(Path::new(&plantuml_path))?;
+  let store = ROOT_RESOLVER.get().read().await;
+  let diagram_plantuml = resolve_to_write!(store, DiagramPlantUMLFsDAO)
+    .await
+    .get(Path::new(&plantuml_path))
+    .await?;
   let raw_plantuml = serialize_diagram_to_plantuml(&diagram_plantuml);
-  let (diagram_name, diagram_type) = diagram_name_type_from_path(&plantuml_path)?;
-  let diagram_spec = resolve_to_write!(store, DiagramSpecFsDAO).get(Path::new(&spec_path))?;
+  let (diagram_name, diagram_type) = diagram_name_type_from_path(&plantuml_path).await?;
+  let diagram_spec = resolve_to_write!(store, DiagramSpecFsDAO)
+    .await
+    .get(Path::new(&spec_path))
+    .await?;
   let metadata = fs::metadata(&plantuml_path)?;
   let last_modified = metadata
     .modified()
@@ -128,15 +139,20 @@ Closes a diagram and and unlocks its files.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-pub fn close_diagram(diagram_name: &str, diagram_type: DiagramType) -> Result<bool, MinaError> {
-  let plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, &diagram_type)?;
-  let spec_path = diagram_spec_path_from_name_type(diagram_name, &diagram_type)?;
+pub async fn close_diagram(
+  diagram_name: &str,
+  diagram_type: DiagramType,
+) -> Result<bool, MinaError> {
+  let plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, &diagram_type).await?;
+  let spec_path = diagram_spec_path_from_name_type(diagram_name, &diagram_type).await?;
   log::info!("Closing the diagram {}", diagram_name);
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let result_plantuml =
-    resolve_to_write!(store, DiagramPlantUMLFsDAO).unlock_file(Path::new(&plantuml_path), true)?;
-  let result_spec =
-    resolve_to_write!(store, DiagramSpecFsDAO).unlock_file(Path::new(&spec_path), true)?;
+  let store = ROOT_RESOLVER.get().read().await;
+  let result_plantuml = resolve_to_write!(store, DiagramPlantUMLFsDAO)
+    .await
+    .unlock_file(Path::new(&plantuml_path), true)?;
+  let result_spec = resolve_to_write!(store, DiagramSpecFsDAO)
+    .await
+    .unlock_file(Path::new(&spec_path), true)?;
   Ok(result_plantuml && result_spec)
 }
 
@@ -147,29 +163,31 @@ Returns updated project's library.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-pub fn delete_diagram(
+pub async fn delete_diagram(
   diagram_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<ProjectLibrary, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
 
   // Delete PlantUML file
-  let diagram_plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, diagram_type)?;
-  resolve_to_write!(store, DiagramPlantUMLFsDAO).delete(Path::new(&diagram_plantuml_path))?;
+  let diagram_plantuml_path =
+    diagram_plantuml_path_from_name_type(diagram_name, diagram_type).await?;
+  resolve_to_write!(store, DiagramPlantUMLFsDAO)
+    .await
+    .delete(Path::new(&diagram_plantuml_path))?;
 
   // Delete Spec file
-  let diagram_spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type)?;
-  resolve_to_write!(store, DiagramSpecFsDAO).delete(Path::new(&diagram_spec_path))?;
+  let diagram_spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type).await?;
+  resolve_to_write!(store, DiagramSpecFsDAO)
+    .await
+    .delete(Path::new(&diagram_spec_path))?;
 
   // Delete directory of the diagram
-  let diagram_path = diagram_dir_path_from_name_type(diagram_name, diagram_type)?;
+  let diagram_path = diagram_dir_path_from_name_type(diagram_name, diagram_type).await?;
   std::fs::remove_dir_all(&diagram_path)?;
 
   // Delete from the library's elements, the references to the deleted element
-  Ok(library_repository::delete_diagram_references(
-    diagram_name,
-    diagram_type,
-  )?)
+  Ok(library_repository::delete_diagram_references(diagram_name, diagram_type).await?)
 }
 
 /**
@@ -177,7 +195,7 @@ Creates a diagram.
 # Arguments
   * `new_diagram` - New diagram to create.
 */
-pub fn create_diagram(new_diagram: Diagram) -> Result<(), MinaError> {
+pub async fn create_diagram(new_diagram: Diagram) -> Result<(), MinaError> {
   let _diagram_plantuml = new_diagram
     .diagram_plantuml
     .unwrap_or(DiagramPlantUML::default());
@@ -185,7 +203,7 @@ pub fn create_diagram(new_diagram: Diagram) -> Result<(), MinaError> {
 
   let diagram_name = &new_diagram.diagram_name.unwrap();
   let diagram_type = &new_diagram.diagram_type.unwrap();
-  let diagram_dir_path = diagram_dir_path_from_name_type(diagram_name, diagram_type)?;
+  let diagram_dir_path = diagram_dir_path_from_name_type(diagram_name, diagram_type).await?;
 
   if Path::new(&diagram_dir_path).exists() {
     return Err(MinaError::new(
@@ -198,26 +216,28 @@ pub fn create_diagram(new_diagram: Diagram) -> Result<(), MinaError> {
   std::fs::create_dir_all(&diagram_dir_path)?;
 
   // Create PlantUML file
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let diagram_plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, diagram_type)?;
-  resolve_to_write!(store, DiagramPlantUMLFsDAO).save(
-    &_diagram_plantuml,
-    Path::new(&diagram_plantuml_path),
-    true,
-  )?;
+  let store = ROOT_RESOLVER.get().read().await;
+  let diagram_plantuml_path =
+    diagram_plantuml_path_from_name_type(diagram_name, diagram_type).await?;
+  resolve_to_write!(store, DiagramPlantUMLFsDAO)
+    .await
+    .save(&_diagram_plantuml, Path::new(&diagram_plantuml_path), true)
+    .await?;
   // You need to close diagram after saving it, otherwise it remain locked
   resolve_to_write!(store, DiagramPlantUMLFsDAO)
+    .await
     .unlock_file(Path::new(&diagram_plantuml_path), true)?;
 
   // Create Spec file
-  let diagram_spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type)?;
-  resolve_to_write!(store, DiagramSpecFsDAO).save(
-    &_diagram_spec,
-    Path::new(&diagram_spec_path),
-    true,
-  )?;
+  let diagram_spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type).await?;
+  resolve_to_write!(store, DiagramSpecFsDAO)
+    .await
+    .save(&_diagram_spec, Path::new(&diagram_spec_path), true)
+    .await?;
   // You need to close diagram after saving it, otherwise it remain locked
-  resolve_to_write!(store, DiagramSpecFsDAO).unlock_file(Path::new(&diagram_spec_path), true)?;
+  resolve_to_write!(store, DiagramSpecFsDAO)
+    .await
+    .unlock_file(Path::new(&diagram_spec_path), true)?;
 
   Ok(())
 }
@@ -232,31 +252,29 @@ Returns the saved diagram.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-pub fn save_spec_diagram_raw_plantuml(
+pub async fn save_spec_diagram_raw_plantuml(
   raw_plantuml: &str,
   diagram_spec: &DiagramSpec,
   diagram_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<(), MinaError> {
-  let plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, diagram_type)?;
-  let spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type)?;
+  let plantuml_path = diagram_plantuml_path_from_name_type(diagram_name, diagram_type).await?;
+  let spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type).await?;
 
   // Validate the diagram before saving it
-  let diagram_plantuml = validate_diagram(raw_plantuml, diagram_name, diagram_type)?;
+  let diagram_plantuml = validate_diagram(raw_plantuml, diagram_name, diagram_type).await?;
 
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  resolve_to_write!(store, DiagramPlantUMLFsDAO).save(
-    &diagram_plantuml,
-    Path::new(&plantuml_path),
-    false,
-  )?;
+  let store = ROOT_RESOLVER.get().read().await;
+  resolve_to_write!(store, DiagramPlantUMLFsDAO)
+    .await
+    .save(&diagram_plantuml, Path::new(&plantuml_path), false)
+    .await?;
 
   let cleaned_diagram_specs = clean_diagram_specs(&diagram_plantuml, diagram_spec);
-  resolve_to_write!(store, DiagramSpecFsDAO).save(
-    &cleaned_diagram_specs,
-    Path::new(&spec_path),
-    false,
-  )?;
+  resolve_to_write!(store, DiagramSpecFsDAO)
+    .await
+    .save(&cleaned_diagram_specs, Path::new(&spec_path), false)
+    .await?;
 
   Ok(())
 }
@@ -283,7 +301,7 @@ Returns the saved diagram.
 //   // serialize and deserialize again to check the given object is a valid PlantUML representation.
 //   deserialize_plantuml_by_string(&diagram_plantuml.serialize_to_plantuml())?;
 
-//   let store = ROOT_RESOLVER.get().read().unwrap();
+//   let store = ROOT_RESOLVER.get().read().await;
 //   resolve_to_write!(store, DiagramPlantUMLFsDAO).save(
 //     diagram_plantuml,
 //     Path::new(&plantuml_path),
@@ -310,7 +328,7 @@ Returns the path where the diagram has been exported.
   * `diagram_name` - Name of the diagram to export.
   * `diagram_type` - Type of the diagram to export.
 */
-pub fn export_diagram_to_file(
+pub async fn export_diagram_to_file(
   diagram_data_url: &str,
   format: &DiagramFormat,
   diagram_name: &str,
@@ -320,7 +338,7 @@ pub fn export_diagram_to_file(
   let (body, _fragment) = url.decode_to_vec().unwrap();
   let dist_diagram_path = format!(
     "{}{}{}",
-    diagram_dist_dir_path_from_name_type(diagram_name, diagram_type)?,
+    diagram_dist_dir_path_from_name_type(diagram_name, diagram_type).await?,
     ".",
     format
   );
@@ -331,8 +349,11 @@ pub fn export_diagram_to_file(
     dist_diagram_path
   );
 
-  let store = ROOT_RESOLVER.get().read().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
   let path_exported_diagram = Path::new(&dist_diagram_path);
-  resolve_to_write!(store, BinaryFsDAO).save(&body, path_exported_diagram, true)?;
+  resolve_to_write!(store, BinaryFsDAO)
+    .await
+    .save(&body, path_exported_diagram, true)
+    .await?;
   Ok(String::from(path_exported_diagram.to_str().unwrap()))
 }

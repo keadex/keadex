@@ -12,15 +12,15 @@ pub struct ProjectSettingsDAO;
 impl DAO for ProjectSettingsDAO {}
 
 impl InMemoryDAO<Option<ProjectSettings>> for ProjectSettingsDAO {
-  fn save(&self, data: &Option<ProjectSettings>) {
-    APP_STATE.get().write().unwrap().project_settings = data.clone();
+  async fn save(&self, data: &Option<ProjectSettings>) {
+    APP_STATE.get().write().await.project_settings = data.clone();
   }
 
-  fn get(&mut self) -> Option<ProjectSettings> {
-    APP_STATE.get().read().unwrap().project_settings.clone()
+  async fn get(&mut self) -> Option<ProjectSettings> {
+    APP_STATE.get().read().await.project_settings.clone()
   }
 
-  fn delete(&self, _data: &Option<ProjectSettings>) {
+  async fn delete(&self, _data: &Option<ProjectSettings>) {
     todo!()
   }
 }

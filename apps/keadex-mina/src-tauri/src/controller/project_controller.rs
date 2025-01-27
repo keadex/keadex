@@ -14,7 +14,7 @@ pub async fn create_project(
   project_settings: ProjectSettings,
 ) -> Result<ProjectSettings, MinaError> {
   log::info!("Create project");
-  Ok(create_empty_project(project_settings)?)
+  Ok(create_empty_project(project_settings).await?)
 }
 
 /**
@@ -27,7 +27,7 @@ Returns data of the opened project.
 #[cfg_attr(desktop, tauri::command)]
 pub async fn open_project(root: &str) -> Result<Project, MinaError> {
   log::info!("Open project {}", root);
-  load_project(root)
+  load_project(root).await
 }
 
 /**
@@ -38,7 +38,7 @@ Closes a project and clears the internal state of the application, by unlocking 
 #[cfg_attr(desktop, tauri::command)]
 pub async fn close_project(root: &str) -> Result<bool, MinaError> {
   log::info!("Close project {}", root);
-  unload_project(root)?;
+  unload_project(root).await?;
   Ok(true)
 }
 
@@ -52,5 +52,5 @@ pub async fn save_project_settings(
   project_settings: ProjectSettings,
 ) -> Result<ProjectSettings, MinaError> {
   log::info!("Save project settings");
-  Ok(project_repository::save_project_settings(project_settings)?)
+  Ok(project_repository::save_project_settings(project_settings).await?)
 }

@@ -12,15 +12,15 @@ pub struct ProejctLibraryDAO;
 impl DAO for ProejctLibraryDAO {}
 
 impl InMemoryDAO<Option<ProjectLibrary>> for ProejctLibraryDAO {
-  fn save(&self, data: &Option<ProjectLibrary>) {
-    APP_STATE.get().write().unwrap().library = data.clone();
+  async fn save(&self, data: &Option<ProjectLibrary>) {
+    APP_STATE.get().write().await.library = data.clone();
   }
 
-  fn get(&mut self) -> Option<ProjectLibrary> {
-    APP_STATE.get().read().unwrap().library.clone()
+  async fn get(&mut self) -> Option<ProjectLibrary> {
+    APP_STATE.get().read().await.library.clone()
   }
 
-  fn delete(&self, _data: &Option<ProjectLibrary>) {
+  async fn delete(&self, _data: &Option<ProjectLibrary>) {
     todo!()
   }
 }

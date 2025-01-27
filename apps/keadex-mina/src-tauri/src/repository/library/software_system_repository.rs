@@ -25,14 +25,20 @@ Creates a Software System library element in memory and in file system.
 # Arguments
   * `software_system` - Software System with the updated data.
 */
-pub fn create_software_system(
+pub async fn create_software_system(
   software_system: SoftwareSystem,
 ) -> Result<ProjectLibrary, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
-  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO).get().unwrap();
+  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .get()
+    .await
+    .unwrap();
 
   // Append the software_system in the in memory library
   project_library.elements.software_systems.insert(
@@ -44,16 +50,22 @@ pub fn create_software_system(
   let saved_library = Some(project_library);
 
   // Save the updated library in memory
-  resolve_to_write!(store, ProjectLibraryIMDAO).save(&saved_library);
+  resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .save(&saved_library)
+    .await;
 
   // Save the updated software_systems' library in file system
-  resolve_to_write!(store, SoftwareSystemFsDAO).save_all(
-    &saved_library.unwrap().elements.software_systems,
-    Path::new(&project_library_file_path(
-      &project_settings.root,
-      SOFTWARE_SYSTEMS_FILE_NAME,
-    )),
-  )?;
+  resolve_to_write!(store, SoftwareSystemFsDAO)
+    .await
+    .save_all(
+      &saved_library.unwrap().elements.software_systems,
+      Path::new(&project_library_file_path(
+        &project_settings.root,
+        SOFTWARE_SYSTEMS_FILE_NAME,
+      )),
+    )
+    .await?;
 
   Ok(returned_saved_library)
 }
@@ -63,14 +75,20 @@ Updates a Software System library element in memory and in file system.
 # Arguments
   * `software_system` - Software System with the updated data.
 */
-pub fn update_software_system(
+pub async fn update_software_system(
   updated_software_system: SoftwareSystem,
 ) -> Result<ProjectLibrary, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
-  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO).get().unwrap();
+  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .get()
+    .await
+    .unwrap();
 
   // Search and replace the software system in the in memory library
   if let Some(index) =
@@ -93,16 +111,22 @@ pub fn update_software_system(
   let saved_library = Some(project_library);
 
   // Save the updated library in memory
-  resolve_to_write!(store, ProjectLibraryIMDAO).save(&saved_library);
+  resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .save(&saved_library)
+    .await;
 
   // Save the updated software systems' library in file system
-  resolve_to_write!(store, SoftwareSystemFsDAO).save_all(
-    &saved_library.unwrap().elements.software_systems,
-    Path::new(&project_library_file_path(
-      &project_settings.root,
-      SOFTWARE_SYSTEMS_FILE_NAME,
-    )),
-  )?;
+  resolve_to_write!(store, SoftwareSystemFsDAO)
+    .await
+    .save_all(
+      &saved_library.unwrap().elements.software_systems,
+      Path::new(&project_library_file_path(
+        &project_settings.root,
+        SOFTWARE_SYSTEMS_FILE_NAME,
+      )),
+    )
+    .await?;
 
   Ok(returned_saved_library)
 }
@@ -112,12 +136,18 @@ Deletes a Software System element, including all its references, from the librar
 # Arguments
   * `uuid_element` - UUID of the Software System element to delete
 */
-pub fn delete_element_by_uuid(uuid_element: &str) -> Result<(), MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+pub async fn delete_element_by_uuid(uuid_element: &str) -> Result<(), MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
-  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO).get().unwrap();
+  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .get()
+    .await
+    .unwrap();
 
   project_library
     .elements
@@ -127,16 +157,22 @@ pub fn delete_element_by_uuid(uuid_element: &str) -> Result<(), MinaError> {
   let saved_settings = Some(project_library);
 
   // Save updated software systems in memory
-  resolve_to_write!(store, ProjectLibraryIMDAO).save(&saved_settings);
+  resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .save(&saved_settings)
+    .await;
 
   // Save updated software systems in file system
-  resolve_to_write!(store, SoftwareSystemFsDAO).save_all(
-    &saved_settings.unwrap().elements.software_systems,
-    Path::new(&project_library_file_path(
-      &project_settings.root,
-      SOFTWARE_SYSTEMS_FILE_NAME,
-    )),
-  )?;
+  resolve_to_write!(store, SoftwareSystemFsDAO)
+    .await
+    .save_all(
+      &saved_settings.unwrap().elements.software_systems,
+      Path::new(&project_library_file_path(
+        &project_settings.root,
+        SOFTWARE_SYSTEMS_FILE_NAME,
+      )),
+    )
+    .await?;
 
   Ok(())
 }
@@ -147,15 +183,21 @@ Deletes from the library all the references to the given diagram.
   * `diagram_human_name` - Human name of the diagram to delete
   * `diagram_type` - Type of the diagram to delete
 */
-pub fn delete_diagram_references(
+pub async fn delete_diagram_references(
   diagram_human_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<(), MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
-  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO).get().unwrap();
+  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .get()
+    .await
+    .unwrap();
 
   for software_system in &mut project_library.elements.software_systems {
     delete_references_from_base_data(
@@ -167,16 +209,22 @@ pub fn delete_diagram_references(
   let saved_settings = Some(project_library);
 
   // Save updated software systems in memory
-  resolve_to_write!(store, ProjectLibraryIMDAO).save(&saved_settings);
+  resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .save(&saved_settings)
+    .await;
 
   // Save updated software systems in file system
-  resolve_to_write!(store, SoftwareSystemFsDAO).save_all(
-    &saved_settings.unwrap().elements.software_systems,
-    Path::new(&project_library_file_path(
-      &project_settings.root,
-      SOFTWARE_SYSTEMS_FILE_NAME,
-    )),
-  )?;
+  resolve_to_write!(store, SoftwareSystemFsDAO)
+    .await
+    .save_all(
+      &saved_settings.unwrap().elements.software_systems,
+      Path::new(&project_library_file_path(
+        &project_settings.root,
+        SOFTWARE_SYSTEMS_FILE_NAME,
+      )),
+    )
+    .await?;
 
   Ok(())
 }

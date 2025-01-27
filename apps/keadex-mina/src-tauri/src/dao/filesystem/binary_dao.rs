@@ -29,11 +29,11 @@ impl FileSystemDAO<Vec<u8>> for BinaryDAO {
     &mut self.opened_files
   }
 
-  fn get(&mut self, _path: &Path) -> Result<Vec<u8>, MinaError> {
+  async fn get(&mut self, _path: &Path) -> Result<Vec<u8>, MinaError> {
     unimplemented!()
   }
 
-  fn save(
+  async fn save(
     &mut self,
     data: &Vec<u8>,
     path: &Path,
@@ -48,12 +48,12 @@ impl FileSystemDAO<Vec<u8>> for BinaryDAO {
         return Err(MinaError::new(IO_ERROR_CODE, FILE_DOES_NOT_EXIST));
       }
     }
-    let mut file = self.open_and_unlock_file(path, false, true)?;
+    let file = self.open_and_unlock_file(path, false, true).await?;
     file.write_all(data)?;
     Ok(())
   }
 
-  fn get_all(&mut self, _path: &Path) -> Result<Vec<Vec<u8>>, MinaError> {
+  async fn get_all(&mut self, _path: &Path) -> Result<Vec<Vec<u8>>, MinaError> {
     unimplemented!()
   }
 }

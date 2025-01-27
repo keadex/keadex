@@ -78,14 +78,19 @@ Searches by using the given callback in the project's files.
   * `include_library` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
-pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> Result<bool, MinaError>>(
+pub async fn search_in_project<
+  F: FnMut(String, usize, &str, &str, &str) -> Result<bool, MinaError>,
+>(
   mut predicate: F,
   include_diagrams: bool,
   include_library: bool,
   limit: i32,
 ) -> Result<bool, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
+  let store = ROOT_RESOLVER.get().read().await;
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .get()
+    .await;
 
   if let Some(project_settings) = project_settings {
     let temp_root_1 = String::from(&project_settings.root);
@@ -98,7 +103,7 @@ pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> Result<boo
     let mut reached_limit = false;
 
     // Unload the project since we need to unlock all the project's file in order to read them
-    unload_project(&project_settings.root)?;
+    unload_project(&project_settings.root).await?;
 
     // Search for the given string in all the project's files
     for entry in WalkDir::new(temp_root_1)
@@ -148,7 +153,7 @@ pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> Result<boo
     }
 
     // (Re)load the project to make it available again to the client
-    load_project(&temp_root_2)?;
+    load_project(&temp_root_2).await?;
 
     Ok(reached_limit)
   } else {
@@ -165,7 +170,7 @@ Searches for the given text in the project's files and replace it with the given
   * `include_library` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
-pub fn search_and_replace_text(
+pub async fn search_and_replace_text(
   text_to_search: &str,
   replacement: &str,
   include_diagrams: bool,
@@ -216,7 +221,8 @@ pub fn search_and_replace_text(
     include_diagrams,
     include_library,
     limit,
-  )?;
+  )
+  .await?;
 
   if !current_path.eq("") {
     rename(format!("{}.tmp", current_path), &current_path)?;
@@ -238,7 +244,7 @@ Searches for the given text in the project's files.
   * `include_library` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
-pub fn search_text(
+pub async fn search_text(
   text_to_search: &str,
   include_diagrams: bool,
   include_library: bool,
@@ -264,7 +270,8 @@ pub fn search_text(
     include_diagrams,
     include_library,
     limit,
-  )?;
+  )
+  .await?;
 
   let count = results.len().try_into().unwrap();
   Ok(FileSearchResults {
@@ -283,7 +290,7 @@ Searches for the given diagram element in the project's files.
   * `include_library_dir` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
-pub fn search_diagram_element(
+pub async fn search_diagram_element(
   alias: &str,
   plantuml_diagram_element: &str,
   include_diagrams: bool,
@@ -351,14 +358,15 @@ pub fn search_diagram_element(
       include_diagrams,
       false,
       limit,
-    )?;
+    )
+    .await?;
   }
 
   // SEARCH IN LIBRARY
   if include_library {
-    let found_lib_element = search_library_element(alias)?;
+    let found_lib_element = search_library_element(alias).await?;
     if let Some(lib_element) = found_lib_element {
-      let path = path_from_element_type(&lib_element)?;
+      let path = path_from_element_type(&lib_element).await?;
       let mut result = DiagramElementSearchResult {
         category: FileSearchCategory::Library,
         path: path.clone(),

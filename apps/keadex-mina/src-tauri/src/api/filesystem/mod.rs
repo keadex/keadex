@@ -18,5 +18,7 @@ pub trait FileSystemAPI {
     append: bool,
     truncate: bool,
     path: &str,
-  ) -> Result<impl CrossFile, Error>;
+  ) -> impl std::future::Future<Output = Result<impl CrossFile, Error>> + Send
+  where
+    Self: std::marker::Send;
 }

@@ -7,9 +7,9 @@ use crate::dao::DAO;
 Specialization of the DAO to interact with data stored in an in-memory storage.
 */
 pub trait InMemoryDAO<T>: DAO {
-  fn save(&self, data: &T);
+  fn save(&self, data: &T) -> impl std::future::Future<Output = ()> + Send;
 
-  fn delete(&self, data: &T);
+  fn delete(&self, data: &T) -> impl std::future::Future<Output = ()> + Send;
 
-  fn get(&mut self) -> T;
+  fn get(&mut self) -> impl std::future::Future<Output = T> + Send;
 }

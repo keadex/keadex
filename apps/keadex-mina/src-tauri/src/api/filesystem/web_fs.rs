@@ -33,11 +33,11 @@ pub struct WebFileSystemAPI {
 }
 impl WebFileSystemAPI {
   fn open_from_path(&mut self, path: &str) -> Result<impl CrossFile, Error> {
-    if let Some(root_dir_handle) = self.root_dir_handle {
+    if let Some(root_dir_handle) = &self.root_dir_handle {
       let path_structure = split_path_components(path);
-      let result = futures::executors::block_on(root_dir_handle.entries());
+      // let result = futures::executors::block_on(root_dir_handle.entries());
       Ok(WebFile {
-        file: File::new_with_str_sequence(&JsValue::from_str("s"), "ciao"),
+        file: File::new_with_str_sequence(&JsValue::from_str("s"), "ciao").unwrap(),
       })
     } else {
       return Err(Error::new(
@@ -49,7 +49,7 @@ impl WebFileSystemAPI {
 }
 
 impl FileSystemAPI for WebFileSystemAPI {
-  fn open(
+  async fn open(
     &mut self,
     read: bool,
     write: bool,
@@ -67,5 +67,6 @@ impl FileSystemAPI for WebFileSystemAPI {
     //   Ok(file) => return Ok(NativeFile { file }),
     //   Err(error) => return Err(error),
     // }
+    self.open_from_path("")
   }
 }

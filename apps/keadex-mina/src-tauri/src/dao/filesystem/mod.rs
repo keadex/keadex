@@ -9,17 +9,19 @@ use crate::error_handling::errors::{
   CANNOT_OPEN_FILE_ERROR_MSG, FILE_DOES_NOT_EXIST, IO_ERROR_CODE, NO_CACHED_FILE_ERROR_MSG,
 };
 use crate::error_handling::mina_error::MinaError;
+use fs2::*;
 use serde::de;
 use std::collections::hash_map::Entry;
 use std::collections::HashMap;
 use std::fs::{File, OpenOptions};
+use std::future::Future;
 use std::io::Write;
 use std::path::Path;
 
 /**
 Specialization of the DAO to interact with data stored in the file system.
 */
-pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
+pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + std::marker::Sync>: DAO {
   /*
     I need to cache the opened files because in order to lock a file for the entire
     duration of the application, the reference to the "File" must not to be destroyed
@@ -37,34 +39,39 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
     path: &Path,
     append: bool,
     truncate: bool,
-  ) -> Result<&File, MinaError> {
-    // log::debug!("Open and unlock file {:?}", path);
-    let file = OpenOptions::new()
-      .read(true)
-      .write(true)
-      .append(append)
-      .truncate(truncate)
-      .open(path);
-    match file {
-      Ok(file) => {
-        let _ = file.unlock();
-        self.get_opened_files().remove(path.to_str().unwrap());
-        if let Entry::Vacant(v) = self
-          .get_opened_files()
-          .entry(path.to_str().unwrap().to_string())
-        {
-          // log::debug!("Update cached file {:?}", path);
-          return Ok(v.insert(file));
+  ) -> impl Future<Output = Result<&mut File, MinaError>> + Send
+  where
+    Self: std::marker::Send,
+  {
+    async move {
+      // log::debug!("Open and unlock file {:?}", path);
+      let file = OpenOptions::new()
+        .read(true)
+        .write(true)
+        .append(append)
+        .truncate(truncate)
+        .open(path);
+      match file {
+        Ok(file) => {
+          let _ = file.unlock();
+          self.get_opened_files().remove(path.to_str().unwrap());
+          if let Entry::Vacant(v) = self
+            .get_opened_files()
+            .entry(path.to_str().unwrap().to_string())
+          {
+            // log::debug!("Update cached file {:?}", path);
+            return Ok(v.insert(file));
+          }
+        }
+        Err(error) => {
+          log::error!("{}", error);
+          return Err(error.into());
         }
       }
-      Err(error) => {
-        log::error!("{}", error);
-        return Err(error.into());
-      }
+      let error = MinaError::new(IO_ERROR_CODE, CANNOT_OPEN_FILE_ERROR_MSG);
+      log::error!("{}", error);
+      Err(error)
     }
-    let error = MinaError::new(IO_ERROR_CODE, CANNOT_OPEN_FILE_ERROR_MSG);
-    log::error!("{}", error);
-    Err(error)
   }
 
   /**
@@ -152,14 +159,17 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
   # Arguments
     * `path` - Path of the file
   */
-  fn get(&mut self, path: &Path) -> Result<T, MinaError>
+  fn get(&mut self, path: &Path) -> impl std::future::Future<Output = Result<T, MinaError>> + Send
   where
     T: de::DeserializeOwned,
+    Self: std::marker::Send,
   {
-    let file = self.open_and_unlock_file(path, true, false)?;
-    let result = deserialize_json_by_file::<T>(&file, path)?;
-    let _ = self.lock_file(path);
-    Ok(result)
+    async {
+      let file = self.open_and_unlock_file(path, true, false).await?;
+      let result = deserialize_json_by_file::<T>(&file, path)?;
+      let _ = self.lock_file(path);
+      Ok(result)
+    }
   }
 
   /**
@@ -170,14 +180,20 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
   # Arguments
     * `path` - Path of the file
   */
-  fn get_all(&mut self, path: &Path) -> Result<Vec<T>, MinaError>
+  fn get_all(
+    &mut self,
+    path: &Path,
+  ) -> impl std::future::Future<Output = Result<Vec<T>, MinaError>> + Send
   where
     T: de::DeserializeOwned,
+    Self: std::marker::Send,
   {
-    let file = self.open_and_unlock_file(path, true, false)?;
-    let results = deserialize_json_by_file::<Vec<T>>(&file, path)?;
-    let _ = self.lock_file(path);
-    Ok(results)
+    async {
+      let file = self.open_and_unlock_file(path, true, false).await?;
+      let results = deserialize_json_by_file::<Vec<T>>(&file, path)?;
+      let _ = self.lock_file(path);
+      Ok(results)
+    }
   }
 
   /**
@@ -188,19 +204,29 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
     * `path` - Path of the file in which save the data
     * `create_if_not_exist` - If you want to create the file if it does not exist
   */
-  fn save(&mut self, data: &T, path: &Path, create_if_not_exist: bool) -> Result<(), MinaError> {
-    if !Path::new(&path).exists() {
-      if create_if_not_exist {
-        File::create(&path)?;
-      } else {
-        return Err(MinaError::new(IO_ERROR_CODE, FILE_DOES_NOT_EXIST));
+  fn save(
+    &mut self,
+    data: &T,
+    path: &Path,
+    create_if_not_exist: bool,
+  ) -> impl std::future::Future<Output = Result<(), MinaError>> + Send
+  where
+    Self: std::marker::Send + std::marker::Sync,
+  {
+    async move {
+      if !Path::new(&path).exists() {
+        if create_if_not_exist {
+          File::create(&path)?;
+        } else {
+          return Err(MinaError::new(IO_ERROR_CODE, FILE_DOES_NOT_EXIST));
+        }
       }
+      let file = self.open_and_unlock_file(path, false, true).await?;
+      let serialized_json = serialize_obj_to_json_string(data, true)?;
+      file.write_all(serialized_json.as_bytes())?;
+      let _ = self.lock_file(path);
+      Ok(())
     }
-    let mut file = self.open_and_unlock_file(path, false, true)?;
-    let serialized_json = serialize_obj_to_json_string(data, true)?;
-    file.write_all(serialized_json.as_bytes())?;
-    let _ = self.lock_file(path);
-    Ok(())
   }
 
   /**
@@ -210,12 +236,21 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
     * `data` - Data to save
     * `path` - Path of the file in which save the data
   */
-  fn save_all(&mut self, data: &Vec<T>, path: &Path) -> Result<(), MinaError> {
-    let mut file = self.open_and_unlock_file(path, false, true)?;
-    let serialized_json = serialize_obj_to_json_string(data, true)?;
-    file.write_all(serialized_json.as_bytes())?;
-    let _ = self.lock_file(path);
-    Ok(())
+  fn save_all(
+    &mut self,
+    data: &Vec<T>,
+    path: &Path,
+  ) -> impl std::future::Future<Output = Result<(), MinaError>> + Send
+  where
+    Self: std::marker::Send,
+  {
+    async {
+      let file = self.open_and_unlock_file(path, false, true).await?;
+      let serialized_json = serialize_obj_to_json_string(data, true)?;
+      file.write_all(serialized_json.as_bytes())?;
+      let _ = self.lock_file(path);
+      Ok(())
+    }
   }
 
   /**

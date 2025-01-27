@@ -50,14 +50,17 @@ Example: <PROJECT_ROOT>/diagrams/<DIAGRAM_TYPE>/<DIAGRAM_NAME>/diagram.puml -> (
 # Arguments
   * `path` - Path to process
 */
-pub fn diagram_name_type_from_path(path: &str) -> Result<(String, DiagramType), MinaError> {
+pub async fn diagram_name_type_from_path(path: &str) -> Result<(String, DiagramType), MinaError> {
   /*
   A diagram's path has the following syntax: "<PROJECT_ROOT>/diagrams/<DIAGRAM_TYPE>/<DIAGRAM_NAME>/diagram.puml"
   So I'm splitting the path two times. The first time to remove the "<PROJECT_ROOT>/diagrams/" part and the
   second time to extract DIAGRAM_TYPE and DIAGRAM_NAME.
   */
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
+  let store = ROOT_RESOLVER.get().read().await;
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .get()
+    .await;
   if let None = project_settings {
     return Err(MinaError::new(
       PROJECT_NOT_LOADED_ERROR_CODE,
@@ -169,12 +172,15 @@ Example: ROOT/diagrams/container/diagram-name
   * `name` - Name of the diagram
   * `diagram_type` - Type of the diagram
 */
-pub fn diagram_dir_path_from_name_type(
+pub async fn diagram_dir_path_from_name_type(
   diagram_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<String, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
+  let store = ROOT_RESOLVER.get().read().await;
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .get()
+    .await;
   if let None = project_settings {
     return Err(MinaError::new(
       PROJECT_NOT_LOADED_ERROR_CODE,
@@ -198,13 +204,13 @@ Example: ROOT/diagrams/container/diagram-name/diagram.puml
   * `name` - Name of the diagram
   * `diagram_type` - Type of the diagram
 */
-pub fn diagram_plantuml_path_from_name_type(
+pub async fn diagram_plantuml_path_from_name_type(
   diagram_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<String, MinaError> {
   Ok(format!(
     "{}{}{}",
-    diagram_dir_path_from_name_type(diagram_name, diagram_type)?,
+    diagram_dir_path_from_name_type(diagram_name, diagram_type).await?,
     MAIN_SEPARATOR,
     DIAGRAM_PLANTUML_FILE_NAME
   ))
@@ -217,13 +223,13 @@ Example: ROOT/diagrams/container/diagram-name/diagram.spec.json
   * `name` - Name of the diagram
   * `diagram_type` - Type of the diagram
 */
-pub fn diagram_spec_path_from_name_type(
+pub async fn diagram_spec_path_from_name_type(
   diagram_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<String, MinaError> {
   Ok(format!(
     "{}{}{}",
-    diagram_dir_path_from_name_type(diagram_name, diagram_type)?,
+    diagram_dir_path_from_name_type(diagram_name, diagram_type).await?,
     MAIN_SEPARATOR,
     DIAGRAM_SPEC_FILE_NAME
   ))
@@ -324,12 +330,15 @@ Example: ROOT/dist/diagrams/container/diagram-name
   * `name` - Name of the diagram
   * `diagram_type` - Type of the diagram
 */
-pub fn diagram_dist_dir_path_from_name_type(
+pub async fn diagram_dist_dir_path_from_name_type(
   diagram_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<String, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
+  let store = ROOT_RESOLVER.get().read().await;
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .get()
+    .await;
   if let None = project_settings {
     return Err(MinaError::new(
       PROJECT_NOT_LOADED_ERROR_CODE,
@@ -339,7 +348,7 @@ pub fn diagram_dist_dir_path_from_name_type(
   let project_root = project_settings.unwrap().root;
 
   let dist_path = dist_path(&project_root);
-  let diagram_dir_path = diagram_dir_path_from_name_type(diagram_name, diagram_type);
+  let diagram_dir_path = diagram_dir_path_from_name_type(diagram_name, diagram_type).await;
 
   Ok(format!(
     "{}{}",

@@ -5,8 +5,8 @@ use keadex_mina::repository::library::library_repository::{
   search_library_element, update_element,
 };
 
-pub fn update_system(update_system_args: UpdateSystem) -> Result<(), MinaError> {
-  let system = search_library_element(&update_system_args.alias)?;
+pub async fn update_system(update_system_args: UpdateSystem) -> Result<(), MinaError> {
+  let system = search_library_element(&update_system_args.alias).await?;
   if let Some(found_system) = system {
     if let DiagramElementType::SoftwareSystem(found_system) = found_system {
       let old_system = found_system.clone();
@@ -31,7 +31,8 @@ pub fn update_system(update_system_args: UpdateSystem) -> Result<(), MinaError> 
       update_element(
         &DiagramElementType::SoftwareSystem(old_system),
         &DiagramElementType::SoftwareSystem(new_system),
-      )?;
+      )
+      .await?;
       return Ok(());
     }
   }

@@ -5,8 +5,8 @@ use keadex_mina::repository::library::library_repository::{
   search_library_element, update_element,
 };
 
-pub fn update_container(update_container_args: UpdateContainer) -> Result<(), MinaError> {
-  let container = search_library_element(&update_container_args.alias)?;
+pub async fn update_container(update_container_args: UpdateContainer) -> Result<(), MinaError> {
+  let container = search_library_element(&update_container_args.alias).await?;
   if let Some(found_container) = container {
     if let DiagramElementType::Container(found_container) = found_container {
       let old_container = found_container.clone();
@@ -34,7 +34,8 @@ pub fn update_container(update_container_args: UpdateContainer) -> Result<(), Mi
       update_element(
         &DiagramElementType::Container(old_container),
         &DiagramElementType::Container(new_container),
-      )?;
+      )
+      .await?;
       return Ok(());
     }
   }

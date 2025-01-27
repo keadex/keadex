@@ -16,9 +16,9 @@ use crate::dao::filesystem::library::software_system_dao::SoftwareSystemDAO as S
 use crate::dao::filesystem::project_settings_dao::ProjectSettingsDAO as ProjectSettingsFsDAO;
 use crate::dao::inmemory::project_library_dao::ProejctLibraryDAO as ProjectLibraryIMDAO;
 use crate::dao::inmemory::project_settings_dao::ProjectSettingsDAO as ProjectSettingsIMDAO;
+use async_std::sync::RwLock;
 use state::InitCell;
 use std::collections::HashMap;
-use std::sync::RwLock;
 
 /**
 Generic resolver which allows to safely share objects across the application.
@@ -66,9 +66,12 @@ pub enum ResolvableModules {
   PersonFsDAO(Resolver<PersonFsDAO>),
   SoftwareSystemFsDAO(Resolver<SoftwareSystemFsDAO>),
   ProjectLibraryIMDAO(Resolver<ProjectLibraryIMDAO>),
-  #[cfg(any(all(desktop, web), all(desktop, not(web))))]
+  #[cfg(any(
+    all(desktop, web, mina_web_viewer),
+    all(desktop, not(web), not(mina_web_viewer))
+  ))]
   FileSystemAPI(Resolver<NativeFileSystemAPI>),
-  #[cfg(all(web, not(desktop)))]
+  #[cfg(all(web, not(desktop), not(mina_web_viewer)))]
   FileSystemAPI(Resolver<WebFileSystemAPI>),
 }
 
@@ -125,13 +128,20 @@ impl Default for RootResolver {
       stringify!(DiagramSpecFsDAO).to_string(),
       ResolvableModules::DiagramSpecFsDAO(Default::default()),
     );
-    if cfg!(any(all(desktop, web), all(desktop, not(web)))) {
+
+    #[cfg(any(
+      all(desktop, web, mina_web_viewer),
+      all(desktop, not(web), not(mina_web_viewer))
+    ))]
+    {
       resolvers.insert(
         stringify!(NativeFileSystemAPI).to_string(),
         ResolvableModules::FileSystemAPI(Default::default()),
       );
     }
-    if cfg!(all(web, not(desktop))) {
+
+    #[cfg(all(web, not(desktop), not(mina_web_viewer)))]
+    {
       resolvers.insert(
         stringify!(WebFileSystemAPI).to_string(),
         ResolvableModules::FileSystemAPI(Default::default()),
@@ -168,12 +178,19 @@ Macro which allows to resolve a module with read and write permissions.
 */
 #[macro_export]
 macro_rules! resolve_to_write {
-  ($store: expr, $module: ident) => {{
-    let target = $store.resolvers.get(stringify!($module)).unwrap();
-    if let $module(value) = target {
-      value.resolve().get().write().unwrap()
-    } else {
-      panic!("mismatch module when cast to {}", stringify!($pat));
+  ($store: expr, $module: ident) => {
+    async {
+      // let reff = $store; // Await the store
+      let target = $store
+        .resolvers
+        .get(stringify!($module))
+        .expect("Module not found");
+
+      if let $module(value) = target {
+        value.resolve().get().write().await
+      } else {
+        panic!("Mismatch module when casting to {}", stringify!($module));
+      }
     }
-  }};
+  };
 }

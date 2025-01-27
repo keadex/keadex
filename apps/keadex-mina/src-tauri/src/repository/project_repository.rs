@@ -15,12 +15,14 @@ use crate::helper::project_helper::project_settings_path;
 use crate::model::project_settings::ProjectSettings;
 use crate::resolve_to_write;
 
-pub fn save_project_settings(
+pub async fn save_project_settings(
   updated_project_settings: ProjectSettings,
 ) -> Result<ProjectSettings, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
   let stored_project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
 
   // Make sure path of the root's project has not been altered
@@ -30,7 +32,10 @@ pub fn save_project_settings(
   });
 
   // Update project settings in memory state
-  resolve_to_write!(store, ProjectSettingsIMDAO).save(&patched_project_settings);
+  resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .save(&patched_project_settings)
+    .await;
 
   // Update project settings in fs
 
@@ -42,14 +47,19 @@ pub fn save_project_settings(
     ..patched_project_settings.unwrap()
   };
 
-  resolve_to_write!(store, ProjectSettingsFsDAO).save(
-    &project_settings_no_root,
-    Path::new(&project_settings_path(&stored_project_settings.root)),
-    false,
-  )?;
+  resolve_to_write!(store, ProjectSettingsFsDAO)
+    .await
+    .save(
+      &project_settings_no_root,
+      Path::new(&project_settings_path(&stored_project_settings.root)),
+      false,
+    )
+    .await?;
 
   let updated_project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
   Ok(updated_project_settings)
 }

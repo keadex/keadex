@@ -23,18 +23,23 @@ pub async fn search(
   include_library_dir: bool,
   limit: i32,
 ) -> Result<FileSearchResults, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
   log::info!("Search {} in {}", string_to_search, project_settings.root);
 
-  Ok(search_text(
-    string_to_search,
-    include_diagrams_dir,
-    include_library_dir,
-    limit,
-  )?)
+  Ok(
+    search_text(
+      string_to_search,
+      include_diagrams_dir,
+      include_library_dir,
+      limit,
+    )
+    .await?,
+  )
 }
 
 /**
@@ -52,5 +57,5 @@ pub async fn search_diagram_element_alias(
   include_library_dir: bool,
   limit: i32,
 ) -> Result<DiagramElementSearchResults, MinaError> {
-  return search_diagram_element(alias, "", include_diagrams_dir, include_library_dir, limit);
+  return search_diagram_element(alias, "", include_diagrams_dir, include_library_dir, limit).await;
 }

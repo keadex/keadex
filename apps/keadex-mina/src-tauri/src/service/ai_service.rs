@@ -30,10 +30,12 @@ use fancy_regex::Regex;
 /**
 Return the AI Settings
 */
-fn get_ai_settings() -> Option<AISettings> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+async fn get_ai_settings() -> Option<AISettings> {
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
   return project_settings.ai_settings;
 }
@@ -45,7 +47,7 @@ Returns a string containing the PlantUML.
   * `description` - Description of the digram to generate.
 */
 pub async fn generate_plantuml(description: &str) -> Result<String, MinaError> {
-  if let Some(ai_settings) = get_ai_settings() {
+  if let Some(ai_settings) = get_ai_settings().await {
     if ai_settings.api_base_url.is_some()
       && ai_settings.api_key.is_some()
       && ai_settings.model.is_some()

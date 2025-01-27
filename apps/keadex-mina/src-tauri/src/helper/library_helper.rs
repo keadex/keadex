@@ -73,9 +73,12 @@ Utility which retrieves the C4 element type given the full path of a library's f
 # Arguments
   * `path` - Path of a library's file
 */
-pub fn element_type_from_path(path: &str) -> Result<C4ElementType, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
+pub async fn element_type_from_path(path: &str) -> Result<C4ElementType, MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .get()
+    .await;
   if let None = project_settings {
     return Err(MinaError::new(
       PROJECT_NOT_LOADED_ERROR_CODE,
@@ -110,9 +113,14 @@ Utility which retrieves the full path of a library's file given the element type
 # Arguments
   * `element_type` - Type of the element for which is requested the path
 */
-pub fn path_from_element_type(element_type: &DiagramElementType) -> Result<String, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
+pub async fn path_from_element_type(
+  element_type: &DiagramElementType,
+) -> Result<String, MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .get()
+    .await;
   if let None = project_settings {
     return Err(MinaError::new(
       PROJECT_NOT_LOADED_ERROR_CODE,

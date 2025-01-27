@@ -24,7 +24,7 @@ Returns the list of the diagrams in the opened project.
 */
 #[cfg_attr(desktop, tauri::command)]
 pub async fn list_diagrams() -> Result<HashMap<DiagramType, Vec<String>>, MinaError> {
-  Ok(diagram_repository::list_diagrams()?)
+  Ok(diagram_repository::list_diagrams().await?)
 }
 
 /**
@@ -38,7 +38,7 @@ pub async fn get_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
 ) -> Result<Diagram, MinaError> {
-  return get_diagram_service(diagram_name, diagram_type);
+  return get_diagram_service(diagram_name, diagram_type).await;
 }
 
 /**
@@ -53,10 +53,7 @@ pub async fn open_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
 ) -> Result<Diagram, MinaError> {
-  Ok(diagram_repository::open_diagram(
-    diagram_name,
-    diagram_type,
-  )?)
+  Ok(diagram_repository::open_diagram(diagram_name, diagram_type).await?)
 }
 
 /**
@@ -70,10 +67,7 @@ pub async fn close_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
 ) -> Result<bool, MinaError> {
-  Ok(diagram_repository::close_diagram(
-    diagram_name,
-    diagram_type,
-  )?)
+  Ok(diagram_repository::close_diagram(diagram_name, diagram_type).await?)
 }
 
 /**
@@ -87,10 +81,7 @@ pub async fn delete_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
 ) -> Result<ProjectLibrary, MinaError> {
-  Ok(diagram_repository::delete_diagram(
-    diagram_name,
-    &diagram_type,
-  )?)
+  Ok(diagram_repository::delete_diagram(diagram_name, &diagram_type).await?)
 }
 
 /**
@@ -100,7 +91,7 @@ Creates a diagram.
 */
 #[cfg_attr(desktop, tauri::command)]
 pub async fn create_diagram(new_diagram: Diagram) -> Result<bool, MinaError> {
-  diagram_repository::create_diagram(new_diagram)?;
+  diagram_repository::create_diagram(new_diagram).await?;
   Ok(true)
 }
 
@@ -127,7 +118,8 @@ pub async fn save_spec_diagram_raw_plantuml(
     &diagram_spec,
     diagram_name,
     &diagram_type,
-  )?;
+  )
+  .await?;
   open_diagram(diagram_name, diagram_type).await
 }
 
@@ -175,12 +167,15 @@ pub async fn export_diagram_to_file(
   diagram_type: DiagramType,
 ) -> Result<String, MinaError> {
   log::info!("Exporting diagram {} to {}", diagram_name, format);
-  Ok(diagram_repository::export_diagram_to_file(
-    diagram_data_url,
-    &format,
-    diagram_name,
-    &diagram_type,
-  )?)
+  Ok(
+    diagram_repository::export_diagram_to_file(
+      diagram_data_url,
+      &format,
+      diagram_name,
+      &diagram_type,
+    )
+    .await?,
+  )
 }
 
 /**
@@ -252,7 +247,7 @@ Example: <PROJECT_ROOT>/diagrams/<DIAGRAM_TYPE>/<DIAGRAM_NAME>/diagram.puml -> (
 */
 #[cfg_attr(desktop, tauri::command)]
 pub async fn diagram_name_type_from_path(path: &str) -> Result<Diagram, MinaError> {
-  let (diagram_name, diagram_type) = diagram_name_type_from_path_helper(path)?;
+  let (diagram_name, diagram_type) = diagram_name_type_from_path_helper(path).await?;
   Ok(Diagram {
     diagram_name: Some(diagram_name),
     diagram_type: Some(diagram_type),
@@ -277,5 +272,5 @@ pub async fn dependent_elements_in_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
 ) -> Result<Vec<String>, MinaError> {
-  return dependent_elements_in_diagram_service(alias, diagram_name, diagram_type);
+  return dependent_elements_in_diagram_service(alias, diagram_name, diagram_type).await;
 }

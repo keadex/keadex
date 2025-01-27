@@ -31,7 +31,7 @@ pub struct NativeFileSystemAPI {}
 impl NativeFileSystemAPI {}
 
 impl FileSystemAPI for NativeFileSystemAPI {
-  fn open(
+  async fn open(
     &mut self,
     read: bool,
     write: bool,

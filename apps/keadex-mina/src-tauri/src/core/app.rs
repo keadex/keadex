@@ -5,8 +5,8 @@ This represents the shell of the application.
 
 use crate::core::resolver::RootResolver;
 use crate::core::state::State;
+use async_std::sync::RwLock;
 use state::InitCell;
-use std::sync::RwLock;
 
 pub static ROOT_RESOLVER: InitCell<RwLock<RootResolver>> = InitCell::new();
 pub static APP_STATE: InitCell<RwLock<State>> = InitCell::new();

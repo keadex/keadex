@@ -25,12 +25,18 @@ Creates a Component library element in memory and in file system.
 # Arguments
   * `component` - Component with the updated data.
 */
-pub fn create_component(component: Component) -> Result<ProjectLibrary, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+pub async fn create_component(component: Component) -> Result<ProjectLibrary, MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
-  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO).get().unwrap();
+  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .get()
+    .await
+    .unwrap();
 
   // Append the component in the in memory library
   project_library
@@ -42,16 +48,22 @@ pub fn create_component(component: Component) -> Result<ProjectLibrary, MinaErro
   let saved_library = Some(project_library);
 
   // Save the updated library in memory
-  resolve_to_write!(store, ProjectLibraryIMDAO).save(&saved_library);
+  resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .save(&saved_library)
+    .await;
 
   // Save the updated components' library in file system
-  resolve_to_write!(store, ComponentFsDAO).save_all(
-    &saved_library.unwrap().elements.components,
-    Path::new(&project_library_file_path(
-      &project_settings.root,
-      COMPONENTS_FILE_NAME,
-    )),
-  )?;
+  resolve_to_write!(store, ComponentFsDAO)
+    .await
+    .save_all(
+      &saved_library.unwrap().elements.components,
+      Path::new(&project_library_file_path(
+        &project_settings.root,
+        COMPONENTS_FILE_NAME,
+      )),
+    )
+    .await?;
 
   Ok(returned_saved_library)
 }
@@ -61,12 +73,18 @@ Updates a Component library element in memory and in file system.
 # Arguments
   * `component` - Component with the updated data.
 */
-pub fn update_component(updated_component: Component) -> Result<ProjectLibrary, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+pub async fn update_component(updated_component: Component) -> Result<ProjectLibrary, MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
-  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO).get().unwrap();
+  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .get()
+    .await
+    .unwrap();
 
   // Search and replace the component in the in memory library
   if let Some(index) = project_library
@@ -86,16 +104,22 @@ pub fn update_component(updated_component: Component) -> Result<ProjectLibrary, 
   let saved_library = Some(project_library);
 
   // Save the updated library in memory
-  resolve_to_write!(store, ProjectLibraryIMDAO).save(&saved_library);
+  resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .save(&saved_library)
+    .await;
 
   // Save the updated components' library in file system
-  resolve_to_write!(store, ComponentFsDAO).save_all(
-    &saved_library.unwrap().elements.components,
-    Path::new(&project_library_file_path(
-      &project_settings.root,
-      COMPONENTS_FILE_NAME,
-    )),
-  )?;
+  resolve_to_write!(store, ComponentFsDAO)
+    .await
+    .save_all(
+      &saved_library.unwrap().elements.components,
+      Path::new(&project_library_file_path(
+        &project_settings.root,
+        COMPONENTS_FILE_NAME,
+      )),
+    )
+    .await?;
 
   Ok(returned_saved_library)
 }
@@ -105,12 +129,18 @@ Deletes a Component element, including all its references, from the library.
 # Arguments
   * `uuid_element` - UUID of the Component element to delete
 */
-pub fn delete_element_by_uuid(uuid_element: &str) -> Result<(), MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+pub async fn delete_element_by_uuid(uuid_element: &str) -> Result<(), MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
-  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO).get().unwrap();
+  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .get()
+    .await
+    .unwrap();
 
   project_library
     .elements
@@ -120,16 +150,22 @@ pub fn delete_element_by_uuid(uuid_element: &str) -> Result<(), MinaError> {
   let saved_settings = Some(project_library);
 
   // Save updated components in memory
-  resolve_to_write!(store, ProjectLibraryIMDAO).save(&saved_settings);
+  resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .save(&saved_settings)
+    .await;
 
   // Save updated components in file system
-  resolve_to_write!(store, ComponentFsDAO).save_all(
-    &saved_settings.unwrap().elements.components,
-    Path::new(&project_library_file_path(
-      &project_settings.root,
-      COMPONENTS_FILE_NAME,
-    )),
-  )?;
+  resolve_to_write!(store, ComponentFsDAO)
+    .await
+    .save_all(
+      &saved_settings.unwrap().elements.components,
+      Path::new(&project_library_file_path(
+        &project_settings.root,
+        COMPONENTS_FILE_NAME,
+      )),
+    )
+    .await?;
 
   Ok(())
 }
@@ -140,15 +176,21 @@ Deletes from the library all the references to the given diagram.
   * `diagram_human_name` - Human name of the diagram to delete
   * `diagram_type` - Type of the diagram to delete
 */
-pub fn delete_diagram_references(
+pub async fn delete_diagram_references(
   diagram_human_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<(), MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
-  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO).get().unwrap();
+  let mut project_library = resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .get()
+    .await
+    .unwrap();
 
   for component in &mut project_library.elements.components {
     delete_references_from_base_data(diagram_human_name, diagram_type, &mut component.base_data)?;
@@ -156,16 +198,22 @@ pub fn delete_diagram_references(
   let saved_settings = Some(project_library);
 
   // Save updated components in memory
-  resolve_to_write!(store, ProjectLibraryIMDAO).save(&saved_settings);
+  resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .save(&saved_settings)
+    .await;
 
   // Save updated components in file system
-  resolve_to_write!(store, ComponentFsDAO).save_all(
-    &saved_settings.unwrap().elements.components,
-    Path::new(&project_library_file_path(
-      &project_settings.root,
-      COMPONENTS_FILE_NAME,
-    )),
-  )?;
+  resolve_to_write!(store, ComponentFsDAO)
+    .await
+    .save_all(
+      &saved_settings.unwrap().elements.components,
+      Path::new(&project_library_file_path(
+        &project_settings.root,
+        COMPONENTS_FILE_NAME,
+      )),
+    )
+    .await?;
 
   Ok(())
 }
