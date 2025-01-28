@@ -35,7 +35,7 @@ In this example, we'll use [Ollama](https://ollama.com/) to run the [Code Llama 
 
 1. Download Ollama from https://ollama.com/
 2. Install and run Ollama
-3. Open the terminal and run the following command: `ollama run codellama:7b-instruct`. This command will download and locally run the [Code Llama LLM](https://ai.meta.com/blog/code-llama-large-language-model-coding/), which can generate code from text prompts. In this case, we're downloading the smallest version of the model due to the hardware limitations of the local machine. However, you're free to choose a larger version or a different LLM based on your requirements.
+3. Open the terminal and run the following command: `ollama run deepseek-r1:8b`. This command will download and locally run the [DeepSeek-R1 LLM](https://github.com/deepseek-ai/DeepSeek-R1), which can generate code from text prompts. In this case, we're downloading the smallest version of the model due to the hardware limitations of the local machine. However, you're free to choose a larger version or a different LLM based on your requirements.
 
 <Callout type="warning" emoji="⚠️">
   Since we're running the **smallest** version of the LLM **locally**, code
@@ -52,7 +52,7 @@ In this example, we'll use [Ollama](https://ollama.com/) to run the [Code Llama 
 7. In the _AI Integration_ section, fill in the following details:
    - **AI API Key**: The API key for accessing the AI APIs. Enter `ollama` since we're using Ollama.
    - **AI API (OpenAI compatible) Base URL**: The base URL of the AI APIs you're using (compatible with OpenAI). Ollama provides [OpenAI-compatible APIs](https://ollama.com/blog/openai-compatibility) at this base URL: http://localhost:11434/v1
-   - **AI Model**: Enter the name of the LLM you're using. Since we selected `codellama:7b-instruct` in step 3, you can use that name here.
+   - **AI Model**: Enter the name of the LLM you're using. Since we selected `deepseek-r1:8b` in step 3, you can use that name here.
 8. Click on the _save_ button
 9. Mina can now interact with the LLM to generate diagrams
 
