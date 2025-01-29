@@ -1,4 +1,4 @@
-use std::io::Error;
+use std::{future::Future, io::Error, io::Read};
 
 #[cfg(desktop)]
 pub mod native_fs;
@@ -6,19 +6,18 @@ pub mod native_fs;
 pub mod web_fs;
 
 pub trait CrossFile {
-  fn unlock(&mut self) -> Result<(), Error>;
-  fn lock_exclusive(&mut self) -> Result<(), Error>;
+  fn unlock(&self) -> Result<(), Error>;
+  fn lock_exclusive(&self) -> Result<(), Error>;
+  fn get_buffer(&self) -> impl Future<Output = impl Read>;
 }
 
 pub trait FileSystemAPI {
   fn open(
-    &mut self,
+    &self,
     read: bool,
     write: bool,
     append: bool,
     truncate: bool,
     path: &str,
-  ) -> impl std::future::Future<Output = Result<impl CrossFile, Error>> + Send
-  where
-    Self: std::marker::Send;
+  ) -> impl Future<Output = Result<impl CrossFile, Error>>;
 }

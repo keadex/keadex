@@ -3,9 +3,11 @@ use crate::api::filesystem::FileSystemAPI;
 use fs2::FileExt;
 use std::fs::File;
 use std::fs::OpenOptions;
+use std::io::BufReader;
 use std::io::Error;
 
 // ----------- NativeFile
+#[derive(Debug)]
 pub struct NativeFile {
   file: File,
 }
@@ -16,12 +18,16 @@ impl NativeFile {
   }
 }
 impl CrossFile for NativeFile {
-  fn unlock(&mut self) -> Result<(), Error> {
+  fn unlock(&self) -> Result<(), Error> {
     return self.file.unlock();
   }
 
-  fn lock_exclusive(&mut self) -> Result<(), Error> {
+  fn lock_exclusive(&self) -> Result<(), Error> {
     return self.file.lock_exclusive();
+  }
+
+  async fn get_buffer(&self) -> impl std::io::Read {
+    return BufReader::new(&self.file);
   }
 }
 
@@ -32,7 +38,7 @@ impl NativeFileSystemAPI {}
 
 impl FileSystemAPI for NativeFileSystemAPI {
   async fn open(
-    &mut self,
+    &self,
     read: bool,
     write: bool,
     append: bool,

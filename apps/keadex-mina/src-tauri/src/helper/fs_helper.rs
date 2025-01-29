@@ -1,7 +1,10 @@
-use std::path::Path;
+use std::{
+  collections::VecDeque,
+  path::{Path, MAIN_SEPARATOR_STR},
+};
 
 pub struct PathStructure {
-  pub directories: Vec<String>,
+  pub directories: VecDeque<String>,
   pub file_name: Option<String>,
 }
 
@@ -19,6 +22,7 @@ pub fn split_path_components(path: &str) -> PathStructure {
   let directories = components
     .iter()
     .take(components.len() - file_name.is_some() as usize)
+    .filter(|dir| !dir.eq(&MAIN_SEPARATOR_STR))
     .cloned()
     .collect();
 

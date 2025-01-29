@@ -39,10 +39,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + std::marker::Syn
     path: &Path,
     append: bool,
     truncate: bool,
-  ) -> impl Future<Output = Result<&mut File, MinaError>> + Send
-  where
-    Self: std::marker::Send,
-  {
+  ) -> impl Future<Output = Result<&mut File, MinaError>> {
     async move {
       // log::debug!("Open and unlock file {:?}", path);
       let file = OpenOptions::new()
@@ -159,10 +156,9 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + std::marker::Syn
   # Arguments
     * `path` - Path of the file
   */
-  fn get(&mut self, path: &Path) -> impl std::future::Future<Output = Result<T, MinaError>> + Send
+  fn get(&mut self, path: &Path) -> impl Future<Output = Result<T, MinaError>>
   where
     T: de::DeserializeOwned,
-    Self: std::marker::Send,
   {
     async {
       let file = self.open_and_unlock_file(path, true, false).await?;
@@ -180,13 +176,9 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + std::marker::Syn
   # Arguments
     * `path` - Path of the file
   */
-  fn get_all(
-    &mut self,
-    path: &Path,
-  ) -> impl std::future::Future<Output = Result<Vec<T>, MinaError>> + Send
+  fn get_all(&mut self, path: &Path) -> impl Future<Output = Result<Vec<T>, MinaError>>
   where
     T: de::DeserializeOwned,
-    Self: std::marker::Send,
   {
     async {
       let file = self.open_and_unlock_file(path, true, false).await?;
@@ -209,10 +201,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + std::marker::Syn
     data: &T,
     path: &Path,
     create_if_not_exist: bool,
-  ) -> impl std::future::Future<Output = Result<(), MinaError>> + Send
-  where
-    Self: std::marker::Send + std::marker::Sync,
-  {
+  ) -> impl Future<Output = Result<(), MinaError>> {
     async move {
       if !Path::new(&path).exists() {
         if create_if_not_exist {
@@ -240,10 +229,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + std::marker::Syn
     &mut self,
     data: &Vec<T>,
     path: &Path,
-  ) -> impl std::future::Future<Output = Result<(), MinaError>> + Send
-  where
-    Self: std::marker::Send,
-  {
+  ) -> impl Future<Output = Result<(), MinaError>> {
     async {
       let file = self.open_and_unlock_file(path, false, true).await?;
       let serialized_json = serialize_obj_to_json_string(data, true)?;

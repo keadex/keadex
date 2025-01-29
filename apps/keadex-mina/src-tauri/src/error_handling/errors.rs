@@ -34,6 +34,7 @@ pub const PARSING_DIAGRAM_PATH_ERROR_MSG: &str =
 pub const CANNOT_OPEN_FILE_ERROR_MSG: &str = "Cannot open the file. Unknown reason.";
 pub const FILE_DOES_NOT_EXIST: &str = "File does not exist.";
 pub const PROJECT_NOT_LOADED_ERROR_MSG: &str = "Project not loaded.";
+pub const INVALID_PATH_ERROR_MSG: &str = "Invalid path.";
 pub const NOT_A_DIRECTORY_ERROR_MSG: &str = "Provided path is not a directory.";
 pub const EXISTING_PROJECT_DIRECTORY_ERROR_MSG: &str =
   "The following project directory already exists: ";
