@@ -155,6 +155,17 @@ export const DiagramCodeView = forwardRef(
         // Setting the editor value, clear the undo/redo stack
         editorRef.current?.getModel()?.setValue('')
         setRawPlantuml('')
+
+        // The editorRef.current?.getModel()?.setValue('') resets the EOL configured before ("\n")
+        // in the handleEditorDidMount() function: https://github.com/microsoft/monaco-editor/issues/1886#issuecomment-607478426
+        // For this reason we have to reconfiugre the EOL in order to avoid conflicts beetween the raw plantuml
+        // read from the diagram, and the one in the monaco editor. In fact, without reconfiguring the EOL
+        // the raw plantuml will be different due to the different EOL ("\n" vs "\r\n"),
+        // even though the code is the same.
+        editorRef.current
+          ?.getModel()
+          ?.setEOL(monaco.editor.EndOfLineSequence.LF)
+
         // In the handleEditorChange() the canEditorUndo is properly set according to the
         // editor versions ids. The following "reset" the current and initial version ids
         // according to the current editor version id since in the Monaco editor is not possible

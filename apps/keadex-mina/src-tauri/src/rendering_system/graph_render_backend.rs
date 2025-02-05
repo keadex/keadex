@@ -121,6 +121,7 @@ impl RenderBackend for GraphRenderBackend {
       Some(xy),
       None,
       None,
+      None,
       Some(Point::from(size)),
     ));
 
@@ -146,7 +147,7 @@ impl RenderBackend for GraphRenderBackend {
 
     self.elements.insert(
       String::from(&self.temp_edges_aliases[0]),
-      ElementData::new(None, Some(start), Some(end), None),
+      ElementData::new(None, Some(start), Some(end), None, None, None, None),
     );
 
     self.temp_edges_aliases.remove(0);

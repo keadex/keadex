@@ -11,10 +11,12 @@ import { useTranslation } from 'react-i18next'
 export interface ModalAutoLayoutProps {
   enabled: boolean
   orientation: DiagramOrientation
+  generateOnlyStraightArrows: boolean
   hideModal: () => void
   onAutoLayoutConfigured: (
     enabled: boolean,
     orientation: DiagramOrientation,
+    generateOnlyStraightArrows: boolean,
   ) => void
 }
 
@@ -22,9 +24,16 @@ export const ModalAutoLayout = (props: ModalAutoLayoutProps) => {
   const { t } = useTranslation()
   const [enabled, setEnabled] = useState(props.enabled)
   const [orientation, setOrientation] = useState(props.orientation)
+  const [generateOnlyStraightArrows, setGenerateOnlyStraightArrows] = useState(
+    props.generateOnlyStraightArrows,
+  )
 
   function handleSaveClick() {
-    props.onAutoLayoutConfigured(enabled, orientation)
+    props.onAutoLayoutConfigured(
+      enabled,
+      orientation,
+      generateOnlyStraightArrows,
+    )
     props.hideModal()
   }
 
@@ -59,6 +68,21 @@ export const ModalAutoLayout = (props: ModalAutoLayoutProps) => {
             />
             {t('diagram_editor.warning_enable_autolayout')}
           </span>
+        </div>
+        <div className={`flex flex-row mt-5`}>
+          <span>{`${t('diagrams_settings.gen_only_straight_arrows')}*`}:</span>
+          <Radio<boolean>
+            id="autolayout-straight-arrows-status"
+            className="ml-5"
+            value={generateOnlyStraightArrows}
+            options={[
+              { label: t('common.yes'), value: true },
+              { label: t('common.no'), value: false },
+            ]}
+            onChange={(value: boolean) => {
+              setGenerateOnlyStraightArrows(value)
+            }}
+          />
         </div>
         <Select
           id="autolayout-orientation-selector"

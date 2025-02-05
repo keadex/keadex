@@ -20,6 +20,7 @@
     "container": "Container",
     "container_external": "Container External",
     "copy": "Copy",
+    "curved_arrows": "Curved Arrows",
     "create": "Create",
     "cut": "Cut",
     "c4_model": "C4 Model",
@@ -81,6 +82,7 @@
     "project": "Project",
     "redo": "Redo",
     "relationship": "Relationship",
+    "rendering": "Rendering",
     "reset": "Reset",
     "result": "Result",
     "results": "Results",
@@ -183,6 +185,9 @@
     "saving_rendering_diagram": "Saving & Rendering",
     "select_element_type_to_import": "Select the C4 element type to import from the library",
     "warning_enable_autolayout": "You are enabling the auto layout. All the changes you made to the diagram layout will be discarded and replaced with the automatically generated layout."
+  },
+  "diagrams_settings": {
+    "gen_only_straight_arrows": "Generate only straight arrows"
   },
   "home": {
     "chose_parent_dir_project": "Choose the parent directory of the project",

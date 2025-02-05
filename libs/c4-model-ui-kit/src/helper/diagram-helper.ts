@@ -251,3 +251,17 @@ export const isRelationshipAlias = (alias: string) => {
 export const isLegendAlias = (alias: string) => {
   return alias === 'legend'
 }
+
+export const diagramContainsSubDiagrams = (
+  elements: DiagramElementType[],
+): boolean => {
+  for (const element of elements) {
+    if (
+      boundaryDiagramElement(element) ||
+      deploymentNodeDiagramElement(element)
+    ) {
+      return true
+    }
+  }
+  return false
+}

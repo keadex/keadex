@@ -83,18 +83,37 @@ export const BOX = {
 export const QUEUE = {
   SIZES: {
     SCALE_Y_TAIL_HEAD: 0.3,
+    HEAD_BOX_WIDTH: 20,
+    RADIUS_TAIL_HEAD: BOX.SIZES.MIN_HEIGHT / 2 - ELEMENT.SIZES.BORDER_WIDTH / 2,
+    SCALED_RADIUS_TAIL_HEAD: Infinity,
+    WIDTH_TAIL: Infinity,
+    WIDTH_HEAD: Infinity,
   },
 }
+QUEUE.SIZES.SCALED_RADIUS_TAIL_HEAD =
+  QUEUE.SIZES.RADIUS_TAIL_HEAD * QUEUE.SIZES.SCALE_Y_TAIL_HEAD
+QUEUE.SIZES.WIDTH_TAIL = QUEUE.SIZES.SCALED_RADIUS_TAIL_HEAD
+QUEUE.SIZES.WIDTH_HEAD =
+  QUEUE.SIZES.HEAD_BOX_WIDTH + QUEUE.SIZES.SCALED_RADIUS_TAIL_HEAD
 
 export const DB = {
   SIZES: {
     SCALE_X_TOP_BOTTOM: 0.15,
+    TOP_BOX_HEIGHT: 14,
+    RADIUS_TOP_BOTTOM: BOX.SIZES.WIDTH / 2 - ELEMENT.SIZES.BORDER_WIDTH / 2,
+    SCALED_RADIUS_TOP_BOTTOM: Infinity,
+    WIDTH_TOP: Infinity,
+    WIDTH_BOTTOM: Infinity,
   },
 }
+DB.SIZES.SCALED_RADIUS_TOP_BOTTOM =
+  DB.SIZES.RADIUS_TOP_BOTTOM * DB.SIZES.SCALE_X_TOP_BOTTOM
+DB.SIZES.WIDTH_TOP = DB.SIZES.TOP_BOX_HEIGHT + DB.SIZES.SCALED_RADIUS_TOP_BOTTOM
+DB.SIZES.WIDTH_BOTTOM = DB.SIZES.SCALED_RADIUS_TOP_BOTTOM
 
 export const RELATIONSHIP = {
   COLORS: {
-    BG_COLOR: DIAGRAM.COLOR.BG_COLOR,
+    BG_COLOR: 'rgba(0,0,0,0)',
     LINE_COLOR: '#828282',
     TEXT_COLOR: '#404040',
   },
@@ -107,6 +126,7 @@ export const RELATIONSHIP = {
     RADIUS_DOT: 3,
     SIZE_TRIANGLE: 9,
     STROKE_WIDTH: 1,
+    DEFAULT_WIDTH: 100,
   },
   POSITION: {
     DEFAULT_HEAD_ARROW_ANGLE: 90,
@@ -128,8 +148,12 @@ export const BASE_ELASTIC_CONTAINER = {
   SIZES: {
     MIN_WIDTH: 150,
     MIN_HEIGHT: 80,
-    PADDING_FOOTER: 10,
     PADDING_BOX: 10,
+    // The footer height is based on the font size, line height and font height. The font height
+    // is calculated by Fabric.js so it is not possible to recalculate it here. The only option for now
+    // is to hardcode the following size, which is taken directly from Fabric.js.
+    // This is not the best solution but for now "it just works".
+    FOOTER_HEIGHT: 23.6,
   },
 }
 

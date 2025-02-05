@@ -153,8 +153,14 @@ export const C4Relationship = (
     true,
   )
 
-  const dotPoints = createPoints(elementSpec, autoLayout)
+  const dotPoints = createPoints(
+    elementSpec,
+    autoLayout,
+    renderElementsOptions?.autoLayoutOnlyStraightArrows,
+  )
   const dots = createDots(
+    elementSpec,
+    autoLayout,
     dotPoints,
     parent,
     renderElementsOptions?.diagramsThemeSettings?.line_color_relationship,
@@ -174,11 +180,21 @@ export const C4Relationship = (
     parent,
     scale,
     renderElementsOptions?.diagramsThemeSettings?.line_color_relationship,
+    autoLayout,
+    renderElementsOptions?.autoLayoutOnlyStraightArrows,
   )
 
   createBackground(elementSpec, dots, parent, undefined)
 
-  createText(data, elementSpec, line, dots, parent, renderElementsOptions)
+  createText(
+    data,
+    elementSpec,
+    autoLayout,
+    line,
+    dots,
+    parent,
+    renderElementsOptions,
+  )
 
   reorderObjects(parent)
 
@@ -248,6 +264,8 @@ const updateLinePoints = (line: fabric.Polyline) => {
         parent,
         scale,
         oldLineColor,
+        undefined,
+        undefined,
       )
       canvas.add(newLine)
       if (canvasIndexOldLine) newLine.moveTo(canvasIndexOldLine)
@@ -460,6 +478,7 @@ const addNewPointToLine = (
         dot.scaleX,
         dot.scaleY,
         line.stroke,
+        false,
       )
       sortLinePoints(line, newDot)
       canvas.add(newDot)
@@ -495,6 +514,7 @@ const removeExistingPointFromLine = (dot: fabric.Circle) => {
 const createPoints = (
   elementSpec: DiagramElementSpec | undefined,
   autoLayout: Record<string, ElementData>,
+  autoLayoutOnlyStraightArrows: boolean | undefined,
 ): ExtendedPoint[] => {
   let points: ExtendedPoint[] = []
   if (elementSpec?.shapes) {
@@ -523,18 +543,33 @@ const createPoints = (
       autoLayout[elementSpec.alias]?.start &&
       autoLayout[elementSpec.alias]?.end
     ) {
-      defaultPoints = [
+      defaultPoints = []
+      // Start
+      defaultPoints.push(
         new ExtendedPoint(
           autoLayout[elementSpec.alias].start!.x,
           autoLayout[elementSpec.alias].start!.y,
           RelObjects.Dot,
         ),
+      )
+      if (
+        autoLayoutOnlyStraightArrows === false &&
+        autoLayout[elementSpec.alias].path
+      ) {
+        autoLayout[elementSpec.alias].path!.forEach((pathPoint) => {
+          defaultPoints.push(
+            new ExtendedPoint(pathPoint.x, pathPoint.y, RelObjects.Dot),
+          )
+        })
+      }
+      // End
+      defaultPoints.push(
         new ExtendedPoint(
           autoLayout[elementSpec.alias].end!.x,
           autoLayout[elementSpec.alias].end!.y,
           RelObjects.Triangle,
         ),
-      ]
+      )
     } else {
       defaultPoints = [
         new ExtendedPoint(
@@ -555,11 +590,16 @@ const createPoints = (
 }
 
 const createDots = (
+  elementSpec: DiagramElementSpec | undefined,
+  autoLayout: Record<string, ElementData>,
   points: ExtendedPoint[],
   parent: C4RelationshipComponent,
   lineColor: string | undefined,
 ): fabric.Object[] => {
   const dots: fabric.Object[] = []
+  const autoLayoutEnabled =
+    elementSpec?.alias !== undefined &&
+    autoLayout[elementSpec.alias] !== undefined
 
   // Create new dots from points
   for (let i = 0; i < points.length; i++) {
@@ -577,6 +617,7 @@ const createDots = (
         points[i].data?.rawDiagramElementSpec?.size?.scale_x,
         points[i].data?.rawDiagramElementSpec?.size?.scale_y,
         lineColor,
+        autoLayoutEnabled,
       ),
     )
   }
@@ -593,6 +634,7 @@ const createDot = (
   scaleX = 1,
   scaleY = 1,
   lineColor: string | undefined,
+  autoLayoutEnabled: boolean,
 ): fabric.Object => {
   const { left, top, angle } = calculateDotPosition(
     canvas,
@@ -632,10 +674,12 @@ const createDot = (
       top: top,
       radius: RELATIONSHIP.SIZES.RADIUS_DOT,
       fill: lineColor ?? RELATIONSHIP.COLORS.LINE_COLOR,
+      opacity: 0.2,
       scaleX,
       scaleY,
       hasControls: false,
       name: RelObjects.Dot,
+      visible: !autoLayoutEnabled,
     })
     dot.data = {
       rawDiagramElementSpec: point.data?.rawDiagramElementSpec,
@@ -653,19 +697,40 @@ const createLine = (
   parent: C4RelationshipComponent,
   scale = 1,
   lineColor: string | undefined,
-): fabric.Polyline => {
+  autoLayout: Record<string, ElementData> | undefined,
+  autoLayoutOnlyStraightArrows: boolean | undefined,
+): fabric.Polyline | fabric.Path => {
   const lineSpecs = elementSpecs?.shapes?.filter(
     (shape) => shape.shape_type === RelObjects.Line,
   )[0] as Shape
 
-  const line = new fabric.Polyline(points, {
-    stroke: lineColor ?? RELATIONSHIP.COLORS.LINE_COLOR,
-    fill: '',
-    strokeWidth: RELATIONSHIP.SIZES.STROKE_WIDTH * scale,
-    scaleX: 1,
-    scaleY: 1,
-    name: RelObjects.Line,
-  })
+  let line
+  if (
+    autoLayoutOnlyStraightArrows === false &&
+    autoLayout &&
+    elementSpecs?.alias &&
+    autoLayout[elementSpecs.alias]?.svg_path
+  ) {
+    // Curved lines are available only in auto layout mode
+    line = new fabric.Path(autoLayout[elementSpecs.alias].svg_path, {
+      stroke: lineColor ?? RELATIONSHIP.COLORS.LINE_COLOR,
+      fill: '',
+      strokeWidth: RELATIONSHIP.SIZES.STROKE_WIDTH * scale,
+      scaleX: 1,
+      scaleY: 1,
+      name: RelObjects.Line,
+    })
+  } else {
+    line = new fabric.Polyline(points, {
+      stroke: lineColor ?? RELATIONSHIP.COLORS.LINE_COLOR,
+      fill: '',
+      strokeWidth: RELATIONSHIP.SIZES.STROKE_WIDTH * scale,
+      scaleX: 1,
+      scaleY: 1,
+      name: RelObjects.Line,
+    })
+  }
+
   line.data = {
     rawDiagramElementSpec: lineSpecs,
   }
@@ -717,7 +782,8 @@ const createBackground = (
 const createText = (
   data: C4BaseComponentData,
   elementSpec: DiagramElementSpec | undefined,
-  line: fabric.Polyline,
+  autoLayout: Record<string, ElementData>,
+  line: fabric.Polyline | fabric.Path,
   dots: fabric.Object[],
   parent: C4RelationshipComponent,
   renderElementsOptions: RenderElementsOptions | undefined,
@@ -780,13 +846,30 @@ const createText = (
       renderElementsOptions?.diagramsThemeSettings?.bg_color_relationship ??
       RELATIONSHIP.COLORS.BG_COLOR,
   })
+
+  let left, top
+  if (
+    elementSpec?.alias &&
+    autoLayout[elementSpec.alias] &&
+    autoLayout[elementSpec.alias].label_position
+  ) {
+    left =
+      autoLayout[elementSpec.alias].label_position!.x -
+      (background.width ?? 0) / 2
+    top =
+      autoLayout[elementSpec.alias].label_position!.y -
+      (background.height ?? 0) / 2
+  } else {
+    left =
+      (line.left ?? 0) + (line.width ?? 0) / 2 - (background.width ?? 0) / 2
+    top =
+      (line.top ?? 0) + (line.height ?? 0) / 2 - (background.height ?? 0) / 2
+  }
   const group = new fabric.Group([background, text], {
     name: RelObjects.Text,
     hasControls: false,
-    left:
-      (line.left ?? 0) + (line.width ?? 0) / 2 - (background.width ?? 0) / 2,
-    top:
-      (line.top ?? 0) + (line.height ?? 0) / 2 - (background.height ?? 0) / 2,
+    left,
+    top,
     scaleX,
     scaleY,
   })

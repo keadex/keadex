@@ -31,7 +31,6 @@ use crate::model::diagram::Diagram;
 use crate::model::diagram::DiagramFormat;
 use crate::model::diagram::DiagramType;
 use crate::model::project_library::ProjectLibrary;
-use crate::rendering_system::renderer::generate_positions;
 use crate::repository::library::library_repository;
 use crate::resolve_to_write;
 use crate::service::diagram_service::validate_diagram;
@@ -103,13 +102,13 @@ pub fn open_diagram(diagram_name: &str, diagram_type: DiagramType) -> Result<Dia
     .unwrap()
     .as_secs()
     .to_string();
-  let mut auto_layout = None;
-  if diagram_spec.auto_layout_enabled {
-    auto_layout = Some(generate_positions(
-      &diagram_plantuml.elements,
-      &diagram_spec.auto_layout_orientation,
-    ));
-  }
+  // let mut auto_layout = None;
+  // if diagram_spec.auto_layout_enabled {
+  //   auto_layout = Some(generate_positions(
+  //     &diagram_plantuml.elements,
+  //     &diagram_spec.auto_layout_orientation,
+  //   ));
+  // }
 
   Ok(Diagram {
     diagram_name: Some(diagram_name),
@@ -118,7 +117,7 @@ pub fn open_diagram(diagram_name: &str, diagram_type: DiagramType) -> Result<Dia
     diagram_spec: Some(diagram_spec),
     raw_plantuml: Some(raw_plantuml),
     last_modified: Some(last_modified),
-    auto_layout,
+    auto_layout: None,
   })
 }
 
@@ -242,7 +241,9 @@ pub fn save_spec_diagram_raw_plantuml(
   let spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type)?;
 
   // Validate the diagram before saving it
+  log::debug!("Start diagram validation");
   let diagram_plantuml = validate_diagram(raw_plantuml, diagram_name, diagram_type)?;
+  log::debug!("End diagram validation");
 
   let store = ROOT_RESOLVER.get().read().unwrap();
   resolve_to_write!(store, DiagramPlantUMLFsDAO).save(

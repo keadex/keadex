@@ -4,6 +4,9 @@ Module which exposes the functions to auto-generate the positions of all the ele
 */
 
 use crate::helper::relationship_helper::generate_relationship_alias;
+use crate::model::c4_element::component::ComponentType;
+use crate::model::c4_element::container::ContainerType;
+use crate::model::c4_element::software_system::SystemType;
 use crate::model::diagram::diagram_plantuml::DiagramElementType;
 use crate::model::diagram::diagram_spec::DiagramOrientation;
 use crate::model::graph::element_data::ElementData;
@@ -16,8 +19,9 @@ use crate::rendering_system::graph_render_backend::GRAPH_PADDING;
 use crate::rendering_system::style_constants::{
   BASE_ELASTIC_CONTAINER_FOOTER_HEIGHT, BASE_ELASTIC_CONTAINER_MIN_HEIGHT,
   BASE_ELASTIC_CONTAINER_MIN_WIDTH, BASE_ELASTIC_CONTAINER_PADDING_BOX,
-  BASE_ELASTIC_CONTAINER_PADDING_FOOTER, BOX_MIN_HEIGHT, BOX_WIDTH, ELEMENT_BORDER_WIDTH,
-  ELEMENT_DEFAULT_LEFT, ELEMENT_DEFAULT_TOP, PERSON_HEAD_RADIUS,
+  BASE_ELASTIC_CONTAINER_PADDING_FOOTER, BOX_MIN_HEIGHT, BOX_WIDTH, DB_WIDTH_BOTTOM, DB_WIDTH_TOP,
+  ELEMENT_BORDER_WIDTH, ELEMENT_DEFAULT_LEFT, ELEMENT_DEFAULT_TOP, PERSON_HEAD_RADIUS,
+  QUEUE_WIDTH_HEAD, QUEUE_WIDTH_TAIL,
 };
 use layout::{
   adt::dag::NodeHandle as LayoutNodeHandle,
@@ -408,6 +412,12 @@ pub fn get_node_size_from_element_type(element_type: &DiagramElementType) -> Lay
   let default_size = LayoutPoint::new(100.0, 100.0);
   let person_size = LayoutPoint::new(BOX_WIDTH, BOX_MIN_HEIGHT + PERSON_HEAD_RADIUS * 2.0);
   let box_size = LayoutPoint::new(BOX_WIDTH, BOX_MIN_HEIGHT);
+  let queue_size = LayoutPoint::new(
+    BOX_WIDTH + QUEUE_WIDTH_TAIL + QUEUE_WIDTH_HEAD,
+    BOX_MIN_HEIGHT,
+  );
+  let db_size = LayoutPoint::new(BOX_WIDTH, BOX_MIN_HEIGHT + DB_WIDTH_TOP + DB_WIDTH_BOTTOM);
+
   let elastic_container_size = LayoutPoint::new(
     BASE_ELASTIC_CONTAINER_MIN_WIDTH + ELEMENT_BORDER_WIDTH,
     BASE_ELASTIC_CONTAINER_MIN_HEIGHT + BASE_ELASTIC_CONTAINER_FOOTER_HEIGHT + ELEMENT_BORDER_WIDTH,
@@ -417,9 +427,36 @@ pub fn get_node_size_from_element_type(element_type: &DiagramElementType) -> Lay
   // "Relationship" elements are ignored since they are added as edges.
   match element_type {
     DiagramElementType::Person(_) => return person_size,
-    DiagramElementType::SoftwareSystem(_) => return box_size,
-    DiagramElementType::Container(_) => return box_size,
-    DiagramElementType::Component(_) => return box_size,
+    DiagramElementType::SoftwareSystem(software_system) => {
+      if let Some(system_type) = &software_system.system_type {
+        match system_type {
+          SystemType::SystemDb | SystemType::SystemDbExt => return db_size,
+          SystemType::SystemQueue | SystemType::SystemQueueExt => return queue_size,
+          _ => return box_size,
+        }
+      }
+      return box_size;
+    }
+    DiagramElementType::Container(container) => {
+      if let Some(container_type) = &container.container_type {
+        match container_type {
+          ContainerType::ContainerDb | ContainerType::ContainerDbExt => return db_size,
+          ContainerType::ContainerQueue | ContainerType::ContainerQueueExt => return queue_size,
+          _ => return box_size,
+        }
+      }
+      return box_size;
+    }
+    DiagramElementType::Component(component) => {
+      if let Some(component_type) = &component.component_type {
+        match component_type {
+          ComponentType::ComponentDb | ComponentType::ComponentDbExt => return db_size,
+          ComponentType::ComponentQueue | ComponentType::ComponentQueueExt => return queue_size,
+          _ => return box_size,
+        }
+      }
+      return box_size;
+    }
     DiagramElementType::Boundary(_) => return elastic_container_size,
     DiagramElementType::DeploymentNode(_) => return elastic_container_size,
     _ => return default_size,
@@ -643,7 +680,15 @@ pub fn generate_inter_graph_edges_positions(
       );
       inter_graph_edges_positions.insert(
         inter_graph_edge.alias,
-        ElementData::new(None, Some(edge_positions.0), Some(edge_positions.1), None),
+        ElementData::new(
+          None,
+          Some(edge_positions.0),
+          Some(edge_positions.1),
+          None,
+          None,
+          None,
+          None,
+        ),
       );
     }
   }

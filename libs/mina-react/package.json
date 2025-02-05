@@ -38,6 +38,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@hpcc-js/wasm-graphviz": "^1.7.0",
     "@tanstack/react-table": "^8.10.7",
     "@tauri-apps/api": "^2.0.3",
     "@yaireo/tagify": "^4.24.0",

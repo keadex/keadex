@@ -13,11 +13,13 @@ describe('ModalAutoLayout', () => {
         onAutoLayoutConfigured={(
           enabled: boolean,
           orientation: DiagramOrientation,
+          generateOnlyStraightArrows: boolean,
         ) => {
           console.log('test')
         }}
         enabled={false}
         orientation={'TopToBottom'}
+        generateOnlyStraightArrows={false}
       />,
     )
     expect(baseElement).toBeTruthy()

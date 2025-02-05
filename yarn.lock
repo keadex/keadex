@@ -2316,6 +2316,11 @@
     "@tanstack/react-virtual" "^3.0.0-beta.60"
     client-only "^0.0.1"
 
+"@hpcc-js/wasm-graphviz@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@hpcc-js/wasm-graphviz/-/wasm-graphviz-1.7.0.tgz#f78c02eb8ea41b36c7e74d112adb8a46e3e11f2b"
+  integrity sha512-/1XEmubfDz1UolKiVh6H4BrGX0DZwR39Y2h76LdqR17FZ3gCJoUs4jV7kUywedXerbwx1szhU3dBsNcvkEmjiQ==
+
 "@humanwhocodes/config-array@^0.11.13", "@humanwhocodes/config-array@^0.11.14":
   version "0.11.14"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.14.tgz#d78e481a039f7566ecc9660b4ea7fe6b1fec442b"
@@ -2736,10 +2741,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@keadex/mina-react-npm@npm:@keadex/mina-react@^1.13.0":
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-1.13.0.tgz#aa776d46e9ccd34b164e0150990aed55198b08b9"
-  integrity sha512-GjdBDA9IRuhv/iPmAkgbTpAYpdT085lyAXfmMVZFPkzl7f3rcffcgCPSlisBu9MxKkESb51dCuMCH+q83Y2X2g==
+"@keadex/mina-react-npm@npm:@keadex/mina-react@^1.15.0":
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-1.15.0.tgz#44e94630608f75232b67681b21d33dd520b913bc"
+  integrity sha512-qfsAN3QbAJvGplPdJTFoBJlw/UoOWVcYkCrMZIqNGLdVy2ioP2CWuzsupt1L/hBGoQfZGUIK9YxSwRdCmIfR9A==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"

@@ -104,6 +104,7 @@ export const DiagramDesignViewToolbar = forwardRef(
                 diagramDesignViewCommands?.current?.updateAutoLayoutOptions(
                   diagramDesignViewCommands?.current?.isAutoLayoutEnabled(),
                   diagramDesignViewCommands?.current?.autoLayoutOrientation(),
+                  diagramDesignViewCommands?.current?.isGenerateOnlyStraightArrowsEnabled(),
                 )
                 forceUpdate()
               }}

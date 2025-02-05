@@ -10,7 +10,7 @@ import {
   getBoundingBox,
   getCanvasPan,
   invalidateCanvasCache,
-  renderDiagram,
+  DiagramRenderer,
   updateDiagramElementsSpecsFromCanvas,
 } from '@keadex/c4-model-ui-kit'
 import {
@@ -71,9 +71,11 @@ export interface DiagramDesignViewCommands {
   canRedo: () => boolean
   isAutoLayoutEnabled(): boolean
   autoLayoutOrientation(): DiagramOrientation
+  isGenerateOnlyStraightArrowsEnabled(): boolean
   updateAutoLayoutOptions(
     enabled: boolean,
     orientation: DiagramOrientation,
+    generateOnlyStraightArrows: boolean,
   ): void
 }
 
@@ -102,6 +104,9 @@ export const DiagramDesignView = forwardRef(
     const [historyRedo, setHistoryRedo] = useState<DiagramSpec[]>([])
     const [diagramInfoPanelVisible, setDiagramInfoPanelVisible] =
       useState(false)
+    const [diagramRenderer, setDiagramRenderer] = useState<
+      DiagramRenderer | undefined
+    >()
     const { modal, showModal, hideModal } = useModal()
 
     // Before checking if the diagram has been changed, we need to exclude the
@@ -286,9 +291,17 @@ export const DiagramDesignView = forwardRef(
       else return 'TopToBottom'
     }
 
+    function isGenerateOnlyStraightArrowsEnabled(): boolean {
+      if (currentRenderedDiagram.current?.diagram_spec)
+        return currentRenderedDiagram.current.diagram_spec
+          .auto_layout_only_straight_arrows
+      else return false
+    }
+
     function updateAutoLayoutOptions(
       enabled: boolean,
       orientation: DiagramOrientation,
+      generateOnlyStraightArrows: boolean,
     ) {
       if (canvas.current && currentRenderedDiagram.current && !readOnly) {
         showModal({
@@ -298,8 +311,13 @@ export const DiagramDesignView = forwardRef(
             <ModalAutoLayout
               enabled={enabled}
               orientation={orientation}
+              generateOnlyStraightArrows={generateOnlyStraightArrows}
               hideModal={hideModal}
-              onAutoLayoutConfigured={(enabled, orientation) => {
+              onAutoLayoutConfigured={(
+                enabled,
+                orientation,
+                generateOnlyStraightArrows,
+              ) => {
                 if (
                   canvas.current &&
                   currentRenderedDiagram.current &&
@@ -307,6 +325,14 @@ export const DiagramDesignView = forwardRef(
                 ) {
                   canvas.current.autoLayoutEnabled = enabled
                   canvas.current.autoLayoutOrientation = orientation
+
+                  // On saving, diagram_spec are retrieved from the DiagramDesignView
+                  // (check handleSaveDiagram() in DiagramEditor). So it's ok changing the
+                  // "auto_layout_only_straight_arrows" property here.
+                  if (currentRenderedDiagram.current.diagram_spec)
+                    currentRenderedDiagram.current.diagram_spec.auto_layout_only_straight_arrows =
+                      generateOnlyStraightArrows
+
                   isDiagramChanged.current = true
                   if (saveDiagram) saveDiagram()
                 }
@@ -357,19 +383,22 @@ export const DiagramDesignView = forwardRef(
       if (canvas.current) {
         resetCanvas(getCanvasState())
         setCanvasMode()
-        renderDiagram(
-          canvas.current,
-          diagramListener,
-          {
-            ...currentRenderedDiagram.current,
-            diagram_spec: history,
-          },
-          diagramsThemeSettings,
-        )
-        canvas.current.renderAll()
+        if (diagramRenderer)
+          diagramRenderer.renderDiagram(
+            canvas.current,
+            diagramListener,
+            {
+              ...currentRenderedDiagram.current,
+              diagram_spec: history,
+            },
+            diagramsThemeSettings,
+          )
+        else console.error('DiagramRenderer not initialized')
+
+        canvas.current?.renderAll()
         isDiagramChanged.current = true
+        console.debug('Load history completed')
       }
-      console.debug('Load history completed')
     }
 
     function undo() {
@@ -438,6 +467,7 @@ export const DiagramDesignView = forwardRef(
       isAutoLayoutEnabled,
       autoLayoutOrientation,
       updateAutoLayoutOptions,
+      isGenerateOnlyStraightArrowsEnabled,
     }))
 
     useLayoutEffect(() => {
@@ -505,23 +535,23 @@ export const DiagramDesignView = forwardRef(
     }, [readOnly, historyUndo, historyRedo])
 
     useEffect(() => {
-      if (canvas.current && currentRenderedDiagram.current) {
+      if (canvas.current && currentRenderedDiagram.current && diagramRenderer) {
         // Set history processing to true to avoid to save the history during the first rendering
         historyProcessing.current = true
         console.debug('Rendering the diagram')
         setCanvasMode()
-        renderDiagram(
+        diagramRenderer.renderDiagram(
           canvas.current,
           diagramListener,
           currentRenderedDiagram.current,
           diagramsThemeSettings,
         )
-        canvas.current.renderAll()
+        canvas.current?.renderAll()
         isDiagramChanged.current = false
         historyProcessing.current = false
         if (!readOnly) initHistory()
       }
-    }, [currentRenderedDiagram.current])
+    }, [currentRenderedDiagram.current, diagramRenderer])
 
     useEffect(() => {
       if (!readOnly && diagramDesignViewToolbarCommands) {
@@ -529,6 +559,14 @@ export const DiagramDesignView = forwardRef(
         diagramDesignViewToolbarCommands.current?.forceUpdate()
       }
     }, [readOnly, historyUndo, historyRedo, diagramDesignViewToolbarCommands])
+
+    useEffect(() => {
+      async function initDiagramRenderer() {
+        const renderer = await new DiagramRenderer().initialize()
+        setDiagramRenderer(renderer)
+      }
+      initDiagramRenderer()
+    }, [])
 
     return (
       <div className="relative h-full w-full" ref={rootDiv}>

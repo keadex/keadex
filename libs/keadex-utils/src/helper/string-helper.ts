@@ -8,3 +8,10 @@ export function unescape(str?: string) {
     return
   }
 }
+
+export function longerString(str: string[]): string {
+  const res = str.sort((a, b) => {
+    return b.length - a.length
+  })
+  return res[0]
+}

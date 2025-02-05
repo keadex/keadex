@@ -86,7 +86,7 @@ const createTopDb = (
   const marginTopDb = ELEMENT.SIZES.BORDER_WIDTH
 
   // Empty box
-  const heightEmptyBox = 14
+  const heightEmptyBox = DB.SIZES.TOP_BOX_HEIGHT
   const emptyBox = new fabric.Rect({
     fill: options.bgColor,
     strokeWidth: 0,

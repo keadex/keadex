@@ -51,9 +51,10 @@ pub async fn execute_hook(payload: HookPayload) -> Result<bool, MinaError> {
   output.creation_flags(CREATE_NO_WINDOW);
 
   let result = output.status();
-  if let Ok(_res) = result {
+  if result.is_ok() {
     log::info!("Hook {:?} successfully executed!", payload.hook_type);
   } else {
+    log::error!("{:?}", result.unwrap_err());
     log::info!(
       "An error occurred while executing the hook {:?}.",
       payload.hook_type

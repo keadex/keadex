@@ -44,8 +44,9 @@ const emptyDiagram: Diagram = {
     tags: [],
     shapes: [],
     elements_specs: [],
-    auto_layout_enabled: false,
+    auto_layout_enabled: true,
     auto_layout_orientation: 'TopToBottom',
+    auto_layout_only_straight_arrows: false,
   },
 }
 
@@ -126,12 +127,15 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
   return (
     <div>
       {/* Modal body */}
-      <div className="modal__body">
+      <div className="modal__body flex flex-col">
+        <span className="text-brand1 font-bold text-lg">
+          {t('common.general')}
+        </span>
         <Input
           type="text"
           disabled={props.mode === 'edit' || props.mode === 'readonly'}
           label={`${t('common.name')}*`}
-          className="mt-2"
+          classNameRoot="mt-2"
           value={newDiagram.diagram_name}
           allowedChars={NAME_REGEX}
           info={`${t('common.allowed_pattern')}: ${NAME_REGEX}`}
@@ -161,58 +165,10 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
             })
           }
         />
-        <div
-          className={`flex flex-row mt-6 ${
-            props.mode === 'edit' || props.mode === 'readonly' ? 'hidden' : ''
-          }`}
-        >
-          <span>{`${t('common.auto_layout')}*`}:</span>
-          <Radio<boolean>
-            id="autolayout-status"
-            className="ml-5"
-            value={newDiagram.diagram_spec?.auto_layout_enabled}
-            options={[
-              { label: t('common.enabled'), value: true },
-              { label: t('common.disabled'), value: false },
-            ]}
-            onChange={(value: boolean) => {
-              setNewDiagram({
-                ...newDiagram,
-                diagram_spec: {
-                  ...newDiagram.diagram_spec!,
-                  auto_layout_enabled: value,
-                },
-              })
-            }}
-          />
-        </div>
-        <Select
-          id="autolayout-orientation-selector"
-          label={`${t('common.auto_layout')} ${t('common.orientation')}*`}
-          className={`mt-8 ${
-            props.mode === 'edit' || props.mode === 'readonly' ? 'hidden' : ''
-          }`}
-          value={newDiagram.diagram_spec?.auto_layout_orientation}
-          options={AUTO_LAYOUT_ORIENTATIONS.map((orientation) => {
-            return {
-              label: orientation,
-              value: orientation,
-            }
-          })}
-          onChange={(e) =>
-            setNewDiagram({
-              ...newDiagram,
-              diagram_spec: {
-                ...newDiagram.diagram_spec!,
-                auto_layout_orientation: e.target.value as DiagramOrientation,
-              },
-            })
-          }
-        />
         <Textarea
           disabled={props.mode === 'readonly'}
           label={`${t('common.description')}`}
-          className="mt-6"
+          classNameRoot="mt-6"
           value={newDiagram.diagram_spec?.description ?? ''}
           onChange={(e) =>
             setNewDiagram({
@@ -237,6 +193,86 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
             },
             editTags: false,
           }}
+        />
+        <span
+          className={`text-brand1 font-bold mt-6 text-lg ${
+            props.mode === 'edit' || props.mode === 'readonly' ? 'hidden' : ''
+          }`}
+        >
+          {t('common.auto_layout')}
+        </span>
+        <div
+          className={`flex flex-row mt-5 ${
+            props.mode === 'edit' || props.mode === 'readonly' ? 'hidden' : ''
+          }`}
+        >
+          <span>{`${t('common.enabled')}*`}:</span>
+          <Radio<boolean>
+            id="autolayout-status"
+            className="ml-5"
+            value={newDiagram.diagram_spec?.auto_layout_enabled}
+            options={[
+              { label: t('common.yes'), value: true },
+              { label: t('common.no'), value: false },
+            ]}
+            onChange={(value: boolean) => {
+              setNewDiagram({
+                ...newDiagram,
+                diagram_spec: {
+                  ...newDiagram.diagram_spec!,
+                  auto_layout_enabled: value,
+                },
+              })
+            }}
+          />
+        </div>
+        <div
+          className={`flex flex-row mt-5 ${
+            props.mode === 'edit' || props.mode === 'readonly' ? 'hidden' : ''
+          }`}
+        >
+          <span>{`${t('diagrams_settings.gen_only_straight_arrows')}*`}:</span>
+          <Radio<boolean>
+            id="autolayout-straight-arrows-status"
+            className="ml-5"
+            value={newDiagram.diagram_spec?.auto_layout_only_straight_arrows}
+            options={[
+              { label: t('common.yes'), value: true },
+              { label: t('common.no'), value: false },
+            ]}
+            onChange={(value: boolean) => {
+              setNewDiagram({
+                ...newDiagram,
+                diagram_spec: {
+                  ...newDiagram.diagram_spec!,
+                  auto_layout_only_straight_arrows: value,
+                },
+              })
+            }}
+          />
+        </div>
+        <Select
+          id="autolayout-orientation-selector"
+          label={`${t('common.orientation')}*`}
+          className={`mt-8 ${
+            props.mode === 'edit' || props.mode === 'readonly' ? 'hidden' : ''
+          }`}
+          value={newDiagram.diagram_spec?.auto_layout_orientation}
+          options={AUTO_LAYOUT_ORIENTATIONS.map((orientation) => {
+            return {
+              label: orientation,
+              value: orientation,
+            }
+          })}
+          onChange={(e) =>
+            setNewDiagram({
+              ...newDiagram,
+              diagram_spec: {
+                ...newDiagram.diagram_spec!,
+                auto_layout_orientation: e.target.value as DiagramOrientation,
+              },
+            })
+          }
         />
       </div>
 
