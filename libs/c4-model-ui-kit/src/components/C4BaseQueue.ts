@@ -90,7 +90,7 @@ const createHeadQueue = (
     strokeWidth: 0,
     left: (baseBox.left ?? 0) + (baseBox.width ?? 0) - marginHeadQueue,
     top: (baseBox.top ?? 0) + ELEMENT.SIZES.BORDER_WIDTH,
-    width: 20,
+    width: QUEUE.SIZES.HEAD_BOX_WIDTH,
     height: (baseBox.height ?? 0) - ELEMENT.SIZES.BORDER_WIDTH * 2,
   })
   objects.push(emptyBox)

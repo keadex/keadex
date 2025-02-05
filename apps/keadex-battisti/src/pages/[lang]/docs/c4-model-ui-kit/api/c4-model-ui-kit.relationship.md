@@ -22,6 +22,7 @@ RELATIONSHIP: {
         RADIUS_DOT: number;
         SIZE_TRIANGLE: number;
         STROKE_WIDTH: number;
+        DEFAULT_WIDTH: number;
     };
     POSITION: {
         DEFAULT_HEAD_ARROW_ANGLE: number;

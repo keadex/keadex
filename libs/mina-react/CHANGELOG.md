@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/keadex/keadex/compare/mina-react@1.15.0...mina-react@1.16.0) (2025-02-05)
+
+
+### Features
+
+* **libs/mina-react:** new release ([44fef28](https://github.com/keadex/keadex/commit/44fef28377be18e0f4ac6f6e05d3382510eaf2db))
+
 # [1.15.0](https://github.com/keadex/keadex/compare/mina-react@1.14.0...mina-react@1.15.0) (2024-12-11)
 
 

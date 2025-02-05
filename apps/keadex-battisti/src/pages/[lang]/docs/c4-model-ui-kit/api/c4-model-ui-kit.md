@@ -4,6 +4,30 @@
 
 ## c4-model-ui-kit package
 
+## Classes
+
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[DiagramRenderer](./c4-model-ui-kit.diagramrenderer.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
 ## Enumerations
 
 <table><thead><tr><th>
@@ -151,6 +175,15 @@ Description
 </td></tr>
 <tr><td>
 
+[diagramContainsSubDiagrams(elements)](./c4-model-ui-kit.diagramcontainssubdiagrams.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [diagramDirName(diagramHumanName)](./c4-model-ui-kit.diagramdirname.md)
 
 
@@ -170,6 +203,24 @@ Description
 <tr><td>
 
 [externalLinkVariableToPlaceholder(variable)](./c4-model-ui-kit.externallinkvariabletoplaceholder.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[generateAutoLayout(graphviz, diagram)](./c4-model-ui-kit.generateautolayout.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[generateSubgraphMarginHackId(id)](./c4-model-ui-kit.generatesubgraphmarginhackid.md)
 
 
 </td><td>
@@ -205,6 +256,15 @@ Description
 </td></tr>
 <tr><td>
 
+[getGraphHeightInPtFromBB(bb)](./c4-model-ui-kit.getgraphheightinptfrombb.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [getSavedZIndex(component)](./c4-model-ui-kit.getsavedzindex.md)
 
 
@@ -223,10 +283,30 @@ Description
 </td></tr>
 <tr><td>
 
+[graphvizCoordinatesToPx(padInInch, graphHeightInPt, point)](./c4-model-ui-kit.graphvizcoordinatestopx.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [invalidateCanvasCache(canvas)](./c4-model-ui-kit.invalidatecanvascache.md)
 
 
 </td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isC4ElasticContainer(object)](./c4-model-ui-kit.isc4elasticcontainer.md)
+
+
+</td><td>
+
+Check if the given GraphvizObject represents a C4 Elastic Container.
 
 
 </td></tr>
@@ -260,6 +340,24 @@ Description
 <tr><td>
 
 [isRelationshipAlias(alias)](./c4-model-ui-kit.isrelationshipalias.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isSubgraphInvisibleNodeHack(object)](./c4-model-ui-kit.issubgraphinvisiblenodehack.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isSubgraphMarginHack(object)](./c4-model-ui-kit.issubgraphmarginhack.md)
 
 
 </td><td>
@@ -367,15 +465,6 @@ Description
 </td></tr>
 <tr><td>
 
-[renderDiagram(canvas, diagramListener, diagram, diagramsThemeSettings)](./c4-model-ui-kit.renderdiagram.md)
-
-
-</td><td>
-
-
-</td></tr>
-<tr><td>
-
 [renderPersonDiagramElement(canvas, person, diagramSpec, autoLayout, options)](./c4-model-ui-kit.renderpersondiagramelement.md)
 
 
@@ -413,6 +502,15 @@ Description
 <tr><td>
 
 [softwareSystemDiagramElement(element)](./c4-model-ui-kit.softwaresystemdiagramelement.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[svgPathFromGraphvizPos(graphvizPos, start, end, padInInch, graphHeightInPt)](./c4-model-ui-kit.svgpathfromgraphvizpos.md)
 
 
 </td><td>

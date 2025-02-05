@@ -64,7 +64,7 @@
       "dangerousDisableAssetCspModification": ["style-src"],
       "csp": {
         "default-src": "blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self'",
-        "script-src": "https://cdn.jsdelivr.net",
+        "script-src": "'unsafe-eval' https://cdn.jsdelivr.net",
         "connect-src": [
           "ipc: http://ipc.localhost tauri: http://tauri.localhost"
         ],

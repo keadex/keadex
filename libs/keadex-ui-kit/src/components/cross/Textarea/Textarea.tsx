@@ -6,6 +6,7 @@ export type TextareaProps =
     [key: `data-${string}`]: unknown
     key?: string
     label: string
+    classNameRoot?: string
   }
 
 export const Textarea = React.memo((props: TextareaProps) => {
@@ -14,12 +15,19 @@ export const Textarea = React.memo((props: TextareaProps) => {
   >(props.value)
   const dataAttributes = getDataAttributes(props)
 
+  const { classNameRoot, ...otherProps } = {
+    ...props,
+  }
+
   useEffect(() => {
     setValue(props.value)
   }, [props.value])
 
   return (
-    <div className={`relative mb-3`} data-te-input-wrapper-init>
+    <div
+      className={`relative mb-3 ${classNameRoot ?? ''}`}
+      data-te-input-wrapper-init
+    >
       {/* The following div is a workaround for the bug of the tw-elements 
       Input script: tw-elements/src/js/forms/input.js
       Without this workaround, the Textarea component throws an error on focus/exit. */}
@@ -32,7 +40,7 @@ export const Textarea = React.memo((props: TextareaProps) => {
 
       <textarea
         rows={3}
-        {...props}
+        {...otherProps}
         {...dataAttributes}
         onChange={(e) => {
           setValue(e.currentTarget.value)

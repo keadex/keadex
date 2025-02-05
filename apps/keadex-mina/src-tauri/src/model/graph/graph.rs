@@ -3,7 +3,6 @@ Model representing a graph.
 */
 
 use crate::model::graph::{edge::Edge, node::Node};
-use crate::rendering_system::graph_render_backend::GraphRenderBackend;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 

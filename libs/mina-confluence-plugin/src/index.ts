@@ -10,4 +10,4 @@ export const handler = resolver.getDefinitions()
 
 export { config, type MinaMacroConfig } from './Config'
 
-// trigger release #2
+// trigger release #3

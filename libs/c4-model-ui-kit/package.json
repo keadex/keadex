@@ -8,6 +8,7 @@
   "version": "1.0.0",
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@hpcc-js/wasm-graphviz": "^1.7.0",
     "change-case": "^5.4.3",
     "fabric": "^5.3.0",
     "pluralize": "^8.0.0"

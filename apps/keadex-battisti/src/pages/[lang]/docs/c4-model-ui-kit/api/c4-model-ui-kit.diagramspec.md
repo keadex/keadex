@@ -52,6 +52,23 @@ boolean
 </td></tr>
 <tr><td>
 
+[auto\_layout\_only\_straight\_arrows](./c4-model-ui-kit.diagramspec.auto_layout_only_straight_arrows.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [auto\_layout\_orientation](./c4-model-ui-kit.diagramspec.auto_layout_orientation.md)
 
 

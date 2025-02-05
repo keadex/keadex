@@ -6,7 +6,7 @@ pub mod error_handling;
 pub mod helper;
 pub mod model;
 pub mod parser;
-pub mod rendering_system;
+// pub mod rendering_system; // Deprecated
 pub mod repository;
 pub mod service;
 pub mod templates;

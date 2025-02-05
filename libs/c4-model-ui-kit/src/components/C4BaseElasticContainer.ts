@@ -127,9 +127,9 @@ export const C4BaseElasticContainer = (
       diagramSpec,
       autoLayout,
       {
+        ...renderElementsOptions,
         skipAddToCanvas: true,
         skipLegendRendering: true,
-        diagramsThemeSettings: renderElementsOptions?.diagramsThemeSettings,
       },
     )
     innerObjects.forEach((innerObject) => {
@@ -264,8 +264,8 @@ const resizeBox = (parent: C4BaseElastiContainerComponent) => {
 
   const paddingBoxX = BASE_ELASTIC_CONTAINER.SIZES.PADDING_BOX * scaleX
   const paddingBoxY = BASE_ELASTIC_CONTAINER.SIZES.PADDING_BOX * scaleY
-  const paddingFooterX = BASE_ELASTIC_CONTAINER.SIZES.PADDING_FOOTER * scaleX
-  const paddingFooterY = BASE_ELASTIC_CONTAINER.SIZES.PADDING_FOOTER * scaleY
+  const paddingFooterX = BASE_ELASTIC_CONTAINER.SIZES.PADDING_BOX * scaleX
+  const paddingFooterY = BASE_ELASTIC_CONTAINER.SIZES.PADDING_BOX * scaleY
 
   if (
     box &&
