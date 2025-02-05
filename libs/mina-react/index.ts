@@ -3,4 +3,4 @@ import { LazyMinaReact } from './src/components/MinaReact/LazyMinaReact'
 
 export default LazyMinaReact
 
-// trigger release #2
+// trigger release #3
