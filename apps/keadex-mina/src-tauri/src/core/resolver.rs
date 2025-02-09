@@ -129,7 +129,7 @@ impl Default for RootResolver {
     #[cfg(desktop)]
     {
       resolvers.insert(
-        stringify!(NativeFileSystemAPI).to_string(),
+        stringify!(FileSystemAPI).to_string(),
         ResolvableModules::FileSystemAPI(Default::default()),
       );
     }
@@ -137,7 +137,7 @@ impl Default for RootResolver {
     #[cfg(web)]
     {
       resolvers.insert(
-        stringify!(WebFileSystemAPI).to_string(),
+        stringify!(FileSystemAPI).to_string(),
         ResolvableModules::FileSystemAPI(Default::default()),
       );
     }
