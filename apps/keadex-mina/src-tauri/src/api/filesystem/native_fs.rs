@@ -1,10 +1,14 @@
 use crate::api::filesystem::CrossFile;
 use crate::api::filesystem::FileSystemAPI;
+use crate::error_handling::mina_error::MinaError;
+use async_trait::async_trait;
 use fs2::FileExt;
 use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::BufReader;
-use std::io::Error;
+use std::io::Read;
+use std::io::Write;
+use std::path::Path;
 
 // ----------- NativeFile
 #[derive(Debug)]
@@ -17,17 +21,39 @@ impl NativeFile {
     Self { file }
   }
 }
+
+#[async_trait]
 impl CrossFile for NativeFile {
-  fn unlock(&self) -> Result<(), Error> {
-    return self.file.unlock();
+  fn unlock(&self) -> Result<(), MinaError> {
+    match self.file.unlock() {
+      Ok(ok) => Ok(ok),
+      Err(err) => Err(MinaError::from(err)),
+    }
   }
 
-  fn lock_exclusive(&self) -> Result<(), Error> {
-    return self.file.lock_exclusive();
+  fn lock_exclusive(&self) -> Result<(), MinaError> {
+    match self.file.lock_exclusive() {
+      Ok(ok) => Ok(ok),
+      Err(err) => Err(MinaError::from(err)),
+    }
   }
 
-  async fn get_buffer(&self) -> impl std::io::Read {
-    return BufReader::new(&self.file);
+  async fn get_buffer(&self) -> Box<dyn Read> {
+    let buf_reader = BufReader::new(self.file.try_clone().unwrap());
+    return Box::new(buf_reader);
+  }
+
+  async fn write_all(&mut self, buf: &[u8]) -> Result<(), MinaError> {
+    match self.file.write_all(buf) {
+      Ok(ok) => Ok(ok),
+      Err(err) => Err(MinaError::from(err)),
+    }
+  }
+
+  async fn read_as_string(&mut self) -> Result<String, MinaError> {
+    let mut content = String::new();
+    self.file.read_to_string(&mut content)?;
+    return Ok(content);
   }
 }
 
@@ -43,8 +69,8 @@ impl FileSystemAPI for NativeFileSystemAPI {
     write: bool,
     append: bool,
     truncate: bool,
-    path: &str,
-  ) -> Result<impl CrossFile, Error> {
+    path: &Path,
+  ) -> Result<Box<dyn CrossFile>, MinaError> {
     let file_result = OpenOptions::new()
       .read(read)
       .write(write)
@@ -52,8 +78,13 @@ impl FileSystemAPI for NativeFileSystemAPI {
       .truncate(truncate)
       .open(path);
     match file_result {
-      Ok(file) => return Ok(NativeFile { file }),
-      Err(error) => return Err(error),
+      Ok(file) => return Ok(Box::new(NativeFile { file })),
+      Err(error) => return Err(MinaError::from(error)),
     }
+  }
+
+  async fn create(&self, path: &Path) -> Result<Box<dyn CrossFile>, MinaError> {
+    let file = File::create(&path)?;
+    return Ok(Box::new(NativeFile { file }));
   }
 }
