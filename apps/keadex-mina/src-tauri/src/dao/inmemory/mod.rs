@@ -8,9 +8,9 @@ use std::future::Future;
 Specialization of the DAO to interact with data stored in an in-memory storage.
 */
 pub trait InMemoryDAO<T>: DAO {
-  fn save(&self, data: &T) -> impl Future<Output = ()>;
+  fn save(&self, data: &T) -> impl Future<Output = ()> + Send;
 
-  fn delete(&self, data: &T) -> impl Future<Output = ()>;
+  fn delete(&self, data: &T) -> impl Future<Output = ()> + Send;
 
-  fn get(&mut self) -> impl Future<Output = T>;
+  fn get(&mut self) -> impl Future<Output = T> + Send;
 }

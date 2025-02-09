@@ -1,17 +1,17 @@
+use crate::api::filesystem::CrossFile;
 use crate::dao::filesystem::FileSystemDAO;
 use crate::dao::DAO;
 use crate::error_handling::errors::{FILE_DOES_NOT_EXIST, IO_ERROR_CODE};
 use crate::error_handling::mina_error::MinaError;
 use std::collections::HashMap;
 use std::fs::{create_dir_all, File};
-use std::io::Write;
 use std::path::Path;
 
 /**
 Allows to read/write binary data from/to the file system.
 */
 pub struct BinaryDAO {
-  opened_files: HashMap<String, File>,
+  opened_files: HashMap<String, Box<dyn CrossFile>>,
 }
 
 impl Default for BinaryDAO {
@@ -25,7 +25,7 @@ impl Default for BinaryDAO {
 impl DAO for BinaryDAO {}
 
 impl FileSystemDAO<Vec<u8>> for BinaryDAO {
-  fn get_opened_files(&mut self) -> &mut HashMap<String, File> {
+  fn get_opened_files(&mut self) -> &mut HashMap<String, Box<dyn CrossFile>> {
     &mut self.opened_files
   }
 
@@ -49,7 +49,7 @@ impl FileSystemDAO<Vec<u8>> for BinaryDAO {
       }
     }
     let file = self.open_and_unlock_file(path, false, true).await?;
-    file.write_all(data)?;
+    file.write_all(data).await?;
     Ok(())
   }
 

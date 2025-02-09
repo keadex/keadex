@@ -1,6 +1,6 @@
 use crate::error_handling::errors::{
   INVALID_PLANTUML_ERROR_CODE, IO_ERROR_CODE, OPENAI_ERROR_CODE, SERDE_PARSING_ERROR_CODE,
-  STRUM_PARSING_ERROR_CODE, WALKDIR_ERROR_CODE,
+  STRUM_PARSING_ERROR_CODE, WALKDIR_ERROR_CODE, WASM_ERROR_CODE,
 };
 use crate::parser::plantuml::plantuml_parser::Rule;
 use async_openai_wasm::error::OpenAIError;
@@ -75,5 +75,11 @@ impl From<OpenAIError> for MinaError {
 impl From<walkdir::Error> for MinaError {
   fn from(err: walkdir::Error) -> MinaError {
     MinaError::new(WALKDIR_ERROR_CODE, err.to_string().as_str())
+  }
+}
+
+impl From<wasm_bindgen::JsValue> for MinaError {
+  fn from(err: wasm_bindgen::JsValue) -> MinaError {
+    MinaError::new(WASM_ERROR_CODE, &err.as_string().unwrap())
   }
 }

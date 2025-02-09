@@ -4,6 +4,7 @@ Error codes:
   -   0 --> Generic error
   - > 0 --> User errors
 */
+pub const WASM_ERROR_CODE: i32 = -9;
 pub const INVALID_LIB_ELEMENT_ERROR_CODE: i32 = -8;
 pub const WALKDIR_ERROR_CODE: i32 = -7;
 pub const OPENAI_ERROR_CODE: i32 = -6;
@@ -32,6 +33,8 @@ pub const NO_CACHED_FILE_ERROR_MSG: &str = "File not cached. Open the file befor
 pub const PARSING_DIAGRAM_PATH_ERROR_MSG: &str =
   "An error occurs on parsing diagram's path to retrieve name and type.";
 pub const CANNOT_OPEN_FILE_ERROR_MSG: &str = "Cannot open the file. Unknown reason.";
+pub const CANNOT_CREATE_FILE_ERROR_MSG: &str = "Cannot create the file. Unknown reason.";
+pub const DIRECTORY_DOES_NOT_EXIST: &str = "Directory does not exist.";
 pub const FILE_DOES_NOT_EXIST: &str = "File does not exist.";
 pub const PROJECT_NOT_LOADED_ERROR_MSG: &str = "Project not loaded.";
 pub const INVALID_PATH_ERROR_MSG: &str = "Invalid path.";

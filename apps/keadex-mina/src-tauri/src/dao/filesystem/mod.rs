@@ -3,31 +3,33 @@ pub mod diagram;
 pub mod library;
 pub mod project_settings_dao;
 
+use crate::api::filesystem::CrossFile;
+use crate::api::filesystem::FileSystemAPI as FS_API;
+use crate::core::app::ROOT_RESOLVER;
+use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::core::serializer::{deserialize_json_by_file, serialize_obj_to_json_string};
 use crate::dao::DAO;
 use crate::error_handling::errors::{
   CANNOT_OPEN_FILE_ERROR_MSG, FILE_DOES_NOT_EXIST, IO_ERROR_CODE, NO_CACHED_FILE_ERROR_MSG,
 };
 use crate::error_handling::mina_error::MinaError;
-use fs2::*;
+use crate::resolve_to_write;
 use serde::de;
 use std::collections::hash_map::Entry;
 use std::collections::HashMap;
-use std::fs::{File, OpenOptions};
 use std::future::Future;
-use std::io::Write;
 use std::path::Path;
 
 /**
 Specialization of the DAO to interact with data stored in the file system.
 */
-pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + std::marker::Sync>: DAO {
+pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + Sync>: DAO {
   /*
     I need to cache the opened files because in order to lock a file for the entire
     duration of the application, the reference to the "File" must not to be destroyed
     starting from the time you lock it.
   */
-  fn get_opened_files(&mut self) -> &mut HashMap<String, File>;
+  fn get_opened_files(&mut self) -> &mut HashMap<String, Box<dyn CrossFile>>;
 
   /**
   Opens, unlocks and returns the requested file
@@ -39,15 +41,13 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + std::marker::Syn
     path: &Path,
     append: bool,
     truncate: bool,
-  ) -> impl Future<Output = Result<&mut File, MinaError>> {
+  ) -> impl Future<Output = Result<&mut Box<dyn CrossFile>, MinaError>> {
     async move {
       // log::debug!("Open and unlock file {:?}", path);
-      let file = OpenOptions::new()
-        .read(true)
-        .write(true)
-        .append(append)
-        .truncate(truncate)
-        .open(path);
+      let store = ROOT_RESOLVER.get().read().await;
+      let fs_api = resolve_to_write!(store, FileSystemAPI).await;
+
+      let file = fs_api.open(true, true, append, truncate, &path).await;
       match file {
         Ok(file) => {
           let _ = file.unlock();
@@ -161,8 +161,8 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + std::marker::Syn
     T: de::DeserializeOwned,
   {
     async {
-      let file = self.open_and_unlock_file(path, true, false).await?;
-      let result = deserialize_json_by_file::<T>(&file, path)?;
+      let mut file = self.open_and_unlock_file(path, true, false).await?;
+      let result = deserialize_json_by_file::<T>(&mut file, path).await?;
       let _ = self.lock_file(path);
       Ok(result)
     }
@@ -181,8 +181,8 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + std::marker::Syn
     T: de::DeserializeOwned,
   {
     async {
-      let file = self.open_and_unlock_file(path, true, false).await?;
-      let results = deserialize_json_by_file::<Vec<T>>(&file, path)?;
+      let mut file = self.open_and_unlock_file(path, true, false).await?;
+      let results = deserialize_json_by_file::<Vec<T>>(&mut file, path).await?;
       let _ = self.lock_file(path);
       Ok(results)
     }
@@ -203,16 +203,19 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + std::marker::Syn
     create_if_not_exist: bool,
   ) -> impl Future<Output = Result<(), MinaError>> {
     async move {
+      let store = ROOT_RESOLVER.get().read().await;
+      let fs_api = resolve_to_write!(store, FileSystemAPI).await;
+
       if !Path::new(&path).exists() {
         if create_if_not_exist {
-          File::create(&path)?;
+          fs_api.create(&path).await?;
         } else {
           return Err(MinaError::new(IO_ERROR_CODE, FILE_DOES_NOT_EXIST));
         }
       }
       let file = self.open_and_unlock_file(path, false, true).await?;
       let serialized_json = serialize_obj_to_json_string(data, true)?;
-      file.write_all(serialized_json.as_bytes())?;
+      file.write_all(serialized_json.as_bytes()).await?;
       let _ = self.lock_file(path);
       Ok(())
     }
@@ -233,7 +236,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + std::marker::Syn
     async {
       let file = self.open_and_unlock_file(path, false, true).await?;
       let serialized_json = serialize_obj_to_json_string(data, true)?;
-      file.write_all(serialized_json.as_bytes())?;
+      file.write_all(serialized_json.as_bytes()).await?;
       let _ = self.lock_file(path);
       Ok(())
     }
