@@ -18,7 +18,10 @@ pub fn split_path_components(path: &str) -> PathStructure {
     .collect();
 
   // Separate directories and file name
-  let file_name = path.file_name().map(|f| f.to_string_lossy().into_owned());
+  let mut file_name = None;
+  if path.extension().is_some() {
+    file_name = path.file_name().map(|f| f.to_string_lossy().into_owned());
+  }
   let directories = components
     .iter()
     .take(components.len() - file_name.is_some() as usize)
