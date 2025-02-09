@@ -66,12 +66,9 @@ pub enum ResolvableModules {
   PersonFsDAO(Resolver<PersonFsDAO>),
   SoftwareSystemFsDAO(Resolver<SoftwareSystemFsDAO>),
   ProjectLibraryIMDAO(Resolver<ProjectLibraryIMDAO>),
-  #[cfg(any(
-    all(desktop, web, mina_web_viewer),
-    all(desktop, not(web), not(mina_web_viewer))
-  ))]
+  #[cfg(desktop)]
   FileSystemAPI(Resolver<NativeFileSystemAPI>),
-  #[cfg(all(web, not(desktop), not(mina_web_viewer)))]
+  #[cfg(web)]
   FileSystemAPI(Resolver<WebFileSystemAPI>),
 }
 
@@ -129,10 +126,7 @@ impl Default for RootResolver {
       ResolvableModules::DiagramSpecFsDAO(Default::default()),
     );
 
-    #[cfg(any(
-      all(desktop, web, mina_web_viewer),
-      all(desktop, not(web), not(mina_web_viewer))
-    ))]
+    #[cfg(desktop)]
     {
       resolvers.insert(
         stringify!(NativeFileSystemAPI).to_string(),
@@ -140,7 +134,7 @@ impl Default for RootResolver {
       );
     }
 
-    #[cfg(all(web, not(desktop), not(mina_web_viewer)))]
+    #[cfg(web)]
     {
       resolvers.insert(
         stringify!(WebFileSystemAPI).to_string(),
