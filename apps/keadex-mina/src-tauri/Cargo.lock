@@ -2614,6 +2614,7 @@ version = "2.0.0-1"
 dependencies = [
  "async-openai-wasm",
  "async-std",
+ "async-trait",
  "bomboni_wasm",
  "cfg_aliases",
  "convert_case 0.6.0",

@@ -53,13 +53,17 @@ web-sys = { version = "0.3", features = [
   "File",
   "FileReader",
   "FileSystemDirectoryHandle",
-  "FileSystemFileHandle"
+  "FileSystemGetDirectoryOptions",
+  "FileSystemFileHandle",
+  "FileSystemGetFileOptions",
+  "FileSystemWritableFileStream"
 ], optional = true }
 wasm-bindgen-futures = {version = "0.4", optional = true}
 tauri = { version = "2", features = [
   "macos-private-api",
 ], optional = true }
 async-std = "1.13"
+async-trait = "0.1"
 tauri-plugin-http = { version = "2", optional = true }
 tauri-plugin-clipboard-manager = { version = "2.0.1", optional = true }
 tauri-plugin-os = { version = "2", optional = true }
@@ -74,6 +78,7 @@ tauri-plugin-deep-link = { version = "2", optional = true }
 tauri-plugin-single-instance = { version = "2", features = ["deep-link"], optional = true }
 
 [features]
+# default = ["web"]
 default = ["desktop", "custom-protocol"]
 custom-protocol = ["tauri/custom-protocol"]
 desktop = [
