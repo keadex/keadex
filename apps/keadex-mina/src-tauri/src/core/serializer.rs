@@ -52,8 +52,10 @@ where
   T: de::DeserializeOwned,
 {
   let store = ROOT_RESOLVER.get().read().await;
-  let fs_api = resolve_to_write!(store, FileSystemAPI).await;
-  let mut file = fs_api.open(true, false, false, false, path).await?;
+  let mut file = resolve_to_write!(store, FileSystemAPI)
+    .await
+    .open(true, false, false, false, path)
+    .await?;
   return deserialize_json_by_file(&mut file, path).await;
 }
 

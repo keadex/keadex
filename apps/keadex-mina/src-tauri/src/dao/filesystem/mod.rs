@@ -45,9 +45,10 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + Sync>: DAO {
     async move {
       // log::debug!("Open and unlock file {:?}", path);
       let store = ROOT_RESOLVER.get().read().await;
-      let fs_api = resolve_to_write!(store, FileSystemAPI).await;
-
-      let file = fs_api.open(true, true, append, truncate, &path).await;
+      let file = resolve_to_write!(store, FileSystemAPI)
+        .await
+        .open(true, true, append, truncate, &path)
+        .await;
       match file {
         Ok(file) => {
           let _ = file.unlock();
@@ -203,12 +204,13 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + Sync>: DAO {
     create_if_not_exist: bool,
   ) -> impl Future<Output = Result<(), MinaError>> {
     async move {
-      let store = ROOT_RESOLVER.get().read().await;
-      let fs_api = resolve_to_write!(store, FileSystemAPI).await;
-
       if !Path::new(&path).exists() {
         if create_if_not_exist {
-          fs_api.create(&path).await?;
+          let store = ROOT_RESOLVER.get().read().await;
+          resolve_to_write!(store, FileSystemAPI)
+            .await
+            .create(&path)
+            .await?;
         } else {
           return Err(MinaError::new(IO_ERROR_CODE, FILE_DOES_NOT_EXIST));
         }
