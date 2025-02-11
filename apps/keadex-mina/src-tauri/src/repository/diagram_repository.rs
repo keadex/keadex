@@ -38,9 +38,7 @@ use crate::resolve_to_write;
 use crate::service::diagram_service::validate_diagram;
 use data_url::DataUrl;
 use std::collections::HashMap;
-use std::fs;
 use std::path::Path;
-use std::time::UNIX_EPOCH;
 use strum::IntoEnumIterator;
 
 /**
@@ -63,14 +61,15 @@ pub async fn list_diagrams() -> Result<HashMap<DiagramType, Vec<String>>, MinaEr
     let diagram_type_path = diagram_type_path(&project_root, &dir_name_diagram_type);
 
     log::debug!("Listing the path {}", &diagram_type_path);
-    if let Ok(diagrams_paths) = fs::read_dir(diagram_type_path) {
+    if let Ok(diagrams_paths) = resolve_to_write!(store, FileSystemAPI)
+      .await
+      .read_dir(&Path::new(&diagram_type_path))
+      .await
+    {
       let mut diagrams = vec![];
       for diagram_path in diagrams_paths {
-        let path = diagram_path.unwrap().path();
-        if path.is_dir() {
-          diagrams.push(diagram_human_name_from_dir_name(
-            &path.file_name().unwrap().to_str().unwrap(),
-          ));
+        if diagram_path.is_dir {
+          diagrams.push(diagram_human_name_from_dir_name(&diagram_path.file_name));
         }
       }
 
@@ -107,14 +106,11 @@ pub async fn open_diagram(
     .await
     .get(Path::new(&spec_path))
     .await?;
-  let metadata = fs::metadata(&plantuml_path)?;
-  let last_modified = metadata
-    .modified()
-    .unwrap()
-    .duration_since(UNIX_EPOCH)
-    .unwrap()
-    .as_secs()
-    .to_string();
+  let metadata = resolve_to_write!(store, FileSystemAPI)
+    .await
+    .metadata(&Path::new(&plantuml_path))
+    .await?;
+  let last_modified = metadata.last_modified.unwrap().as_secs().to_string();
   // let mut auto_layout = None;
   // if diagram_spec.auto_layout_enabled {
   //   auto_layout = Some(generate_positions(

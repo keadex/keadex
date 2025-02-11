@@ -1,11 +1,23 @@
 use crate::error_handling::mina_error::MinaError;
 use async_trait::async_trait;
-use std::{future::Future, io::BufRead, path::Path};
+use std::{future::Future, io::BufRead, path::Path, time::Duration};
 
 #[cfg(desktop)]
 pub mod native_fs;
 #[cfg(web)]
 pub mod web_fs;
+
+pub struct CrossMetadata {
+  /// Last modified duration since the Unix Epoch.
+  pub last_modified: Option<Duration>,
+  /// True if this metadata is for a directory.
+  pub is_dir: bool,
+}
+
+pub struct CrossPathBuf {
+  pub file_name: String,
+  pub is_dir: bool,
+}
 
 #[cfg_attr(desktop, async_trait)]
 #[cfg_attr(web, async_trait(?Send))]
@@ -15,6 +27,7 @@ pub trait CrossFile: Send + Sync {
   async fn get_buffer(&self) -> Box<dyn BufRead>;
   async fn write_all(&mut self, buf: &[u8]) -> Result<(), MinaError>;
   async fn read_as_string(&mut self) -> Result<String, MinaError>;
+  async fn metadata(&self) -> Result<CrossMetadata, MinaError>;
 }
 
 pub trait FileSystemAPI {
@@ -31,4 +44,6 @@ pub trait FileSystemAPI {
   fn remove_file(&self, path: &Path) -> impl Future<Output = Result<(), MinaError>>;
   fn remove_dir_all(&self, path: &Path) -> impl Future<Output = Result<(), MinaError>>;
   fn rename(&self, from: &Path, to: &Path) -> impl Future<Output = Result<(), MinaError>>;
+  fn metadata(&self, path: &Path) -> impl Future<Output = Result<CrossMetadata, MinaError>>;
+  fn read_dir(&self, path: &Path) -> impl Future<Output = Result<Vec<CrossPathBuf>, MinaError>>;
 }

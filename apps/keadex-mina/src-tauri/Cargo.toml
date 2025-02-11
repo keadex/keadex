@@ -56,7 +56,9 @@ web-sys = { version = "0.3", features = [
   "FileSystemGetDirectoryOptions",
   "FileSystemFileHandle",
   "FileSystemGetFileOptions",
-  "FileSystemWritableFileStream"
+  "FileSystemWritableFileStream",
+  "FileSystemHandleKind",
+  "FileSystemRemoveOptions"
 ], optional = true }
 wasm-bindgen-futures = {version = "0.4", optional = true}
 tauri = { version = "2", features = [

@@ -3,6 +3,9 @@ Project Validator.
 It contains the validators that validate different requirements of a Mina project.
 */
 
+use crate::api::filesystem::FileSystemAPI as FsApiTrait;
+use crate::core::app::ROOT_RESOLVER;
+use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::dao::filesystem::library::{
   component_dao, container_dao, person_dao, software_system_dao,
 };
@@ -16,7 +19,7 @@ use crate::error_handling::mina_error::MinaError;
 use crate::helper::diagram_helper::diagrams_path;
 use crate::helper::library_helper::project_library_path;
 use crate::helper::project_helper::project_settings_path;
-use std::fs::metadata;
+use crate::resolve_to_write;
 use std::path::{Path, MAIN_SEPARATOR};
 
 /**
@@ -111,7 +114,7 @@ Checks if the provided path satisfies the requirement to contain a new project.
   * `root` - root of the new project
   * `project_folder` - folder of the new project
 */
-pub fn validate_output_project_directory(
+pub async fn validate_output_project_directory(
   root: &str,
   project_folder: &str,
 ) -> Result<String, MinaError> {
@@ -134,7 +137,12 @@ pub fn validate_output_project_directory(
     ));
   }
 
-  if !metadata(root).unwrap().is_dir() {
+  let store = ROOT_RESOLVER.get().read().await;
+  let metadata = resolve_to_write!(store, FileSystemAPI)
+    .await
+    .metadata(&Path::new(root))
+    .await?;
+  if !metadata.is_dir {
     return Err(MinaError::new(
       INVALID_NEW_PROJECT_PATH_ERROR_CODE,
       NOT_A_DIRECTORY_ERROR_MSG,

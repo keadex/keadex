@@ -1,4 +1,5 @@
 use crate::api::filesystem::CrossFile;
+use crate::api::filesystem::CrossMetadata;
 use crate::api::filesystem::FileSystemAPI;
 use crate::error_handling::mina_error::MinaError;
 use async_trait::async_trait;
@@ -10,6 +11,9 @@ use std::io::BufReader;
 use std::io::Read;
 use std::io::Write;
 use std::path::Path;
+use std::time::UNIX_EPOCH;
+
+use super::CrossPathBuf;
 
 // ----------- NativeFile
 #[derive(Debug)]
@@ -55,6 +59,20 @@ impl CrossFile for NativeFile {
     let mut content = String::new();
     self.file.read_to_string(&mut content)?;
     return Ok(content);
+  }
+
+  async fn metadata(&self) -> Result<CrossMetadata, MinaError> {
+    let metadata = self.file.metadata()?;
+    let is_dir = metadata.is_dir();
+    let mut last_modified = None;
+    if let Ok(last_modified_metadata) = metadata.modified() {
+      last_modified = Some(last_modified_metadata.duration_since(UNIX_EPOCH).unwrap());
+    }
+
+    return Ok(CrossMetadata {
+      is_dir,
+      last_modified,
+    });
   }
 }
 
@@ -107,5 +125,24 @@ impl FileSystemAPI for NativeFileSystemAPI {
   async fn rename(&self, from: &Path, to: &Path) -> Result<(), MinaError> {
     let result = std::fs::rename(from, to)?;
     return Ok(result);
+  }
+
+  async fn metadata(&self, path: &Path) -> Result<CrossMetadata, MinaError> {
+    let file = self.open(true, false, false, false, path).await?;
+    file.metadata().await
+  }
+
+  async fn read_dir(&self, path: &Path) -> Result<Vec<CrossPathBuf>, MinaError> {
+    let mut paths = vec![];
+    if let Ok(dir_paths) = std::fs::read_dir(path) {
+      for dir_path in dir_paths {
+        let path = dir_path.unwrap().path();
+        paths.push(CrossPathBuf {
+          is_dir: path.is_dir(),
+          file_name: String::from(path.file_name().unwrap().to_str().unwrap()),
+        });
+      }
+    }
+    return Ok(paths);
   }
 }
