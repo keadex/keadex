@@ -12,8 +12,8 @@ use async_trait::async_trait;
 use js_sys::Array;
 use js_sys::AsyncIterator;
 use js_sys::Uint8Array;
+use std::io::BufRead;
 use std::io::Cursor;
-use std::io::Read;
 use std::path::Path;
 use wasm_bindgen::JsCast;
 use wasm_bindgen::JsValue;
@@ -66,7 +66,7 @@ impl CrossFile for WebFile {
     return Ok(());
   }
 
-  async fn get_buffer(&self) -> Box<dyn Read> {
+  async fn get_buffer(&self) -> Box<dyn BufRead> {
     let file = JsFuture::from(self.file_handle.get_file())
       .await
       .unwrap()

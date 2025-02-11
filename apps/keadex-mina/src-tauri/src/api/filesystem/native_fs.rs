@@ -5,6 +5,7 @@ use async_trait::async_trait;
 use fs2::FileExt;
 use std::fs::File;
 use std::fs::OpenOptions;
+use std::io::BufRead;
 use std::io::BufReader;
 use std::io::Read;
 use std::io::Write;
@@ -38,7 +39,7 @@ impl CrossFile for NativeFile {
     }
   }
 
-  async fn get_buffer(&self) -> Box<dyn Read> {
+  async fn get_buffer(&self) -> Box<dyn BufRead> {
     let buf_reader = BufReader::new(self.file.try_clone().unwrap());
     return Box::new(buf_reader);
   }
@@ -86,5 +87,25 @@ impl FileSystemAPI for NativeFileSystemAPI {
   async fn create(&self, path: &Path) -> Result<Box<dyn CrossFile>, MinaError> {
     let file = File::create(&path)?;
     return Ok(Box::new(NativeFile { file }));
+  }
+
+  async fn create_dir_all(&self, path: &Path) -> Result<(), MinaError> {
+    let result = std::fs::create_dir_all(path)?;
+    return Ok(result);
+  }
+
+  async fn remove_file(&self, path: &Path) -> Result<(), MinaError> {
+    let result = std::fs::remove_file(path)?;
+    return Ok(result);
+  }
+
+  async fn remove_dir_all(&self, path: &Path) -> Result<(), MinaError> {
+    let result = std::fs::remove_dir_all(path)?;
+    return Ok(result);
+  }
+
+  async fn rename(&self, from: &Path, to: &Path) -> Result<(), MinaError> {
+    let result = std::fs::rename(from, to)?;
+    return Ok(result);
   }
 }
