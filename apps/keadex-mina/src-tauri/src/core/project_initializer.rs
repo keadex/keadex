@@ -3,10 +3,11 @@ Project Initializer.
 Module which exposes the function to initialize a project.
 */
 
+use crate::api::filesystem::FileSystemAPI as FsApiTrait;
 use crate::core::app::ROOT_RESOLVER;
 use crate::core::resolver::ResolvableModules::{
-  ComponentFsDAO, ContainerFsDAO, DiagramPlantUMLFsDAO, PersonFsDAO, ProjectLibraryIMDAO,
-  ProjectSettingsFsDAO, ProjectSettingsIMDAO, SoftwareSystemFsDAO,
+  ComponentFsDAO, ContainerFsDAO, DiagramPlantUMLFsDAO, FileSystemAPI, PersonFsDAO,
+  ProjectLibraryIMDAO, ProjectSettingsFsDAO, ProjectSettingsIMDAO, SoftwareSystemFsDAO,
 };
 use crate::dao::filesystem::diagram::diagram_plantuml_dao::FILE_NAME as DIAGRAM_PLANTUML_FILE_NAME;
 use crate::dao::filesystem::diagram::diagram_spec_dao::FILE_NAME as DIAGRAM_SPEC_FILE_NAME;
@@ -35,8 +36,6 @@ use crate::validator::project_validator::{
   validate_output_project_directory, validate_project_structure,
 };
 use convert_case::{Case, Casing};
-use std::fs::File;
-use std::io::Write;
 use std::path::{Path, MAIN_SEPARATOR};
 use strum::IntoEnumIterator;
 
@@ -206,11 +205,17 @@ pub async fn create_empty_project(
       &project_settings.root,
       &diagram_folder_name_from_type(&diagram_type),
     );
-    std::fs::create_dir_all(&diagram_type_path)?;
-    File::create(format!(
-      "{}{}{}",
-      &diagram_type_path, MAIN_SEPARATOR, ".gitkeep"
-    ))?;
+    resolve_to_write!(store, FileSystemAPI)
+      .await
+      .create_dir_all(&Path::new(&diagram_type_path))
+      .await?;
+    resolve_to_write!(store, FileSystemAPI)
+      .await
+      .create(&Path::new(&format!(
+        "{}{}{}",
+        &diagram_type_path, MAIN_SEPARATOR, ".gitkeep"
+      )))
+      .await?;
   }
 
   // Create demo diagram
@@ -225,43 +230,75 @@ pub async fn create_empty_project(
     MAIN_SEPARATOR,
     demo_diagram_name
   );
-  std::fs::create_dir_all(&demo_diagram_path)?;
-  let mut demo_plantuml_file = File::create(format!(
-    "{}{}{}",
-    demo_diagram_path, MAIN_SEPARATOR, DIAGRAM_PLANTUML_FILE_NAME
-  ))?;
-  demo_plantuml_file.write_all(generate_demo_diagram_puml().as_bytes())?;
-  let mut demo_spec_file = File::create(format!(
-    "{}{}{}",
-    demo_diagram_path, MAIN_SEPARATOR, DIAGRAM_SPEC_FILE_NAME
-  ))?;
-  demo_spec_file.write_all(generate_demo_diagram_spec().as_bytes())?;
+  resolve_to_write!(store, FileSystemAPI)
+    .await
+    .create_dir_all(&Path::new(&demo_diagram_path))
+    .await?;
+
+  // --- PlantUML File
+  let mut demo_plantuml_file = resolve_to_write!(store, FileSystemAPI)
+    .await
+    .create(&Path::new(&format!(
+      "{}{}{}",
+      demo_diagram_path, MAIN_SEPARATOR, DIAGRAM_PLANTUML_FILE_NAME
+    )))
+    .await?;
+  demo_plantuml_file
+    .write_all(generate_demo_diagram_puml().as_bytes())
+    .await?;
+
+  // --- Spec File
+  let mut demo_spec_file = resolve_to_write!(store, FileSystemAPI)
+    .await
+    .create(&Path::new(&format!(
+      "{}{}{}",
+      demo_diagram_path, MAIN_SEPARATOR, DIAGRAM_SPEC_FILE_NAME
+    )))
+    .await?;
+  demo_spec_file
+    .write_all(generate_demo_diagram_spec().as_bytes())
+    .await?;
 
   // Create library folder and the library's files (each of which contains an empty array)
   let library_path = project_library_path(&project_settings.root);
-  std::fs::create_dir_all(&library_path)?;
+  resolve_to_write!(store, FileSystemAPI)
+    .await
+    .create_dir_all(&Path::new(&library_path))
+    .await?;
   for library_file_name in LIBRARY_FILE_NAMES {
-    let mut file = File::create(project_library_file_path(
-      &project_settings.root,
-      &library_file_name,
-    ))?;
+    let mut file = resolve_to_write!(store, FileSystemAPI)
+      .await
+      .create(&Path::new(&project_library_file_path(
+        &project_settings.root,
+        &library_file_name,
+      )))
+      .await?;
+
     // Each library file contains initially an empty array
-    file.write_all(b"[]")?;
+    file.write_all(b"[]").await?;
   }
 
   // Generate README file
-  let mut readme_file = File::create(format!(
-    "{}{}{}",
-    &project_settings.root, MAIN_SEPARATOR, "README.md"
-  ))?;
-  readme_file.write_all(b"# My new Mina project\n\nThis is my new auto-generated Mina project.")?;
+  let mut readme_file = resolve_to_write!(store, FileSystemAPI)
+    .await
+    .create(&Path::new(&format!(
+      "{}{}{}",
+      &project_settings.root, MAIN_SEPARATOR, "README.md"
+    )))
+    .await?;
+  readme_file
+    .write_all(b"# My new Mina project\n\nThis is my new auto-generated Mina project.")
+    .await?;
 
   // Generate .gitignore file
-  let mut git_ignore = File::create(format!(
-    "{}{}{}",
-    &project_settings.root, MAIN_SEPARATOR, ".gitignore"
-  ))?;
-  git_ignore.write_all(b"*.log\ndist")?;
+  let mut git_ignore = resolve_to_write!(store, FileSystemAPI)
+    .await
+    .create(&Path::new(&format!(
+      "{}{}{}",
+      &project_settings.root, MAIN_SEPARATOR, ".gitignore"
+    )))
+    .await?;
+  git_ignore.write_all(b"*.log\ndist").await?;
 
   // Generate project settings file
   // Before saving the project settings in fs, replace the real root with a static placehodler.
@@ -281,8 +318,13 @@ pub async fn create_empty_project(
     .await?;
 
   // Generate hooks js file
-  let mut hooks_file = File::create(hooks_path(&project_settings.root))?;
-  hooks_file.write_all(generate_hooks_js_file().as_bytes())?;
+  let mut hooks_file = resolve_to_write!(store, FileSystemAPI)
+    .await
+    .create(&Path::new(&hooks_path(&project_settings.root)))
+    .await?;
+  hooks_file
+    .write_all(generate_hooks_js_file().as_bytes())
+    .await?;
 
   Ok(project_settings)
 }

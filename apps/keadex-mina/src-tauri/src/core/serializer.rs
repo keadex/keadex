@@ -3,7 +3,7 @@ Helper module which exports functions to serialize/deserialize files.
 */
 
 use crate::api::filesystem::CrossFile;
-use crate::api::filesystem::FileSystemAPI as FS_API;
+use crate::api::filesystem::FileSystemAPI as FsApiTrait;
 use crate::core::app::ROOT_RESOLVER;
 use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::error_handling::errors::{SERDE_PARSING_ERROR_CODE, SERDE_SERIALIZE_ERROR_CODE};

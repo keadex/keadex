@@ -4,10 +4,12 @@ Module which exposes functions to access/alter Diagrams data.
 Under the hood it uses DAOs.
 */
 
+use crate::api::filesystem::FileSystemAPI as FsApiTrait;
 use crate::core::app::ROOT_RESOLVER;
 use crate::core::resolver::ResolvableModules::BinaryFsDAO;
 use crate::core::resolver::ResolvableModules::DiagramPlantUMLFsDAO;
 use crate::core::resolver::ResolvableModules::DiagramSpecFsDAO;
+use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::core::resolver::ResolvableModules::ProjectSettingsIMDAO;
 use crate::core::serializer::serialize_diagram_to_plantuml;
 use crate::dao::filesystem::FileSystemDAO;
@@ -173,17 +175,22 @@ pub async fn delete_diagram(
     diagram_plantuml_path_from_name_type(diagram_name, diagram_type).await?;
   resolve_to_write!(store, DiagramPlantUMLFsDAO)
     .await
-    .delete(Path::new(&diagram_plantuml_path))?;
+    .delete(Path::new(&diagram_plantuml_path))
+    .await?;
 
   // Delete Spec file
   let diagram_spec_path = diagram_spec_path_from_name_type(diagram_name, diagram_type).await?;
   resolve_to_write!(store, DiagramSpecFsDAO)
     .await
-    .delete(Path::new(&diagram_spec_path))?;
+    .delete(Path::new(&diagram_spec_path))
+    .await?;
 
   // Delete directory of the diagram
   let diagram_path = diagram_dir_path_from_name_type(diagram_name, diagram_type).await?;
-  std::fs::remove_dir_all(&diagram_path)?;
+  resolve_to_write!(store, FileSystemAPI)
+    .await
+    .remove_dir_all(&Path::new(&diagram_path))
+    .await?;
 
   // Delete from the library's elements, the references to the deleted element
   Ok(library_repository::delete_diagram_references(diagram_name, diagram_type).await?)
@@ -211,11 +218,15 @@ pub async fn create_diagram(new_diagram: Diagram) -> Result<(), MinaError> {
     ));
   }
 
+  let store = ROOT_RESOLVER.get().read().await;
+
   // Create directory of the diagram
-  std::fs::create_dir_all(&diagram_dir_path)?;
+  resolve_to_write!(store, FileSystemAPI)
+    .await
+    .create_dir_all(&Path::new(&diagram_dir_path))
+    .await?;
 
   // Create PlantUML file
-  let store = ROOT_RESOLVER.get().read().await;
   let diagram_plantuml_path =
     diagram_plantuml_path_from_name_type(diagram_name, diagram_type).await?;
   resolve_to_write!(store, DiagramPlantUMLFsDAO)
@@ -264,7 +275,7 @@ pub async fn save_spec_diagram_raw_plantuml(
   log::debug!("Start diagram validation");
   let diagram_plantuml = validate_diagram(raw_plantuml, diagram_name, diagram_type).await?;
   log::debug!("End diagram validation");
-  
+
   let store = ROOT_RESOLVER.get().read().await;
   resolve_to_write!(store, DiagramPlantUMLFsDAO)
     .await

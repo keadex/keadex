@@ -1,10 +1,13 @@
 use crate::api::filesystem::CrossFile;
+use crate::api::filesystem::FileSystemAPI as FsApiTrait;
+use crate::core::app::ROOT_RESOLVER;
+use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::dao::filesystem::FileSystemDAO;
 use crate::dao::DAO;
 use crate::error_handling::errors::{FILE_DOES_NOT_EXIST, IO_ERROR_CODE};
 use crate::error_handling::mina_error::MinaError;
+use crate::resolve_to_write;
 use std::collections::HashMap;
-use std::fs::{create_dir_all, File};
 use std::path::Path;
 
 /**
@@ -41,9 +44,16 @@ impl FileSystemDAO<Vec<u8>> for BinaryDAO {
   ) -> Result<(), MinaError> {
     if !Path::new(&path).exists() {
       if create_if_not_exist {
+        let store = ROOT_RESOLVER.get().read().await;
         let prefix = path.parent().unwrap();
-        create_dir_all(prefix).unwrap();
-        File::create(&path)?;
+        resolve_to_write!(store, FileSystemAPI)
+          .await
+          .create_dir_all(&Path::new(&prefix))
+          .await?;
+        resolve_to_write!(store, FileSystemAPI)
+          .await
+          .create(&Path::new(&path))
+          .await?;
       } else {
         return Err(MinaError::new(IO_ERROR_CODE, FILE_DOES_NOT_EXIST));
       }

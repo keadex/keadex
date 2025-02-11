@@ -1,6 +1,8 @@
+use crate::api::filesystem::FileSystemAPI as FsApiTrait;
 use crate::core::app::ROOT_RESOLVER;
 use crate::core::project_initializer::load_project;
 use crate::core::project_initializer::unload_project;
+use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::core::resolver::ResolvableModules::ProjectSettingsIMDAO;
 use crate::dao::inmemory::InMemoryDAO;
 use crate::error_handling::mina_error::MinaError;
@@ -20,8 +22,8 @@ use std::collections::HashMap;
 use std::fs::rename;
 use std::fs::File;
 use std::io::BufRead;
-use std::io::BufReader;
 use std::io::Write;
+use std::path::Path;
 use walkdir::DirEntry;
 use walkdir::WalkDir;
 
@@ -121,8 +123,12 @@ pub async fn search_in_project<
       .filter_map(|e| e.ok())
     {
       if entry.file_type().is_file() {
-        let file = File::options().read(true).write(false).open(entry.path())?;
-        let reader = BufReader::new(file);
+        let file = resolve_to_write!(store, FileSystemAPI)
+          .await
+          .open(true, false, false, false, entry.path())
+          .await?;
+        let reader = file.get_buffer().await;
+
         let path = entry.path().to_str().unwrap();
 
         for (line_num, line) in reader.lines().enumerate() {
@@ -225,7 +231,14 @@ pub async fn search_and_replace_text(
   .await?;
 
   if !current_path.eq("") {
-    rename(format!("{}.tmp", current_path), &current_path)?;
+    let store = ROOT_RESOLVER.get().read().await;
+    resolve_to_write!(store, FileSystemAPI)
+      .await
+      .rename(
+        &Path::new(&format!("{}.tmp", current_path)),
+        &Path::new(&current_path),
+      )
+      .await?;
   }
 
   let count = results.len().try_into().unwrap();

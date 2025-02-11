@@ -4,7 +4,7 @@ pub mod library;
 pub mod project_settings_dao;
 
 use crate::api::filesystem::CrossFile;
-use crate::api::filesystem::FileSystemAPI as FS_API;
+use crate::api::filesystem::FileSystemAPI as FsApiTrait;
 use crate::core::app::ROOT_RESOLVER;
 use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::core::serializer::{deserialize_json_by_file, serialize_obj_to_json_string};
@@ -249,11 +249,18 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + Sync>: DAO {
   # Arguments
     * `path` - Path of the file to delete
   */
-  fn delete(&mut self, path: &Path) -> Result<(), MinaError> {
-    // Ignoring a possible error during unlock, since it reasonable that a diagram could not
-    // be opened before the deletion.
-    let _ = self.unlock_file(path, true);
-    std::fs::remove_file(path)?;
-    Ok(())
+  fn delete(&mut self, path: &Path) -> impl Future<Output = Result<(), MinaError>> {
+    async {
+      // Ignoring a possible error during unlock, since it reasonable that a diagram could not
+      // be opened before the deletion.
+      let _ = self.unlock_file(path, true);
+
+      let store = ROOT_RESOLVER.get().read().await;
+      resolve_to_write!(store, FileSystemAPI)
+        .await
+        .remove_file(path)
+        .await?;
+      Ok(())
+    }
   }
 }

@@ -1,12 +1,15 @@
 use crate::api::filesystem::CrossFile;
+use crate::api::filesystem::FileSystemAPI as FsApiTrait;
+use crate::core::app::ROOT_RESOLVER;
+use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::core::serializer::{deserialize_plantuml_by_file, serialize_diagram_to_plantuml};
 use crate::dao::filesystem::FileSystemDAO;
 use crate::dao::DAO;
 use crate::error_handling::errors::{FILE_DOES_NOT_EXIST, IO_ERROR_CODE};
 use crate::error_handling::mina_error::MinaError;
 use crate::model::diagram::diagram_plantuml::DiagramPlantUML;
+use crate::resolve_to_write;
 use std::collections::HashMap;
-use std::fs::File;
 use std::path::Path;
 
 pub const FILE_NAME: &str = "diagram.puml";
@@ -51,7 +54,11 @@ impl FileSystemDAO<DiagramPlantUML> for DiagramPlantUMLDAO {
   {
     if !Path::new(&path).exists() {
       if create_if_not_exist {
-        File::create(&path)?;
+        let store = ROOT_RESOLVER.get().read().await;
+        resolve_to_write!(store, FileSystemAPI)
+          .await
+          .create(&Path::new(&path))
+          .await?;
       } else {
         return Err(MinaError::new(IO_ERROR_CODE, FILE_DOES_NOT_EXIST));
       }
