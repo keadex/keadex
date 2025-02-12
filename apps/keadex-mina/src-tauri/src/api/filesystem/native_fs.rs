@@ -43,7 +43,7 @@ impl CrossFile for NativeFile {
     }
   }
 
-  async fn get_buffer(&self) -> Box<dyn BufRead> {
+  async fn get_buffer(&self) -> Box<dyn BufRead + Send> {
     let buf_reader = BufReader::new(self.file.try_clone().unwrap());
     return Box::new(buf_reader);
   }

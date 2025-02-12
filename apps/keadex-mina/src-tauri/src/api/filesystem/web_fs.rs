@@ -80,7 +80,7 @@ impl CrossFile for WebFile {
     return Ok(());
   }
 
-  async fn get_buffer(&self) -> Box<dyn BufRead> {
+  async fn get_buffer(&self) -> Box<dyn BufRead + Send> {
     let file = JsFuture::from(self.file_handle.as_ref().unwrap().get_file())
       .await
       .unwrap()
