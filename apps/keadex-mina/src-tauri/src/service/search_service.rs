@@ -350,6 +350,7 @@ pub async fn search_diagram_element(
 ) -> Result<DiagramElementSearchResults, MinaError> {
   // clean the plantuml
   let cleaned_plantuml_diagram_element = clean_plantuml_diagram_element(plantuml_diagram_element)?;
+  let re_diagrams_dir = create_search_diagram_elem_in_plantuml_regex(alias);
 
   let results_rc = Arc::new(RwLock::new(HashMap::new()));
   let mut reached_limit = false;
@@ -358,7 +359,7 @@ pub async fn search_diagram_element(
   if include_diagrams {
     reached_limit = search_in_project(
       |line, _line_num, path, diagrams_directory, library_directory| {
-        let re_diagrams_dir = create_search_diagram_elem_in_plantuml_regex(alias);
+        let re_diagrams_dir_clone = re_diagrams_dir.clone();
         let cleaned_plantuml_diagram_element_clone = cleaned_plantuml_diagram_element.clone();
         let results = Arc::clone(&results_rc);
         async move {
@@ -367,7 +368,7 @@ pub async fn search_diagram_element(
 
           let category = get_category(&path, &diagrams_directory, &library_directory);
 
-          let result = re_diagrams_dir.is_match(&cleaned_line);
+          let result = re_diagrams_dir_clone.is_match(&cleaned_line);
           if result.is_ok() {
             let did_match = result.unwrap();
             if did_match {
