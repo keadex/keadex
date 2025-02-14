@@ -1175,6 +1175,7 @@ dependencies = [
  "dotenv",
  "env_logger",
  "fancy-regex",
+ "futures",
  "js-sys",
  "layout-rs",
  "log",

@@ -185,14 +185,8 @@ pub async fn update_element(
       &vec![new_diagram_element.clone()],
       0,
     ))?;
-    let _ = search_and_replace_text(
-      &cleaned_old_plantuml,
-      &cleaned_new_plantuml,
-      true,
-      false,
-      i32::MAX,
-    )
-    .await?;
+    let _ =
+      search_and_replace_text(&cleaned_old_plantuml, &cleaned_new_plantuml, true, false).await?;
   }
 
   return result;

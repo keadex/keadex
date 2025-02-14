@@ -2795,6 +2795,7 @@ dependencies = [
  "env_logger",
  "fancy-regex",
  "fs2",
+ "futures",
  "js-sys",
  "layout-rs",
  "log",

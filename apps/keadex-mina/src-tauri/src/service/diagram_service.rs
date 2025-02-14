@@ -159,7 +159,7 @@ pub async fn check_cross_diagrams_elements_aliases(
           &plantuml_diagram_elem_to_check,
           true,
           true,
-          i32::MAX,
+          usize::MAX,
         )
         .await?;
         let mut partial_paths_found = vec![];

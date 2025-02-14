@@ -20,10 +20,12 @@ use crate::repository::library::library_repository::search_library_element;
 use crate::resolve_to_write;
 use async_std::sync::Arc;
 use async_std::sync::RwLock;
+use futures::future::join_all;
 use std::collections::HashMap;
 use std::future::Future;
 use std::io::BufRead;
 use std::path::Path;
+use std::usize;
 use walkdir::DirEntry;
 use walkdir::WalkDir;
 
@@ -84,12 +86,14 @@ pub async fn search_in_project<F, Fut>(
   mut predicate: F,
   include_diagrams: bool,
   include_library: bool,
-  limit: i32,
+  limit: usize,
 ) -> Result<bool, MinaError>
 where
   F: FnMut(String, usize, String, String, String) -> Fut,
   Fut: Future<Output = Result<bool, MinaError>>,
 {
+  let max_concurrent_predicates: usize = 10000;
+
   let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
     .await
@@ -105,6 +109,7 @@ where
 
     let mut count = 0;
     let mut reached_limit = false;
+    let mut concurrent_predicates = vec![];
 
     // Unload the project since we need to unlock all the project's file in order to read them
     unload_project(&project_settings.root).await?;
@@ -135,19 +140,27 @@ where
 
         for (line_num, line) in reader.lines().enumerate() {
           if let Ok(line) = line {
-            if predicate(
+            concurrent_predicates.push(predicate(
               line,
               line_num,
               String::from(path),
               diagrams_directory.clone(),
               library_directory.clone(),
-            )
-            .await?
-            {
-              count += 1;
-              if count > limit {
-                reached_limit = true;
-                count -= 1;
+            ));
+
+            if concurrent_predicates.len() == max_concurrent_predicates {
+              let results = join_all(concurrent_predicates).await;
+              for result in results {
+                if result.is_ok_and(|predicate_result| predicate_result) {
+                  count += 1;
+                  if count > limit {
+                    reached_limit = true;
+                    break;
+                  }
+                }
+              }
+              concurrent_predicates = vec![];
+              if reached_limit {
                 break;
               }
             }
@@ -159,6 +172,20 @@ where
 
       if reached_limit {
         break;
+      }
+    }
+
+    if !reached_limit && concurrent_predicates.len() > 0 {
+      // There are still some predicates to execute
+      let results = join_all(concurrent_predicates).await;
+      for result in results {
+        if result.is_ok_and(|predicate_result| predicate_result) {
+          count += 1;
+          if count > limit {
+            reached_limit = true;
+            break;
+          }
+        }
       }
     }
 
@@ -178,14 +205,12 @@ Searches for the given text in the project's files and replace it with the given
   * `replacement` - Replacement.
   * `include_diagrams` - If you want to include the diagrams directory in the search.
   * `include_library` - If you want to include the library directory in the search.
-  * `limit` - Limit of the returned results.
 */
 pub async fn search_and_replace_text(
   text_to_search: &str,
   replacement: &str,
   include_diagrams: bool,
   include_library: bool,
-  limit: i32,
 ) -> Result<FileSearchResults, MinaError> {
   log::debug!("Search {} and replace with {}", text_to_search, replacement);
 
@@ -259,7 +284,7 @@ pub async fn search_and_replace_text(
     },
     include_diagrams,
     include_library,
-    limit,
+    usize::MAX,
   )
   .await?;
 
@@ -294,7 +319,7 @@ pub async fn search_text(
   text_to_search: &str,
   include_diagrams: bool,
   include_library: bool,
-  limit: i32,
+  limit: usize,
 ) -> Result<FileSearchResults, MinaError> {
   let results_rc = Arc::new(RwLock::new(HashMap::new()));
   let reached_limit = search_in_project(
@@ -302,17 +327,19 @@ pub async fn search_text(
       let results = Arc::clone(&results_rc);
       async move {
         if line.to_lowercase().contains(&text_to_search.to_lowercase()) {
-          results
-            .write()
-            .await
-            .entry(String::from(&path))
-            .or_insert(Vec::new())
-            .push(FileSearchResult {
-              line_content: String::from(line),
-              line_number: line_num + 1,
-              category: get_category(&path, &diagrams_directory, &library_directory),
-              path: String::from(path),
-            });
+          if results.read().await.len() <= limit {
+            results
+              .write()
+              .await
+              .entry(String::from(&path))
+              .or_insert(Vec::new())
+              .push(FileSearchResult {
+                line_content: String::from(line),
+                line_number: line_num + 1,
+                category: get_category(&path, &diagrams_directory, &library_directory),
+                path: String::from(path),
+              });
+          }
           return Ok(true);
         }
         return Ok(false);
@@ -346,7 +373,7 @@ pub async fn search_diagram_element(
   plantuml_diagram_element: &str,
   include_diagrams: bool,
   include_library: bool,
-  limit: i32,
+  limit: usize,
 ) -> Result<DiagramElementSearchResults, MinaError> {
   // clean the plantuml
   let cleaned_plantuml_diagram_element = clean_plantuml_diagram_element(plantuml_diagram_element)?;
@@ -372,39 +399,40 @@ pub async fn search_diagram_element(
           if result.is_ok() {
             let did_match = result.unwrap();
             if did_match {
-              let mut result = DiagramElementSearchResult {
-                category,
-                path: String::from(&path),
-                partial_match: true,
-              };
+              if results.read().await.len() <= limit {
+                let mut result = DiagramElementSearchResult {
+                  category,
+                  path: String::from(&path),
+                  partial_match: true,
+                };
 
-              // The line matches the regex, which means that it is a valid diagram element with the alias to find.
-              // So check if the line (PlantUML) matches exactly the PlantUML of the diagram to find.
-              // If it does not match, this means the alias has been used for another diagram element, which is prohibited.
+                // The line matches the regex, which means that it is a valid diagram element with the alias to find.
+                // So check if the line (PlantUML) matches exactly the PlantUML of the diagram to find.
+                // If it does not match, this means the alias has been used for another diagram element, which is prohibited.
 
-              // In theory, you should check if the two strings are equal. But by doing so, elements
-              // with nested elements will be excluded:
-              //    - cleaned_plantuml_diagram_element:
-              //        "System_Boundary(boundary, "boundary") {
-              //
-              //         }"
-              //    - cleaned_line:
-              //        "System_Boundary(boundary, "boundary") {"
-              //    - cleaned_plantuml_diagram_element !== cleaned_line
-              //
-              // By using the "starts with" condition you cover also this case.
-              //    - cleaned_plantuml_diagram_element starts with cleaned_line
-              if cleaned_plantuml_diagram_element_clone.starts_with(&cleaned_line) {
-                result.partial_match = false
+                // In theory, you should check if the two strings are equal. But by doing so, elements
+                // with nested elements will be excluded:
+                //    - cleaned_plantuml_diagram_element:
+                //        "System_Boundary(boundary, "boundary") {
+                //
+                //         }"
+                //    - cleaned_line:
+                //        "System_Boundary(boundary, "boundary") {"
+                //    - cleaned_plantuml_diagram_element !== cleaned_line
+                //
+                // By using the "starts with" condition you cover also this case.
+                //    - cleaned_plantuml_diagram_element starts with cleaned_line
+                if cleaned_plantuml_diagram_element_clone.starts_with(&cleaned_line) {
+                  result.partial_match = false
+                }
+
+                results
+                  .write()
+                  .await
+                  .entry(String::from(&path))
+                  .or_insert(Vec::new())
+                  .push(result);
               }
-
-              results
-                .write()
-                .await
-                .entry(String::from(&path))
-                .or_insert(Vec::new())
-                .push(result);
-
               return Ok(true);
             }
           }

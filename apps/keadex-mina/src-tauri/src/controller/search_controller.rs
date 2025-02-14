@@ -21,7 +21,7 @@ pub async fn search(
   string_to_search: &str,
   include_diagrams_dir: bool,
   include_library_dir: bool,
-  limit: i32,
+  limit: usize,
 ) -> Result<FileSearchResults, MinaError> {
   let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
@@ -55,7 +55,7 @@ pub async fn search_diagram_element_alias(
   alias: &str,
   include_diagrams_dir: bool,
   include_library_dir: bool,
-  limit: i32,
+  limit: usize,
 ) -> Result<DiagramElementSearchResults, MinaError> {
   return search_diagram_element(alias, "", include_diagrams_dir, include_library_dir, limit).await;
 }
