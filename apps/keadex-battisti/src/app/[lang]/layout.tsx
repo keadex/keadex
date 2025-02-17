@@ -9,7 +9,7 @@ import Script from 'next/script'
 const Layout = dynamic(() => import('../../components/Layout/Layout'))
 
 export type PageProps = {
-  params: PageParams
+  params: Promise<PageParams>
 }
 
 export type PageParams = {
@@ -50,12 +50,14 @@ export async function generateStaticParams() {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function RootLayout({
+async function RootLayout({
   children,
-  params: { lang },
+  params,
 }: PageProps & {
   children: React.ReactNode
 }) {
+  const { lang } = await params
+
   return (
     <html lang={lang ?? fallbackLng} dir={dir(lang)}>
       <Script

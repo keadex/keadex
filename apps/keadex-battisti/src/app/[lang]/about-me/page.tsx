@@ -51,26 +51,31 @@ export const metadata: Metadata = {
   },
 }
 
-const AboutMe: NextPage<PageProps> = async ({ params: { lang } }) => {
+const AboutMe: NextPage<PageProps> = async ({ params }) => {
+  const { lang } = await params
   const { t } = await useTranslation(lang)
 
   const timelineItems: TimelineItem[] = [
     {
+      id: 'common-summary',
       description: (
         <div className="text-3xl text-brand2 mt-8">{t('common.summary')}</div>
       ),
     },
     {
+      id: 'about-me_summary',
       description: (
         <div dangerouslySetInnerHTML={{ __html: t('home.about_me_summary') }} />
       ),
     },
     {
+      id: 'hobbies',
       description: (
         <div className="text-3xl text-brand2 mt-8">{t('common.hobbies')}</div>
       ),
     },
     {
+      id: 'about-me_hobbies',
       description: (
         <div className="about-me__hobbies">
           <Image src={snowboarding} alt="Snowboarding hobby" className="mt-0" />
@@ -83,6 +88,7 @@ const AboutMe: NextPage<PageProps> = async ({ params: { lang } }) => {
       ),
     },
     {
+      id: 'experience',
       description: (
         <div className="text-3xl text-brand2 mt-8">
           {t('common.experience')}
@@ -90,6 +96,7 @@ const AboutMe: NextPage<PageProps> = async ({ params: { lang } }) => {
       ),
     },
     {
+      id: 'since',
       year: `${t('common.since')} '21`,
       title: 'Paramount',
       image: paramount,
@@ -154,6 +161,7 @@ const AboutMe: NextPage<PageProps> = async ({ params: { lang } }) => {
       ),
     },
     {
+      id: 'exp_18-21',
       year: `'18 - '21`,
       title: 'Vodafone',
       image: vodafone,
@@ -237,6 +245,7 @@ const AboutMe: NextPage<PageProps> = async ({ params: { lang } }) => {
       ),
     },
     {
+      id: 'exp_17-18',
       year: `'17 - '18`,
       title: 'Atos',
       image: atos,
@@ -289,6 +298,7 @@ const AboutMe: NextPage<PageProps> = async ({ params: { lang } }) => {
       ),
     },
     {
+      id: 'exp_15-17',
       year: `'15 - '17`,
       title: 'IBM',
       image: ibm,
@@ -341,6 +351,7 @@ const AboutMe: NextPage<PageProps> = async ({ params: { lang } }) => {
       ),
     },
     {
+      id: 'exp_14-15',
       year: `'14 - '15`,
       title: 'Open Reply',
       image: reply,
@@ -393,6 +404,7 @@ const AboutMe: NextPage<PageProps> = async ({ params: { lang } }) => {
       ),
     },
     {
+      id: 'exp_13',
       year: `2013`,
       title: 'University of Liverpool',
       image: univliverpool,
@@ -428,7 +440,9 @@ const AboutMe: NextPage<PageProps> = async ({ params: { lang } }) => {
         />
       ),
     },
-    {},
+    {
+      id: 'exp_empty',
+    },
   ]
 
   return (

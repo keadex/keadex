@@ -1,11 +1,7 @@
 import { type Metadata, type NextPage } from 'next'
 import keadexMina from '../../../../../../public/img/keadex-mina-logo.svg'
 import { PageProps } from '../../../layout'
-import dynamic from 'next/dynamic'
-
-const MinaLive = dynamic(() => import('@keadex/mina-live/MinaLive'), {
-  ssr: false,
-})
+import MinaLiveClient from '../../../../../components/MinaLiveClient/MinaLiveClient'
 
 const seo = {
   title: 'Keadex Mina Live Editor',
@@ -35,10 +31,10 @@ export const metadata: Metadata = {
   },
 }
 
-const MinaLiveEditor: NextPage<PageProps> = async ({ params: { lang } }) => {
+const MinaLiveEditor: NextPage<PageProps> = async () => {
   return (
     <div className="page font-light flex flex-col pb-10">
-      <MinaLive />
+      <MinaLiveClient />
     </div>
   )
 }

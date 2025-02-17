@@ -1,4 +1,5 @@
 export type TimelineItem = {
+  id: string
   year?: string
   title?: string
   image?: unknown
@@ -35,7 +36,7 @@ export const Timeline = (props: TimelineProps) => {
 
   return props.items.map((item) => {
     return (
-      <div className="timeline flex flex-row">
+      <div className="timeline flex flex-row" key={item.id}>
         <div className="min-w-[4rem] md:min-w-[8rem] min-h-[9rem] flex relative">
           <span className="w-[0.1rem] h-full mx-auto block bg-brand1" />
           <div className="left-1/2 transform -translate-x-1/2 absolute w-max flex flex-col text-center py-5">
