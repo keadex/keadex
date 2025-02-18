@@ -10,7 +10,7 @@ This is the main entrypoint for the desktop app.
 
 #[cfg(desktop)]
 use {
-  dotenv::dotenv, keadex_mina::__cmd__close_diagram, keadex_mina::__cmd__close_project,
+  keadex_mina::__cmd__close_diagram, keadex_mina::__cmd__close_project,
   keadex_mina::__cmd__create_diagram, keadex_mina::__cmd__create_project,
   keadex_mina::__cmd__delete_diagram, keadex_mina::__cmd__delete_library_element,
   keadex_mina::__cmd__diagram_to_link_string, keadex_mina::__cmd__export_diagram_to_file,
@@ -61,9 +61,7 @@ use {
 fn main() {
   #[cfg(desktop)]
   {
-    dotenv().ok();
-    keadex_mina::core::logger::init();
-    let _app = keadex_mina::core::app::App::default();
+    let _app = keadex_mina::core::app::App::init();
     tauri::Builder::default()
       .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
         let _ = app
