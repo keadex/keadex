@@ -6,15 +6,24 @@ function withMinaLiveWebpackConfig(config) {
   if (!config.externals) config.externals = []
   if (!config.resolve) config.resolve = {}
   if (!config.plugins) config.plugins = []
+
   config.externals.push({
     canvas: 'commonjs canvas',
   })
+
   config.resolve.alias = {
     ...config.resolve.alias,
     '@tauri-apps/api/webviewWindow': require.resolve(
       '@keadex/mina-live/tauri-web-adapter',
     ),
   }
+  config.resolve.extensions.push('.wasm')
+
+  config.experiments = {
+    ...config.experiments,
+    asyncWebAssembly: true,
+  }
+
   config.plugins.push(
     new DefinePlugin({
       'import.meta.env': {
