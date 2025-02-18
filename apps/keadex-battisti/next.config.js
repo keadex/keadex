@@ -17,7 +17,7 @@ const cspHeader = `
     connect-src 'self' https://vercel.live https://consentcdn.cookiebot.com https://region1.google-analytics.com https://gist.githubusercontent.com https://raw.githubusercontent.com https://keadex.dev;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://vercel.live https://www.googletagmanager.com;
     frame-src 'self' https://consentcdn.cookiebot.com https://vercel.live https://www.youtube.com;
-    style-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' blob: data: https://imgsct.cookiebot.com https://www.googletagmanager.com;
     font-src 'self';
     object-src 'none';
