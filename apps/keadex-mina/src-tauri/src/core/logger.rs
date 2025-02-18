@@ -5,9 +5,9 @@ That makes it a bit nicer to consume through some sidecar or ambient environment
 that collects and surfaces log events.
 */
 
-use env_logger::{fmt::Timestamp, Builder, Env};
+use chrono::Utc;
+use env_logger::{Builder, Env};
 use log::Level;
-use serde::ser::Serializer;
 use serde::Serialize;
 use snailquote::unescape;
 use std::io::Write;
@@ -26,7 +26,7 @@ pub fn init() {
   Builder::from_env(env)
     .format(|mut buf, record| {
       let record = SerializeRecord {
-        ts: buf.timestamp(),
+        ts: Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true),
         lvl: record.level(),
         module_path: record.module_path(),
         msg: unescape(record.args().to_string().as_str()).unwrap(),
@@ -39,20 +39,12 @@ pub fn init() {
 
 #[derive(Serialize)]
 struct SerializeRecord<'a> {
-  #[serde(serialize_with = "serialize_ts")]
   #[serde(rename = "@t")]
-  ts: Timestamp,
+  ts: String,
   #[serde(rename = "@l")]
   lvl: Level,
   #[serde(skip_serializing_if = "Option::is_none")]
   module_path: Option<&'a str>,
   #[serde(rename = "@m")]
   msg: String,
-}
-
-fn serialize_ts<S>(ts: &Timestamp, s: S) -> Result<S::Ok, S::Error>
-where
-  S: Serializer,
-{
-  s.collect_str(ts)
 }

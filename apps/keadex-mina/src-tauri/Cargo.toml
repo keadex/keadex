@@ -64,9 +64,11 @@ wasm-bindgen-futures = {version = "0.4", optional = true}
 tauri = { version = "2", features = [
   "macos-private-api",
 ], optional = true }
+console_error_panic_hook = {version = "0.1", optional = true}
 async-std = "1.13"
 async-trait = "0.1"
 futures = "0.3"
+chrono = "0.4"
 tauri-plugin-http = { version = "2", optional = true }
 tauri-plugin-clipboard-manager = { version = "2.0.1", optional = true }
 tauri-plugin-os = { version = "2", optional = true }
@@ -103,6 +105,7 @@ desktop = [
 ]
 web = [
   "dep:web-sys",
-  "dep:wasm-bindgen-futures"
+  "dep:wasm-bindgen-futures",
+  "dep:console_error_panic_hook"
 ]
 mina-web-viewer = []
