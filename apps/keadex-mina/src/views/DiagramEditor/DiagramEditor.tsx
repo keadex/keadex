@@ -54,7 +54,6 @@ import './DiagramEditor.css'
 
 const TOAST_ERROR_DEFAULT_CONFIGS: ToastOptions = {
   className: 'diagram-editor_toast--error',
-  bodyClassName: 'diagram-editor_toast--error-body',
   position: 'bottom-left',
   autoClose: false,
 }

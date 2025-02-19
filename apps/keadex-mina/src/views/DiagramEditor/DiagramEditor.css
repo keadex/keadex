@@ -1,14 +1,9 @@
-.Toastify__toast-container:has(.diagram-editor_toast--error) {
-  width: 100%;
-  left: 0;
-  white-space: pre-wrap;
+.Toastify__toast-container:has(div):has(.diagram-editor_toast--error) {
+  @apply w-full left-0 px-5;
 }
 
 .diagram-editor_toast--error {
-  @apply border-third border border-solid;
-}
-
-.diagram-editor_toast--error-body {
+  @apply border-third border border-solid w-full whitespace-pre-wrap;
   font-family: monospace;
 }
 
