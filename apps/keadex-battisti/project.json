@@ -17,10 +17,14 @@
         },
         "production": {}
       },
-      "dependsOn": [
-        "lint",
-        { "projects": ["keadex-mina"], "target": "build-wasm" }
-      ]
+      "dependsOn": ["build-mina-live"]
+    },
+    "build-mina-live": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn nx build-wasm mina-live"
+      },
+      "dependsOn": ["lint"]
     },
     "serve": {
       "executor": "@nx/next:server",
