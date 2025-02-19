@@ -6,8 +6,9 @@ use crate::error_handling::mina_error::MinaError;
 use crate::model::project::Project;
 use crate::model::project_settings::ProjectSettings;
 use crate::resolve_to_write;
-use std::path::MAIN_SEPARATOR_STR;
 use wasm_bindgen::prelude::wasm_bindgen;
+use wasm_bindgen::JsValue;
+use web_sys::console;
 
 #[wasm_bindgen]
 pub fn init_app() -> Result<(), MinaError> {
@@ -20,9 +21,9 @@ pub async fn create_project(
   project_settings: ProjectSettings,
   dir_handle: Option<web_sys::FileSystemDirectoryHandle>,
 ) -> Result<ProjectSettings, MinaError> {
-  log::info!("Create project web");
+  console::log_1(&JsValue::from("Create project web"));
   let mut project_settings_web = project_settings.clone();
-  project_settings_web.root = MAIN_SEPARATOR_STR.to_string();
+  project_settings_web.root = "".to_string();
   let store = ROOT_RESOLVER.get().read().await;
   resolve_to_write!(store, FileSystemAPI)
     .await
@@ -34,8 +35,11 @@ pub async fn create_project(
 pub async fn open_project(
   dir_handle: Option<web_sys::FileSystemDirectoryHandle>,
 ) -> Result<Project, MinaError> {
-  let root = MAIN_SEPARATOR_STR;
-  log::info!("Open project web {} - {:?}", root, dir_handle);
+  let root = "";
+  console::log_1(&JsValue::from(format!(
+    "Open project web {} - {:?}",
+    root, dir_handle,
+  )));
   let store = ROOT_RESOLVER.get().read().await;
   resolve_to_write!(store, FileSystemAPI)
     .await
@@ -45,8 +49,8 @@ pub async fn open_project(
 
 #[wasm_bindgen]
 pub async fn close_project() -> Result<bool, MinaError> {
-  let root = MAIN_SEPARATOR_STR;
-  log::info!("Close project web {}", root);
+  let root = "";
+  console::log_1(&JsValue::from(format!("Close project web {}", root)));
   let store = ROOT_RESOLVER.get().read().await;
   resolve_to_write!(store, FileSystemAPI)
     .await
