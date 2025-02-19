@@ -1,0 +1,25 @@
+{
+  "name": "mina-live",
+  "collaborators": [
+    "Keadex"
+  ],
+  "description": "Rust code to port Keadex Mina to the web",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keadex/keadex"
+  },
+  "files": [
+    "mina_live_bg.wasm",
+    "mina_live.js",
+    "mina_live_bg.js",
+    "mina_live.d.ts"
+  ],
+  "module": "mina_live.js",
+  "types": "mina_live.d.ts",
+  "sideEffects": [
+    "./mina_live.js",
+    "./snippets/*"
+  ]
+}

@@ -5,50 +5,15 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "semantic-release": {
-      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
-      "options": {
-        "buildTarget": "build",
-        "outputPath": "libs/mina-live/dist"
-      }
-    },
-    "build": {
+    "build-wasm": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "yarn nx build-types mina-live"
-      },
-      "dependsOn": []
-    },
-    "build-types": {
-      "executor": "nx:run-script",
-      "options": {
-        "script": "tsc --p ./tsconfig.lib.json"
-      },
-      "dependsOn": ["build-code"]
-    },
-    "build-code": {
-      "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "compiler": "babel",
-        "outputPath": "libs/mina-live/dist",
-        "outputHashing": "none",
-        "main": "libs/mina-live/index.ts",
-        "tsConfig": "libs/mina-live/tsconfig.lib.json",
-        "webpackConfig": "libs/mina-live/webpack.config.ts",
-        "optimization": true,
-        "sourceMap": false,
-        "namedChunks": false,
-        "extractLicenses": true,
-        "vendorChunk": false,
-        "externalDependencies": "all"
-      },
-      "dependsOn": ["build-wasm"]
-    },
-    "build-wasm": {
-      "executor": "nx:run-script",
-      "options": {
-        "script": "wasm-pack build ./src-rust --target bundler"
+        "cwd": "libs/mina-live",
+        "commands": [
+          "yarn wasm-pack build ./src-rust --target bundler",
+          "npx rimraf src-rust/pkg/.gitignore"
+        ],
+        "parallel": false
       }
     },
     "lint": {
@@ -57,14 +22,6 @@
       "options": {
         "lintFilePatterns": ["libs/mina-live/**/*.{ts,tsx,js,jsx}"],
         "ignorePath": "libs/mina-live/.eslintignore"
-      }
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/mina-live"],
-      "options": {
-        "jestConfig": "libs/mina-live/jest.config.ts",
-        "passWithNoTests": true
       }
     }
   }
