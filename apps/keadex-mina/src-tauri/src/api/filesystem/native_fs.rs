@@ -43,9 +43,9 @@ impl CrossFile for NativeFile {
     }
   }
 
-  async fn get_buffer(&self) -> Box<dyn BufRead + Send> {
-    let buf_reader = BufReader::new(self.file.try_clone().unwrap());
-    return Box::new(buf_reader);
+  async fn get_buffer(&self) -> Result<Box<dyn BufRead + Send>, MinaError> {
+    let buf_reader = BufReader::new(self.file.try_clone()?);
+    return Ok(Box::new(buf_reader));
   }
 
   async fn write_all(&mut self, buf: &[u8]) -> Result<(), MinaError> {

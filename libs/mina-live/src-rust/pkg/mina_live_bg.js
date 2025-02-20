@@ -265,7 +265,7 @@ export function create_project(project_settings, dir_handle) {
 
 /**
  * @param {FileSystemDirectoryHandle | null} [dir_handle]
- * @returns {Promise<Project>}
+ * @returns {Promise<any>}
  */
 export function open_project(dir_handle) {
     const ret = wasm.open_project(isLikeNone(dir_handle) ? 0 : addToExternrefTable0(dir_handle));
@@ -281,10 +281,10 @@ export function close_project() {
 }
 
 function __wbg_adapter_42(arg0, arg1, arg2) {
-    wasm.closure835_externref_shim(arg0, arg1, arg2);
+    wasm.closure944_externref_shim(arg0, arg1, arg2);
 }
 
-function __wbg_adapter_87(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_91(arg0, arg1, arg2, arg3) {
     wasm.closure54_externref_shim(arg0, arg1, arg2, arg3);
 }
 
@@ -925,7 +925,7 @@ export class Container {
      * @returns {BaseElement}
      */
     get base_data() {
-        const ret = wasm.__wbg_get_component_base_data(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_container_base_data(this.__wbg_ptr);
         return BaseElement.__wrap(ret);
     }
     /**
@@ -934,7 +934,7 @@ export class Container {
     set base_data(arg0) {
         _assertClass(arg0, BaseElement);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_component_base_data(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_container_base_data(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {string | undefined}
@@ -954,7 +954,7 @@ export class Container {
     set technology(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_component_technology(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_container_technology(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {ContainerType | undefined}
@@ -2898,76 +2898,11 @@ export class Position {
     }
 }
 
-const ProjectFinalization = (typeof FinalizationRegistry === 'undefined')
-    ? { register: () => {}, unregister: () => {} }
-    : new FinalizationRegistry(ptr => wasm.__wbg_project_free(ptr >>> 0, 1));
-
-export class Project {
-
-    static __wrap(ptr) {
-        ptr = ptr >>> 0;
-        const obj = Object.create(Project.prototype);
-        obj.__wbg_ptr = ptr;
-        ProjectFinalization.register(obj, obj.__wbg_ptr, obj);
-        return obj;
-    }
-
-    __destroy_into_raw() {
-        const ptr = this.__wbg_ptr;
-        this.__wbg_ptr = 0;
-        ProjectFinalization.unregister(this);
-        return ptr;
-    }
-
-    free() {
-        const ptr = this.__destroy_into_raw();
-        wasm.__wbg_project_free(ptr, 0);
-    }
-    /**
-     * @returns {ProjectSettings}
-     */
-    get project_settings() {
-        const ret = wasm.__wbg_get_project_project_settings(this.__wbg_ptr);
-        return ProjectSettings.__wrap(ret);
-    }
-    /**
-     * @param {ProjectSettings} arg0
-     */
-    set project_settings(arg0) {
-        _assertClass(arg0, ProjectSettings);
-        var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_project_project_settings(this.__wbg_ptr, ptr0);
-    }
-    /**
-     * @returns {ProjectLibrary}
-     */
-    get project_library() {
-        const ret = wasm.__wbg_get_project_project_library(this.__wbg_ptr);
-        return ProjectLibrary.__wrap(ret);
-    }
-    /**
-     * @param {ProjectLibrary} arg0
-     */
-    set project_library(arg0) {
-        _assertClass(arg0, ProjectLibrary);
-        var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_project_project_library(this.__wbg_ptr, ptr0);
-    }
-}
-
 const ProjectLibraryFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_projectlibrary_free(ptr >>> 0, 1));
 
 export class ProjectLibrary {
-
-    static __wrap(ptr) {
-        ptr = ptr >>> 0;
-        const obj = Object.create(ProjectLibrary.prototype);
-        obj.__wbg_ptr = ptr;
-        ProjectLibraryFinalization.register(obj, obj.__wbg_ptr, obj);
-        return obj;
-    }
 
     __destroy_into_raw() {
         const ptr = this.__wbg_ptr;
@@ -3214,7 +3149,7 @@ export class Relationship {
      * @returns {BaseElement}
      */
     get base_data() {
-        const ret = wasm.__wbg_get_relationship_base_data(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_component_base_data(this.__wbg_ptr);
         return BaseElement.__wrap(ret);
     }
     /**
@@ -3223,7 +3158,7 @@ export class Relationship {
     set base_data(arg0) {
         _assertClass(arg0, BaseElement);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_relationship_base_data(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_component_base_data(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {string | undefined}
@@ -3243,7 +3178,7 @@ export class Relationship {
     set from(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_relationship_from(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_component_technology(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -3263,7 +3198,7 @@ export class Relationship {
     set to(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_boundary_boundary_custom_type(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_relationship_to(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -3762,6 +3697,17 @@ export function __wbg_instanceof_ArrayBuffer_e14585432e3737fc(arg0) {
     return ret;
 };
 
+export function __wbg_instanceof_Error_4d54113b22d20306(arg0) {
+    let result;
+    try {
+        result = arg0 instanceof Error;
+    } catch (_) {
+        result = false;
+    }
+    const ret = result;
+    return ret;
+};
+
 export function __wbg_instanceof_FileSystemDirectoryHandle_0906fc139d75557b(arg0) {
     let result;
     try {
@@ -3835,6 +3781,11 @@ export function __wbg_log_c222819a41e063d3(arg0) {
     console.log(arg0);
 };
 
+export function __wbg_message_97a2af9b89d693a3(arg0) {
+    const ret = arg0.message;
+    return ret;
+};
+
 export function __wbg_minaerror_new(arg0) {
     const ret = MinaError.__wrap(arg0);
     return ret;
@@ -3852,7 +3803,7 @@ export function __wbg_new_23a2665fac83c611(arg0, arg1) {
             const a = state0.a;
             state0.a = 0;
             try {
-                return __wbg_adapter_87(a, state0.b, arg0, arg1);
+                return __wbg_adapter_91(a, state0.b, arg0, arg1);
             } finally {
                 state0.a = a;
             }
@@ -3936,11 +3887,6 @@ export function __wbg_point_new(arg0) {
 
 export function __wbg_point_unwrap(arg0) {
     const ret = Point.__unwrap(arg0);
-    return ret;
-};
-
-export function __wbg_project_new(arg0) {
-    const ret = Project.__wrap(arg0);
     return ret;
 };
 
@@ -4101,8 +4047,8 @@ export function __wbindgen_cb_drop(arg0) {
     return ret;
 };
 
-export function __wbindgen_closure_wrapper2905(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 836, __wbg_adapter_42);
+export function __wbindgen_closure_wrapper3201(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 945, __wbg_adapter_42);
     return ret;
 };
 

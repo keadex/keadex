@@ -24,7 +24,7 @@ pub struct CrossPathBuf {
 pub trait CrossFile: Send + Sync {
   fn unlock(&self) -> Result<(), MinaError>;
   fn lock_exclusive(&self) -> Result<(), MinaError>;
-  async fn get_buffer(&self) -> Box<dyn BufRead + Send>;
+  async fn get_buffer(&self) -> Result<Box<dyn BufRead + Send>, MinaError>;
   async fn write_all(&mut self, buf: &[u8]) -> Result<(), MinaError>;
   async fn read_as_string(&mut self) -> Result<String, MinaError>;
   async fn metadata(&self) -> Result<CrossMetadata, MinaError>;

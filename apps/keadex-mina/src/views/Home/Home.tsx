@@ -46,10 +46,14 @@ export const Home = React.memo((props: HomeProps) => {
 
   async function handleOpenProject() {
     if (ENV_SETTINGS.WEB_MODE) {
-      const directoryHandle = await window.showDirectoryPicker({
-        mode: 'readwrite',
-      })
-      openProject(undefined, directoryHandle)
+      try {
+        const directoryHandle = await window.showDirectoryPicker({
+          mode: 'readwrite',
+        })
+        openProject(undefined, directoryHandle)
+      } catch (e) {
+        // user has closed the dir picker without choosing the directory
+      }
     } else {
       dialog.open({ directory: true }).then(async (path) => {
         if (Array.isArray(path)) toast.error(t('common.error.invalid_path'))

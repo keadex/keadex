@@ -71,7 +71,7 @@ pub async fn deserialize_json_by_file<T>(
 where
   T: de::DeserializeOwned,
 {
-  let reader = file.get_buffer().await;
+  let reader = file.get_buffer().await?;
   let result = serde_json::from_reader(reader);
   if let Err(error) = result {
     log::error!("{}", error);
@@ -89,7 +89,7 @@ Deserializes a PlantUML file
 pub async fn deserialize_plantuml_by_file(
   file: &mut Box<dyn CrossFile>,
 ) -> Result<DiagramPlantUML, MinaError> {
-  let mut reader = file.get_buffer().await;
+  let mut reader = file.get_buffer().await?;
   let mut buffer = String::new();
   reader.read_to_string(&mut buffer).unwrap();
   deserialize_plantuml_by_string(&buffer)

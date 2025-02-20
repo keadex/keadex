@@ -80,17 +80,15 @@ impl CrossFile for WebFile {
     return Ok(());
   }
 
-  async fn get_buffer(&self) -> Box<dyn BufRead + Send> {
+  async fn get_buffer(&self) -> Result<Box<dyn BufRead + Send>, MinaError> {
     let file = JsFuture::from(self.file_handle.as_ref().unwrap().get_file())
-      .await
-      .unwrap()
-      .dyn_into::<File>()
-      .unwrap();
-    let array_buffer = JsFuture::from(file.array_buffer()).await.unwrap();
+      .await?
+      .dyn_into::<File>()?;
+    let array_buffer = JsFuture::from(file.array_buffer()).await?;
     let uint8_array = Uint8Array::new(&array_buffer);
     let mut data = vec![0; uint8_array.length() as usize];
     uint8_array.copy_to(&mut data);
-    return Box::new(Cursor::new(data));
+    return Ok(Box::new(Cursor::new(data)));
   }
 
   async fn write_all(&mut self, data: &[u8]) -> Result<(), MinaError> {

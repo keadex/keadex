@@ -134,7 +134,7 @@ where
           .await
           .open(true, false, false, false, entry.path())
           .await?;
-        let reader = file.get_buffer().await;
+        let reader = file.get_buffer().await?;
 
         let path = entry.path().to_str().unwrap();
 

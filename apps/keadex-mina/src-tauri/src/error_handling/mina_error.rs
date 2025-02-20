@@ -1,6 +1,6 @@
 use crate::error_handling::errors::{
   INVALID_PLANTUML_ERROR_CODE, IO_ERROR_CODE, OPENAI_ERROR_CODE, SERDE_PARSING_ERROR_CODE,
-  STRUM_PARSING_ERROR_CODE, WALKDIR_ERROR_CODE, WASM_ERROR_CODE,
+  SERDE_SERIALIZE_ERROR_CODE, STRUM_PARSING_ERROR_CODE, WALKDIR_ERROR_CODE, WASM_ERROR_CODE,
 };
 use crate::parser::plantuml::plantuml_parser::Rule;
 use async_openai_wasm::error::OpenAIError;
@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use std::fmt;
 use ts_rs::TS;
 use wasm_bindgen::prelude::wasm_bindgen;
+use wasm_bindgen::JsCast;
 
 /**
 Error exposed to the front-end.
@@ -66,6 +67,12 @@ impl From<serde_json::Error> for MinaError {
   }
 }
 
+impl From<serde_wasm_bindgen::Error> for MinaError {
+  fn from(err: serde_wasm_bindgen::Error) -> MinaError {
+    MinaError::new(SERDE_SERIALIZE_ERROR_CODE, err.to_string().as_str())
+  }
+}
+
 impl From<OpenAIError> for MinaError {
   fn from(err: OpenAIError) -> MinaError {
     MinaError::new(OPENAI_ERROR_CODE, err.to_string().as_str())
@@ -80,6 +87,14 @@ impl From<walkdir::Error> for MinaError {
 
 impl From<wasm_bindgen::JsValue> for MinaError {
   fn from(err: wasm_bindgen::JsValue) -> MinaError {
-    MinaError::new(WASM_ERROR_CODE, &err.as_string().unwrap())
+    MinaError::new(
+      WASM_ERROR_CODE,
+      &err
+        .dyn_into::<js_sys::Error>()
+        .unwrap()
+        .message()
+        .as_string()
+        .unwrap(),
+    )
   }
 }
