@@ -132,10 +132,14 @@ impl WebFileSystemAPI {
     parent_dir_handle: &FileSystemDirectoryHandle,
     dir_handle: &FileSystemDirectoryHandle,
     path_structure: &mut PathStructure,
-    entry_type: FileSystemHandleKind,
     create_dir_if_not_exist: bool,
     create_file_if_not_exist: bool,
   ) -> Result<WebFile, JsValue> {
+    let mut entry_type = FileSystemHandleKind::File;
+    if path_structure.file_name.is_none() {
+      entry_type = FileSystemHandleKind::Directory;
+    }
+
     let dir_to_open;
     let mut handle;
 
@@ -202,7 +206,6 @@ impl WebFileSystemAPI {
                 .dyn_into::<FileSystemDirectoryHandle>()
                 .unwrap(),
               path_structure,
-              entry_type,
               create_dir_if_not_exist,
               create_file_if_not_exist,
             ),
@@ -233,7 +236,6 @@ impl WebFileSystemAPI {
               .dyn_into::<FileSystemDirectoryHandle>()
               .unwrap(),
             path_structure,
-            entry_type,
             create_dir_if_not_exist,
             create_file_if_not_exist,
           ),
@@ -296,7 +298,6 @@ impl FileSystemAPI for WebFileSystemAPI {
           root_dir_handle,
           root_dir_handle,
           &mut path_structure,
-          FileSystemHandleKind::File,
           false,
           false,
         )
@@ -315,7 +316,6 @@ impl FileSystemAPI for WebFileSystemAPI {
           root_dir_handle,
           root_dir_handle,
           &mut path_structure,
-          FileSystemHandleKind::File,
           false,
           true,
         )
@@ -334,7 +334,6 @@ impl FileSystemAPI for WebFileSystemAPI {
           root_dir_handle,
           root_dir_handle,
           &mut path_structure,
-          FileSystemHandleKind::Directory,
           true,
           false,
         )
@@ -353,7 +352,6 @@ impl FileSystemAPI for WebFileSystemAPI {
           root_dir_handle,
           root_dir_handle,
           &mut path_structure,
-          FileSystemHandleKind::File,
           false,
           false,
         )
@@ -378,7 +376,6 @@ impl FileSystemAPI for WebFileSystemAPI {
           root_dir_handle,
           root_dir_handle,
           &mut path_structure,
-          FileSystemHandleKind::Directory,
           false,
           false,
         )
@@ -404,7 +401,6 @@ impl FileSystemAPI for WebFileSystemAPI {
           root_dir_handle,
           root_dir_handle,
           &mut split_path_components(&from.to_str().unwrap()),
-          FileSystemHandleKind::File,
           false,
           false,
         )
@@ -414,7 +410,6 @@ impl FileSystemAPI for WebFileSystemAPI {
           root_dir_handle,
           root_dir_handle,
           &mut split_path_components(&to.to_str().unwrap()),
-          FileSystemHandleKind::File,
           true,
           true,
         )
@@ -443,7 +438,6 @@ impl FileSystemAPI for WebFileSystemAPI {
             &root_dir_handle,
             &root_dir_handle,
             &mut path_structure,
-            FileSystemHandleKind::Directory,
             false,
             false,
           )
