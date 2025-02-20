@@ -165,14 +165,14 @@ export const Layout = React.memo((props: LayoutProps) => {
       />
       <ModalRoot />
       <Window>
-        {!ENV_SETTINGS.WEB_MODE && (
-          <WindowTitlebar
-            rightButtonsProps={rightButtons}
-            icon={'mina-logo.svg'}
-            menuProps={windowTitlebarMenu}
-            title="Keadex Mina"
-          />
-        )}
+        <WindowTitlebar
+          rightButtonsProps={ENV_SETTINGS.WEB_MODE ? [] : rightButtons}
+          icon={'mina-logo.svg'}
+          menuProps={
+            ENV_SETTINGS.WEB_MODE ? emptyWindowTitlebarMenu : windowTitlebarMenu
+          }
+          title="Keadex Mina"
+        />
         <div className="absolute bottom-0 left-0 right-0 top-8 overflow-auto">
           <AppMenu visible={isAppMenuVisible} ref={appMenuRef}>
             <Outlet />
