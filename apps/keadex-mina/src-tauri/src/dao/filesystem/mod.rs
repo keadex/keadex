@@ -204,9 +204,13 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + Sync>: DAO {
     create_if_not_exist: bool,
   ) -> impl Future<Output = Result<(), MinaError>> {
     async move {
-      if !Path::new(&path).exists() {
+      let store = ROOT_RESOLVER.get().read().await;
+      if !resolve_to_write!(store, FileSystemAPI)
+        .await
+        .path_exists(Path::new(&path))
+        .await?
+      {
         if create_if_not_exist {
-          let store = ROOT_RESOLVER.get().read().await;
           resolve_to_write!(store, FileSystemAPI)
             .await
             .create(&path)

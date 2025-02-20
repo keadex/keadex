@@ -145,4 +145,8 @@ impl FileSystemAPI for NativeFileSystemAPI {
     }
     return Ok(paths);
   }
+
+  async fn path_exists(&self, path: &Path) -> Result<bool, MinaError> {
+    Ok(path.exists())
+  }
 }

@@ -499,4 +499,23 @@ impl FileSystemAPI for WebFileSystemAPI {
       return Err(MinaError::new(IO_ERROR_CODE, MISSING_ROOT_DIR_HANDLE));
     }
   }
+
+  async fn path_exists(&self, path: &Path) -> Result<bool, MinaError> {
+    if let Some(root_dir_handle) = &self.root_dir_handle {
+      let mut path_structure = split_path_components(&path.to_str().unwrap());
+
+      let result = self
+        .open_web_fs_entry(
+          root_dir_handle,
+          root_dir_handle,
+          &mut path_structure,
+          false,
+          false,
+        )
+        .await;
+      return Ok(result.is_ok());
+    } else {
+      return Err(MinaError::new(IO_ERROR_CODE, MISSING_ROOT_DIR_HANDLE));
+    }
+  }
 }

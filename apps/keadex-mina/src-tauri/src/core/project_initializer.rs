@@ -46,7 +46,7 @@ Loads a project
 */
 pub async fn load_project(root: &str) -> Result<Project, MinaError> {
   log::debug!("Load project {}", root);
-  validate_project_structure(root)?;
+  validate_project_structure(root).await?;
   let project_settings = load_project_settings(root).await?;
   let project_library = load_project_library(root).await?;
   Ok(Project {

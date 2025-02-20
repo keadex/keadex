@@ -281,7 +281,7 @@ export function close_project() {
 }
 
 function __wbg_adapter_42(arg0, arg1, arg2) {
-    wasm.closure906_externref_shim(arg0, arg1, arg2);
+    wasm.closure835_externref_shim(arg0, arg1, arg2);
 }
 
 function __wbg_adapter_87(arg0, arg1, arg2, arg3) {
@@ -4101,8 +4101,8 @@ export function __wbindgen_cb_drop(arg0) {
     return ret;
 };
 
-export function __wbindgen_closure_wrapper3082(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 907, __wbg_adapter_42);
+export function __wbindgen_closure_wrapper2905(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 836, __wbg_adapter_42);
     return ret;
 };
 

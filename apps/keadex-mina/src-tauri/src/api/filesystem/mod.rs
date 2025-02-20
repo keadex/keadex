@@ -46,4 +46,5 @@ pub trait FileSystemAPI {
   fn rename(&self, from: &Path, to: &Path) -> impl Future<Output = Result<(), MinaError>>;
   fn metadata(&self, path: &Path) -> impl Future<Output = Result<CrossMetadata, MinaError>>;
   fn read_dir(&self, path: &Path) -> impl Future<Output = Result<Vec<CrossPathBuf>, MinaError>>;
+  fn path_exists(&self, path: &Path) -> impl Future<Output = Result<bool, MinaError>>;
 }

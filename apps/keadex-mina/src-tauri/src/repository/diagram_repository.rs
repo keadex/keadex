@@ -207,14 +207,18 @@ pub async fn create_diagram(new_diagram: Diagram) -> Result<(), MinaError> {
   let diagram_type = &new_diagram.diagram_type.unwrap();
   let diagram_dir_path = diagram_dir_path_from_name_type(diagram_name, diagram_type).await?;
 
-  if Path::new(&diagram_dir_path).exists() {
+  let store = ROOT_RESOLVER.get().read().await;
+
+  if resolve_to_write!(store, FileSystemAPI)
+    .await
+    .path_exists(&Path::new(&diagram_dir_path))
+    .await?
+  {
     return Err(MinaError::new(
       INVALID_NEW_PROJECT_PATH_ERROR_CODE,
       EXISTING_DIAGRAM_ERROR_MSG,
     ));
   }
-
-  let store = ROOT_RESOLVER.get().read().await;
 
   // Create directory of the diagram
   resolve_to_write!(store, FileSystemAPI)

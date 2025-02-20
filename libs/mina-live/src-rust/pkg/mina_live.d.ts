@@ -4,15 +4,75 @@ export function init_app(): void;
 export function create_project(project_settings: ProjectSettings, dir_handle?: FileSystemDirectoryHandle | null): Promise<ProjectSettings>;
 export function open_project(dir_handle?: FileSystemDirectoryHandle | null): Promise<Project>;
 export function close_project(): Promise<boolean>;
+export type BoundaryType = "Enterprise_Boundary" | "System_Boundary" | "Container_Boundary" | "Boundary";
+
+export type RelationshipType = "Rel_Neighbor" | "Rel_Back_Neighbor" | "Rel_Back" | "Rel_Down" | "Rel_D" | "Rel_Up" | "Rel_U" | "Rel_Left" | "Rel_L" | "Rel_Right" | "Rel_R" | "Rel" | "BiRel_Neighbor" | "BiRel_Down" | "BiRel_D" | "BiRel_Up" | "BiRel_U" | "BiRel_Left" | "BiRel_L" | "BiRel_Right" | "BiRel_R" | "BiRel";
+
 export type ComponentType = "Component" | "Component_Ext" | "ComponentDb" | "ComponentDb_Ext" | "ComponentQueue" | "ComponentQueue_Ext";
 
 export type ContainerType = "Container" | "Container_Ext" | "ContainerDb" | "ContainerDb_Ext" | "ContainerQueue" | "ContainerQueue_Ext";
 
 export type DiagramType = "SYSTEM_CONTEXT" | "CONTAINER" | "COMPONENT" | "SYSTEM_LANDSCAPE" | "DYNAMIC" | "DEPLOYMENT";
 
-export type BoundaryType = "Enterprise_Boundary" | "System_Boundary" | "Container_Boundary" | "Boundary";
+export type PersonType = "Person" | "Person_Ext";
 
-export type RelationshipType = "Rel_Neighbor" | "Rel_Back_Neighbor" | "Rel_Back" | "Rel_Down" | "Rel_D" | "Rel_Up" | "Rel_U" | "Rel_Left" | "Rel_L" | "Rel_Right" | "Rel_R" | "Rel" | "BiRel_Neighbor" | "BiRel_Down" | "BiRel_D" | "BiRel_Up" | "BiRel_U" | "BiRel_Left" | "BiRel_L" | "BiRel_Right" | "BiRel_R" | "BiRel";
+export type ElementType = {
+  Boundary: BoundaryType;
+  Component?: null;
+  Container?: null;
+  DeploymentNode?: null;
+  Person?: null;
+  Relationship?: null;
+  SoftwareSystem?: null;
+} | {
+  Component: ComponentType;
+  Boundary?: null;
+  Container?: null;
+  DeploymentNode?: null;
+  Person?: null;
+  Relationship?: null;
+  SoftwareSystem?: null;
+} | {
+  Container: ContainerType;
+  Boundary?: null;
+  Component?: null;
+  DeploymentNode?: null;
+  Person?: null;
+  Relationship?: null;
+  SoftwareSystem?: null;
+} | {
+  DeploymentNode: DeploymentNodeType;
+  Boundary?: null;
+  Component?: null;
+  Container?: null;
+  Person?: null;
+  Relationship?: null;
+  SoftwareSystem?: null;
+} | {
+  Person: PersonType;
+  Boundary?: null;
+  Component?: null;
+  Container?: null;
+  DeploymentNode?: null;
+  Relationship?: null;
+  SoftwareSystem?: null;
+} | {
+  Relationship: RelationshipType;
+  Boundary?: null;
+  Component?: null;
+  Container?: null;
+  DeploymentNode?: null;
+  Person?: null;
+  SoftwareSystem?: null;
+} | {
+  SoftwareSystem: SystemType;
+  Boundary?: null;
+  Component?: null;
+  Container?: null;
+  DeploymentNode?: null;
+  Person?: null;
+  Relationship?: null;
+};
 
 export type DeploymentNodeType = "Node" | "Node_R" | "Node_L" | "Deployment_Node" | "Deployment_Node_R" | "Deployment_Node_L";
 
@@ -113,66 +173,6 @@ export type DiagramOrientation = "TopToBottom" | "LeftToRight";
 export type SystemType = "System" | "System_Ext" | "SystemDb" | "SystemDb_Ext" | "SystemQueue" | "SystemQueue_Ext";
 
 export type ShapeType = "LINE" | "DOT" | "TEXT" | "TRIANGLE" | "RECTANGLE" | "FOOTER";
-
-export type PersonType = "Person" | "Person_Ext";
-
-export type ElementType = {
-  Boundary: BoundaryType;
-  Component?: null;
-  Container?: null;
-  DeploymentNode?: null;
-  Person?: null;
-  Relationship?: null;
-  SoftwareSystem?: null;
-} | {
-  Component: ComponentType;
-  Boundary?: null;
-  Container?: null;
-  DeploymentNode?: null;
-  Person?: null;
-  Relationship?: null;
-  SoftwareSystem?: null;
-} | {
-  Container: ContainerType;
-  Boundary?: null;
-  Component?: null;
-  DeploymentNode?: null;
-  Person?: null;
-  Relationship?: null;
-  SoftwareSystem?: null;
-} | {
-  DeploymentNode: DeploymentNodeType;
-  Boundary?: null;
-  Component?: null;
-  Container?: null;
-  Person?: null;
-  Relationship?: null;
-  SoftwareSystem?: null;
-} | {
-  Person: PersonType;
-  Boundary?: null;
-  Component?: null;
-  Container?: null;
-  DeploymentNode?: null;
-  Relationship?: null;
-  SoftwareSystem?: null;
-} | {
-  Relationship: RelationshipType;
-  Boundary?: null;
-  Component?: null;
-  Container?: null;
-  DeploymentNode?: null;
-  Person?: null;
-  SoftwareSystem?: null;
-} | {
-  SoftwareSystem: SystemType;
-  Boundary?: null;
-  Component?: null;
-  Container?: null;
-  DeploymentNode?: null;
-  Person?: null;
-  Relationship?: null;
-};
 
 export class AISettings {
   private constructor();
