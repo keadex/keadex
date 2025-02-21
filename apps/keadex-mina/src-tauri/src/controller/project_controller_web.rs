@@ -7,17 +7,16 @@ use crate::model::project::Project;
 use crate::model::project_settings::ProjectSettings;
 use crate::resolve_to_write;
 use keadex_mina_macro::web_controller;
-use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsValue;
 use web_sys::console;
 
-#[wasm_bindgen]
+#[cfg_attr(web, web_controller)]
 pub fn init_app() -> Result<(), MinaError> {
   App::init();
   Ok(())
 }
 
-#[wasm_bindgen]
+#[cfg_attr(web, web_controller)]
 pub async fn create_project(
   project_settings: ProjectSettings,
   dir_handle: Option<web_sys::FileSystemDirectoryHandle>,
