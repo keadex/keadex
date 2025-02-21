@@ -1241,6 +1241,7 @@ dependencies = [
  "fancy-regex",
  "futures",
  "js-sys",
+ "keadex_mina_macro",
  "layout-rs",
  "log",
  "notify",
@@ -1259,6 +1260,17 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
+]
+
+[[package]]
+name = "keadex_mina_macro"
+version = "1.0.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "serde-wasm-bindgen",
+ "syn 2.0.95",
+ "wasm-bindgen",
 ]
 
 [[package]]

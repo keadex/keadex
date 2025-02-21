@@ -211,33 +211,6 @@ function debugString(val) {
     return className;
 }
 
-function _assertClass(instance, klass) {
-    if (!(instance instanceof klass)) {
-        throw new Error(`expected instance of ${klass.name}`);
-    }
-}
-
-function getArrayJsValueFromWasm0(ptr, len) {
-    ptr = ptr >>> 0;
-    const mem = getDataViewMemory0();
-    const result = [];
-    for (let i = ptr; i < ptr + 4 * len; i += 4) {
-        result.push(wasm.__wbindgen_export_3.get(mem.getUint32(i, true)));
-    }
-    wasm.__externref_drop_slice(ptr, len);
-    return result;
-}
-
-function passArrayJsValueToWasm0(array, malloc) {
-    const ptr = malloc(array.length * 4, 4) >>> 0;
-    for (let i = 0; i < array.length; i++) {
-        const add = addToExternrefTable0(array[i]);
-        getDataViewMemory0().setUint32(ptr + 4 * i, add, true);
-    }
-    WASM_VECTOR_LEN = array.length;
-    return ptr;
-}
-
 function takeFromExternrefTable0(idx) {
     const value = wasm.__wbindgen_export_3.get(idx);
     wasm.__externref_table_dealloc(idx);
@@ -251,6 +224,11 @@ export function init_app() {
     }
 }
 
+function _assertClass(instance, klass) {
+    if (!(instance instanceof klass)) {
+        throw new Error(`expected instance of ${klass.name}`);
+    }
+}
 /**
  * @param {ProjectSettings} project_settings
  * @param {FileSystemDirectoryHandle | null} [dir_handle]
@@ -273,15 +251,43 @@ export function open_project(dir_handle) {
 }
 
 /**
- * @returns {Promise<boolean>}
+ * @returns {Promise<any>}
  */
 export function close_project() {
     const ret = wasm.close_project();
     return ret;
 }
 
+function getArrayJsValueFromWasm0(ptr, len) {
+    ptr = ptr >>> 0;
+    const mem = getDataViewMemory0();
+    const result = [];
+    for (let i = ptr; i < ptr + 4 * len; i += 4) {
+        result.push(wasm.__wbindgen_export_3.get(mem.getUint32(i, true)));
+    }
+    wasm.__externref_drop_slice(ptr, len);
+    return result;
+}
+
+function passArrayJsValueToWasm0(array, malloc) {
+    const ptr = malloc(array.length * 4, 4) >>> 0;
+    for (let i = 0; i < array.length; i++) {
+        const add = addToExternrefTable0(array[i]);
+        getDataViewMemory0().setUint32(ptr + 4 * i, add, true);
+    }
+    WASM_VECTOR_LEN = array.length;
+    return ptr;
+}
+/**
+ * @returns {Promise<any>}
+ */
+export function list_diagrams() {
+    const ret = wasm.list_diagrams();
+    return ret;
+}
+
 function __wbg_adapter_42(arg0, arg1, arg2) {
-    wasm.closure944_externref_shim(arg0, arg1, arg2);
+    wasm.closure827_externref_shim(arg0, arg1, arg2);
 }
 
 function __wbg_adapter_91(arg0, arg1, arg2, arg3) {
@@ -1437,7 +1443,7 @@ export class DiagramPlantUML {
     set diagram_id(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_diagramplantuml_diagram_id(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_aisettings_model(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {DiagramElementType[]}
@@ -2898,11 +2904,68 @@ export class Position {
     }
 }
 
+const ProjectFinalization = (typeof FinalizationRegistry === 'undefined')
+    ? { register: () => {}, unregister: () => {} }
+    : new FinalizationRegistry(ptr => wasm.__wbg_project_free(ptr >>> 0, 1));
+
+export class Project {
+
+    __destroy_into_raw() {
+        const ptr = this.__wbg_ptr;
+        this.__wbg_ptr = 0;
+        ProjectFinalization.unregister(this);
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_project_free(ptr, 0);
+    }
+    /**
+     * @returns {ProjectSettings}
+     */
+    get project_settings() {
+        const ret = wasm.__wbg_get_project_project_settings(this.__wbg_ptr);
+        return ProjectSettings.__wrap(ret);
+    }
+    /**
+     * @param {ProjectSettings} arg0
+     */
+    set project_settings(arg0) {
+        _assertClass(arg0, ProjectSettings);
+        var ptr0 = arg0.__destroy_into_raw();
+        wasm.__wbg_set_project_project_settings(this.__wbg_ptr, ptr0);
+    }
+    /**
+     * @returns {ProjectLibrary}
+     */
+    get project_library() {
+        const ret = wasm.__wbg_get_project_project_library(this.__wbg_ptr);
+        return ProjectLibrary.__wrap(ret);
+    }
+    /**
+     * @param {ProjectLibrary} arg0
+     */
+    set project_library(arg0) {
+        _assertClass(arg0, ProjectLibrary);
+        var ptr0 = arg0.__destroy_into_raw();
+        wasm.__wbg_set_project_project_library(this.__wbg_ptr, ptr0);
+    }
+}
+
 const ProjectLibraryFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_projectlibrary_free(ptr >>> 0, 1));
 
 export class ProjectLibrary {
+
+    static __wrap(ptr) {
+        ptr = ptr >>> 0;
+        const obj = Object.create(ProjectLibrary.prototype);
+        obj.__wbg_ptr = ptr;
+        ProjectLibraryFinalization.register(obj, obj.__wbg_ptr, obj);
+        return obj;
+    }
 
     __destroy_into_raw() {
         const ptr = this.__wbg_ptr;
@@ -4047,8 +4110,8 @@ export function __wbindgen_cb_drop(arg0) {
     return ret;
 };
 
-export function __wbindgen_closure_wrapper3201(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 945, __wbg_adapter_42);
+export function __wbindgen_closure_wrapper2900(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 828, __wbg_adapter_42);
     return ret;
 };
 

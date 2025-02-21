@@ -6,6 +6,7 @@ use crate::error_handling::mina_error::MinaError;
 use crate::model::project::Project;
 use crate::model::project_settings::ProjectSettings;
 use crate::resolve_to_write;
+use keadex_mina_macro::web_controller;
 use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsValue;
 use web_sys::console;
@@ -31,7 +32,7 @@ pub async fn create_project(
   project_controller::create_project(project_settings_web).await
 }
 
-#[wasm_bindgen]
+#[cfg_attr(web, web_controller)]
 pub async fn open_project(
   dir_handle: Option<web_sys::FileSystemDirectoryHandle>,
 ) -> Result<Project, MinaError> {
@@ -47,7 +48,7 @@ pub async fn open_project(
   project_controller::open_project(root).await
 }
 
-#[wasm_bindgen]
+#[cfg_attr(web, web_controller)]
 pub async fn close_project() -> Result<bool, MinaError> {
   let root = "";
   console::log_1(&JsValue::from(format!("Close project web {}", root)));

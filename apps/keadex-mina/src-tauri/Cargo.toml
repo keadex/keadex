@@ -70,6 +70,7 @@ async-std = "1.13"
 async-trait = "0.1"
 futures = "0.3"
 chrono = "0.4"
+keadex_mina_macro = { path = "../src-macro" }
 tauri-plugin-http = { version = "2", optional = true }
 tauri-plugin-clipboard-manager = { version = "2.0.1", optional = true }
 tauri-plugin-os = { version = "2", optional = true }

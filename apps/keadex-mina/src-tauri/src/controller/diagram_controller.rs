@@ -17,12 +17,15 @@ use crate::model::project_library::ProjectLibrary;
 use crate::repository::diagram_repository;
 use crate::service::diagram_service::dependent_elements_in_diagram as dependent_elements_in_diagram_service;
 use crate::service::diagram_service::get_diagram as get_diagram_service;
+use keadex_mina_macro::web_controller;
 use std::collections::HashMap;
+use wasm_bindgen::prelude::wasm_bindgen;
 
 /**
 Returns the list of the diagrams in the opened project.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn list_diagrams() -> Result<HashMap<DiagramType, Vec<String>>, MinaError> {
   Ok(diagram_repository::list_diagrams().await?)
 }
