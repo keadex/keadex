@@ -5,6 +5,7 @@ use crate::model::diagram::diagram_plantuml::DiagramElementType;
 use crate::model::diagram::C4ElementType;
 use crate::model::project_library::ProjectLibrary;
 use crate::repository::library::library_repository;
+use keadex_mina_macro::web_controller;
 
 /**
 List the elements of the given type stored in the library.
@@ -12,6 +13,7 @@ List the elements of the given type stored in the library.
   * `filter_c4_element_type` - Type of the diagram's element to filter
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn list_library_elements(
   filter_c4_element_type: C4ElementType,
 ) -> Result<C4Elements, MinaError> {
@@ -26,6 +28,7 @@ Returns the updated library.
   * `diagram_element` - Diagram's element to create
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn create_library_element(
   diagram_element: DiagramElementType,
 ) -> Result<ProjectLibrary, MinaError> {
@@ -40,6 +43,7 @@ Returns the updated library.
   * `diagram_element` - Diagram's element to update
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn update_library_element(
   old_diagram_element: DiagramElementType,
   new_diagram_element: DiagramElementType,
@@ -60,6 +64,7 @@ Returns updated project's library.
   * `element_type` - Type of the diagram's element to delete
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn delete_library_element(
   uuid_element: &str,
   element_type: C4ElementType,
@@ -78,6 +83,7 @@ Retrieves the C4 element type given the full path of a library's file.
   * `path` - Path of a library's file
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn library_element_type_from_path(path: &str) -> Result<C4ElementType, MinaError> {
   element_type_from_path_helper(path).await
 }

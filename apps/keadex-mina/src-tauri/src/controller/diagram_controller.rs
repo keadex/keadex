@@ -19,7 +19,6 @@ use crate::service::diagram_service::dependent_elements_in_diagram as dependent_
 use crate::service::diagram_service::get_diagram as get_diagram_service;
 use keadex_mina_macro::web_controller;
 use std::collections::HashMap;
-use wasm_bindgen::prelude::wasm_bindgen;
 
 /**
 Returns the list of the diagrams in the opened project.
@@ -37,6 +36,7 @@ Returns the data of a diagram.
   * `diagram_type` - Type of the diagram to open.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn get_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
@@ -52,6 +52,7 @@ Returns the opened and parsed diagram.
   * `diagram_type` - Type of the diagram to open.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn open_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
@@ -66,6 +67,7 @@ Closes a diagram and and unlocks its files.
   * `diagram_type` - Type of the diagram to open.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn close_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
@@ -80,6 +82,7 @@ Deletes a diagram.
   * `diagram_type` - Type of the diagram to open.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn delete_diagram(
   diagram_name: &str,
   diagram_type: DiagramType,
@@ -93,6 +96,7 @@ Creates a diagram.
   * `new_diagram` - New diagram to create.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn create_diagram(new_diagram: Diagram) -> Result<bool, MinaError> {
   diagram_repository::create_diagram(new_diagram).await?;
   Ok(true)
@@ -109,6 +113,7 @@ Returns the saved diagram.
   * `diagram_type` - Type of the diagram to open.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn save_spec_diagram_raw_plantuml(
   raw_plantuml: &str,
   diagram_spec: DiagramSpec,
@@ -123,7 +128,7 @@ pub async fn save_spec_diagram_raw_plantuml(
     &diagram_type,
   )
   .await?;
-  open_diagram(diagram_name, diagram_type).await
+  diagram_repository::open_diagram(diagram_name, diagram_type).await
 }
 
 /**
@@ -163,6 +168,7 @@ to a file in the given format.
   * `diagram_type` - Type of the diagram to export.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn export_diagram_to_file(
   diagram_data_url: &str,
   format: DiagramFormat,
@@ -188,6 +194,7 @@ Serialize a parsed PlantUML object, into a PlantUML string.
   * `element_level` - Level of the PlantUML object to serialize (since it could be a child of another element). The level will affect the indentation.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn parsed_element_to_plantuml(
   parsed_element: DiagramElementType,
   element_level: usize,
@@ -207,6 +214,7 @@ Example: container/diagram-name
   * `diagram_type` - Type of the diagram
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn diagram_to_link_string(
   diagram_human_name: &str,
   diagram_type: DiagramType,
@@ -224,6 +232,7 @@ to extract the diagram's name and type.
   * `link_string` - Diagram's link
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn diagram_from_link_string(link_string: &str) -> Result<Diagram, MinaError> {
   Ok(diagram_from_link_string_helper(link_string)?)
 }
@@ -234,6 +243,7 @@ Deserializes a PlantUML string
   * `raw_plantuml` - Raw PlantUML content
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn deserialize_plantuml_by_string(
   raw_plantuml: &str,
 ) -> Result<DiagramPlantUML, MinaError> {
@@ -249,6 +259,7 @@ Example: <PROJECT_ROOT>/diagrams/<DIAGRAM_TYPE>/<DIAGRAM_NAME>/diagram.puml -> (
   * `path` - Path to process
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn diagram_name_type_from_path(path: &str) -> Result<Diagram, MinaError> {
   let (diagram_name, diagram_type) = diagram_name_type_from_path_helper(path).await?;
   Ok(Diagram {
@@ -270,6 +281,7 @@ Retrieves the dependents of an architectural element with the given alias in the
   * `diagram_type` - Type of the diagram.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn dependent_elements_in_diagram(
   alias: &str,
   diagram_name: &str,

@@ -7,6 +7,7 @@ use crate::model::file_search_results::FileSearchResults;
 use crate::resolve_to_write;
 use crate::service::search_service::search_diagram_element;
 use crate::service::search_service::search_text;
+use keadex_mina_macro::web_controller;
 
 /**
 Searches for the given string in the project's files.
@@ -17,6 +18,7 @@ Searches for the given string in the project's files.
   * `limit` - Limit of the returned results.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn search(
   string_to_search: &str,
   include_diagrams_dir: bool,
@@ -51,6 +53,7 @@ Searches for the given diagram element alias in the project's files.
   * `limit` - Limit of the returned results.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn search_diagram_element_alias(
   alias: &str,
   include_diagrams_dir: bool,

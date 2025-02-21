@@ -14,6 +14,7 @@ pub struct CrossMetadata {
   pub is_dir: bool,
 }
 
+#[derive(Debug)]
 pub struct CrossPathBuf {
   pub file_name: String,
   pub is_dir: bool,

@@ -3,6 +3,7 @@ use crate::error_handling::mina_error::MinaError;
 use crate::model::project::Project;
 use crate::model::project_settings::ProjectSettings;
 use crate::repository::project_repository;
+use keadex_mina_macro::web_controller;
 
 /**
 Creates an empty Mina project.
@@ -48,6 +49,7 @@ Saves project settings.
   * `project_settings` - Project settings.
 */
 #[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn save_project_settings(
   project_settings: ProjectSettings,
 ) -> Result<ProjectSettings, MinaError> {
