@@ -19,10 +19,10 @@ pub use keadex_mina::controller::library_controller::library_element_type_from_p
 pub use keadex_mina::controller::library_controller::list_library_elements;
 pub use keadex_mina::controller::library_controller::update_library_element;
 pub use keadex_mina::controller::project_controller::save_project_settings;
+pub use keadex_mina::controller::project_controller_web::close_project;
+pub use keadex_mina::controller::project_controller_web::create_project;
+pub use keadex_mina::controller::project_controller_web::init_app;
+pub use keadex_mina::controller::project_controller_web::open_project;
 pub use keadex_mina::controller::search_controller::search;
 pub use keadex_mina::controller::search_controller::search_diagram_element_alias;
-pub use keadex_mina::controller::web_controller::close_project;
-pub use keadex_mina::controller::web_controller::create_project;
-pub use keadex_mina::controller::web_controller::init_app;
-pub use keadex_mina::controller::web_controller::open_project;
 pub use keadex_mina::service::hook_service::execute_hook;
