@@ -16,6 +16,17 @@
         "parallel": false
       }
     },
+    "build-wasm-debug": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "libs/mina-live",
+        "commands": [
+          "yarn wasm-pack build --debug ./src-rust --target bundler",
+          "npx rimraf src-rust/pkg/.gitignore"
+        ],
+        "parallel": false
+      }
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
