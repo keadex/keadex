@@ -66,13 +66,15 @@ pub fn web_controller(_attr: TokenStream, item: TokenStream) -> TokenStream {
   // Generate an async function that wraps the original one and transforms
   // its success value into a wasm_bindgen::JsValue
   let expanded = quote! {
-      #[wasm_bindgen]
-      #vis async fn #fn_name(#fn_args) -> Result<wasm_bindgen::JsValue, #error_type> {
-          async fn original(#fn_args) #return_type #fn_block
-          let value = original(#( #params ),*).await?;
+    #[wasm_bindgen::prelude::wasm_bindgen]
+    #vis async fn #fn_name(#fn_args) -> Result<wasm_bindgen::JsValue, #error_type> {
+      async fn original(#fn_args) #return_type #fn_block
+      let value = original(#( #params ),*).await?;
 
-          Ok(serde_wasm_bindgen::to_value(&value)?)
-      }
+      use serde::Serialize;
+      let serializer = serde_wasm_bindgen::Serializer::new().serialize_maps_as_objects(true);
+      Ok(value.serialize(&serializer)?)
+    }
   };
 
   TokenStream::from(expanded)
