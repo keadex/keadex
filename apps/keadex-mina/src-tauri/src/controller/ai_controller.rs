@@ -9,7 +9,7 @@ Returns a string containing the PlantUML.
 */
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
-pub async fn generate_plantuml(description: &str) -> Result<String, MinaError> {
-  let result = crate::service::ai_service::generate_plantuml(description).await?;
+pub async fn generate_plantuml(description: String) -> Result<String, MinaError> {
+  let result = crate::service::ai_service::generate_plantuml(&description).await?;
   Ok(result)
 }

@@ -66,7 +66,7 @@ Returns updated project's library.
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
 pub async fn delete_library_element(
-  uuid_element: &str,
+  uuid_element: String,
   element_type: C4ElementType,
 ) -> Result<ProjectLibrary, MinaError> {
   log::info!(
@@ -74,7 +74,7 @@ pub async fn delete_library_element(
     uuid_element,
     element_type
   );
-  Ok(library_repository::delete_element_by_uuid(uuid_element, element_type).await?)
+  Ok(library_repository::delete_element_by_uuid(&uuid_element, element_type).await?)
 }
 
 /**
@@ -84,6 +84,6 @@ Retrieves the C4 element type given the full path of a library's file.
 */
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
-pub async fn library_element_type_from_path(path: &str) -> Result<C4ElementType, MinaError> {
-  element_type_from_path_helper(path).await
+pub async fn library_element_type_from_path(path: String) -> Result<C4ElementType, MinaError> {
+  element_type_from_path_helper(&path).await
 }

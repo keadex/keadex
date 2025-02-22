@@ -16,7 +16,7 @@ pub fn init_app() -> Result<(), MinaError> {
   Ok(())
 }
 
-#[cfg_attr(web, web_controller)]
+#[cfg_attr(web, web_controller(without_input_transformation))]
 pub async fn create_project(
   project_settings: ProjectSettings,
   dir_handle: Option<web_sys::FileSystemDirectoryHandle>,
@@ -31,7 +31,7 @@ pub async fn create_project(
   project_controller::create_project(project_settings_web).await
 }
 
-#[cfg_attr(web, web_controller)]
+#[cfg_attr(web, web_controller(without_input_transformation))]
 pub async fn open_project(
   dir_handle: Option<web_sys::FileSystemDirectoryHandle>,
 ) -> Result<Project, MinaError> {

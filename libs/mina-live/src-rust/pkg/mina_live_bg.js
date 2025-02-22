@@ -80,13 +80,20 @@ function getDataViewMemory0() {
     return cachedDataViewMemory0;
 }
 
-function isLikeNone(x) {
-    return x === undefined || x === null;
+const lTextDecoder = typeof TextDecoder === 'undefined' ? (0, module.require)('util').TextDecoder : TextDecoder;
+
+let cachedTextDecoder = new lTextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+
+cachedTextDecoder.decode();
+
+function getStringFromWasm0(ptr, len) {
+    ptr = ptr >>> 0;
+    return cachedTextDecoder.decode(getUint8ArrayMemory0().subarray(ptr, ptr + len));
 }
 
 function addToExternrefTable0(obj) {
     const idx = wasm.__externref_table_alloc();
-    wasm.__wbindgen_export_3.set(idx, obj);
+    wasm.__wbindgen_export_4.set(idx, obj);
     return idx;
 }
 
@@ -99,15 +106,8 @@ function handleError(f, args) {
     }
 }
 
-const lTextDecoder = typeof TextDecoder === 'undefined' ? (0, module.require)('util').TextDecoder : TextDecoder;
-
-let cachedTextDecoder = new lTextDecoder('utf-8', { ignoreBOM: true, fatal: true });
-
-cachedTextDecoder.decode();
-
-function getStringFromWasm0(ptr, len) {
-    ptr = ptr >>> 0;
-    return cachedTextDecoder.decode(getUint8ArrayMemory0().subarray(ptr, ptr + len));
+function isLikeNone(x) {
+    return x === undefined || x === null;
 }
 
 function getArrayU8FromWasm0(ptr, len) {
@@ -210,18 +210,75 @@ function debugString(val) {
     // TODO we could test for more things here, like `Set`s and `Map`s.
     return className;
 }
-
-function takeFromExternrefTable0(idx) {
-    const value = wasm.__wbindgen_export_3.get(idx);
-    wasm.__externref_table_dealloc(idx);
-    return value;
+/**
+ * @param {C4ElementType} filter_c4_element_type
+ * @returns {C4Elements}
+ */
+export function list_library_elements(filter_c4_element_type) {
+    const ret = wasm.list_library_elements(filter_c4_element_type);
+    return ret;
 }
 
-export function init_app() {
-    const ret = wasm.init_app();
-    if (ret[1]) {
-        throw takeFromExternrefTable0(ret[0]);
-    }
+/**
+ * @param {DiagramElementType} diagram_element
+ * @returns {ProjectLibrary}
+ */
+export function create_library_element(diagram_element) {
+    const ret = wasm.create_library_element(diagram_element);
+    return ret;
+}
+
+/**
+ * @param {DiagramElementType} old_diagram_element
+ * @param {DiagramElementType} new_diagram_element
+ * @returns {ProjectLibrary}
+ */
+export function update_library_element(old_diagram_element, new_diagram_element) {
+    const ret = wasm.update_library_element(old_diagram_element, new_diagram_element);
+    return ret;
+}
+
+/**
+ * @param {String} uuid_element
+ * @param {C4ElementType} element_type
+ * @returns {ProjectLibrary}
+ */
+export function delete_library_element(uuid_element, element_type) {
+    const ret = wasm.delete_library_element(uuid_element, element_type);
+    return ret;
+}
+
+/**
+ * @param {String} path
+ * @returns {C4ElementType}
+ */
+export function library_element_type_from_path(path) {
+    const ret = wasm.library_element_type_from_path(path);
+    return ret;
+}
+
+/**
+ * @param {String} string_to_search
+ * @param {bool} include_diagrams_dir
+ * @param {bool} include_library_dir
+ * @param {usize} limit
+ * @returns {FileSearchResults}
+ */
+export function search(string_to_search, include_diagrams_dir, include_library_dir, limit) {
+    const ret = wasm.search(string_to_search, include_diagrams_dir, include_library_dir, limit);
+    return ret;
+}
+
+/**
+ * @param {String} alias
+ * @param {bool} include_diagrams_dir
+ * @param {bool} include_library_dir
+ * @param {usize} limit
+ * @returns {DiagramElementSearchResults}
+ */
+export function search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit) {
+    const ret = wasm.search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit);
+    return ret;
 }
 
 function _assertClass(instance, klass) {
@@ -229,41 +286,13 @@ function _assertClass(instance, klass) {
         throw new Error(`expected instance of ${klass.name}`);
     }
 }
-/**
- * @param {ProjectSettings} project_settings
- * @param {FileSystemDirectoryHandle | null} [dir_handle]
- * @returns {Promise<ProjectSettings>}
- */
-export function create_project(project_settings, dir_handle) {
-    _assertClass(project_settings, ProjectSettings);
-    var ptr0 = project_settings.__destroy_into_raw();
-    const ret = wasm.create_project(ptr0, isLikeNone(dir_handle) ? 0 : addToExternrefTable0(dir_handle));
-    return ret;
-}
-
-/**
- * @param {FileSystemDirectoryHandle | null} [dir_handle]
- * @returns {Promise<any>}
- */
-export function open_project(dir_handle) {
-    const ret = wasm.open_project(isLikeNone(dir_handle) ? 0 : addToExternrefTable0(dir_handle));
-    return ret;
-}
-
-/**
- * @returns {Promise<any>}
- */
-export function close_project() {
-    const ret = wasm.close_project();
-    return ret;
-}
 
 function getArrayJsValueFromWasm0(ptr, len) {
     ptr = ptr >>> 0;
     const mem = getDataViewMemory0();
     const result = [];
     for (let i = ptr; i < ptr + 4 * len; i += 4) {
-        result.push(wasm.__wbindgen_export_3.get(mem.getUint32(i, true)));
+        result.push(wasm.__wbindgen_export_4.get(mem.getUint32(i, true)));
     }
     wasm.__externref_drop_slice(ptr, len);
     return result;
@@ -279,20 +308,219 @@ function passArrayJsValueToWasm0(array, malloc) {
     return ptr;
 }
 /**
- * @returns {Promise<any>}
+ * @param {HookPayload} payload
+ * @returns {bool}
+ */
+export function execute_hook(payload) {
+    const ret = wasm.execute_hook(payload);
+    return ret;
+}
+
+/**
+ * @param {ProjectSettings} project_settings
+ * @returns {ProjectSettings}
+ */
+export function save_project_settings(project_settings) {
+    const ret = wasm.save_project_settings(project_settings);
+    return ret;
+}
+
+/**
+ * @param {String} description
+ * @returns {String}
+ */
+export function generate_plantuml(description) {
+    const ret = wasm.generate_plantuml(description);
+    return ret;
+}
+
+/**
+ * @returns {HashMap < DiagramType, Vec < String > >}
  */
 export function list_diagrams() {
     const ret = wasm.list_diagrams();
     return ret;
 }
 
-function __wbg_adapter_42(arg0, arg1, arg2) {
-    wasm.closure827_externref_shim(arg0, arg1, arg2);
+/**
+ * @param {String} diagram_name
+ * @param {DiagramType} diagram_type
+ * @returns {Diagram}
+ */
+export function get_diagram(diagram_name, diagram_type) {
+    const ret = wasm.get_diagram(diagram_name, diagram_type);
+    return ret;
 }
 
-function __wbg_adapter_91(arg0, arg1, arg2, arg3) {
-    wasm.closure54_externref_shim(arg0, arg1, arg2, arg3);
+/**
+ * @param {String} diagram_name
+ * @param {DiagramType} diagram_type
+ * @returns {Diagram}
+ */
+export function open_diagram(diagram_name, diagram_type) {
+    const ret = wasm.open_diagram(diagram_name, diagram_type);
+    return ret;
 }
+
+/**
+ * @param {String} diagram_name
+ * @param {DiagramType} diagram_type
+ * @returns {bool}
+ */
+export function close_diagram(diagram_name, diagram_type) {
+    const ret = wasm.close_diagram(diagram_name, diagram_type);
+    return ret;
+}
+
+/**
+ * @param {String} diagram_name
+ * @param {DiagramType} diagram_type
+ * @returns {ProjectLibrary}
+ */
+export function delete_diagram(diagram_name, diagram_type) {
+    const ret = wasm.delete_diagram(diagram_name, diagram_type);
+    return ret;
+}
+
+/**
+ * @param {Diagram} new_diagram
+ * @returns {bool}
+ */
+export function create_diagram(new_diagram) {
+    const ret = wasm.create_diagram(new_diagram);
+    return ret;
+}
+
+/**
+ * @param {String} raw_plantuml
+ * @param {DiagramSpec} diagram_spec
+ * @param {String} diagram_name
+ * @param {DiagramType} diagram_type
+ * @returns {Diagram}
+ */
+export function save_spec_diagram_raw_plantuml(raw_plantuml, diagram_spec, diagram_name, diagram_type) {
+    const ret = wasm.save_spec_diagram_raw_plantuml(raw_plantuml, diagram_spec, diagram_name, diagram_type);
+    return ret;
+}
+
+/**
+ * @param {String} diagram_data_url
+ * @param {DiagramFormat} format
+ * @param {String} diagram_name
+ * @param {DiagramType} diagram_type
+ * @returns {String}
+ */
+export function export_diagram_to_file(diagram_data_url, format, diagram_name, diagram_type) {
+    const ret = wasm.export_diagram_to_file(diagram_data_url, format, diagram_name, diagram_type);
+    return ret;
+}
+
+/**
+ * @param {DiagramElementType} parsed_element
+ * @param {usize} element_level
+ * @returns {String}
+ */
+export function parsed_element_to_plantuml(parsed_element, element_level) {
+    const ret = wasm.parsed_element_to_plantuml(parsed_element, element_level);
+    return ret;
+}
+
+/**
+ * @param {String} diagram_human_name
+ * @param {DiagramType} diagram_type
+ * @returns {String}
+ */
+export function diagram_to_link_string(diagram_human_name, diagram_type) {
+    const ret = wasm.diagram_to_link_string(diagram_human_name, diagram_type);
+    return ret;
+}
+
+/**
+ * @param {String} link_string
+ * @returns {Diagram}
+ */
+export function diagram_from_link_string(link_string) {
+    const ret = wasm.diagram_from_link_string(link_string);
+    return ret;
+}
+
+/**
+ * @param {String} raw_plantuml
+ * @returns {DiagramPlantUML}
+ */
+export function deserialize_plantuml_by_string(raw_plantuml) {
+    const ret = wasm.deserialize_plantuml_by_string(raw_plantuml);
+    return ret;
+}
+
+/**
+ * @param {String} path
+ * @returns {Diagram}
+ */
+export function diagram_name_type_from_path(path) {
+    const ret = wasm.diagram_name_type_from_path(path);
+    return ret;
+}
+
+/**
+ * @param {String} alias
+ * @param {String} diagram_name
+ * @param {DiagramType} diagram_type
+ * @returns {Vec < String >}
+ */
+export function dependent_elements_in_diagram(alias, diagram_name, diagram_type) {
+    const ret = wasm.dependent_elements_in_diagram(alias, diagram_name, diagram_type);
+    return ret;
+}
+
+/**
+ * @returns {()}
+ */
+export function init_app() {
+    const ret = wasm.init_app();
+    return ret;
+}
+
+/**
+ * @param {ProjectSettings} project_settings
+ * @param {FileSystemDirectoryHandle | null} [dir_handle]
+ * @returns {ProjectSettings}
+ */
+export function create_project(project_settings, dir_handle) {
+    _assertClass(project_settings, ProjectSettings);
+    var ptr0 = project_settings.__destroy_into_raw();
+    const ret = wasm.create_project(ptr0, isLikeNone(dir_handle) ? 0 : addToExternrefTable0(dir_handle));
+    return ret;
+}
+
+/**
+ * @param {FileSystemDirectoryHandle | null} [dir_handle]
+ * @returns {Project}
+ */
+export function open_project(dir_handle) {
+    const ret = wasm.open_project(isLikeNone(dir_handle) ? 0 : addToExternrefTable0(dir_handle));
+    return ret;
+}
+
+/**
+ * @returns {bool}
+ */
+export function close_project() {
+    const ret = wasm.close_project();
+    return ret;
+}
+
+function __wbg_adapter_50(arg0, arg1, arg2) {
+    wasm.closure1028_externref_shim(arg0, arg1, arg2);
+}
+
+function __wbg_adapter_105(arg0, arg1, arg2, arg3) {
+    wasm.closure66_externref_shim(arg0, arg1, arg2, arg3);
+}
+
+const __wbindgen_enum_RequestCredentials = ["omit", "same-origin", "include"];
+
+const __wbindgen_enum_RequestMode = ["same-origin", "no-cors", "cors", "navigate"];
 
 const AISettingsFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
@@ -1443,7 +1671,7 @@ export class DiagramPlantUML {
     set diagram_id(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_aisettings_model(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_baseelement_description(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {DiagramElementType[]}
@@ -1460,7 +1688,7 @@ export class DiagramPlantUML {
     set elements(arg0) {
         const ptr0 = passArrayJsValueToWasm0(arg0, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_deploymentnode_sub_elements(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_diagramplantuml_elements(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string[]}
@@ -1687,7 +1915,7 @@ export class DiagramsThemeSettings {
     set bg_color_diagram(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_diagramsthemesettings_bg_color_diagram(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_aisettings_api_key(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -1707,7 +1935,7 @@ export class DiagramsThemeSettings {
     set text_color_legend_title(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_diagramsthemesettings_text_color_legend_title(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_aisettings_api_base_url(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -1727,7 +1955,7 @@ export class DiagramsThemeSettings {
     set bg_color_person(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_diagramsthemesettings_bg_color_person(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_aisettings_model(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -2502,6 +2730,51 @@ export class ElementData {
     }
 }
 
+const HookPayloadFinalization = (typeof FinalizationRegistry === 'undefined')
+    ? { register: () => {}, unregister: () => {} }
+    : new FinalizationRegistry(ptr => wasm.__wbg_hookpayload_free(ptr >>> 0, 1));
+
+export class HookPayload {
+
+    __destroy_into_raw() {
+        const ptr = this.__wbg_ptr;
+        this.__wbg_ptr = 0;
+        HookPayloadFinalization.unregister(this);
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_hookpayload_free(ptr, 0);
+    }
+    /**
+     * @returns {HookType}
+     */
+    get hook_type() {
+        const ret = wasm.__wbg_get_hookpayload_hook_type(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @param {HookType} arg0
+     */
+    set hook_type(arg0) {
+        wasm.__wbg_set_hookpayload_hook_type(this.__wbg_ptr, arg0);
+    }
+    /**
+     * @returns {HookData | undefined}
+     */
+    get data() {
+        const ret = wasm.__wbg_get_hookpayload_data(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @param {HookData | null} [arg0]
+     */
+    set data(arg0) {
+        wasm.__wbg_set_hookpayload_data(this.__wbg_ptr, isLikeNone(arg0) ? 0 : addToExternrefTable0(arg0));
+    }
+}
+
 const IntoUnderlyingByteSourceFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_intounderlyingbytesource_free(ptr >>> 0, 1));
@@ -2739,7 +3012,7 @@ export class Person {
      * @returns {BaseElement}
      */
     get base_data() {
-        const ret = wasm.__wbg_get_person_base_data(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_component_base_data(this.__wbg_ptr);
         return BaseElement.__wrap(ret);
     }
     /**
@@ -2748,7 +3021,7 @@ export class Person {
     set base_data(arg0) {
         _assertClass(arg0, BaseElement);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_person_base_data(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_component_base_data(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {PersonType | undefined}
@@ -3212,7 +3485,7 @@ export class Relationship {
      * @returns {BaseElement}
      */
     get base_data() {
-        const ret = wasm.__wbg_get_component_base_data(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_container_base_data(this.__wbg_ptr);
         return BaseElement.__wrap(ret);
     }
     /**
@@ -3221,7 +3494,7 @@ export class Relationship {
     set base_data(arg0) {
         _assertClass(arg0, BaseElement);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_component_base_data(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_container_base_data(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {string | undefined}
@@ -3241,7 +3514,7 @@ export class Relationship {
     set from(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_component_technology(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_container_technology(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -3261,7 +3534,7 @@ export class Relationship {
     set to(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_relationship_to(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_boundary_boundary_custom_type(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -3496,7 +3769,7 @@ export class SoftwareSystem {
      * @returns {BaseElement}
      */
     get base_data() {
-        const ret = wasm.__wbg_get_softwaresystem_base_data(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_container_base_data(this.__wbg_ptr);
         return BaseElement.__wrap(ret);
     }
     /**
@@ -3505,7 +3778,7 @@ export class SoftwareSystem {
     set base_data(arg0) {
         _assertClass(arg0, BaseElement);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_softwaresystem_base_data(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_container_base_data(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {SystemType | undefined}
@@ -3574,6 +3847,31 @@ export function __wbg_String_1b2069caba3b9783(arg0, arg1) {
     getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
     getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
 };
+
+export function __wbg_abort_775ef1d17fc65868(arg0) {
+    arg0.abort();
+};
+
+export function __wbg_append_299d5d48292c0495() { return handleError(function (arg0, arg1, arg2, arg3, arg4) {
+    arg0.append(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4));
+}, arguments) };
+
+export function __wbg_append_8c7dd8d641a5f01b() { return handleError(function (arg0, arg1, arg2, arg3, arg4) {
+    arg0.append(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4));
+}, arguments) };
+
+export function __wbg_append_b2d1fc16de2a0e81() { return handleError(function (arg0, arg1, arg2, arg3, arg4, arg5) {
+    arg0.append(getStringFromWasm0(arg1, arg2), arg3, getStringFromWasm0(arg4, arg5));
+}, arguments) };
+
+export function __wbg_append_b44785ebeb668479() { return handleError(function (arg0, arg1, arg2, arg3) {
+    arg0.append(getStringFromWasm0(arg1, arg2), arg3);
+}, arguments) };
+
+export function __wbg_arrayBuffer_d1b44c4390db422f() { return handleError(function (arg0) {
+    const ret = arg0.arrayBuffer();
+    return ret;
+}, arguments) };
 
 export function __wbg_arrayBuffer_f18c144cd0125f07(arg0) {
     const ret = arg0.arrayBuffer();
@@ -3663,6 +3961,11 @@ export function __wbg_createWritable_0a880309b433d1c7(arg0) {
     return ret;
 };
 
+export function __wbg_crypto_ed58b8e10a292839(arg0) {
+    const ret = arg0.crypto;
+    return ret;
+};
+
 export function __wbg_deploymentnode_new(arg0) {
     const ret = DeploymentNode.__wrap(arg0);
     return ret;
@@ -3714,6 +4017,16 @@ export function __wbg_error_7534b8e9a36f1ab4(arg0, arg1) {
     }
 };
 
+export function __wbg_fetch_4465c2b10f21a927(arg0) {
+    const ret = fetch(arg0);
+    return ret;
+};
+
+export function __wbg_fetch_509096533071c657(arg0, arg1) {
+    const ret = arg0.fetch(arg1);
+    return ret;
+};
+
 export function __wbg_getDirectoryHandle_c48a138373d79b3d(arg0, arg1, arg2, arg3) {
     const ret = arg0.getDirectoryHandle(getStringFromWasm0(arg1, arg2), arg3);
     return ret;
@@ -3728,6 +4041,10 @@ export function __wbg_getFile_2607bc0123c724e0(arg0) {
     const ret = arg0.getFile();
     return ret;
 };
+
+export function __wbg_getRandomValues_bcb4912f16000dc4() { return handleError(function (arg0, arg1) {
+    arg0.getRandomValues(arg1);
+}, arguments) };
 
 export function __wbg_getTime_46267b1c24877e30(arg0) {
     const ret = arg0.getTime();
@@ -3746,6 +4063,16 @@ export function __wbg_get_b9b93047fe3cf45b(arg0, arg1) {
 
 export function __wbg_getwithrefkey_2d7fdfea9645a25b(arg0, arg1) {
     const ret = arg0[arg1];
+    return ret;
+};
+
+export function __wbg_has_a5ea9117f258a0ec() { return handleError(function (arg0, arg1) {
+    const ret = Reflect.has(arg0, arg1);
+    return ret;
+}, arguments) };
+
+export function __wbg_headers_9cb51cfd2ac780a4(arg0) {
+    const ret = arg0.headers;
     return ret;
 };
 
@@ -3804,6 +4131,17 @@ export function __wbg_instanceof_File_a4e2256bf71955a9(arg0) {
     return ret;
 };
 
+export function __wbg_instanceof_Response_f2cc20d9f7dfd644(arg0) {
+    let result;
+    try {
+        result = arg0 instanceof Response;
+    } catch (_) {
+        result = false;
+    }
+    const ret = result;
+    return ret;
+};
+
 export function __wbg_instanceof_Uint8Array_17156bcf118086a9(arg0) {
     let result;
     try {
@@ -3817,6 +4155,11 @@ export function __wbg_instanceof_Uint8Array_17156bcf118086a9(arg0) {
 
 export function __wbg_isArray_a1eab7e0d067391b(arg0) {
     const ret = Array.isArray(arg0);
+    return ret;
+};
+
+export function __wbg_isSafeInteger_343e2beeeece1bb0(arg0) {
+    const ret = Number.isSafeInteger(arg0);
     return ret;
 };
 
@@ -3854,10 +4197,28 @@ export function __wbg_minaerror_new(arg0) {
     return ret;
 };
 
+export function __wbg_msCrypto_0a36e2ec3a343d26(arg0) {
+    const ret = arg0.msCrypto;
+    return ret;
+};
+
+export function __wbg_name_e4a115def9e2bbaa(arg0, arg1) {
+    const ret = arg1.name;
+    const ptr1 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len1 = WASM_VECTOR_LEN;
+    getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
+    getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
+};
+
 export function __wbg_new0_f788a2397c7ca929() {
     const ret = new Date();
     return ret;
 };
+
+export function __wbg_new_018dcc2d6c8c2f6a() { return handleError(function () {
+    const ret = new Headers();
+    return ret;
+}, arguments) };
 
 export function __wbg_new_23a2665fac83c611(arg0, arg1) {
     try {
@@ -3866,7 +4227,7 @@ export function __wbg_new_23a2665fac83c611(arg0, arg1) {
             const a = state0.a;
             state0.a = 0;
             try {
-                return __wbg_adapter_91(a, state0.b, arg0, arg1);
+                return __wbg_adapter_105(a, state0.b, arg0, arg1);
             } finally {
                 state0.a = a;
             }
@@ -3898,6 +4259,11 @@ export function __wbg_new_8a6f238a6ece86ea() {
     return ret;
 };
 
+export function __wbg_new_9fd39a253424609a() { return handleError(function () {
+    const ret = new FormData();
+    return ret;
+}, arguments) };
+
 export function __wbg_new_a12002a7f91c75be(arg0) {
     const ret = new Uint8Array(arg0);
     return ret;
@@ -3908,6 +4274,11 @@ export function __wbg_new_c68d7209be747379(arg0, arg1) {
     return ret;
 };
 
+export function __wbg_new_e25e5aab09ff45db() { return handleError(function () {
+    const ret = new AbortController();
+    return ret;
+}, arguments) };
+
 export function __wbg_newnoargs_105ed471475aaf50(arg0, arg1) {
     const ret = new Function(getStringFromWasm0(arg0, arg1));
     return ret;
@@ -3917,6 +4288,21 @@ export function __wbg_newwithbyteoffsetandlength_d97e637ebe145a9a(arg0, arg1, ar
     const ret = new Uint8Array(arg0, arg1 >>> 0, arg2 >>> 0);
     return ret;
 };
+
+export function __wbg_newwithlength_a381634e90c276d4(arg0) {
+    const ret = new Uint8Array(arg0 >>> 0);
+    return ret;
+};
+
+export function __wbg_newwithstrandinit_06c535e0a867c635() { return handleError(function (arg0, arg1, arg2) {
+    const ret = new Request(getStringFromWasm0(arg0, arg1), arg2);
+    return ret;
+}, arguments) };
+
+export function __wbg_newwithu8arraysequenceandoptions_068570c487f69127() { return handleError(function (arg0, arg1) {
+    const ret = new Blob(arg0, arg1);
+    return ret;
+}, arguments) };
 
 export function __wbg_next_25feadfc0913fea9(arg0) {
     const ret = arg0.next;
@@ -3932,6 +4318,11 @@ export function __wbg_next_c3ab0d59847b3b5c() { return handleError(function (arg
     const ret = arg0.next();
     return ret;
 }, arguments) };
+
+export function __wbg_node_02999533c4ea02e3(arg0) {
+    const ret = arg0.node;
+    return ret;
+};
 
 export function __wbg_person_new(arg0) {
     const ret = Person.__wrap(arg0);
@@ -3953,8 +4344,13 @@ export function __wbg_point_unwrap(arg0) {
     return ret;
 };
 
-export function __wbg_projectsettings_new(arg0) {
-    const ret = ProjectSettings.__wrap(arg0);
+export function __wbg_process_5c1d670bc53614b8(arg0) {
+    const ret = arg0.process;
+    return ret;
+};
+
+export function __wbg_push_737cfc8c1432c2c6(arg0, arg1) {
+    const ret = arg0.push(arg1);
     return ret;
 };
 
@@ -3967,6 +4363,10 @@ export function __wbg_queueMicrotask_d3219def82552485(arg0) {
     return ret;
 };
 
+export function __wbg_randomFillSync_ab2cfe79ebbf2740() { return handleError(function (arg0, arg1) {
+    arg0.randomFillSync(arg1);
+}, arguments) };
+
 export function __wbg_relationship_new(arg0) {
     const ret = Relationship.__wrap(arg0);
     return ret;
@@ -3976,6 +4376,21 @@ export function __wbg_relationship_unwrap(arg0) {
     const ret = Relationship.__unwrap(arg0);
     return ret;
 };
+
+export function __wbg_removeEntry_9f6bc325e3383e59(arg0, arg1, arg2) {
+    const ret = arg0.removeEntry(getStringFromWasm0(arg1, arg2));
+    return ret;
+};
+
+export function __wbg_removeEntry_a424e90dff229b19(arg0, arg1, arg2, arg3) {
+    const ret = arg0.removeEntry(getStringFromWasm0(arg1, arg2), arg3);
+    return ret;
+};
+
+export function __wbg_require_79b1e9274cde3c87() { return handleError(function () {
+    const ret = module.require;
+    return ret;
+}, arguments) };
 
 export function __wbg_resolve_4851785c9c5f573d(arg0) {
     const ret = Promise.resolve(arg0);
@@ -4003,12 +4418,44 @@ export function __wbg_set_8fc6bf8a5b1071d1(arg0, arg1, arg2) {
     return ret;
 };
 
+export function __wbg_setbody_5923b78a95eedf29(arg0, arg1) {
+    arg0.body = arg1;
+};
+
 export function __wbg_setcreate_139bad94b2874fb5(arg0, arg1) {
     arg0.create = arg1 !== 0;
 };
 
 export function __wbg_setcreate_4ca762e23d9f78da(arg0, arg1) {
     arg0.create = arg1 !== 0;
+};
+
+export function __wbg_setcredentials_c3a22f1cd105a2c6(arg0, arg1) {
+    arg0.credentials = __wbindgen_enum_RequestCredentials[arg1];
+};
+
+export function __wbg_setheaders_834c0bdb6a8949ad(arg0, arg1) {
+    arg0.headers = arg1;
+};
+
+export function __wbg_setmethod_3c5280fe5d890842(arg0, arg1, arg2) {
+    arg0.method = getStringFromWasm0(arg1, arg2);
+};
+
+export function __wbg_setmode_5dc300b865044b65(arg0, arg1) {
+    arg0.mode = __wbindgen_enum_RequestMode[arg1];
+};
+
+export function __wbg_setrecursive_536113a081d6177a(arg0, arg1) {
+    arg0.recursive = arg1 !== 0;
+};
+
+export function __wbg_setsignal_75b21ef3a81de905(arg0, arg1) {
+    arg0.signal = arg1;
+};
+
+export function __wbg_settype_39ed370d3edd403c(arg0, arg1, arg2) {
+    arg0.type = getStringFromWasm0(arg1, arg2);
 };
 
 export function __wbg_shape_new(arg0) {
@@ -4018,6 +4465,11 @@ export function __wbg_shape_new(arg0) {
 
 export function __wbg_shape_unwrap(arg0) {
     const ret = Shape.__unwrap(arg0);
+    return ret;
+};
+
+export function __wbg_signal_aaf9ad74119f20a4(arg0) {
+    const ret = arg0.signal;
     return ret;
 };
 
@@ -4059,6 +4511,21 @@ export function __wbg_static_accessor_WINDOW_5de37043a91a9c40() {
     return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
 };
 
+export function __wbg_status_f6360336ca686bf0(arg0) {
+    const ret = arg0.status;
+    return ret;
+};
+
+export function __wbg_stringify_f7ed6987935b4a24() { return handleError(function (arg0) {
+    const ret = JSON.stringify(arg0);
+    return ret;
+}, arguments) };
+
+export function __wbg_subarray_aa9065fa9dc5df96(arg0, arg1, arg2) {
+    const ret = arg0.subarray(arg1 >>> 0, arg2 >>> 0);
+    return ret;
+};
+
 export function __wbg_text_1f39a8afe3c70a99(arg0) {
     const ret = arg0.text();
     return ret;
@@ -4074,8 +4541,21 @@ export function __wbg_then_48b406749878a531(arg0, arg1, arg2) {
     return ret;
 };
 
+export function __wbg_url_ae10c34ca209681d(arg0, arg1) {
+    const ret = arg1.url;
+    const ptr1 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len1 = WASM_VECTOR_LEN;
+    getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
+    getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
+};
+
 export function __wbg_value_cd1ffa7b1ab794f1(arg0) {
     const ret = arg0.value;
+    return ret;
+};
+
+export function __wbg_versions_c71aa1626a93e0a1(arg0) {
+    const ret = arg0.versions;
     return ret;
 };
 
@@ -4094,6 +4574,18 @@ export function __wbindgen_as_number(arg0) {
     return ret;
 };
 
+export function __wbindgen_bigint_from_u64(arg0) {
+    const ret = BigInt.asUintN(64, arg0);
+    return ret;
+};
+
+export function __wbindgen_bigint_get_as_i64(arg0, arg1) {
+    const v = arg1;
+    const ret = typeof(v) === 'bigint' ? v : undefined;
+    getDataViewMemory0().setBigInt64(arg0 + 8 * 1, isLikeNone(ret) ? BigInt(0) : ret, true);
+    getDataViewMemory0().setInt32(arg0 + 4 * 0, !isLikeNone(ret), true);
+};
+
 export function __wbindgen_boolean_get(arg0) {
     const v = arg0;
     const ret = typeof(v) === 'boolean' ? (v ? 1 : 0) : 2;
@@ -4110,8 +4602,8 @@ export function __wbindgen_cb_drop(arg0) {
     return ret;
 };
 
-export function __wbindgen_closure_wrapper2900(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 828, __wbg_adapter_42);
+export function __wbindgen_closure_wrapper3522(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 1029, __wbg_adapter_50);
     return ret;
 };
 
@@ -4134,7 +4626,7 @@ export function __wbindgen_in(arg0, arg1) {
 };
 
 export function __wbindgen_init_externref_table() {
-    const table = wasm.__wbindgen_export_3;
+    const table = wasm.__wbindgen_export_4;
     const offset = table.grow(4);
     table.set(0, undefined);
     table.set(offset + 0, undefined);
@@ -4142,6 +4634,11 @@ export function __wbindgen_init_externref_table() {
     table.set(offset + 2, true);
     table.set(offset + 3, false);
     ;
+};
+
+export function __wbindgen_is_bigint(arg0) {
+    const ret = typeof(arg0) === 'bigint';
+    return ret;
 };
 
 export function __wbindgen_is_function(arg0) {
@@ -4162,6 +4659,11 @@ export function __wbindgen_is_string(arg0) {
 
 export function __wbindgen_is_undefined(arg0) {
     const ret = arg0 === undefined;
+    return ret;
+};
+
+export function __wbindgen_jsval_eq(arg0, arg1) {
+    const ret = arg0 === arg1;
     return ret;
 };
 

@@ -38,10 +38,10 @@ Returns the data of a diagram.
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
 pub async fn get_diagram(
-  diagram_name: &str,
+  diagram_name: String,
   diagram_type: DiagramType,
 ) -> Result<Diagram, MinaError> {
-  return get_diagram_service(diagram_name, diagram_type).await;
+  return get_diagram_service(&diagram_name, diagram_type).await;
 }
 
 /**
@@ -54,10 +54,10 @@ Returns the opened and parsed diagram.
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
 pub async fn open_diagram(
-  diagram_name: &str,
+  diagram_name: String,
   diagram_type: DiagramType,
 ) -> Result<Diagram, MinaError> {
-  Ok(diagram_repository::open_diagram(diagram_name, diagram_type).await?)
+  Ok(diagram_repository::open_diagram(&diagram_name, diagram_type).await?)
 }
 
 /**
@@ -69,10 +69,10 @@ Closes a diagram and and unlocks its files.
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
 pub async fn close_diagram(
-  diagram_name: &str,
+  diagram_name: String,
   diagram_type: DiagramType,
 ) -> Result<bool, MinaError> {
-  Ok(diagram_repository::close_diagram(diagram_name, diagram_type).await?)
+  Ok(diagram_repository::close_diagram(&diagram_name, diagram_type).await?)
 }
 
 /**
@@ -84,10 +84,10 @@ Deletes a diagram.
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
 pub async fn delete_diagram(
-  diagram_name: &str,
+  diagram_name: String,
   diagram_type: DiagramType,
 ) -> Result<ProjectLibrary, MinaError> {
-  Ok(diagram_repository::delete_diagram(diagram_name, &diagram_type).await?)
+  Ok(diagram_repository::delete_diagram(&diagram_name, &diagram_type).await?)
 }
 
 /**
@@ -115,20 +115,20 @@ Returns the saved diagram.
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
 pub async fn save_spec_diagram_raw_plantuml(
-  raw_plantuml: &str,
+  raw_plantuml: String,
   diagram_spec: DiagramSpec,
-  diagram_name: &str,
+  diagram_name: String,
   diagram_type: DiagramType,
 ) -> Result<Diagram, MinaError> {
   log::info!("Saving raw PlantUML & Spec of the diagram {}", diagram_name);
   diagram_repository::save_spec_diagram_raw_plantuml(
-    raw_plantuml,
+    &raw_plantuml,
     &diagram_spec,
-    diagram_name,
+    &diagram_name,
     &diagram_type,
   )
   .await?;
-  diagram_repository::open_diagram(diagram_name, diagram_type).await
+  diagram_repository::open_diagram(&diagram_name, diagram_type).await
 }
 
 /**
@@ -170,17 +170,17 @@ to a file in the given format.
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
 pub async fn export_diagram_to_file(
-  diagram_data_url: &str,
+  diagram_data_url: String,
   format: DiagramFormat,
-  diagram_name: &str,
+  diagram_name: String,
   diagram_type: DiagramType,
 ) -> Result<String, MinaError> {
   log::info!("Exporting diagram {} to {}", diagram_name, format);
   Ok(
     diagram_repository::export_diagram_to_file(
-      diagram_data_url,
+      &diagram_data_url,
       &format,
-      diagram_name,
+      &diagram_name,
       &diagram_type,
     )
     .await?,
@@ -216,11 +216,11 @@ Example: container/diagram-name
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
 pub async fn diagram_to_link_string(
-  diagram_human_name: &str,
+  diagram_human_name: String,
   diagram_type: DiagramType,
 ) -> Result<String, MinaError> {
   Ok(diagram_to_link_string_helper(
-    diagram_human_name,
+    &diagram_human_name,
     &diagram_type,
   )?)
 }
@@ -233,8 +233,8 @@ to extract the diagram's name and type.
 */
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
-pub async fn diagram_from_link_string(link_string: &str) -> Result<Diagram, MinaError> {
-  Ok(diagram_from_link_string_helper(link_string)?)
+pub async fn diagram_from_link_string(link_string: String) -> Result<Diagram, MinaError> {
+  Ok(diagram_from_link_string_helper(&link_string)?)
 }
 
 /**
@@ -245,11 +245,9 @@ Deserializes a PlantUML string
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
 pub async fn deserialize_plantuml_by_string(
-  raw_plantuml: &str,
+  raw_plantuml: String,
 ) -> Result<DiagramPlantUML, MinaError> {
-  Ok(deserialize_plantuml_by_string_helper(
-    &raw_plantuml.to_string(),
-  )?)
+  Ok(deserialize_plantuml_by_string_helper(&raw_plantuml)?)
 }
 
 /**
@@ -260,8 +258,8 @@ Example: <PROJECT_ROOT>/diagrams/<DIAGRAM_TYPE>/<DIAGRAM_NAME>/diagram.puml -> (
 */
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
-pub async fn diagram_name_type_from_path(path: &str) -> Result<Diagram, MinaError> {
-  let (diagram_name, diagram_type) = diagram_name_type_from_path_helper(path).await?;
+pub async fn diagram_name_type_from_path(path: String) -> Result<Diagram, MinaError> {
+  let (diagram_name, diagram_type) = diagram_name_type_from_path_helper(&path).await?;
   Ok(Diagram {
     diagram_name: Some(diagram_name),
     diagram_type: Some(diagram_type),
@@ -283,9 +281,9 @@ Retrieves the dependents of an architectural element with the given alias in the
 #[cfg_attr(desktop, tauri::command)]
 #[cfg_attr(web, web_controller)]
 pub async fn dependent_elements_in_diagram(
-  alias: &str,
-  diagram_name: &str,
+  alias: String,
+  diagram_name: String,
   diagram_type: DiagramType,
 ) -> Result<Vec<String>, MinaError> {
-  return dependent_elements_in_diagram_service(alias, diagram_name, diagram_type).await;
+  return dependent_elements_in_diagram_service(&alias, &diagram_name, diagram_type).await;
 }

@@ -22,7 +22,7 @@ pub struct CrossPathBuf {
 
 #[cfg_attr(desktop, async_trait)]
 #[cfg_attr(web, async_trait(?Send))]
-pub trait CrossFile: Send + Sync {
+pub trait CrossFile: Send + Sync + std::fmt::Debug {
   fn unlock(&self) -> Result<(), MinaError>;
   fn lock_exclusive(&self) -> Result<(), MinaError>;
   async fn get_buffer(&self) -> Result<Box<dyn BufRead + Send>, MinaError>;
