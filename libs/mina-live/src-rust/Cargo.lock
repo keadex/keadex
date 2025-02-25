@@ -1256,7 +1256,6 @@ dependencies = [
  "strum_macros",
  "ts-rs",
  "uuid",
- "walkdir",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",

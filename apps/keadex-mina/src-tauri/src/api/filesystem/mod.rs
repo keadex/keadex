@@ -14,9 +14,10 @@ pub struct CrossMetadata {
   pub is_dir: bool,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct CrossPathBuf {
   pub file_name: String,
+  pub path: Option<String>,
   pub is_dir: bool,
 }
 
@@ -48,4 +49,11 @@ pub trait FileSystemAPI {
   fn metadata(&self, path: &Path) -> impl Future<Output = Result<CrossMetadata, MinaError>>;
   fn read_dir(&self, path: &Path) -> impl Future<Output = Result<Vec<CrossPathBuf>, MinaError>>;
   fn path_exists(&self, path: &Path) -> impl Future<Output = Result<bool, MinaError>>;
+  fn walk_dir<P>(
+    &self,
+    root: &Path,
+    filter_entry_predicate: P,
+  ) -> impl Future<Output = Result<Vec<CrossPathBuf>, MinaError>>
+  where
+    P: FnMut(&CrossPathBuf) -> bool + Clone;
 }

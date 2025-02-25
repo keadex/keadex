@@ -1,3 +1,4 @@
+use crate::api::filesystem::CrossPathBuf;
 use crate::api::filesystem::FileSystemAPI as FsApiTrait;
 use crate::core::app::ROOT_RESOLVER;
 use crate::core::project_initializer::load_project;
@@ -21,13 +22,11 @@ use crate::resolve_to_write;
 use async_std::sync::Arc;
 use async_std::sync::RwLock;
 use futures::future::join_all;
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::future::Future;
 use std::io::BufRead;
 use std::path::Path;
 use std::usize;
-use walkdir::DirEntry;
-use walkdir::WalkDir;
 
 /**
 Generates the file search category of a file with the given path.
@@ -47,7 +46,7 @@ fn get_category(path: &str, diagrams_dir: &str, library_dir: &str) -> FileSearch
 }
 
 /**
-Checks if the given directory entry is searchable.
+Checks if the given entry (directory or file) is searchable.
 # Arguments
   * `entry` - Directory entry to check.
   * `include_diagrams_dir` - If you want to include the diagrams directory in the search.
@@ -55,20 +54,23 @@ Checks if the given directory entry is searchable.
   * `diagrams_dir` - Path of the diagrams directory.
   * `library_dir`- Path of the project library directory.
 */
-fn is_searchable_dir(
-  entry: &DirEntry,
+fn is_searchable_entry(
+  entry: &CrossPathBuf,
   root_dir: &str,
   include_diagrams_dir: bool,
   include_library_dir: bool,
   diagrams_dir: &str,
   library_dir: &str,
 ) -> bool {
-  if let Some(path) = entry.path().to_str() {
-    let is_searchable = path.eq(root_dir)
+  if let Some(path) = entry.path.as_ref() {
+    let is_searchable_path = path.eq(root_dir)
       || ((path.starts_with(diagrams_dir) || path.starts_with(library_dir))
         && (include_diagrams_dir || (!include_diagrams_dir && !path.starts_with(diagrams_dir)))
         && (include_library_dir || (!include_library_dir && !path.starts_with(library_dir))));
-    return is_searchable;
+    let is_searchable_file = entry.is_dir
+      || (!entry.is_dir && entry.file_name.ends_with(".json")
+        || entry.file_name.ends_with(".puml"));
+    return is_searchable_path && is_searchable_file;
   } else {
     return false;
   }
@@ -115,10 +117,10 @@ where
     unload_project(&project_settings.root).await?;
 
     // Search for the given string in all the project's files
-    for entry in WalkDir::new(temp_root_1)
-      .into_iter()
-      .filter_entry(|e| {
-        is_searchable_dir(
+    let mut project_files = resolve_to_write!(store, FileSystemAPI)
+      .await
+      .walk_dir(&Path::new(&temp_root_1), |e| {
+        is_searchable_entry(
           e,
           &temp_root_2,
           include_diagrams,
@@ -127,23 +129,23 @@ where
           &library_directory,
         )
       })
-      .filter_map(|e| e.ok())
-    {
-      if entry.file_type().is_file() {
+      .await?;
+
+    for entry in project_files {
+      if !entry.is_dir {
+        let path = entry.path.unwrap();
         let file = resolve_to_write!(store, FileSystemAPI)
           .await
-          .open(true, false, false, false, entry.path())
+          .open(true, false, false, false, &Path::new(&path))
           .await?;
         let reader = file.get_buffer().await?;
-
-        let path = entry.path().to_str().unwrap();
 
         for (line_num, line) in reader.lines().enumerate() {
           if let Ok(line) = line {
             concurrent_predicates.push(predicate(
               line,
               line_num,
-              String::from(path),
+              path.clone(),
               diagrams_directory.clone(),
               library_directory.clone(),
             ));
@@ -217,7 +219,7 @@ pub async fn search_and_replace_text(
   let current_path_rc = Arc::new(RwLock::new(String::from("")));
   let temp_file_opt_rc = Arc::new(RwLock::new(None));
   let new_line_rc = Arc::new(RwLock::new(String::from("")));
-  let results_rc = Arc::new(RwLock::new(HashMap::new()));
+  let results_rc = Arc::new(RwLock::new(BTreeMap::new()));
 
   let reached_limit = search_in_project(
     |line, line_num, path, diagrams_directory, library_directory| {
@@ -321,7 +323,7 @@ pub async fn search_text(
   include_library: bool,
   limit: usize,
 ) -> Result<FileSearchResults, MinaError> {
-  let results_rc = Arc::new(RwLock::new(HashMap::new()));
+  let results_rc = Arc::new(RwLock::new(BTreeMap::new()));
   let reached_limit = search_in_project(
     |line, line_num, path, diagrams_directory, library_directory| {
       let results = Arc::clone(&results_rc);
@@ -379,7 +381,7 @@ pub async fn search_diagram_element(
   let cleaned_plantuml_diagram_element = clean_plantuml_diagram_element(plantuml_diagram_element)?;
   let re_diagrams_dir = create_search_diagram_elem_in_plantuml_regex(alias);
 
-  let results_rc = Arc::new(RwLock::new(HashMap::new()));
+  let results_rc = Arc::new(RwLock::new(BTreeMap::new()));
   let mut reached_limit = false;
 
   // SEARCH IN DIAGRAMS

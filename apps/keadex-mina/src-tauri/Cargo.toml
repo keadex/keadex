@@ -24,7 +24,7 @@ state = "0.6"
 strum = { version = "0.24", features = ["derive"] }
 strum_macros = "0.24"
 notify = "4.0.17"
-walkdir = "2.4.0"
+walkdir = { version = "2", optional = true }
 fs2 = { version = "0.4.3", optional = true }
 pest = "2.7.4"
 pest_derive = "2.7.4"
@@ -104,6 +104,7 @@ desktop = [
   "tauri-plugin-single-instance",
   "dep:tauri-build",
   "dep:fs2",
+  "dep:walkdir"
 ]
 web = [
   "dep:web-sys",

@@ -1,3 +1,4 @@
+use crate::api::filesystem::web_fs::DEFAULT_WEB_ROOT;
 use crate::controller::project_controller;
 use crate::core::app::App;
 use crate::core::app::ROOT_RESOLVER;
@@ -23,7 +24,7 @@ pub async fn create_project(
 ) -> Result<ProjectSettings, MinaError> {
   console::log_1(&JsValue::from("Create project web"));
   let mut project_settings_web = project_settings.clone();
-  project_settings_web.root = "".to_string();
+  project_settings_web.root = DEFAULT_WEB_ROOT.to_string();
   let store = ROOT_RESOLVER.get().read().await;
   resolve_to_write!(store, FileSystemAPI)
     .await
@@ -35,7 +36,7 @@ pub async fn create_project(
 pub async fn open_project(
   dir_handle: Option<web_sys::FileSystemDirectoryHandle>,
 ) -> Result<Project, MinaError> {
-  let root = "";
+  let root = DEFAULT_WEB_ROOT;
   console::log_1(&JsValue::from(format!(
     "Open project web {} - {:?}",
     root, dir_handle,
@@ -49,7 +50,7 @@ pub async fn open_project(
 
 #[cfg_attr(web, web_controller)]
 pub async fn close_project() -> Result<bool, MinaError> {
-  let root = "";
+  let root = DEFAULT_WEB_ROOT;
   console::log_1(&JsValue::from(format!("Close project web {}", root)));
   let store = ROOT_RESOLVER.get().read().await;
   resolve_to_write!(store, FileSystemAPI)

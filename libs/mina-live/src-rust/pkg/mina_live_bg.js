@@ -210,76 +210,6 @@ function debugString(val) {
     // TODO we could test for more things here, like `Set`s and `Map`s.
     return className;
 }
-/**
- * @param {C4ElementType} filter_c4_element_type
- * @returns {C4Elements}
- */
-export function list_library_elements(filter_c4_element_type) {
-    const ret = wasm.list_library_elements(filter_c4_element_type);
-    return ret;
-}
-
-/**
- * @param {DiagramElementType} diagram_element
- * @returns {ProjectLibrary}
- */
-export function create_library_element(diagram_element) {
-    const ret = wasm.create_library_element(diagram_element);
-    return ret;
-}
-
-/**
- * @param {DiagramElementType} old_diagram_element
- * @param {DiagramElementType} new_diagram_element
- * @returns {ProjectLibrary}
- */
-export function update_library_element(old_diagram_element, new_diagram_element) {
-    const ret = wasm.update_library_element(old_diagram_element, new_diagram_element);
-    return ret;
-}
-
-/**
- * @param {String} uuid_element
- * @param {C4ElementType} element_type
- * @returns {ProjectLibrary}
- */
-export function delete_library_element(uuid_element, element_type) {
-    const ret = wasm.delete_library_element(uuid_element, element_type);
-    return ret;
-}
-
-/**
- * @param {String} path
- * @returns {C4ElementType}
- */
-export function library_element_type_from_path(path) {
-    const ret = wasm.library_element_type_from_path(path);
-    return ret;
-}
-
-/**
- * @param {String} string_to_search
- * @param {bool} include_diagrams_dir
- * @param {bool} include_library_dir
- * @param {usize} limit
- * @returns {FileSearchResults}
- */
-export function search(string_to_search, include_diagrams_dir, include_library_dir, limit) {
-    const ret = wasm.search(string_to_search, include_diagrams_dir, include_library_dir, limit);
-    return ret;
-}
-
-/**
- * @param {String} alias
- * @param {bool} include_diagrams_dir
- * @param {bool} include_library_dir
- * @param {usize} limit
- * @returns {DiagramElementSearchResults}
- */
-export function search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit) {
-    const ret = wasm.search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit);
-    return ret;
-}
 
 function _assertClass(instance, klass) {
     if (!(instance instanceof klass)) {
@@ -307,24 +237,6 @@ function passArrayJsValueToWasm0(array, malloc) {
     WASM_VECTOR_LEN = array.length;
     return ptr;
 }
-/**
- * @param {HookPayload} payload
- * @returns {bool}
- */
-export function execute_hook(payload) {
-    const ret = wasm.execute_hook(payload);
-    return ret;
-}
-
-/**
- * @param {ProjectSettings} project_settings
- * @returns {ProjectSettings}
- */
-export function save_project_settings(project_settings) {
-    const ret = wasm.save_project_settings(project_settings);
-    return ret;
-}
-
 /**
  * @param {String} description
  * @returns {String}
@@ -510,8 +422,97 @@ export function close_project() {
     return ret;
 }
 
+/**
+ * @param {ProjectSettings} project_settings
+ * @returns {ProjectSettings}
+ */
+export function save_project_settings(project_settings) {
+    const ret = wasm.save_project_settings(project_settings);
+    return ret;
+}
+
+/**
+ * @param {String} string_to_search
+ * @param {bool} include_diagrams_dir
+ * @param {bool} include_library_dir
+ * @param {usize} limit
+ * @returns {FileSearchResults}
+ */
+export function search(string_to_search, include_diagrams_dir, include_library_dir, limit) {
+    const ret = wasm.search(string_to_search, include_diagrams_dir, include_library_dir, limit);
+    return ret;
+}
+
+/**
+ * @param {String} alias
+ * @param {bool} include_diagrams_dir
+ * @param {bool} include_library_dir
+ * @param {usize} limit
+ * @returns {DiagramElementSearchResults}
+ */
+export function search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit) {
+    const ret = wasm.search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit);
+    return ret;
+}
+
+/**
+ * @param {C4ElementType} filter_c4_element_type
+ * @returns {C4Elements}
+ */
+export function list_library_elements(filter_c4_element_type) {
+    const ret = wasm.list_library_elements(filter_c4_element_type);
+    return ret;
+}
+
+/**
+ * @param {DiagramElementType} diagram_element
+ * @returns {ProjectLibrary}
+ */
+export function create_library_element(diagram_element) {
+    const ret = wasm.create_library_element(diagram_element);
+    return ret;
+}
+
+/**
+ * @param {DiagramElementType} old_diagram_element
+ * @param {DiagramElementType} new_diagram_element
+ * @returns {ProjectLibrary}
+ */
+export function update_library_element(old_diagram_element, new_diagram_element) {
+    const ret = wasm.update_library_element(old_diagram_element, new_diagram_element);
+    return ret;
+}
+
+/**
+ * @param {String} uuid_element
+ * @param {C4ElementType} element_type
+ * @returns {ProjectLibrary}
+ */
+export function delete_library_element(uuid_element, element_type) {
+    const ret = wasm.delete_library_element(uuid_element, element_type);
+    return ret;
+}
+
+/**
+ * @param {String} path
+ * @returns {C4ElementType}
+ */
+export function library_element_type_from_path(path) {
+    const ret = wasm.library_element_type_from_path(path);
+    return ret;
+}
+
+/**
+ * @param {HookPayload} payload
+ * @returns {bool}
+ */
+export function execute_hook(payload) {
+    const ret = wasm.execute_hook(payload);
+    return ret;
+}
+
 function __wbg_adapter_50(arg0, arg1, arg2) {
-    wasm.closure1028_externref_shim(arg0, arg1, arg2);
+    wasm.closure201_externref_shim(arg0, arg1, arg2);
 }
 
 function __wbg_adapter_105(arg0, arg1, arg2, arg3) {
@@ -652,7 +653,7 @@ export class BaseElement {
     set alias(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_baseelement_alias(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_aisettings_api_key(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -672,7 +673,7 @@ export class BaseElement {
     set label(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_baseelement_label(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_aisettings_api_base_url(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -692,7 +693,7 @@ export class BaseElement {
     set description(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_baseelement_description(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_aisettings_model(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -1159,7 +1160,7 @@ export class Container {
      * @returns {BaseElement}
      */
     get base_data() {
-        const ret = wasm.__wbg_get_container_base_data(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_component_base_data(this.__wbg_ptr);
         return BaseElement.__wrap(ret);
     }
     /**
@@ -1168,7 +1169,7 @@ export class Container {
     set base_data(arg0) {
         _assertClass(arg0, BaseElement);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_container_base_data(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_component_base_data(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {string | undefined}
@@ -1188,7 +1189,7 @@ export class Container {
     set technology(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_container_technology(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_component_technology(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {ContainerType | undefined}
@@ -1671,7 +1672,7 @@ export class DiagramPlantUML {
     set diagram_id(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_baseelement_description(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_diagramplantuml_diagram_id(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {DiagramElementType[]}
@@ -1975,7 +1976,7 @@ export class DiagramsThemeSettings {
     set bg_color_person_ext(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_diagramsthemesettings_bg_color_person_ext(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_baseelement_sprite(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -1995,7 +1996,7 @@ export class DiagramsThemeSettings {
     set border_color_person(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_diagramsthemesettings_border_color_person(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_baseelement_tags(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -2015,7 +2016,7 @@ export class DiagramsThemeSettings {
     set border_color_person_ext(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_diagramsthemesettings_border_color_person_ext(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_baseelement_link(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -2035,7 +2036,7 @@ export class DiagramsThemeSettings {
     set text_color_person(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_diagramsthemesettings_text_color_person(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_baseelement_uuid(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -2055,7 +2056,7 @@ export class DiagramsThemeSettings {
     set text_color_person_ext(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_diagramsthemesettings_text_color_person_ext(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_baseelement_notes(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -3314,7 +3315,7 @@ export class ProjectSettings {
     set root(arg0) {
         const ptr0 = passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_projectsettings_root(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_diagramspec_uuid(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string}
@@ -3485,7 +3486,7 @@ export class Relationship {
      * @returns {BaseElement}
      */
     get base_data() {
-        const ret = wasm.__wbg_get_container_base_data(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_component_base_data(this.__wbg_ptr);
         return BaseElement.__wrap(ret);
     }
     /**
@@ -3494,7 +3495,7 @@ export class Relationship {
     set base_data(arg0) {
         _assertClass(arg0, BaseElement);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_container_base_data(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_component_base_data(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {string | undefined}
@@ -3514,7 +3515,7 @@ export class Relationship {
     set from(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_container_technology(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_component_technology(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -3534,7 +3535,7 @@ export class Relationship {
     set to(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_boundary_boundary_custom_type(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_relationship_to(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -3769,7 +3770,7 @@ export class SoftwareSystem {
      * @returns {BaseElement}
      */
     get base_data() {
-        const ret = wasm.__wbg_get_container_base_data(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_softwaresystem_base_data(this.__wbg_ptr);
         return BaseElement.__wrap(ret);
     }
     /**
@@ -3778,7 +3779,7 @@ export class SoftwareSystem {
     set base_data(arg0) {
         _assertClass(arg0, BaseElement);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_container_base_data(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_softwaresystem_base_data(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {SystemType | undefined}
@@ -4602,8 +4603,8 @@ export function __wbindgen_cb_drop(arg0) {
     return ret;
 };
 
-export function __wbindgen_closure_wrapper3522(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 1029, __wbg_adapter_50);
+export function __wbindgen_closure_wrapper1590(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 202, __wbg_adapter_50);
     return ret;
 };
 

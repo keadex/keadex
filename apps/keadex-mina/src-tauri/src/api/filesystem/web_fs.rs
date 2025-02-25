@@ -8,14 +8,15 @@ use crate::error_handling::errors::INVALID_PATH_ERROR_MSG;
 use crate::error_handling::errors::IO_ERROR_CODE;
 use crate::error_handling::errors::MISSING_ROOT_DIR_HANDLE;
 use crate::error_handling::mina_error::MinaError;
-use crate::helper::fs_helper::split_path_components;
-use crate::helper::fs_helper::PathStructure;
 use async_trait::async_trait;
 use js_sys::Array;
 use js_sys::Uint8Array;
+use std::collections::VecDeque;
 use std::io::BufRead;
 use std::io::Cursor;
 use std::path::Path;
+use std::path::MAIN_SEPARATOR;
+use std::path::MAIN_SEPARATOR_STR;
 use std::time::Duration;
 use wasm_bindgen::JsCast;
 use wasm_bindgen::JsValue;
@@ -27,6 +28,14 @@ use web_sys::FileSystemHandleKind;
 use web_sys::FileSystemRemoveOptions;
 use web_sys::FileSystemWritableFileStream;
 use web_sys::{File, FileSystemDirectoryHandle};
+
+pub const DEFAULT_WEB_ROOT: &str = "";
+
+#[derive(Debug)]
+pub struct PathStructure {
+  pub directories: VecDeque<String>,
+  pub file_name: Option<String>,
+}
 
 // ----------- WebFile
 #[derive(Debug)]
@@ -125,6 +134,33 @@ pub struct WebFileSystemAPI {
 }
 
 impl WebFileSystemAPI {
+  pub fn split_path_components(path: &str) -> PathStructure {
+    let path = Path::new(path);
+
+    // Get all components as strings
+    let components: Vec<String> = path
+      .iter()
+      .map(|comp| comp.to_string_lossy().into_owned())
+      .collect();
+
+    // Separate directories and file name
+    let mut file_name = None;
+    if path.extension().is_some() {
+      file_name = path.file_name().map(|f| f.to_string_lossy().into_owned());
+    }
+    let directories = components
+      .iter()
+      .take(components.len() - file_name.is_some() as usize)
+      .filter(|dir| !dir.eq(&MAIN_SEPARATOR_STR))
+      .cloned()
+      .collect();
+
+    return PathStructure {
+      directories,
+      file_name,
+    };
+  }
+
   pub async fn open_web_fs_entry(
     &self,
     parent_dir_handle: &FileSystemDirectoryHandle,
@@ -278,6 +314,106 @@ impl WebFileSystemAPI {
       }
     }
   }
+
+  async fn read_dir_web<P>(
+    &self,
+    dir_handle: &FileSystemDirectoryHandle,
+    path: &Path,
+    parent_path: &Path,
+    recursive: bool,
+    mut filter_entry_predicate: P,
+  ) -> Result<Vec<CrossPathBuf>, MinaError>
+  where
+    P: FnMut(&CrossPathBuf) -> bool + Clone,
+  {
+    let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
+    if path_structure.file_name.is_none() {
+      let dir = self
+        .open_web_fs_entry(dir_handle, dir_handle, &mut path_structure, false, false)
+        .await?;
+
+      let mut paths = vec![];
+      let mut handle;
+
+      let async_iterator = dir.dir_handle.unwrap().entries();
+      loop {
+        let next_promise = async_iterator.next();
+        let next_result = JsFuture::from(next_promise?).await?;
+
+        // The result is an object with `{ value, done }`
+        let next_obj = js_sys::Object::from(next_result);
+
+        // Check if the iterator is done
+        let done = js_sys::Reflect::get(&next_obj, &JsValue::from_str("done"))?
+          .as_bool()
+          .unwrap_or(false);
+
+        if done {
+          break;
+        }
+
+        // Get the `value` field, which is an array `[key, value]`
+        let value = js_sys::Reflect::get(&next_obj, &JsValue::from_str("value"))?;
+        let pair: Array = value.into();
+
+        // Extract the key and value from the array
+        let name = pair.get(0).as_string().unwrap_or_default();
+        handle = Some(pair.get(1));
+
+        if handle
+          .as_ref()
+          .unwrap()
+          .is_instance_of::<FileSystemFileHandle>()
+        {
+          let entry = CrossPathBuf {
+            file_name: name.clone(),
+            path: Some(format!("{}{}", parent_path.to_str().unwrap(), &name)),
+            is_dir: false,
+          };
+          if filter_entry_predicate(&entry) {
+            paths.push(entry);
+          }
+        } else if handle
+          .as_ref()
+          .unwrap()
+          .is_instance_of::<FileSystemDirectoryHandle>()
+        {
+          let new_parent_path = format!(
+            "{}{}{}",
+            parent_path.to_str().unwrap(),
+            &name,
+            MAIN_SEPARATOR,
+          );
+          let entry = CrossPathBuf {
+            file_name: name.clone(),
+            path: Some(new_parent_path.clone()),
+            is_dir: true,
+          };
+          if filter_entry_predicate(&entry) {
+            paths.push(entry);
+          }
+          if recursive {
+            let dir_handle = handle
+              .unwrap()
+              .dyn_into::<FileSystemDirectoryHandle>()
+              .unwrap();
+            let mut sub_files = Box::pin(self.read_dir_web(
+              &dir_handle,
+              path,
+              &Path::new(&new_parent_path),
+              recursive,
+              filter_entry_predicate.clone(),
+            ))
+            .await?;
+            paths.append(&mut sub_files);
+          }
+        }
+      }
+      return Ok(paths);
+    } else {
+      return Err(MinaError::new(IO_ERROR_CODE, INVALID_PATH_ERROR_MSG));
+    }
+  }
 }
 
 impl FileSystemAPI for WebFileSystemAPI {
@@ -290,7 +426,7 @@ impl FileSystemAPI for WebFileSystemAPI {
     path: &Path,
   ) -> Result<Box<dyn CrossFile>, MinaError> {
     if let Some(root_dir_handle) = &self.root_dir_handle {
-      let mut path_structure = split_path_components(&path.to_str().unwrap());
+      let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
       let result = self
         .open_web_fs_entry(
           root_dir_handle,
@@ -308,7 +444,7 @@ impl FileSystemAPI for WebFileSystemAPI {
 
   async fn create(&self, path: &Path) -> Result<Box<dyn CrossFile>, MinaError> {
     if let Some(root_dir_handle) = &self.root_dir_handle {
-      let mut path_structure = split_path_components(&path.to_str().unwrap());
+      let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
       let result = self
         .open_web_fs_entry(
           root_dir_handle,
@@ -326,7 +462,7 @@ impl FileSystemAPI for WebFileSystemAPI {
 
   async fn create_dir_all(&self, path: &Path) -> Result<(), MinaError> {
     if let Some(root_dir_handle) = &self.root_dir_handle {
-      let mut path_structure = split_path_components(&path.to_str().unwrap());
+      let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
       self
         .open_web_fs_entry(
           root_dir_handle,
@@ -344,7 +480,7 @@ impl FileSystemAPI for WebFileSystemAPI {
 
   async fn remove_file(&self, path: &Path) -> Result<(), MinaError> {
     if let Some(root_dir_handle) = &self.root_dir_handle {
-      let mut path_structure = split_path_components(&path.to_str().unwrap());
+      let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
       let file = self
         .open_web_fs_entry(
           root_dir_handle,
@@ -368,7 +504,7 @@ impl FileSystemAPI for WebFileSystemAPI {
 
   async fn remove_dir_all(&self, path: &Path) -> Result<(), MinaError> {
     if let Some(root_dir_handle) = &self.root_dir_handle {
-      let mut path_structure = split_path_components(&path.to_str().unwrap());
+      let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
       let result = self
         .open_web_fs_entry(
           root_dir_handle,
@@ -398,7 +534,7 @@ impl FileSystemAPI for WebFileSystemAPI {
         .open_web_fs_entry(
           root_dir_handle,
           root_dir_handle,
-          &mut split_path_components(&from.to_str().unwrap()),
+          &mut WebFileSystemAPI::split_path_components(&from.to_str().unwrap()),
           false,
           false,
         )
@@ -407,7 +543,7 @@ impl FileSystemAPI for WebFileSystemAPI {
         .open_web_fs_entry(
           root_dir_handle,
           root_dir_handle,
-          &mut split_path_components(&to.to_str().unwrap()),
+          &mut WebFileSystemAPI::split_path_components(&to.to_str().unwrap()),
           true,
           true,
         )
@@ -429,70 +565,33 @@ impl FileSystemAPI for WebFileSystemAPI {
 
   async fn read_dir(&self, path: &Path) -> Result<Vec<CrossPathBuf>, MinaError> {
     if let Some(root_dir_handle) = &self.root_dir_handle {
-      let mut path_structure = split_path_components(&path.to_str().unwrap());
-      if path_structure.file_name.is_none() {
-        let dir = self
-          .open_web_fs_entry(
-            &root_dir_handle,
-            &root_dir_handle,
-            &mut path_structure,
-            false,
-            false,
-          )
-          .await?;
+      self
+        .read_dir_web(&root_dir_handle, path, path, false, |_| true)
+        .await
+    } else {
+      return Err(MinaError::new(IO_ERROR_CODE, MISSING_ROOT_DIR_HANDLE));
+    }
+  }
 
-        let mut paths = vec![];
-        let mut handle;
+  async fn walk_dir<P>(
+    &self,
+    raw_path: &Path,
+    filter_entry_predicate: P,
+  ) -> Result<Vec<CrossPathBuf>, MinaError>
+  where
+    P: FnMut(&CrossPathBuf) -> bool + Clone,
+  {
+    // Adjust the input path since this function expects a path starting with a MAIN_SEPARATOR
+    let path_str = format!("{}{}", MAIN_SEPARATOR, raw_path.to_str().unwrap());
+    let mut path = raw_path;
+    if !raw_path.to_str().unwrap().starts_with(MAIN_SEPARATOR_STR) {
+      path = Path::new(&path_str);
+    }
 
-        let async_iterator = dir.dir_handle.unwrap().entries();
-        loop {
-          let next_promise = async_iterator.next();
-          let next_result = JsFuture::from(next_promise?).await?;
-
-          // The result is an object with `{ value, done }`
-          let next_obj = js_sys::Object::from(next_result);
-
-          // Check if the iterator is done
-          let done = js_sys::Reflect::get(&next_obj, &JsValue::from_str("done"))?
-            .as_bool()
-            .unwrap_or(false);
-
-          if done {
-            break;
-          }
-
-          // Get the `value` field, which is an array `[key, value]`
-          let value = js_sys::Reflect::get(&next_obj, &JsValue::from_str("value"))?;
-          let pair: Array = value.into();
-
-          // Extract the key and value from the array
-          let name = pair.get(0).as_string().unwrap_or_default();
-          handle = Some(pair.get(1));
-
-          if handle
-            .as_ref()
-            .unwrap()
-            .is_instance_of::<FileSystemFileHandle>()
-          {
-            paths.push(CrossPathBuf {
-              file_name: name,
-              is_dir: false,
-            });
-          } else if handle
-            .as_ref()
-            .unwrap()
-            .is_instance_of::<FileSystemDirectoryHandle>()
-          {
-            paths.push(CrossPathBuf {
-              file_name: name,
-              is_dir: true,
-            });
-          }
-        }
-        return Ok(paths);
-      } else {
-        return Err(MinaError::new(IO_ERROR_CODE, INVALID_PATH_ERROR_MSG));
-      }
+    if let Some(root_dir_handle) = &self.root_dir_handle {
+      self
+        .read_dir_web(&root_dir_handle, path, path, true, filter_entry_predicate)
+        .await
     } else {
       return Err(MinaError::new(IO_ERROR_CODE, MISSING_ROOT_DIR_HANDLE));
     }
@@ -500,7 +599,7 @@ impl FileSystemAPI for WebFileSystemAPI {
 
   async fn path_exists(&self, path: &Path) -> Result<bool, MinaError> {
     if let Some(root_dir_handle) = &self.root_dir_handle {
-      let mut path_structure = split_path_components(&path.to_str().unwrap());
+      let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
 
       let result = self
         .open_web_fs_entry(

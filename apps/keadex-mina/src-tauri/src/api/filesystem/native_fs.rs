@@ -1,5 +1,6 @@
 use crate::api::filesystem::CrossFile;
 use crate::api::filesystem::CrossMetadata;
+use crate::api::filesystem::CrossPathBuf;
 use crate::api::filesystem::FileSystemAPI;
 use crate::error_handling::mina_error::MinaError;
 use async_trait::async_trait;
@@ -12,8 +13,18 @@ use std::io::Read;
 use std::io::Write;
 use std::path::Path;
 use std::time::UNIX_EPOCH;
+use walkdir::WalkDir;
 
-use super::CrossPathBuf;
+impl From<&walkdir::DirEntry> for CrossPathBuf {
+  fn from(dir_entry: &walkdir::DirEntry) -> CrossPathBuf {
+    let path = dir_entry.path();
+    CrossPathBuf {
+      is_dir: dir_entry.file_type().is_dir(),
+      path: Some(String::from(path.to_str().unwrap())),
+      file_name: String::from(path.file_name().unwrap().to_str().unwrap()),
+    }
+  }
+}
 
 // ----------- NativeFile
 #[derive(Debug)]
@@ -139,11 +150,47 @@ impl FileSystemAPI for NativeFileSystemAPI {
         let path = dir_path.unwrap().path();
         paths.push(CrossPathBuf {
           is_dir: path.is_dir(),
+          path: Some(String::from(path.to_str().unwrap())),
           file_name: String::from(path.file_name().unwrap().to_str().unwrap()),
         });
       }
     }
     return Ok(paths);
+  }
+
+  async fn walk_dir<P>(
+    &self,
+    raw_path: &Path,
+    mut filter_entry_predicate: P,
+  ) -> Result<Vec<CrossPathBuf>, MinaError>
+  where
+    P: FnMut(&CrossPathBuf) -> bool + Clone,
+  {
+    let entries: Vec<CrossPathBuf> = WalkDir::new(raw_path.to_str().unwrap())
+      .into_iter()
+      .filter_entry(|e| filter_entry_predicate(&CrossPathBuf::from(e)))
+      .filter_map(|e| {
+        if let Some(dir_entry) = e.ok() {
+          return Some(CrossPathBuf::from(&dir_entry));
+        }
+        None::<CrossPathBuf>
+      })
+      .collect();
+    return Ok(entries);
+    // // Adjust the input path since this function expects a path starting with a MAIN_SEPARATOR
+    // let path_str = format!("{}{}", MAIN_SEPARATOR, raw_path.to_str().unwrap());
+    // let mut path = raw_path;
+    // if !raw_path.to_str().unwrap().starts_with(MAIN_SEPARATOR_STR) {
+    //   path = Path::new(&path_str);
+    // }
+
+    // if let Some(root_dir_handle) = &self.root_dir_handle {
+    //   self
+    //     .read_dir_web(&root_dir_handle, path, path, true, filter_entry_predicate)
+    //     .await
+    // } else {
+    //   return Err(MinaError::new(IO_ERROR_CODE, MISSING_ROOT_DIR_HANDLE));
+    // }
   }
 
   async fn path_exists(&self, path: &Path) -> Result<bool, MinaError> {
