@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const CopyPlugin = require('copy-webpack-plugin')
+const { readFileSync } = require('fs')
+const { join } = require('path')
 const { DefinePlugin } = require('webpack')
 
 function withMinaLiveWebpackConfig(config) {
@@ -29,6 +31,10 @@ function withMinaLiveWebpackConfig(config) {
       'import.meta.env': {
         VITE_AI_ENABLED: JSON.stringify(true),
         VITE_WEB_MODE: JSON.stringify(true),
+        VITE_APP_VERSION: JSON.stringify(
+          JSON.parse(readFileSync(join(__dirname, '../../package.json')))
+            .version,
+        ),
       },
     }),
   )

@@ -10,14 +10,15 @@ import {
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import { ENV_SETTINGS } from '../../core/env-settings'
 
 type AppDetails = {
   version: string
-  tauriVersion: string
-  arch: string
+  tauriVersion?: string
+  arch?: string
   platform: string
-  osType: string
-  kernelVersion: string
+  osType?: string
+  kernelVersion?: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -28,12 +29,19 @@ export const ModalAbout = (props: ModalAboutProps) => {
   const [appDetails, setAppDetails] = useState<AppDetails | undefined>()
 
   const getAppDetails = async () => {
-    const version = await getVersion()
-    const tauriVersion = await getTauriVersion()
-    const arch = await archAPI()
-    const platform = await platformAPI()
-    const osType = await typeAPI()
-    const kernelVersion = await versionAPI()
+    let version, tauriVersion, arch, platform, osType, kernelVersion
+
+    if (ENV_SETTINGS.WEB_MODE) {
+      version = ENV_SETTINGS.APP_VERSION
+      platform = 'web'
+    } else {
+      version = await getVersion()
+      tauriVersion = await getTauriVersion()
+      arch = await archAPI()
+      platform = await platformAPI()
+      osType = await typeAPI()
+      kernelVersion = await versionAPI()
+    }
 
     setAppDetails({
       version,
@@ -60,24 +68,32 @@ export const ModalAbout = (props: ModalAboutProps) => {
               <li>
                 {t('common.version')}: {appDetails.version}
               </li>
-              <li>
-                Tauri {t('common.version')}: {appDetails.tauriVersion}
-              </li>
+              {appDetails.tauriVersion && (
+                <li>
+                  Tauri {t('common.version')}: {appDetails.tauriVersion}
+                </li>
+              )}
             </ul>
             <div className="font-bold">{t('common.system')}:</div>
             <ul className="ml-2">
-              <li>
-                {t('common.architecture')}: {appDetails.arch}
-              </li>
+              {appDetails.arch && (
+                <li>
+                  {t('common.architecture')}: {appDetails.arch}
+                </li>
+              )}
               <li>
                 {t('common.platform')}: {appDetails.platform}
               </li>
-              <li>
-                {t('about.os_type')}: {appDetails.osType}
-              </li>
-              <li>
-                {t('about.kernel_version')}: {appDetails.kernelVersion}
-              </li>
+              {appDetails.osType && (
+                <li>
+                  {t('about.os_type')}: {appDetails.osType}
+                </li>
+              )}
+              {appDetails.kernelVersion && (
+                <li>
+                  {t('about.kernel_version')}: {appDetails.kernelVersion}
+                </li>
+              )}
             </ul>
           </div>
         )}
