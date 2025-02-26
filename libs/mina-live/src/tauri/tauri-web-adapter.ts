@@ -6,6 +6,7 @@ import type {
 } from '@tauri-apps/api/core'
 import type { WebviewWindow } from '@tauri-apps/api/webviewWindow'
 import { invokeWasmFunction } from './wasm-bridge'
+import { invokeTauriPlugin } from './tauri-plugin-adapter'
 
 declare global {
   interface Window {
@@ -33,10 +34,11 @@ window.__TAURI_INTERNALS__ = {
       )} - ${JSON.stringify(options)}`,
     )
     if (!cmd.startsWith('plugin:')) {
-      // It is not inkoking a Tauri plugin
+      // It has not been invoked a Tauri plugin
       return invokeWasmFunction(cmd, args)
+    } else {
+      return invokeTauriPlugin(cmd, args)
     }
-    return Promise.resolve({} as T)
   },
   transformCallback: <T = unknown>(
     callback?: ((response: T) => void) | undefined,
