@@ -109,6 +109,8 @@
       "check_for_updates": "Check for Updates...",
       "close_project": "Close Project",
       "copy_deep_link": "Copy deep link",
+      "download_desktop_app": "Download desktop app",
+      "download_mina_cli": "Download Mina CLI",
       "link_existing_diagram": "Link an existing diagram",
       "link_to_diagram": "Link \"{{alias}}\" to...",
       "new_project": "New Project",
