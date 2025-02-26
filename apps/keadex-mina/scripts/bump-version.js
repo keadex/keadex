@@ -23,6 +23,7 @@ if (!newVersion || newVersion === 'null') {
 }
 
 const filesToUpdate = [
+  // Keadex Mina
   {
     path: 'apps/keadex-mina/package.json',
     pattern: `"version": "${version}"`,
@@ -39,22 +40,14 @@ const filesToUpdate = [
     path: 'apps/keadex-mina/src-tauri/tauri.conf.json',
     pattern: `"mainBinaryName": "Keadex Mina",\n  "version": "${version}"`,
   },
+
+  // Mina React
   {
     path: 'libs/mina-react/src-rust/Cargo.lock',
     pattern: `name = "keadex_mina"\nversion = "${version}"`,
   },
-  {
-    path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/continuous-integration.mdx',
-    pattern: `/mina-cli%40${version}/`,
-  },
-  {
-    path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/cli/overview.mdx',
-    pattern: `/mina-cli%40${version}/`,
-  },
-  {
-    path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/cli/overview.mdx',
-    pattern: `Download Mina CLI v${version}`,
-  },
+
+  // Mina CLI
   {
     path: 'libs/mina-cli/Cargo.lock',
     pattern: `name = "keadex_mina"\nversion = "${version}"`,
@@ -66,6 +59,38 @@ const filesToUpdate = [
   {
     path: 'libs/mina-cli/Cargo.toml',
     pattern: `name = "mina-cli"\nversion = "${version}"`,
+  },
+
+  // Mina Live
+  {
+    path: 'libs/mina-live/package.json',
+    pattern: `"version": "${version}"`,
+  },
+  {
+    path: 'libs/mina-live/src-rust/Cargo.lock',
+    pattern: `name = "keadex_mina"\nversion = "${version}"`,
+  },
+  {
+    path: 'libs/mina-live/src-rust/Cargo.lock',
+    pattern: `name = "mina-live"\nversion = "${version}"`,
+  },
+  {
+    path: 'libs/mina-live/src-rust/Cargo.toml',
+    pattern: `name = "mina-live"\nversion = "${version}"`,
+  },
+
+  // Keadex Battisti
+  {
+    path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/continuous-integration.mdx',
+    pattern: `/mina-cli%40${version}/`,
+  },
+  {
+    path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/cli/overview.mdx',
+    pattern: `/mina-cli%40${version}/`,
+  },
+  {
+    path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/cli/overview.mdx',
+    pattern: `Download Mina CLI v${version}`,
   },
 ]
 
