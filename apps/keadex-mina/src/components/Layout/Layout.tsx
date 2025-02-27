@@ -169,7 +169,14 @@ export const Layout = React.memo((props: LayoutProps) => {
           rightButtonsProps={ENV_SETTINGS.WEB_MODE ? [] : rightButtons}
           icon={'mina-logo.svg'}
           menuProps={windowTitlebarMenu}
-          title="Keadex Mina v2 [Beta]"
+          title={
+            <div>
+              <div className="inline opacity-20">Keadex Mina</div>
+              <div className="inline ml-1 px-1 py-[0.10rem] bg-primary text-brand1 rounded text-sm">
+                v2 beta
+              </div>
+            </div>
+          }
         />
         <div className="absolute bottom-0 left-0 right-0 top-8 overflow-auto">
           <AppMenu visible={isAppMenuVisible} ref={appMenuRef}>
