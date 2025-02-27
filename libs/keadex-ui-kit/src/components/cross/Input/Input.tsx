@@ -15,9 +15,7 @@ export const Input = React.memo((props: InputProps) => {
     string | number | readonly string[] | undefined
   >(props.value)
 
-  const { label, info, allowedChars, classNameRoot, ...otherProps } = {
-    ...props,
-  }
+  const { label, info, allowedChars, classNameRoot, key, ...otherProps } = props
 
   const dataAttributes = getDataAttributes(props)
 
@@ -40,6 +38,7 @@ export const Input = React.memo((props: InputProps) => {
     <div className={`relative mb-3 ${classNameRoot ?? ''}`}>
       <input
         maxLength={200}
+        key={key}
         {...otherProps}
         {...dataAttributes}
         onChange={handleOnChange}
