@@ -6,6 +6,7 @@ use crate::error_handling::mina_error::MinaError;
 use async_trait::async_trait;
 use fs2::FileExt;
 use std::fs::File;
+use std::fs::Metadata;
 use std::fs::OpenOptions;
 use std::io::BufRead;
 use std::io::BufReader;
@@ -22,6 +23,20 @@ impl From<&walkdir::DirEntry> for CrossPathBuf {
       is_dir: dir_entry.file_type().is_dir(),
       path: Some(String::from(path.to_str().unwrap())),
       file_name: String::from(path.file_name().unwrap().to_str().unwrap()),
+    }
+  }
+}
+
+impl From<&Metadata> for CrossMetadata {
+  fn from(metadata: &Metadata) -> CrossMetadata {
+    let is_dir = metadata.is_dir();
+    let mut last_modified = None;
+    if let Ok(last_modified_metadata) = metadata.modified() {
+      last_modified = Some(last_modified_metadata.duration_since(UNIX_EPOCH).unwrap());
+    }
+    CrossMetadata {
+      is_dir,
+      last_modified,
     }
   }
 }
@@ -74,16 +89,7 @@ impl CrossFile for NativeFile {
 
   async fn metadata(&self) -> Result<CrossMetadata, MinaError> {
     let metadata = self.file.metadata()?;
-    let is_dir = metadata.is_dir();
-    let mut last_modified = None;
-    if let Ok(last_modified_metadata) = metadata.modified() {
-      last_modified = Some(last_modified_metadata.duration_since(UNIX_EPOCH).unwrap());
-    }
-
-    return Ok(CrossMetadata {
-      is_dir,
-      last_modified,
-    });
+    return Ok(CrossMetadata::from(&metadata));
   }
 }
 
@@ -139,8 +145,12 @@ impl FileSystemAPI for NativeFileSystemAPI {
   }
 
   async fn metadata(&self, path: &Path) -> Result<CrossMetadata, MinaError> {
-    let file = self.open(true, false, false, false, path).await?;
-    file.metadata().await
+    let metadata_result = path.metadata();
+    if metadata_result.is_ok() {
+      let metadata = metadata_result.unwrap();
+      return Ok(CrossMetadata::from(&metadata));
+    }
+    return Err(metadata_result.unwrap_err().into());
   }
 
   async fn read_dir(&self, path: &Path) -> Result<Vec<CrossPathBuf>, MinaError> {
