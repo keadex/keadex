@@ -399,9 +399,7 @@ export function init_app() {
  * @returns {ProjectSettings}
  */
 export function create_project(project_settings, dir_handle) {
-    _assertClass(project_settings, ProjectSettings);
-    var ptr0 = project_settings.__destroy_into_raw();
-    const ret = wasm.create_project(ptr0, isLikeNone(dir_handle) ? 0 : addToExternrefTable0(dir_handle));
+    const ret = wasm.create_project(project_settings, isLikeNone(dir_handle) ? 0 : addToExternrefTable0(dir_handle));
     return ret;
 }
 
