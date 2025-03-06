@@ -1,9 +1,11 @@
 use proc_macro::TokenStream;
 use quote::{quote, ToTokens};
+use std::collections::HashMap;
 use std::vec;
 use syn::parse::Parser;
 use syn::punctuated::Punctuated;
-use syn::{parse_macro_input, token::Comma, FnArg, ItemFn, Pat, Path, ReturnType, Type};
+use syn::{parse_macro_input, token::Comma, FnArg, ItemFn, Pat, ReturnType, Type};
+use syn::{Expr, ExprCall};
 
 const WITHOUT_INPUT_TRANSFORMATION_ARG: &str = "without_input_transformation";
 
@@ -50,13 +52,61 @@ fn extract_params(
   return (params_name, params_type);
 }
 
-fn extract_args(args: syn::punctuated::Punctuated<syn::Path, Comma>) -> Vec<String> {
-  let mut filtered_args = vec![];
+fn extract_args(
+  args: syn::punctuated::Punctuated<Expr, Comma>,
+) -> HashMap<String, Option<Vec<String>>> {
+  let mut filtered_args = HashMap::<String, Option<Vec<String>>>::new();
   for arg in &args {
-    filtered_args.push(arg.to_token_stream().to_string());
+    if let Expr::Call(ExprCall {
+      func,
+      args: inner_args,
+      ..
+    }) = arg
+    {
+      // This is an argument with inner arguments (e.g., "without_input_transformation(inner_arg1, inner_arg2))"
+
+      // Check if the function is an identifier (e.g., "without_input_transformation")
+      if let Expr::Path(func_path) = func.as_ref() {
+        if let Some(ident) = func_path.path.get_ident() {
+          let func_name = ident.to_string();
+
+          // Process the inner arguments (e.g., "inner_arg1" and "inner_arg2")
+          let mut parsed_inner_args = vec![];
+          for inner_arg in inner_args {
+            if let Expr::Path(inner_arg_path) = inner_arg {
+              if let Some(inner_ident) = inner_arg_path.path.get_ident() {
+                parsed_inner_args.push(inner_ident.to_string());
+              }
+            }
+          }
+
+          if filtered_args.contains_key(&func_name) {
+            panic!(
+              "Cannot specify same argument \"{}\" several times",
+              func_name
+            )
+          } else {
+            filtered_args.insert(func_name, Some(parsed_inner_args));
+          }
+        }
+      }
+    } else if let Expr::Path(path) = arg {
+      // This is an argument without inner arguments (e.g., "without_input_transformation")
+      let func_name = path.path.get_ident().unwrap().to_string();
+      if filtered_args.contains_key(&func_name) {
+        panic!(
+          "Cannot specify same argument \"{}\" several times",
+          func_name
+        )
+      } else {
+        filtered_args.insert(func_name, None);
+      }
+    }
+
+    // filtered_args.push(arg.to_token_stream().to_string());
   }
   if filtered_args.len() > 0
-    && !filtered_args.contains(&WITHOUT_INPUT_TRANSFORMATION_ARG.to_string())
+    && !filtered_args.contains_key(&WITHOUT_INPUT_TRANSFORMATION_ARG.to_string())
   {
     panic!("Invalid macro arguments")
   }
@@ -74,7 +124,7 @@ fn extract_args(args: syn::punctuated::Punctuated<syn::Path, Comma>) -> Vec<Stri
 pub fn web_controller(attr: TokenStream, item: TokenStream) -> TokenStream {
   // Parse the macro args
   let args = extract_args(
-    Punctuated::<Path, syn::Token![,]>::parse_terminated
+    Punctuated::<Expr, Comma>::parse_terminated
       .parse(attr)
       .unwrap(),
   );
@@ -94,25 +144,43 @@ pub fn web_controller(attr: TokenStream, item: TokenStream) -> TokenStream {
 
   let mut transformed_fn_args = vec![];
   let mut jsvalue_to_obj_stmts = vec![];
+  let mut params_to_ignore: &Option<Vec<String>> = &None;
+
+  if args.contains_key(&WITHOUT_INPUT_TRANSFORMATION_ARG.to_string()) {
+    params_to_ignore = args
+      .get(&WITHOUT_INPUT_TRANSFORMATION_ARG.to_string())
+      .unwrap();
+  }
+
   for (index, _fn_arg) in fn_args.iter().enumerate() {
     let param_name = param_names.get(index).unwrap();
     let param_type = param_types.get(index).unwrap();
     let param_type_string = format!("{}", param_type).replace(" ", "");
-    transformed_fn_args.push(quote! {
-      #[wasm_bindgen::prelude::wasm_bindgen(unchecked_param_type = #param_type_string)]
-      #param_name: wasm_bindgen::JsValue
-    });
-    jsvalue_to_obj_stmts.push(quote! {
-          let #param_name: #param_type = serde_wasm_bindgen::from_value(wasm_bindgen::JsValue::from(#param_name)).unwrap();
-        });
+
+    if !args.contains_key(&WITHOUT_INPUT_TRANSFORMATION_ARG.to_string())
+      || (args.contains_key(&WITHOUT_INPUT_TRANSFORMATION_ARG.to_string())
+        && (params_to_ignore.is_some()
+          && !params_to_ignore
+            .as_ref()
+            .unwrap()
+            .contains(&param_name.to_string())))
+    {
+      transformed_fn_args.push(quote! {
+        #[wasm_bindgen::prelude::wasm_bindgen(unchecked_param_type = #param_type_string)]
+        #param_name: wasm_bindgen::JsValue
+      });
+      jsvalue_to_obj_stmts.push(quote! {
+              let #param_name: #param_type = serde_wasm_bindgen::from_value(wasm_bindgen::JsValue::from(#param_name)).unwrap();
+            });
+    } else {
+      transformed_fn_args.push(quote! {
+        #param_name: #param_type
+      });
+    }
   }
 
-  let mut new_fn_args = quote! { #fn_args };
-  let mut new_fn_jsvalue_to_obj_stmts = quote! {};
-  if !args.contains(&WITHOUT_INPUT_TRANSFORMATION_ARG.to_string()) {
-    new_fn_args = quote! { #( #transformed_fn_args ),* };
-    new_fn_jsvalue_to_obj_stmts = quote! { #( #jsvalue_to_obj_stmts );* };
-  }
+  let new_fn_args = quote! { #( #transformed_fn_args ),* };
+  let new_fn_jsvalue_to_obj_stmts = quote! { #( #jsvalue_to_obj_stmts );* };
 
   // Generate an async function that wraps the original one and transforms
   // its success value into a wasm_bindgen::JsValue
