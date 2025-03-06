@@ -122,6 +122,13 @@ export const ProjectSettings = (props: ProjectSettingsProps) => {
           mode: 'readwrite',
         })
         setDirHandle(directoryHandle)
+        setNewProjectSettings((prev) => {
+          if (prev)
+            return {
+              ...prev,
+              root: directoryHandle.name,
+            }
+        })
       } catch (e) {
         // user has closed the dir picker without choosing the directory
       }
