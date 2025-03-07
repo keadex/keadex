@@ -1,5 +1,5 @@
 import { BOX, DIAGRAM, LEGEND, RELATIONSHIP } from '@keadex/c4-model-ui-kit'
-import { Button, Tab, Tabs } from '@keadex/keadex-ui-kit/cross'
+import { Button, Spinner, Tab, Tabs } from '@keadex/keadex-ui-kit/cross'
 import * as dialog from '@tauri-apps/plugin-dialog'
 import { useCallback, useEffect, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
@@ -114,6 +114,7 @@ export const ProjectSettings = (props: ProjectSettingsProps) => {
     FileSystemDirectoryHandle | undefined
   >()
   const [openResetModal, setOpenResetModal] = useState<string | undefined>()
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const chooseProjectDirectory = useCallback(async () => {
     if (ENV_SETTINGS.WEB_MODE) {
@@ -175,25 +176,31 @@ export const ProjectSettings = (props: ProjectSettingsProps) => {
               ...newProjectSettings,
             },
           }
+          setIsProcessing(true)
           saveProjectSettings(newProjectSettings)
             .then((result) => {
+              setIsProcessing(false)
               dispatch(saveProject(newProject))
               toast.info(t('common.info.done'))
             })
             .catch((error: MinaError) => {
+              setIsProcessing(false)
               toast.error(error.msg)
             })
         }
       } else {
         // Creating a new project
+        setIsProcessing(true)
         createProject(newProjectSettings, dirHandle)
           .then((result) => {
+            setIsProcessing(false)
             toast.info(t('common.info.done'))
             if (props.hideModal) props.hideModal()
             if (props.onProjectCreated)
               props.onProjectCreated(result.root, dirHandle)
           })
           .catch((error: MinaError) => {
+            setIsProcessing(false)
             toast.error(error.msg)
           })
       }
@@ -299,6 +306,7 @@ export const ProjectSettings = (props: ProjectSettingsProps) => {
             <Button
               className="float-right"
               disabled={
+                isProcessing ||
                 !newProjectSettings.description ||
                 !newProjectSettings.name ||
                 !newProjectSettings.version ||
@@ -306,7 +314,9 @@ export const ProjectSettings = (props: ProjectSettingsProps) => {
               }
               onClick={handleConfirmClick}
             >
-              {props.mode === 'edit' ? t('common.save') : t('common.create')}
+              {isProcessing && <Spinner className="icon !h-4 !w-4" />}
+              {!isProcessing &&
+                (props.mode === 'edit' ? t('common.save') : t('common.create'))}
             </Button>
           </div>
         </div>
