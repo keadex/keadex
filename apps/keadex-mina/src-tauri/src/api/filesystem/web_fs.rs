@@ -196,8 +196,6 @@ impl WebFileSystemAPI {
     let async_iterator = dir_handle.entries();
 
     dir_to_open = path_structure.directories.pop_front();
-    // console::log_1(&JsValue::from_str("Dir"));
-    // console::log_1(&JsValue::from_str(format!("{:?}", dir_to_open).as_str()));
     loop {
       let next_promise = async_iterator.next();
       let next_result = JsFuture::from(next_promise?).await?;
