@@ -210,42 +210,6 @@ function debugString(val) {
     // TODO we could test for more things here, like `Set`s and `Map`s.
     return className;
 }
-
-function _assertClass(instance, klass) {
-    if (!(instance instanceof klass)) {
-        throw new Error(`expected instance of ${klass.name}`);
-    }
-}
-
-function getArrayJsValueFromWasm0(ptr, len) {
-    ptr = ptr >>> 0;
-    const mem = getDataViewMemory0();
-    const result = [];
-    for (let i = ptr; i < ptr + 4 * len; i += 4) {
-        result.push(wasm.__wbindgen_export_4.get(mem.getUint32(i, true)));
-    }
-    wasm.__externref_drop_slice(ptr, len);
-    return result;
-}
-
-function passArrayJsValueToWasm0(array, malloc) {
-    const ptr = malloc(array.length * 4, 4) >>> 0;
-    for (let i = 0; i < array.length; i++) {
-        const add = addToExternrefTable0(array[i]);
-        getDataViewMemory0().setUint32(ptr + 4 * i, add, true);
-    }
-    WASM_VECTOR_LEN = array.length;
-    return ptr;
-}
-/**
- * @param {String} description
- * @returns {String}
- */
-export function generate_plantuml(description) {
-    const ret = wasm.generate_plantuml(description);
-    return ret;
-}
-
 /**
  * @returns {HashMap < DiagramType, Vec < String > >}
  */
@@ -420,36 +384,17 @@ export function close_project() {
     return ret;
 }
 
-/**
- * @param {ProjectSettings} project_settings
- * @returns {ProjectSettings}
- */
-export function save_project_settings(project_settings) {
-    const ret = wasm.save_project_settings(project_settings);
-    return ret;
+function _assertClass(instance, klass) {
+    if (!(instance instanceof klass)) {
+        throw new Error(`expected instance of ${klass.name}`);
+    }
 }
-
 /**
- * @param {String} string_to_search
- * @param {bool} include_diagrams_dir
- * @param {bool} include_library_dir
- * @param {usize} limit
- * @returns {FileSearchResults}
+ * @param {HookPayload} payload
+ * @returns {bool}
  */
-export function search(string_to_search, include_diagrams_dir, include_library_dir, limit) {
-    const ret = wasm.search(string_to_search, include_diagrams_dir, include_library_dir, limit);
-    return ret;
-}
-
-/**
- * @param {String} alias
- * @param {bool} include_diagrams_dir
- * @param {bool} include_library_dir
- * @param {usize} limit
- * @returns {DiagramElementSearchResults}
- */
-export function search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit) {
-    const ret = wasm.search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit);
+export function execute_hook(payload) {
+    const ret = wasm.execute_hook(payload);
     return ret;
 }
 
@@ -500,17 +445,70 @@ export function library_element_type_from_path(path) {
     return ret;
 }
 
+function getArrayJsValueFromWasm0(ptr, len) {
+    ptr = ptr >>> 0;
+    const mem = getDataViewMemory0();
+    const result = [];
+    for (let i = ptr; i < ptr + 4 * len; i += 4) {
+        result.push(wasm.__wbindgen_export_4.get(mem.getUint32(i, true)));
+    }
+    wasm.__externref_drop_slice(ptr, len);
+    return result;
+}
+
+function passArrayJsValueToWasm0(array, malloc) {
+    const ptr = malloc(array.length * 4, 4) >>> 0;
+    for (let i = 0; i < array.length; i++) {
+        const add = addToExternrefTable0(array[i]);
+        getDataViewMemory0().setUint32(ptr + 4 * i, add, true);
+    }
+    WASM_VECTOR_LEN = array.length;
+    return ptr;
+}
 /**
- * @param {HookPayload} payload
- * @returns {bool}
+ * @param {String} description
+ * @returns {String}
  */
-export function execute_hook(payload) {
-    const ret = wasm.execute_hook(payload);
+export function generate_plantuml(description) {
+    const ret = wasm.generate_plantuml(description);
+    return ret;
+}
+
+/**
+ * @param {String} string_to_search
+ * @param {bool} include_diagrams_dir
+ * @param {bool} include_library_dir
+ * @param {usize} limit
+ * @returns {FileSearchResults}
+ */
+export function search(string_to_search, include_diagrams_dir, include_library_dir, limit) {
+    const ret = wasm.search(string_to_search, include_diagrams_dir, include_library_dir, limit);
+    return ret;
+}
+
+/**
+ * @param {String} alias
+ * @param {bool} include_diagrams_dir
+ * @param {bool} include_library_dir
+ * @param {usize} limit
+ * @returns {DiagramElementSearchResults}
+ */
+export function search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit) {
+    const ret = wasm.search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit);
+    return ret;
+}
+
+/**
+ * @param {ProjectSettings} project_settings
+ * @returns {ProjectSettings}
+ */
+export function save_project_settings(project_settings) {
+    const ret = wasm.save_project_settings(project_settings);
     return ret;
 }
 
 function __wbg_adapter_50(arg0, arg1, arg2) {
-    wasm.closure201_externref_shim(arg0, arg1, arg2);
+    wasm.closure1025_externref_shim(arg0, arg1, arg2);
 }
 
 function __wbg_adapter_105(arg0, arg1, arg2, arg3) {
@@ -4601,8 +4599,8 @@ export function __wbindgen_cb_drop(arg0) {
     return ret;
 };
 
-export function __wbindgen_closure_wrapper1590(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 202, __wbg_adapter_50);
+export function __wbindgen_closure_wrapper3626(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 1026, __wbg_adapter_50);
     return ret;
 };
 

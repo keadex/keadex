@@ -64,6 +64,22 @@ export const Home = React.memo((props: HomeProps) => {
     }
   }
 
+  async function handleOnProjectCreated(
+    projectRoot: string | undefined,
+    dirHandle: FileSystemDirectoryHandle | undefined,
+  ) {
+    let newDirHandle = dirHandle
+    if (ENV_SETTINGS.WEB_MODE && dirHandle) {
+      for await (const entry of dirHandle.entries()) {
+        if (entry[0] === projectRoot?.replace('/', '')) {
+          newDirHandle = entry[1] as FileSystemDirectoryHandle
+          break
+        }
+      }
+    }
+    openProject(projectRoot, newDirHandle)
+  }
+
   function handleCreateProject() {
     showModal({
       id: 'createProjectModal',
@@ -72,7 +88,7 @@ export const Home = React.memo((props: HomeProps) => {
         <ModalCreateProject
           hideModal={hideModal}
           mode="create"
-          onProjectCreated={openProject}
+          onProjectCreated={handleOnProjectCreated}
         />
       ),
       buttons: false,

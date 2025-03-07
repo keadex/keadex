@@ -40,6 +40,7 @@ pub struct PathStructure {
 // ----------- WebFile
 #[derive(Debug)]
 pub struct WebFile {
+  pub entry_type: FileSystemHandleKind,
   pub file_handle: Option<FileSystemFileHandle>,
   pub dir_handle: Option<FileSystemDirectoryHandle>,
   pub parent_dir_handle: FileSystemDirectoryHandle,
@@ -47,11 +48,13 @@ pub struct WebFile {
 
 impl WebFile {
   pub fn new(
+    entry_type: FileSystemHandleKind,
     file_handle: Option<FileSystemFileHandle>,
     dir_handle: Option<FileSystemDirectoryHandle>,
     parent_dir_handle: FileSystemDirectoryHandle,
   ) -> Self {
     Self {
+      entry_type,
       file_handle,
       dir_handle,
       parent_dir_handle,
@@ -114,12 +117,17 @@ impl CrossFile for WebFile {
   }
 
   async fn metadata(&self) -> Result<CrossMetadata, MinaError> {
-    let file = JsFuture::from(self.file_handle.as_ref().unwrap().get_file())
-      .await?
-      .dyn_into::<File>()
-      .unwrap();
     let is_dir = self.dir_handle.is_some() && self.file_handle.is_none();
-    let last_modified = Some(Duration::from_millis(file.last_modified() as u64));
+
+    let mut last_modified = None;
+    if self.entry_type == FileSystemHandleKind::File {
+      let file = JsFuture::from(self.file_handle.as_ref().unwrap().get_file())
+        .await?
+        .dyn_into::<File>()
+        .unwrap();
+      last_modified = Some(Duration::from_millis(file.last_modified() as u64));
+    }
+
     return Ok(CrossMetadata {
       is_dir,
       last_modified,
@@ -148,12 +156,20 @@ impl WebFileSystemAPI {
     if path.extension().is_some() {
       file_name = path.file_name().map(|f| f.to_string_lossy().into_owned());
     }
-    let directories = components
+    let mut directories: VecDeque<String> = components
       .iter()
       .take(components.len() - file_name.is_some() as usize)
       .filter(|dir| !dir.eq(&MAIN_SEPARATOR_STR))
       .cloned()
       .collect();
+
+    if directories.len() > 0
+      && directories[directories.len() - 1].starts_with(".")
+      && file_name.is_none()
+    {
+      file_name = Some(directories[directories.len() - 1].clone());
+      directories.remove(directories.len() - 1);
+    }
 
     return PathStructure {
       directories,
@@ -219,7 +235,12 @@ impl WebFileSystemAPI {
           let file_handle = handle.unwrap().dyn_into::<FileSystemFileHandle>().unwrap();
           let file_result = JsFuture::from(file_handle.get_file()).await;
           if file_result.is_ok() {
-            return Ok(WebFile::new(Some(file_handle), None, dir_handle.clone()));
+            return Ok(WebFile::new(
+              entry_type,
+              Some(file_handle),
+              None,
+              dir_handle.clone(),
+            ));
           } else {
             return Err(file_result.unwrap_err());
           }
@@ -295,7 +316,12 @@ impl WebFileSystemAPI {
               .unwrap();
             let file_result = JsFuture::from(file_handle.get_file()).await;
             if file_result.is_ok() {
-              return Ok(WebFile::new(Some(file_handle), None, dir_handle.clone()));
+              return Ok(WebFile::new(
+                entry_type,
+                Some(file_handle),
+                None,
+                dir_handle.clone(),
+              ));
             } else {
               return Err(file_result.unwrap_err());
             }
@@ -307,6 +333,7 @@ impl WebFileSystemAPI {
         }
       } else {
         Ok(WebFile::new(
+          entry_type,
           None,
           Some(dir_handle.clone()),
           parent_dir_handle.clone(),
