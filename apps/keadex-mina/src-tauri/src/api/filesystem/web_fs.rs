@@ -21,6 +21,7 @@ use std::time::Duration;
 use wasm_bindgen::JsCast;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
+use web_sys::FileSystemCreateWritableOptions;
 use web_sys::FileSystemFileHandle;
 use web_sys::FileSystemGetDirectoryOptions;
 use web_sys::FileSystemGetFileOptions;
@@ -40,6 +41,7 @@ pub struct PathStructure {
 // ----------- WebFile
 #[derive(Debug)]
 pub struct WebFile {
+  pub append: bool,
   pub entry_type: FileSystemHandleKind,
   pub file_handle: Option<FileSystemFileHandle>,
   pub dir_handle: Option<FileSystemDirectoryHandle>,
@@ -48,12 +50,14 @@ pub struct WebFile {
 
 impl WebFile {
   pub fn new(
+    append: bool,
     entry_type: FileSystemHandleKind,
     file_handle: Option<FileSystemFileHandle>,
     dir_handle: Option<FileSystemDirectoryHandle>,
     parent_dir_handle: FileSystemDirectoryHandle,
   ) -> Self {
     Self {
+      append,
       entry_type,
       file_handle,
       dir_handle,
@@ -62,8 +66,25 @@ impl WebFile {
   }
 
   async fn write_web_file(&mut self, data: &[u8]) -> Result<(), JsValue> {
-    let writable = JsFuture::from(self.file_handle.as_ref().unwrap().create_writable()).await?;
+    let file = JsFuture::from(self.file_handle.as_ref().unwrap().get_file())
+      .await?
+      .dyn_into::<File>()?;
+
+    let options = FileSystemCreateWritableOptions::new();
+    options.set_keep_existing_data(self.append);
+    let writable = JsFuture::from(
+      self
+        .file_handle
+        .as_ref()
+        .unwrap()
+        .create_writable_with_options(&options),
+    )
+    .await?;
+
     let writable_stream: FileSystemWritableFileStream = writable.into();
+    if self.append {
+      JsFuture::from(writable_stream.seek_with_f64(file.size())?).await?;
+    }
     JsFuture::from(writable_stream.write_with_u8_array(data)?).await?;
     JsFuture::from(writable_stream.close()).await?;
     Ok(())
@@ -179,6 +200,7 @@ impl WebFileSystemAPI {
 
   pub async fn open_web_fs_entry(
     &self,
+    append: bool,
     parent_dir_handle: &FileSystemDirectoryHandle,
     dir_handle: &FileSystemDirectoryHandle,
     path_structure: &mut PathStructure,
@@ -234,6 +256,7 @@ impl WebFileSystemAPI {
           let file_result = JsFuture::from(file_handle.get_file()).await;
           if file_result.is_ok() {
             return Ok(WebFile::new(
+              append,
               entry_type,
               Some(file_handle),
               None,
@@ -253,6 +276,7 @@ impl WebFileSystemAPI {
         if name.eq(dir_to_open.as_ref().unwrap()) {
           return Box::pin(
             self.open_web_fs_entry(
+              append,
               &dir_handle,
               &handle
                 .unwrap()
@@ -283,6 +307,7 @@ impl WebFileSystemAPI {
         );
         return Box::pin(
           self.open_web_fs_entry(
+            append,
             &dir_handle,
             &handle
               .unwrap()
@@ -315,6 +340,7 @@ impl WebFileSystemAPI {
             let file_result = JsFuture::from(file_handle.get_file()).await;
             if file_result.is_ok() {
               return Ok(WebFile::new(
+                append,
                 entry_type,
                 Some(file_handle),
                 None,
@@ -331,6 +357,7 @@ impl WebFileSystemAPI {
         }
       } else {
         Ok(WebFile::new(
+          append,
           entry_type,
           None,
           Some(dir_handle.clone()),
@@ -354,7 +381,14 @@ impl WebFileSystemAPI {
     let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
     if path_structure.file_name.is_none() {
       let dir = self
-        .open_web_fs_entry(dir_handle, dir_handle, &mut path_structure, false, false)
+        .open_web_fs_entry(
+          false,
+          dir_handle,
+          dir_handle,
+          &mut path_structure,
+          false,
+          false,
+        )
         .await?;
 
       let mut paths = vec![];
@@ -446,7 +480,7 @@ impl FileSystemAPI for WebFileSystemAPI {
     &self,
     _read: bool,
     _write: bool,
-    _append: bool,
+    append: bool,
     _truncate: bool,
     path: &Path,
   ) -> Result<Box<dyn CrossFile>, MinaError> {
@@ -454,6 +488,7 @@ impl FileSystemAPI for WebFileSystemAPI {
       let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
       let result = self
         .open_web_fs_entry(
+          append,
           root_dir_handle,
           root_dir_handle,
           &mut path_structure,
@@ -472,6 +507,7 @@ impl FileSystemAPI for WebFileSystemAPI {
       let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
       let result = self
         .open_web_fs_entry(
+          true,
           root_dir_handle,
           root_dir_handle,
           &mut path_structure,
@@ -490,6 +526,7 @@ impl FileSystemAPI for WebFileSystemAPI {
       let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
       self
         .open_web_fs_entry(
+          false,
           root_dir_handle,
           root_dir_handle,
           &mut path_structure,
@@ -508,6 +545,7 @@ impl FileSystemAPI for WebFileSystemAPI {
       let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
       let file = self
         .open_web_fs_entry(
+          false,
           root_dir_handle,
           root_dir_handle,
           &mut path_structure,
@@ -532,6 +570,7 @@ impl FileSystemAPI for WebFileSystemAPI {
       let mut path_structure = WebFileSystemAPI::split_path_components(&path.to_str().unwrap());
       let result = self
         .open_web_fs_entry(
+          false,
           root_dir_handle,
           root_dir_handle,
           &mut path_structure,
@@ -557,6 +596,7 @@ impl FileSystemAPI for WebFileSystemAPI {
     if let Some(root_dir_handle) = &self.root_dir_handle {
       let mut file_from = self
         .open_web_fs_entry(
+          false,
           root_dir_handle,
           root_dir_handle,
           &mut WebFileSystemAPI::split_path_components(&from.to_str().unwrap()),
@@ -566,6 +606,7 @@ impl FileSystemAPI for WebFileSystemAPI {
         .await?;
       let mut file_to = self
         .open_web_fs_entry(
+          false,
           root_dir_handle,
           root_dir_handle,
           &mut WebFileSystemAPI::split_path_components(&to.to_str().unwrap()),
@@ -628,6 +669,7 @@ impl FileSystemAPI for WebFileSystemAPI {
 
       let result = self
         .open_web_fs_entry(
+          false,
           root_dir_handle,
           root_dir_handle,
           &mut path_structure,
