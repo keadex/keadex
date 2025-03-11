@@ -59,6 +59,7 @@ web-sys = { version = "0.3", features = [
   "FileSystemWritableFileStream",
   "FileSystemHandleKind",
   "FileSystemRemoveOptions",
+  "FileSystemCreateWritableOptions",
   "console",
 ], optional = true }
 wasm-bindgen-futures = {version = "0.4", optional = true}
