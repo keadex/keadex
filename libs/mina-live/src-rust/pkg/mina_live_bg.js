@@ -211,6 +211,132 @@ function debugString(val) {
     return className;
 }
 /**
+ * @param {C4ElementType} filter_c4_element_type
+ * @returns {C4Elements}
+ */
+export function list_library_elements(filter_c4_element_type) {
+    const ret = wasm.list_library_elements(filter_c4_element_type);
+    return ret;
+}
+
+/**
+ * @param {DiagramElementType} diagram_element
+ * @returns {ProjectLibrary}
+ */
+export function create_library_element(diagram_element) {
+    const ret = wasm.create_library_element(diagram_element);
+    return ret;
+}
+
+/**
+ * @param {DiagramElementType} old_diagram_element
+ * @param {DiagramElementType} new_diagram_element
+ * @returns {ProjectLibrary}
+ */
+export function update_library_element(old_diagram_element, new_diagram_element) {
+    const ret = wasm.update_library_element(old_diagram_element, new_diagram_element);
+    return ret;
+}
+
+/**
+ * @param {String} uuid_element
+ * @param {C4ElementType} element_type
+ * @returns {ProjectLibrary}
+ */
+export function delete_library_element(uuid_element, element_type) {
+    const ret = wasm.delete_library_element(uuid_element, element_type);
+    return ret;
+}
+
+/**
+ * @param {String} path
+ * @returns {C4ElementType}
+ */
+export function library_element_type_from_path(path) {
+    const ret = wasm.library_element_type_from_path(path);
+    return ret;
+}
+
+function _assertClass(instance, klass) {
+    if (!(instance instanceof klass)) {
+        throw new Error(`expected instance of ${klass.name}`);
+    }
+}
+
+function getArrayJsValueFromWasm0(ptr, len) {
+    ptr = ptr >>> 0;
+    const mem = getDataViewMemory0();
+    const result = [];
+    for (let i = ptr; i < ptr + 4 * len; i += 4) {
+        result.push(wasm.__wbindgen_export_4.get(mem.getUint32(i, true)));
+    }
+    wasm.__externref_drop_slice(ptr, len);
+    return result;
+}
+
+function passArrayJsValueToWasm0(array, malloc) {
+    const ptr = malloc(array.length * 4, 4) >>> 0;
+    for (let i = 0; i < array.length; i++) {
+        const add = addToExternrefTable0(array[i]);
+        getDataViewMemory0().setUint32(ptr + 4 * i, add, true);
+    }
+    WASM_VECTOR_LEN = array.length;
+    return ptr;
+}
+/**
+ * @param {HookPayload} payload
+ * @returns {bool}
+ */
+export function execute_hook(payload) {
+    const ret = wasm.execute_hook(payload);
+    return ret;
+}
+
+/**
+ * @param {String} description
+ * @returns {String}
+ */
+export function generate_plantuml(description) {
+    const ret = wasm.generate_plantuml(description);
+    return ret;
+}
+
+/**
+ * @returns {()}
+ */
+export function init_app() {
+    const ret = wasm.init_app();
+    return ret;
+}
+
+/**
+ * @param {ProjectSettings} project_settings
+ * @param {FileSystemDirectoryHandle | null} [dir_handle]
+ * @returns {ProjectSettings}
+ */
+export function create_project(project_settings, dir_handle) {
+    const ret = wasm.create_project(project_settings, isLikeNone(dir_handle) ? 0 : addToExternrefTable0(dir_handle));
+    return ret;
+}
+
+/**
+ * @param {FileSystemDirectoryHandle | null} [dir_handle]
+ * @returns {Project}
+ */
+export function open_project(dir_handle) {
+    const ret = wasm.open_project(isLikeNone(dir_handle) ? 0 : addToExternrefTable0(dir_handle));
+    return ret;
+}
+
+/**
+ * @returns {bool}
+ */
+export function close_project() {
+    const ret = wasm.close_project();
+    return ret;
+}
+
+/**
  * @returns {HashMap < DiagramType, Vec < String > >}
  */
 export function list_diagrams() {
@@ -350,127 +476,11 @@ export function dependent_elements_in_diagram(alias, diagram_name, diagram_type)
 }
 
 /**
- * @returns {()}
- */
-export function init_app() {
-    const ret = wasm.init_app();
-    return ret;
-}
-
-/**
  * @param {ProjectSettings} project_settings
- * @param {FileSystemDirectoryHandle | null} [dir_handle]
  * @returns {ProjectSettings}
  */
-export function create_project(project_settings, dir_handle) {
-    const ret = wasm.create_project(project_settings, isLikeNone(dir_handle) ? 0 : addToExternrefTable0(dir_handle));
-    return ret;
-}
-
-/**
- * @param {FileSystemDirectoryHandle | null} [dir_handle]
- * @returns {Project}
- */
-export function open_project(dir_handle) {
-    const ret = wasm.open_project(isLikeNone(dir_handle) ? 0 : addToExternrefTable0(dir_handle));
-    return ret;
-}
-
-/**
- * @returns {bool}
- */
-export function close_project() {
-    const ret = wasm.close_project();
-    return ret;
-}
-
-function _assertClass(instance, klass) {
-    if (!(instance instanceof klass)) {
-        throw new Error(`expected instance of ${klass.name}`);
-    }
-}
-/**
- * @param {HookPayload} payload
- * @returns {bool}
- */
-export function execute_hook(payload) {
-    const ret = wasm.execute_hook(payload);
-    return ret;
-}
-
-/**
- * @param {C4ElementType} filter_c4_element_type
- * @returns {C4Elements}
- */
-export function list_library_elements(filter_c4_element_type) {
-    const ret = wasm.list_library_elements(filter_c4_element_type);
-    return ret;
-}
-
-/**
- * @param {DiagramElementType} diagram_element
- * @returns {ProjectLibrary}
- */
-export function create_library_element(diagram_element) {
-    const ret = wasm.create_library_element(diagram_element);
-    return ret;
-}
-
-/**
- * @param {DiagramElementType} old_diagram_element
- * @param {DiagramElementType} new_diagram_element
- * @returns {ProjectLibrary}
- */
-export function update_library_element(old_diagram_element, new_diagram_element) {
-    const ret = wasm.update_library_element(old_diagram_element, new_diagram_element);
-    return ret;
-}
-
-/**
- * @param {String} uuid_element
- * @param {C4ElementType} element_type
- * @returns {ProjectLibrary}
- */
-export function delete_library_element(uuid_element, element_type) {
-    const ret = wasm.delete_library_element(uuid_element, element_type);
-    return ret;
-}
-
-/**
- * @param {String} path
- * @returns {C4ElementType}
- */
-export function library_element_type_from_path(path) {
-    const ret = wasm.library_element_type_from_path(path);
-    return ret;
-}
-
-function getArrayJsValueFromWasm0(ptr, len) {
-    ptr = ptr >>> 0;
-    const mem = getDataViewMemory0();
-    const result = [];
-    for (let i = ptr; i < ptr + 4 * len; i += 4) {
-        result.push(wasm.__wbindgen_export_4.get(mem.getUint32(i, true)));
-    }
-    wasm.__externref_drop_slice(ptr, len);
-    return result;
-}
-
-function passArrayJsValueToWasm0(array, malloc) {
-    const ptr = malloc(array.length * 4, 4) >>> 0;
-    for (let i = 0; i < array.length; i++) {
-        const add = addToExternrefTable0(array[i]);
-        getDataViewMemory0().setUint32(ptr + 4 * i, add, true);
-    }
-    WASM_VECTOR_LEN = array.length;
-    return ptr;
-}
-/**
- * @param {String} description
- * @returns {String}
- */
-export function generate_plantuml(description) {
-    const ret = wasm.generate_plantuml(description);
+export function save_project_settings(project_settings) {
+    const ret = wasm.save_project_settings(project_settings);
     return ret;
 }
 
@@ -498,17 +508,8 @@ export function search_diagram_element_alias(alias, include_diagrams_dir, includ
     return ret;
 }
 
-/**
- * @param {ProjectSettings} project_settings
- * @returns {ProjectSettings}
- */
-export function save_project_settings(project_settings) {
-    const ret = wasm.save_project_settings(project_settings);
-    return ret;
-}
-
 function __wbg_adapter_50(arg0, arg1, arg2) {
-    wasm.closure1025_externref_shim(arg0, arg1, arg2);
+    wasm.closure217_externref_shim(arg0, arg1, arg2);
 }
 
 function __wbg_adapter_105(arg0, arg1, arg2, arg3) {
@@ -3009,7 +3010,7 @@ export class Person {
      * @returns {BaseElement}
      */
     get base_data() {
-        const ret = wasm.__wbg_get_component_base_data(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_person_base_data(this.__wbg_ptr);
         return BaseElement.__wrap(ret);
     }
     /**
@@ -3018,7 +3019,7 @@ export class Person {
     set base_data(arg0) {
         _assertClass(arg0, BaseElement);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_component_base_data(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_person_base_data(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {PersonType | undefined}
@@ -3311,7 +3312,7 @@ export class ProjectSettings {
     set root(arg0) {
         const ptr0 = passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_diagramspec_uuid(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_projectsettings_root(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string}
@@ -3953,8 +3954,8 @@ export function __wbg_container_unwrap(arg0) {
     return ret;
 };
 
-export function __wbg_createWritable_0a880309b433d1c7(arg0) {
-    const ret = arg0.createWritable();
+export function __wbg_createWritable_b4ed240dc879905e(arg0, arg1) {
+    const ret = arg0.createWritable(arg1);
     return ret;
 };
 
@@ -4398,6 +4399,11 @@ export function __wbg_respond_1f279fa9f8edcb1c() { return handleError(function (
     arg0.respond(arg1 >>> 0);
 }, arguments) };
 
+export function __wbg_seek_3f0f8d7591f648d7() { return handleError(function (arg0, arg1) {
+    const ret = arg0.seek(arg1);
+    return ret;
+}, arguments) };
+
 export function __wbg_set_2873a5cee2324875(arg0, arg1, arg2) {
     arg0[arg1] = arg2;
 };
@@ -4435,6 +4441,10 @@ export function __wbg_setheaders_834c0bdb6a8949ad(arg0, arg1) {
     arg0.headers = arg1;
 };
 
+export function __wbg_setkeepexistingdata_ee7c8cb466e9477f(arg0, arg1) {
+    arg0.keepExistingData = arg1 !== 0;
+};
+
 export function __wbg_setmethod_3c5280fe5d890842(arg0, arg1, arg2) {
     arg0.method = getStringFromWasm0(arg1, arg2);
 };
@@ -4467,6 +4477,11 @@ export function __wbg_shape_unwrap(arg0) {
 
 export function __wbg_signal_aaf9ad74119f20a4(arg0) {
     const ret = arg0.signal;
+    return ret;
+};
+
+export function __wbg_size_3808d41635a9c259(arg0) {
+    const ret = arg0.size;
     return ret;
 };
 
@@ -4599,8 +4614,8 @@ export function __wbindgen_cb_drop(arg0) {
     return ret;
 };
 
-export function __wbindgen_closure_wrapper3626(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 1026, __wbg_adapter_50);
+export function __wbindgen_closure_wrapper1856(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 218, __wbg_adapter_50);
     return ret;
 };
 

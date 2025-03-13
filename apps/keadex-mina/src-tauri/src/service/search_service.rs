@@ -85,6 +85,7 @@ Searches by using the given callback in the project's files.
   * `limit` - Limit of the returned results.
 */
 pub async fn search_in_project<F, Fut>(
+  concurrent: bool,
   mut predicate: F,
   include_diagrams: bool,
   include_library: bool,
@@ -117,7 +118,7 @@ where
     unload_project(&project_settings.root).await?;
 
     // Search for the given string in all the project's files
-    let mut project_files = resolve_to_write!(store, FileSystemAPI)
+    let project_files = resolve_to_write!(store, FileSystemAPI)
       .await
       .walk_dir(&Path::new(&temp_root_1), |e| {
         is_searchable_entry(
@@ -142,28 +143,48 @@ where
 
         for (line_num, line) in reader.lines().enumerate() {
           if let Ok(line) = line {
-            concurrent_predicates.push(predicate(
-              line,
-              line_num,
-              path.clone(),
-              diagrams_directory.clone(),
-              library_directory.clone(),
-            ));
+            if concurrent {
+              // Execute the predicates in parallel
+              concurrent_predicates.push(predicate(
+                line,
+                line_num,
+                path.clone(),
+                diagrams_directory.clone(),
+                library_directory.clone(),
+              ));
 
-            if concurrent_predicates.len() == max_concurrent_predicates {
-              let results = join_all(concurrent_predicates).await;
-              for result in results {
-                if result.is_ok_and(|predicate_result| predicate_result) {
-                  count += 1;
-                  if count > limit {
-                    reached_limit = true;
-                    break;
+              if concurrent_predicates.len() == max_concurrent_predicates {
+                let results = join_all(concurrent_predicates).await;
+                for result in results {
+                  if result.is_ok_and(|predicate_result| predicate_result) {
+                    count += 1;
+                    if count > limit {
+                      reached_limit = true;
+                      break;
+                    }
                   }
                 }
+                concurrent_predicates = vec![];
+                if reached_limit {
+                  break;
+                }
               }
-              concurrent_predicates = vec![];
-              if reached_limit {
-                break;
+            } else {
+              // Execute the predicates sequentially
+              if predicate(
+                line,
+                line_num,
+                path.clone(),
+                diagrams_directory.clone(),
+                library_directory.clone(),
+              )
+              .await?
+              {
+                count += 1;
+                if count > limit {
+                  reached_limit = true;
+                  break;
+                }
               }
             }
           } else {
@@ -177,7 +198,7 @@ where
       }
     }
 
-    if !reached_limit && concurrent_predicates.len() > 0 {
+    if concurrent && !reached_limit && concurrent_predicates.len() > 0 {
       // There are still some predicates to execute
       let results = join_all(concurrent_predicates).await;
       for result in results {
@@ -217,14 +238,15 @@ pub async fn search_and_replace_text(
   log::debug!("Search {} and replace with {}", text_to_search, replacement);
 
   let current_path_rc = Arc::new(RwLock::new(String::from("")));
-  let temp_file_opt_rc = Arc::new(RwLock::new(None));
+  let updated_content_opt_rc = Arc::new(RwLock::<Option<String>>::new(None));
   let new_line_rc = Arc::new(RwLock::new(String::from("")));
   let results_rc = Arc::new(RwLock::new(BTreeMap::new()));
 
   let reached_limit = search_in_project(
+    false,
     |line, line_num, path, diagrams_directory, library_directory| {
       let current_path = Arc::clone(&current_path_rc);
-      let temp_file_opt = Arc::clone(&temp_file_opt_rc);
+      let updated_content_opt = Arc::clone(&updated_content_opt_rc);
       let new_line = Arc::clone(&new_line_rc);
       let results = Arc::clone(&results_rc);
       async move {
@@ -233,24 +255,30 @@ pub async fn search_and_replace_text(
           if !current_path.read().await.eq("") {
             resolve_to_write!(store, FileSystemAPI)
               .await
-              .rename(
-                &Path::new(&format!("{}.tmp", current_path.read().await)),
-                &Path::new(&format!("{}", current_path.read().await)),
+              .open(
+                true,
+                true,
+                false,
+                false,
+                Path::new(&(current_path.read().await.as_str())),
+              )
+              .await?
+              .write_all(
+                updated_content_opt
+                  .read()
+                  .await
+                  .as_ref()
+                  .unwrap()
+                  .as_bytes(),
               )
               .await?;
           }
           *current_path.write().await = path.to_string();
-
-          *temp_file_opt.write().await = Some(
-            resolve_to_write!(store, FileSystemAPI)
-              .await
-              .create(&Path::new(&format!("{}.tmp", path)))
-              .await?,
-          );
+          *updated_content_opt.write().await = Some(String::from(""));
         }
 
         let mut is_found = Ok(false);
-        if temp_file_opt.read().await.is_some() {
+        if updated_content_opt.read().await.is_some() {
           if line.eq(&text_to_search) {
             *new_line.write().await = replacement.to_string();
             is_found = Ok(true);
@@ -271,13 +299,12 @@ pub async fn search_and_replace_text(
             is_found = Ok(false)
           }
 
-          temp_file_opt
+          updated_content_opt
             .write()
             .await
             .as_mut()
             .unwrap()
-            .write_all(format!("{}\n", new_line.read().await).as_bytes())
-            .await?;
+            .push_str(&format!("{}\n", new_line.read().await));
 
           return is_found;
         }
@@ -294,9 +321,21 @@ pub async fn search_and_replace_text(
     let store = ROOT_RESOLVER.get().read().await;
     resolve_to_write!(store, FileSystemAPI)
       .await
-      .rename(
-        &Path::new(&format!("{}.tmp", current_path_rc.read().await)),
-        &Path::new(&format!("{}", current_path_rc.read().await)),
+      .open(
+        true,
+        true,
+        false,
+        false,
+        Path::new(&(current_path_rc.read().await.as_str())),
+      )
+      .await?
+      .write_all(
+        updated_content_opt_rc
+          .read()
+          .await
+          .as_ref()
+          .unwrap()
+          .as_bytes(),
       )
       .await?;
   }
@@ -325,6 +364,7 @@ pub async fn search_text(
 ) -> Result<FileSearchResults, MinaError> {
   let results_rc = Arc::new(RwLock::new(BTreeMap::new()));
   let reached_limit = search_in_project(
+    true,
     |line, line_num, path, diagrams_directory, library_directory| {
       let results = Arc::clone(&results_rc);
       async move {
@@ -387,6 +427,7 @@ pub async fn search_diagram_element(
   // SEARCH IN DIAGRAMS
   if include_diagrams {
     reached_limit = search_in_project(
+      true,
       |line, _line_num, path, diagrams_directory, library_directory| {
         let re_diagrams_dir_clone = re_diagrams_dir.clone();
         let cleaned_plantuml_diagram_element_clone = cleaned_plantuml_diagram_element.clone();
