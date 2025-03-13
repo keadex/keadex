@@ -17,6 +17,18 @@ pub const LOG_LEVEL_ENV: &str = "LOG_LEVEL";
 /** The environment variable to read the style info from. */
 pub const LOG_STYLE_ENV: &str = "LOG_STYLE";
 
+#[derive(Serialize)]
+struct SerializeRecord<'a> {
+  #[serde(rename = "@t")]
+  ts: String,
+  #[serde(rename = "@l")]
+  lvl: Level,
+  #[serde(skip_serializing_if = "Option::is_none")]
+  module_path: Option<&'a str>,
+  #[serde(rename = "@m")]
+  msg: String,
+}
+
 /** Initialize the global logger. */
 pub fn init() {
   let env = Env::default()
@@ -37,14 +49,14 @@ pub fn init() {
     .init();
 }
 
-#[derive(Serialize)]
-struct SerializeRecord<'a> {
-  #[serde(rename = "@t")]
-  ts: String,
-  #[serde(rename = "@l")]
-  lvl: Level,
-  #[serde(skip_serializing_if = "Option::is_none")]
-  module_path: Option<&'a str>,
-  #[serde(rename = "@m")]
-  msg: String,
+pub fn debug(msg: &str) {
+  #[cfg(desktop)]
+  {
+    log::debug!("{:?}", msg);
+  }
+
+  #[cfg(web)]
+  {
+    web_sys::console::debug_1(&wasm_bindgen::JsValue::from_str(msg));
+  }
 }
