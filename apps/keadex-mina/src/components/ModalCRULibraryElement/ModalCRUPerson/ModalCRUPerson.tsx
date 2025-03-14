@@ -40,13 +40,16 @@ export const ModalCRUPerson = (props: ModalCRULibraryElementProps) => {
   const [newPerson, setNewPerson] = useState(
     props.libraryElement ? (props.libraryElement as Person) : emptyPerson,
   )
+  const [isLoading, setIsLoading] = useState(false)
 
   function handleUpdatePerson() {
+    setIsLoading(true)
     updateLibraryElement(
       { Person: props.libraryElement as Person },
       { Person: normalizeLibraryElement(newPerson) },
     )
       .then((updatedProjectLibrary) => {
+        setIsLoading(false)
         if (props.project?.project_settings && props.project?.project_library) {
           const newProject: Project = {
             ...props.project,
@@ -59,13 +62,16 @@ export const ModalCRUPerson = (props: ModalCRULibraryElementProps) => {
         }
       })
       .catch((error: MinaError) => {
+        setIsLoading(false)
         toast.error(error.msg ?? error)
       })
   }
 
   function handleCreatePerson() {
+    setIsLoading(true)
     createLibraryElement({ Person: normalizeLibraryElement(newPerson) })
       .then((updatedProjectLibrary) => {
+        setIsLoading(false)
         if (props.project?.project_settings && props.project?.project_library) {
           const newProject: Project = {
             ...props.project,
@@ -78,6 +84,7 @@ export const ModalCRUPerson = (props: ModalCRULibraryElementProps) => {
         }
       })
       .catch((error: MinaError) => {
+        setIsLoading(false)
         toast.error(error.msg ?? error)
       })
   }
@@ -208,6 +215,7 @@ export const ModalCRUPerson = (props: ModalCRULibraryElementProps) => {
         {renderButtons([
           {
             key: 'button-cancel',
+            disabled: isLoading,
             children: <span>{t('common.cancel')}</span>,
             'data-te-modal-dismiss': true,
           },
@@ -215,6 +223,7 @@ export const ModalCRUPerson = (props: ModalCRULibraryElementProps) => {
             key: 'button-save',
             children: <span>{t('common.save')}</span>,
             disabled: missingRequiredFields(),
+            isLoading,
             onClick: () => {
               if (props.mode === 'serializer') {
                 if (props.onElementCreated) {

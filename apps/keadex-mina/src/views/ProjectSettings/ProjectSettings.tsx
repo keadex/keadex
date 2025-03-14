@@ -114,7 +114,7 @@ export const ProjectSettings = (props: ProjectSettingsProps) => {
     FileSystemDirectoryHandle | undefined
   >()
   const [openResetModal, setOpenResetModal] = useState<string | undefined>()
-  const [isProcessing, setIsProcessing] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const chooseProjectDirectory = useCallback(async () => {
     if (ENV_SETTINGS.WEB_MODE) {
@@ -176,31 +176,31 @@ export const ProjectSettings = (props: ProjectSettingsProps) => {
               ...newProjectSettings,
             },
           }
-          setIsProcessing(true)
+          setIsLoading(true)
           saveProjectSettings(newProjectSettings)
             .then((result) => {
-              setIsProcessing(false)
+              setIsLoading(false)
               dispatch(saveProject(newProject))
               toast.info(t('common.info.done'))
             })
             .catch((error: MinaError) => {
-              setIsProcessing(false)
+              setIsLoading(false)
               toast.error(error.msg)
             })
         }
       } else {
         // Creating a new project
-        setIsProcessing(true)
+        setIsLoading(true)
         createProject(newProjectSettings, dirHandle)
           .then((result) => {
-            setIsProcessing(false)
+            setIsLoading(false)
             toast.info(t('common.info.done'))
             if (props.hideModal) props.hideModal()
             if (props.onProjectCreated)
               props.onProjectCreated(result.root, dirHandle)
           })
           .catch((error: MinaError) => {
-            setIsProcessing(false)
+            setIsLoading(false)
             toast.error(error.msg)
           })
       }
@@ -306,17 +306,15 @@ export const ProjectSettings = (props: ProjectSettingsProps) => {
             <Button
               className="float-right"
               disabled={
-                isProcessing ||
                 !newProjectSettings.description ||
                 !newProjectSettings.name ||
                 !newProjectSettings.version ||
                 (props.mode === 'create' && !newProjectSettings.root)
               }
               onClick={handleConfirmClick}
+              isLoading={isLoading}
             >
-              {isProcessing && <Spinner className="icon !h-4 !w-4" />}
-              {!isProcessing &&
-                (props.mode === 'edit' ? t('common.save') : t('common.create'))}
+              {props.mode === 'edit' ? t('common.save') : t('common.create')}
             </Button>
           </div>
         </div>

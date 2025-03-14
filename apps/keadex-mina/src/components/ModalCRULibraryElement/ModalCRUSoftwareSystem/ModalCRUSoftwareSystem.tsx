@@ -47,8 +47,10 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
       ? (props.libraryElement as SoftwareSystem)
       : emptySoftwareSystem,
   )
+  const [isLoading, setIsLoading] = useState(false)
 
   function handleUpdateSoftwareSystem() {
+    setIsLoading(true)
     updateLibraryElement(
       { SoftwareSystem: props.libraryElement as SoftwareSystem },
       {
@@ -56,6 +58,7 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
       },
     )
       .then((updatedProjectLibrary) => {
+        setIsLoading(false)
         if (props.project?.project_settings && props.project?.project_library) {
           const newProject: Project = {
             ...props.project,
@@ -68,15 +71,18 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
         }
       })
       .catch((error: MinaError) => {
+        setIsLoading(false)
         toast.error(error.msg ?? error)
       })
   }
 
   function handleCreateSoftwareSystem() {
+    setIsLoading(true)
     createLibraryElement({
       SoftwareSystem: normalizeLibraryElement(newSoftwareSystem),
     })
       .then((updatedProjectLibrary) => {
+        setIsLoading(false)
         if (props.project?.project_settings && props.project?.project_library) {
           const newProject: Project = {
             ...props.project,
@@ -89,6 +95,7 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
         }
       })
       .catch((error: MinaError) => {
+        setIsLoading(false)
         toast.error(error.msg ?? error)
       })
   }
@@ -238,6 +245,7 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
         {renderButtons([
           {
             key: 'button-cancel',
+            disabled: isLoading,
             children: <span>{t('common.cancel')}</span>,
             'data-te-modal-dismiss': true,
           },
@@ -245,6 +253,7 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
             key: 'button-save',
             children: <span>{t('common.save')}</span>,
             disabled: missingRequiredFields(),
+            isLoading,
             onClick: () => {
               if (props.mode === 'serializer') {
                 if (props.onElementCreated) {
