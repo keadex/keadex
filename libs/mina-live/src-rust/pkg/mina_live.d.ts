@@ -1,12 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
+export function generate_plantuml(description: String): Promise<String>;
 export function list_library_elements(filter_c4_element_type: C4ElementType): Promise<C4Elements>;
 export function create_library_element(diagram_element: DiagramElementType): Promise<ProjectLibrary>;
 export function update_library_element(old_diagram_element: DiagramElementType, new_diagram_element: DiagramElementType): Promise<ProjectLibrary>;
 export function delete_library_element(uuid_element: String, element_type: C4ElementType): Promise<ProjectLibrary>;
 export function library_element_type_from_path(path: String): Promise<C4ElementType>;
+export function search(string_to_search: String, include_diagrams_dir: bool, include_library_dir: bool, limit: usize): Promise<FileSearchResults>;
+export function search_diagram_element_alias(alias: String, include_diagrams_dir: bool, include_library_dir: bool, limit: usize): Promise<DiagramElementSearchResults>;
 export function execute_hook(payload: HookPayload): Promise<bool>;
-export function generate_plantuml(description: String): Promise<String>;
+export function save_project_settings(project_settings: ProjectSettings): Promise<ProjectSettings>;
 export function init_app(): Promise<()>;
 export function create_project(project_settings: ProjectSettings, dir_handle?: FileSystemDirectoryHandle | null): Promise<ProjectSettings>;
 export function open_project(dir_handle?: FileSystemDirectoryHandle | null): Promise<Project>;
@@ -25,14 +28,7 @@ export function diagram_from_link_string(link_string: String): Promise<Diagram>;
 export function deserialize_plantuml_by_string(raw_plantuml: String): Promise<DiagramPlantUML>;
 export function diagram_name_type_from_path(path: String): Promise<Diagram>;
 export function dependent_elements_in_diagram(alias: String, diagram_name: String, diagram_type: DiagramType): Promise<Vec < String >>;
-export function save_project_settings(project_settings: ProjectSettings): Promise<ProjectSettings>;
-export function search(string_to_search: String, include_diagrams_dir: bool, include_library_dir: bool, limit: usize): Promise<FileSearchResults>;
-export function search_diagram_element_alias(alias: String, include_diagrams_dir: bool, include_library_dir: bool, limit: usize): Promise<DiagramElementSearchResults>;
-export type ComponentType = "Component" | "Component_Ext" | "ComponentDb" | "ComponentDb_Ext" | "ComponentQueue" | "ComponentQueue_Ext";
-
-export type ContainerType = "Container" | "Container_Ext" | "ContainerDb" | "ContainerDb_Ext" | "ContainerQueue" | "ContainerQueue_Ext";
-
-export type RelationshipType = "Rel_Neighbor" | "Rel_Back_Neighbor" | "Rel_Back" | "Rel_Down" | "Rel_D" | "Rel_Up" | "Rel_U" | "Rel_Left" | "Rel_L" | "Rel_Right" | "Rel_R" | "Rel" | "BiRel_Neighbor" | "BiRel_Down" | "BiRel_D" | "BiRel_Up" | "BiRel_U" | "BiRel_Left" | "BiRel_L" | "BiRel_Right" | "BiRel_R" | "BiRel";
+export type PersonType = "Person" | "Person_Ext";
 
 export type ElementType = {
   Boundary: BoundaryType;
@@ -92,9 +88,25 @@ export type ElementType = {
   Relationship?: null;
 };
 
-export type PersonType = "Person" | "Person_Ext";
+export type ComponentType = "Component" | "Component_Ext" | "ComponentDb" | "ComponentDb_Ext" | "ComponentQueue" | "ComponentQueue_Ext";
+
+export type ContainerType = "Container" | "Container_Ext" | "ContainerDb" | "ContainerDb_Ext" | "ContainerQueue" | "ContainerQueue_Ext";
+
+export type RelationshipType = "Rel_Neighbor" | "Rel_Back_Neighbor" | "Rel_Back" | "Rel_Down" | "Rel_D" | "Rel_Up" | "Rel_U" | "Rel_Left" | "Rel_L" | "Rel_Right" | "Rel_R" | "Rel" | "BiRel_Neighbor" | "BiRel_Down" | "BiRel_D" | "BiRel_Up" | "BiRel_U" | "BiRel_Left" | "BiRel_L" | "BiRel_Right" | "BiRel_R" | "BiRel";
+
+export type ShapeType = "LINE" | "DOT" | "TEXT" | "TRIANGLE" | "RECTANGLE" | "FOOTER";
+
+export type DiagramOrientation = "TopToBottom" | "LeftToRight";
+
+export type HookType = "onDiagramCreated" | "onDiagramDeleted" | "onDiagramSaved";
+
+export type HookData = {
+  Diagram: Diagram;
+};
 
 export type SystemType = "System" | "System_Ext" | "SystemDb" | "SystemDb_Ext" | "SystemQueue" | "SystemQueue_Ext";
+
+export type BoundaryType = "Enterprise_Boundary" | "System_Boundary" | "Container_Boundary" | "Boundary";
 
 export type DiagramElementType = {
   Include: string;
@@ -188,10 +200,6 @@ export type DiagramElementType = {
   DeploymentNode?: null;
 };
 
-export type DiagramOrientation = "TopToBottom" | "LeftToRight";
-
-export type ShapeType = "LINE" | "DOT" | "TEXT" | "TRIANGLE" | "RECTANGLE" | "FOOTER";
-
 export type C4ElementType = "Person" | "SoftwareSystem" | "Container" | "Component";
 
 export type DiagramType = "SYSTEM_CONTEXT" | "CONTAINER" | "COMPONENT" | "SYSTEM_LANDSCAPE" | "DYNAMIC" | "DEPLOYMENT";
@@ -199,14 +207,6 @@ export type DiagramType = "SYSTEM_CONTEXT" | "CONTAINER" | "COMPONENT" | "SYSTEM
 export type DiagramFormat = "png" | "jpeg";
 
 export type DeploymentNodeType = "Node" | "Node_R" | "Node_L" | "Deployment_Node" | "Deployment_Node_R" | "Deployment_Node_L";
-
-export type BoundaryType = "Enterprise_Boundary" | "System_Boundary" | "Container_Boundary" | "Boundary";
-
-export type HookType = "onDiagramCreated" | "onDiagramDeleted" | "onDiagramSaved";
-
-export type HookData = {
-  Diagram: Diagram;
-};
 
 export class AISettings {
   private constructor();

@@ -31,22 +31,37 @@ struct SerializeRecord<'a> {
 
 /** Initialize the global logger. */
 pub fn init() {
-  let env = Env::default()
-    .filter_or(LOG_LEVEL_ENV, "debug")
-    .write_style(LOG_STYLE_ENV);
+  #[cfg(desktop)]
+  {
+    let mut level_log = "info";
+    if cfg!(debug_assertions) {
+      level_log = "debug";
+    }
+    let env = Env::default()
+      .filter_or(LOG_LEVEL_ENV, level_log)
+      .write_style(LOG_STYLE_ENV);
 
-  Builder::from_env(env)
-    .format(|mut buf, record| {
-      let record = SerializeRecord {
-        ts: Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true),
-        lvl: record.level(),
-        module_path: record.module_path(),
-        msg: unescape(record.args().to_string().as_str()).unwrap(),
-      };
-      serde_json::to_writer(&mut buf, &record)?;
-      writeln!(buf)
-    })
-    .init();
+    Builder::from_env(env)
+      .format(|mut buf, record| {
+        let record = SerializeRecord {
+          ts: Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true),
+          lvl: record.level(),
+          module_path: record.module_path(),
+          msg: unescape(record.args().to_string().as_str()).unwrap(),
+        };
+        serde_json::to_writer(&mut buf, &record)?;
+        writeln!(buf)
+      })
+      .init();
+  }
+  #[cfg(web)]
+  {
+    let mut level_log = Level::Info;
+    if cfg!(debug_assertions) {
+      level_log = Level::Debug;
+    }
+    let _ = console_log::init_with_level(level_log);
+  }
 }
 
 pub fn debug(msg: &str) {

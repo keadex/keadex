@@ -211,6 +211,15 @@ function debugString(val) {
     return className;
 }
 /**
+ * @param {String} description
+ * @returns {String}
+ */
+export function generate_plantuml(description) {
+    const ret = wasm.generate_plantuml(description);
+    return ret;
+}
+
+/**
  * @param {C4ElementType} filter_c4_element_type
  * @returns {C4Elements}
  */
@@ -257,6 +266,30 @@ export function library_element_type_from_path(path) {
     return ret;
 }
 
+/**
+ * @param {String} string_to_search
+ * @param {bool} include_diagrams_dir
+ * @param {bool} include_library_dir
+ * @param {usize} limit
+ * @returns {FileSearchResults}
+ */
+export function search(string_to_search, include_diagrams_dir, include_library_dir, limit) {
+    const ret = wasm.search(string_to_search, include_diagrams_dir, include_library_dir, limit);
+    return ret;
+}
+
+/**
+ * @param {String} alias
+ * @param {bool} include_diagrams_dir
+ * @param {bool} include_library_dir
+ * @param {usize} limit
+ * @returns {DiagramElementSearchResults}
+ */
+export function search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit) {
+    const ret = wasm.search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit);
+    return ret;
+}
+
 function _assertClass(instance, klass) {
     if (!(instance instanceof klass)) {
         throw new Error(`expected instance of ${klass.name}`);
@@ -293,11 +326,11 @@ export function execute_hook(payload) {
 }
 
 /**
- * @param {String} description
- * @returns {String}
+ * @param {ProjectSettings} project_settings
+ * @returns {ProjectSettings}
  */
-export function generate_plantuml(description) {
-    const ret = wasm.generate_plantuml(description);
+export function save_project_settings(project_settings) {
+    const ret = wasm.save_project_settings(project_settings);
     return ret;
 }
 
@@ -475,45 +508,12 @@ export function dependent_elements_in_diagram(alias, diagram_name, diagram_type)
     return ret;
 }
 
-/**
- * @param {ProjectSettings} project_settings
- * @returns {ProjectSettings}
- */
-export function save_project_settings(project_settings) {
-    const ret = wasm.save_project_settings(project_settings);
-    return ret;
-}
-
-/**
- * @param {String} string_to_search
- * @param {bool} include_diagrams_dir
- * @param {bool} include_library_dir
- * @param {usize} limit
- * @returns {FileSearchResults}
- */
-export function search(string_to_search, include_diagrams_dir, include_library_dir, limit) {
-    const ret = wasm.search(string_to_search, include_diagrams_dir, include_library_dir, limit);
-    return ret;
-}
-
-/**
- * @param {String} alias
- * @param {bool} include_diagrams_dir
- * @param {bool} include_library_dir
- * @param {usize} limit
- * @returns {DiagramElementSearchResults}
- */
-export function search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit) {
-    const ret = wasm.search_diagram_element_alias(alias, include_diagrams_dir, include_library_dir, limit);
-    return ret;
-}
-
 function __wbg_adapter_50(arg0, arg1, arg2) {
-    wasm.closure217_externref_shim(arg0, arg1, arg2);
+    wasm.closure1062_externref_shim(arg0, arg1, arg2);
 }
 
-function __wbg_adapter_105(arg0, arg1, arg2, arg3) {
-    wasm.closure66_externref_shim(arg0, arg1, arg2, arg3);
+function __wbg_adapter_101(arg0, arg1, arg2, arg3) {
+    wasm.closure62_externref_shim(arg0, arg1, arg2, arg3);
 }
 
 const __wbindgen_enum_RequestCredentials = ["omit", "same-origin", "include"];
@@ -650,7 +650,7 @@ export class BaseElement {
     set alias(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_aisettings_api_key(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_baseelement_alias(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -670,7 +670,7 @@ export class BaseElement {
     set label(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_aisettings_api_base_url(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_baseelement_label(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -690,7 +690,7 @@ export class BaseElement {
     set description(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_aisettings_model(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_baseelement_description(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -1686,7 +1686,7 @@ export class DiagramPlantUML {
     set elements(arg0) {
         const ptr0 = passArrayJsValueToWasm0(arg0, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_diagramplantuml_elements(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_boundary_sub_elements(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string[]}
@@ -1973,7 +1973,7 @@ export class DiagramsThemeSettings {
     set bg_color_person_ext(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_baseelement_sprite(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_diagramsthemesettings_bg_color_person_ext(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -1993,7 +1993,7 @@ export class DiagramsThemeSettings {
     set border_color_person(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_baseelement_tags(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_diagramsthemesettings_border_color_person(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -2013,7 +2013,7 @@ export class DiagramsThemeSettings {
     set border_color_person_ext(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_baseelement_link(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_diagramsthemesettings_border_color_person_ext(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -2033,7 +2033,7 @@ export class DiagramsThemeSettings {
     set text_color_person(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_baseelement_uuid(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_diagramsthemesettings_text_color_person(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -2053,7 +2053,7 @@ export class DiagramsThemeSettings {
     set text_color_person_ext(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_baseelement_notes(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_diagramsthemesettings_text_color_person_ext(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * @returns {string | undefined}
@@ -3964,6 +3964,10 @@ export function __wbg_crypto_ed58b8e10a292839(arg0) {
     return ret;
 };
 
+export function __wbg_debug_3cb59063b29f58c1(arg0) {
+    console.debug(arg0);
+};
+
 export function __wbg_deploymentnode_new(arg0) {
     const ret = DeploymentNode.__wrap(arg0);
     return ret;
@@ -4001,6 +4005,10 @@ export function __wbg_entries_19efe296f7d36df9(arg0) {
 export function __wbg_entries_3265d4158b33e5dc(arg0) {
     const ret = Object.entries(arg0);
     return ret;
+};
+
+export function __wbg_error_524f506f44df1645(arg0) {
+    console.error(arg0);
 };
 
 export function __wbg_error_7534b8e9a36f1ab4(arg0, arg1) {
@@ -4044,11 +4052,6 @@ export function __wbg_getRandomValues_bcb4912f16000dc4() { return handleError(fu
     arg0.getRandomValues(arg1);
 }, arguments) };
 
-export function __wbg_getTime_46267b1c24877e30(arg0) {
-    const ret = arg0.getTime();
-    return ret;
-};
-
 export function __wbg_get_67b2ba62fc30de12() { return handleError(function (arg0, arg1) {
     const ret = Reflect.get(arg0, arg1);
     return ret;
@@ -4072,6 +4075,10 @@ export function __wbg_has_a5ea9117f258a0ec() { return handleError(function (arg0
 export function __wbg_headers_9cb51cfd2ac780a4(arg0) {
     const ret = arg0.headers;
     return ret;
+};
+
+export function __wbg_info_3daf2e093e091b66(arg0) {
+    console.info(arg0);
 };
 
 export function __wbg_instanceof_ArrayBuffer_e14585432e3737fc(arg0) {
@@ -4208,11 +4215,6 @@ export function __wbg_name_e4a115def9e2bbaa(arg0, arg1) {
     getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
 };
 
-export function __wbg_new0_f788a2397c7ca929() {
-    const ret = new Date();
-    return ret;
-};
-
 export function __wbg_new_018dcc2d6c8c2f6a() { return handleError(function () {
     const ret = new Headers();
     return ret;
@@ -4225,7 +4227,7 @@ export function __wbg_new_23a2665fac83c611(arg0, arg1) {
             const a = state0.a;
             state0.a = 0;
             try {
-                return __wbg_adapter_105(a, state0.b, arg0, arg1);
+                return __wbg_adapter_101(a, state0.b, arg0, arg1);
             } finally {
                 state0.a = a;
             }
@@ -4576,6 +4578,10 @@ export function __wbg_view_fd8a56e8983f448d(arg0) {
     return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
 };
 
+export function __wbg_warn_4ca3906c248c47c4(arg0) {
+    console.warn(arg0);
+};
+
 export function __wbg_write_3e4e8c264c8bf357() { return handleError(function (arg0, arg1, arg2) {
     const ret = arg0.write(getArrayU8FromWasm0(arg1, arg2));
     return ret;
@@ -4614,8 +4620,8 @@ export function __wbindgen_cb_drop(arg0) {
     return ret;
 };
 
-export function __wbindgen_closure_wrapper1856(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 218, __wbg_adapter_50);
+export function __wbindgen_closure_wrapper3469(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 1063, __wbg_adapter_50);
     return ret;
 };
 
