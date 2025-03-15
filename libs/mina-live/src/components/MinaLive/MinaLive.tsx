@@ -23,6 +23,9 @@ import initi18n from '@keadex/keadex-mina/src/i18n'
 import '@keadex/keadex-mina/src/styles/index.css'
 import { init_app } from '../../../src-rust/pkg'
 import { useForceUpdate } from '@keadex/keadex-ui-kit/cross'
+import { initConsole } from '@keadex/keadex-utils'
+
+initConsole()
 
 initi18n({
   backend: {

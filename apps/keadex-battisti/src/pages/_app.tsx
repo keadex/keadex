@@ -42,16 +42,9 @@ import { NewsBanner } from '@keadex/keadex-ui-kit/cross'
 import { NEWS } from '../core/news'
 import '../styles/index.css'
 import '../styles/nextra.css'
+import { initConsole } from '@keadex/keadex-utils'
 
-//---------- Disable debug and log levels in production
-if (process.env.NODE_ENV === 'production') {
-  console.log = () => {
-    // do nothing
-  }
-  console.debug = () => {
-    // do nothing
-  }
-}
+initConsole()
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }: AppProps) {
