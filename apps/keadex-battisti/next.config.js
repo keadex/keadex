@@ -12,9 +12,23 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const CopyPlugin = require('copy-webpack-plugin')
 const withMinaLive = require('@keadex/mina-live/nextjs/mina-plugin')
 
-const cspHeader = `
+const ALL_SOURCES = '/(.*)'
+const MINA_LIVE_EDITOR_SOURCE = '/(.*)/projects/keadex-mina/live-editor'
+
+/**
+ * @param {string} source
+ * @returns {string}
+ */
+const cspHeader = (source) => {
+  let connectSrc = `'self' https://vercel.live https://consentcdn.cookiebot.com https://region1.google-analytics.com https://gist.githubusercontent.com https://raw.githubusercontent.com https://keadex.dev`
+
+  if (source === MINA_LIVE_EDITOR_SOURCE) {
+    connectSrc = '*'
+  }
+
+  return `
     default-src 'self';
-    connect-src 'self' https://vercel.live https://consentcdn.cookiebot.com https://region1.google-analytics.com https://gist.githubusercontent.com https://raw.githubusercontent.com https://keadex.dev;
+    connect-src ${connectSrc};
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://vercel.live https://www.googletagmanager.com;
     frame-src 'self' https://consentcdn.cookiebot.com https://vercel.live https://www.youtube.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
@@ -26,7 +40,8 @@ const cspHeader = `
     frame-ancestors 'none';
     block-all-mixed-content;
     upgrade-insecure-requests;
-`
+`.replace(/\n/g, '')
+}
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -50,11 +65,20 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: ALL_SOURCES,
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: cspHeader.replace(/\n/g, ''),
+            value: cspHeader(ALL_SOURCES),
+          },
+        ],
+      },
+      {
+        source: MINA_LIVE_EDITOR_SOURCE,
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: cspHeader(MINA_LIVE_EDITOR_SOURCE),
           },
         ],
       },
