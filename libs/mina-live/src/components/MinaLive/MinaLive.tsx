@@ -2,7 +2,7 @@
 
 import '../../tauri/tauri-web-adapter'
 import useEventEmitter from 'ahooks/lib/useEventEmitter'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Provider } from 'react-redux'
 import { RouterProvider } from 'react-router-dom'
 import {
