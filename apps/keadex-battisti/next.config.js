@@ -13,7 +13,7 @@ const CopyPlugin = require('copy-webpack-plugin')
 const withMinaLive = require('@keadex/mina-live/nextjs/mina-plugin')
 
 const ALL_SOURCES = '/(.*)'
-const MINA_LIVE_EDITOR_SOURCE = '/(.*)/projects/keadex-mina/live-editor'
+const MINA_LIVE_EDITOR_SOURCE = '/(.*)/mina-live'
 
 /**
  * @param {string} source

@@ -20,7 +20,7 @@ ROUTES[ABOUT_ME] = {
 export const PROJECTS = '/projects'
 
 export const PROJECT_KEADEX_MINA = `${PROJECTS}/keadex-mina`
-export const KEADEX_MINA_LIVE_EDITOR = `${PROJECT_KEADEX_MINA}/live-editor`
+export const KEADEX_MINA_LIVE_EDITOR = `/mina-live`
 
 export const KEADEX_MINA_SHARE_DIAGRAM = `${PROJECT_KEADEX_MINA}/share-diagram`
 export const PROJECT_KEADEX_BATTISTI = `${PROJECTS}/keadex-battisti`

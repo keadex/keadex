@@ -1,7 +1,7 @@
 import { type Metadata, type NextPage } from 'next'
-import keadexMina from '../../../../../../public/img/keadex-mina-logo.svg'
-import { PageProps } from '../../../layout'
-import MinaLiveClient from '../../../../../components/MinaLiveClient/MinaLiveClient'
+import keadexMina from '../../../../public/img/keadex-mina-logo.svg'
+import { PageProps } from '../layout'
+import MinaLiveClient from '../../../components/MinaLiveClient/MinaLiveClient'
 
 const seo = {
   title: 'Keadex Mina Live Editor',
