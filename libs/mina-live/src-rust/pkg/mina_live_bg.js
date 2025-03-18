@@ -335,7 +335,7 @@ export function save_project_settings(project_settings) {
 }
 
 /**
- * @returns {()}
+ * @returns {bool}
  */
 export function init_app() {
     const ret = wasm.init_app();

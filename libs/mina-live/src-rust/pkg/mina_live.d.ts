@@ -10,7 +10,7 @@ export function search(string_to_search: String, include_diagrams_dir: bool, inc
 export function search_diagram_element_alias(alias: String, include_diagrams_dir: bool, include_library_dir: bool, limit: usize): Promise<DiagramElementSearchResults>;
 export function execute_hook(payload: HookPayload): Promise<bool>;
 export function save_project_settings(project_settings: ProjectSettings): Promise<ProjectSettings>;
-export function init_app(): Promise<()>;
+export function init_app(): Promise<bool>;
 export function create_project(project_settings: ProjectSettings, dir_handle?: FileSystemDirectoryHandle | null): Promise<ProjectSettings>;
 export function open_project(dir_handle?: FileSystemDirectoryHandle | null): Promise<Project>;
 export function close_project(): Promise<bool>;

@@ -12,9 +12,9 @@ use wasm_bindgen::JsValue;
 use web_sys::console;
 
 #[cfg_attr(web, web_controller)]
-pub fn init_app() -> Result<(), MinaError> {
+pub fn init_app() -> Result<bool, MinaError> {
   App::init();
-  Ok(())
+  Ok(true)
 }
 
 #[cfg_attr(web, web_controller(without_input_transformation(dir_handle)))]
