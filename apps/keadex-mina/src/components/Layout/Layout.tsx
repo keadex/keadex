@@ -172,9 +172,9 @@ export const Layout = React.memo((props: LayoutProps) => {
           title={
             <div>
               <div className="inline opacity-20">Keadex Mina</div>
-              {/* <div className="inline ml-1 px-1 py-[0.10rem] bg-primary text-brand1 rounded text-sm">
+              <div className="inline ml-1 px-1 py-[0.10rem] bg-primary text-brand1 rounded text-sm">
                 v2 beta
-              </div> */}
+              </div>
             </div>
           }
         />
