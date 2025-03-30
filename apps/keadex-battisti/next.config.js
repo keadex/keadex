@@ -20,7 +20,7 @@ const MINA_LIVE_EDITOR_SOURCE = '/(.*)/mina-live'
  * @returns {string}
  */
 const cspHeader = (source) => {
-  let connectSrc = `'self' https://vercel.live https://consentcdn.cookiebot.com https://region1.google-analytics.com https://gist.githubusercontent.com https://raw.githubusercontent.com https://keadex.dev`
+  let connectSrc = `'self' https://vercel.live https://consentcdn.cookiebot.com https://region1.google-analytics.com https://gist.githubusercontent.com https://raw.githubusercontent.com https://keadex.dev https://vimeo.com`
 
   if (source === MINA_LIVE_EDITOR_SOURCE) {
     connectSrc = '*'
@@ -29,8 +29,8 @@ const cspHeader = (source) => {
   return `
     default-src 'self';
     connect-src ${connectSrc};
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://vercel.live https://www.googletagmanager.com;
-    frame-src 'self' https://consentcdn.cookiebot.com https://vercel.live https://www.youtube.com;
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://vercel.live https://www.googletagmanager.com https://player.vimeo.com;
+    frame-src 'self' https://consentcdn.cookiebot.com https://vercel.live https://www.youtube.com https://player.vimeo.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' blob: data: https://imgsct.cookiebot.com https://www.googletagmanager.com;
     font-src 'self';
