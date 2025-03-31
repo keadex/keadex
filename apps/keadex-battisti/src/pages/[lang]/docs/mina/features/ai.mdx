@@ -1,23 +1,32 @@
 import { Callout } from 'nextra/components'
-import Image from 'next/image'
 import { faRobot } from '@fortawesome/free-solid-svg-icons'
 import { faKeadexMina } from '../../../../../../../keadex-mina/src/assets/icons'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import aiScreenshot from '../../../../../../public/img/mina/ai-powered.gif'
+import dynamic from 'next/dynamic'
+
+export const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
 
 # Diagram Generation w/ AI
 
 Mina integrates AI to **generate diagram code** based on a natural language description of your architecture.
 
-<p align="center">
-  <Image
-    src={aiScreenshot}
-    alt="Screenshot of Keadex Mina generatic diagrams with the AI"
-    width={500}
-    className="my-7"
+<div className="relative h-auto w-[40rem] max-w-full mx-auto mt-8">
+  <ReactPlayer
+    url="https://vimeo.com/1071229228/e734c07b7a"
+    playing
+    muted
+    loop
+    width="100%"
+    height="100%"
+    config={{
+      vimeo: {
+        playerOptions: {
+          responsive: true,
+        },
+      },
+    }}
   />
-</p>
+</div>
 
 Since Mina strongly supports **open-source** technologies, it offers a **configurable AI integration** that allows you to choose the AI APIs and model you want to use.
 

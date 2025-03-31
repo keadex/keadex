@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button } from '@keadex/keadex-ui-kit/cross'
 import { PropsWithChildren } from 'react'
 import { Trans } from 'react-i18next'
-import Image from 'next/image'
 import { useTranslation } from '../../app/i18n/client'
-import docsIntegrationGif from '../../../public/img/mina/docs-integration.gif'
+import dynamic from 'next/dynamic'
+
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
 
 export type MinaDocsIntegrationProps = {
   lang: string
@@ -23,11 +24,23 @@ export default function MinaDocsIntegration({
     <div className="bg-dark-primary px-10 py-28 align-middle">
       <div className="flex flex-col md:flex-row my-auto">
         <div className="w-full md:w-1/2 flex flex-col">
-          <Image
-            src={docsIntegrationGif}
-            alt="Mina documentation integration example"
-            className="w-full h-auto my-auto"
-          />
+          <div className="my-auto">
+            <ReactPlayer
+              url="https://vimeo.com/1070865346/3f55044e95"
+              playing
+              muted
+              loop
+              width="100%"
+              height="100%"
+              config={{
+                vimeo: {
+                  playerOptions: {
+                    responsive: true,
+                  },
+                },
+              }}
+            />
+          </div>
         </div>
         <div className="flex flex-col w-full md:w-1/2 pl-0 md:pl-10 mt-10 md:my-auto">
           <div className="text-3xl leading-10 font-extralight">

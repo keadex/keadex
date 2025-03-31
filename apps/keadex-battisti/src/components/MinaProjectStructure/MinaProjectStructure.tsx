@@ -42,21 +42,23 @@ export default function MinaProjectStructure({
           </div>
         </div>
         <div className="flex flex-col w-full md:w-1/2 pl-0 md:pl-10 mt-10 md:mt-0">
-          <ReactPlayer
-            url="https://vimeo.com/1070152500/8b11627a96"
-            playing
-            muted
-            loop
-            width="100%"
-            height="100%"
-            config={{
-              vimeo: {
-                playerOptions: {
-                  responsive: true,
+          <div className="my-auto">
+            <ReactPlayer
+              url="https://vimeo.com/1070152500/8b11627a96"
+              playing
+              muted
+              loop
+              width="100%"
+              height="100%"
+              config={{
+                vimeo: {
+                  playerOptions: {
+                    responsive: true,
+                  },
                 },
-              },
-            }}
-          />
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
