@@ -1,8 +1,7 @@
 import { Callout } from 'nextra/components'
-import Image from 'next/image'
-import createDiagram from '../../../../../../public/img/mina/autolayout-create-diagram.png'
-import editor1 from '../../../../../../public/img/mina/autolayout-editor1.png'
-import editor2 from '../../../../../../public/img/mina/autolayout-editor2.png'
+import dynamic from 'next/dynamic'
+
+export const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
 
 # Auto Layout
 
@@ -12,39 +11,33 @@ Applications with **fully automated rendering systems**, in the presence of many
 
 For this reason, Mina provides **three options** for rendering diagrams:
 
-  1. **Auto Layout**: Let Mina position the diagram elements. This will speed up your work but may result in messy diagrams.
-  2. **Custom Layout**: Have the freedom to decide how your diagrams will look. This will slow down your work, but your diagrams will look great.
-  3. **Hybrid Layout**: Enable auto layout to generate initial positions, then disable it to customize them. This is a compromise in terms of speed and final rendering.
+1. **Auto Layout**: Let Mina position the diagram elements. This will speed up your work but may result in messy diagrams.
+2. **Custom Layout**: Have the freedom to decide how your diagrams will look. This will slow down your work, but your diagrams will look great.
+3. **Hybrid Layout**: Enable auto layout to generate initial positions, then disable it to customize them. This is a compromise in terms of speed and final rendering.
 
 The choice between these options depends on the **complexity of the diagram**.
 
 <Callout type="warning" emoji="⚠️">
-  If you enable the auto layout **after customizing the diagram**, all your customizations will be **discarded and overwritten** with the automatically generated positions. 
+  If you enable the auto layout **after customizing the diagram**, all your
+  customizations will be **discarded and overwritten** with the automatically
+  generated positions.
 </Callout>
 
 ## Usage
 
-<iframe
-  src="https://www.youtube.com/embed/jQzS1hdEaOI"
-  className="w-full h-80 my-14 border-0"
-  frameBorder="0"
-  allowFullScreen
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-/>
-
-There are different options to configure the auto layout:
-  - In the modal of the diagram creation.
-  - In the diagram editor.
-
-### Modal of the diagram creation
-
-<div className="my-5 block md:flex md:flex-wrap items-center justify-center">
-  <Image src={createDiagram} alt="Screenshot of Mina, highlighting the auto layout options during the diagram creation" height={350} className="mx-0 my-5 md:mx-5"/>
-</div>
-
-### Diagram editor
-
-<div className="my-5 block md:flex md:flex-wrap items-center justify-center">
-  <Image src={editor1} alt="Screenshot of Mina, highlighting the auto layout button in the diagram editor" height={350} className="mx-0 my-5 md:mx-5"/>
-  <Image src={editor2} alt="Screenshot of Mina, highlighting the auto layout modal in the diagram editor" height={350} className="mx-0 my-5 md:mx-5" />
+<div className="w-full h-[30rem] my-14 border-0">
+  <ReactPlayer
+    url="https://vimeo.com/1072171131/ced1a3fe48"
+    muted
+    width="100%"
+    height="100%"
+    controls
+    config={{
+      vimeo: {
+        playerOptions: {
+          transparent: false,
+        },
+      },
+    }}
+  />
 </div>
