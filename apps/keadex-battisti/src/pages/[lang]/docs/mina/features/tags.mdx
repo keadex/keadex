@@ -1,7 +1,6 @@
-import Image from 'next/image'
-import minaTags1 from '../../../../../../public/img/mina/mina-tags1.png'
-import minaTags2 from '../../../../../../public/img/mina/mina-tags2.png'
-import minaTags3 from '../../../../../../public/img/mina/mina-tags3.png'
+import dynamic from 'next/dynamic'
+
+export const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
 
 # Tags
 
@@ -11,27 +10,19 @@ Tagging your diagrams can be useful to:
 - Filter diagrams by specific labels
 - Group diagrams with common characteristics
 
-## Usage
-
-You can add tags when you are creating or modifying a diagram.
-
-<div className="my-5 block md:flex md:flex-wrap items-center justify-center">
-  <Image
-    src={minaTags1}
-    alt="Screenshot of Mina, highlighting the tagging during the diagram creation"
-    height={350}
-    className="mx-auto my-5 md:mx-5"
-  />
-  <Image
-    src={minaTags2}
-    alt="Screenshot of Mina, highlighting the tags in the editor"
-    height={350}
-    className="mx-auto my-5 md:mx-5"
-  />
-  <Image
-    src={minaTags3}
-    alt="Screenshot of Mina, highlighting the found diagram matching the searched tag"
-    height={350}
-    className="mx-auto my-5 md:mx-5"
+<div className="w-full h-[30rem] my-14 border-0">
+  <ReactPlayer
+    url="https://vimeo.com/1072873604/e30dfd9f6e"
+    muted
+    width="100%"
+    height="100%"
+    controls
+    config={{
+      vimeo: {
+        playerOptions: {
+          transparent: false,
+        },
+      },
+    }}
   />
 </div>
