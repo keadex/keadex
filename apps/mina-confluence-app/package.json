@@ -6,8 +6,8 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@atlaskit/css-reset": "^6.6.2",
-    "@forge/bridge": "3.2.0",
+    "@atlaskit/css-reset": "^7.2.0",
+    "@forge/react": "^11.1.0",
     "@swc/helpers": "~0.5.2",
     "@swc-node/register": "^1.8.0",
     "react": "^18.2.0",
