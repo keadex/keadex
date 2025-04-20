@@ -6,11 +6,7 @@
     "outDir": "dist",
     "declaration": true,
     "emitDeclarationOnly": true,
-    "types": [
-      "node",
-      "@nx/react/typings/cssmodule.d.ts",
-      "@nx/react/typings/image.d.ts"
-    ]
+    "allowJs": true
   },
   "exclude": [
     "jest.config.ts",
@@ -28,6 +24,8 @@
     "src/**/*.jsx",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "index.ts"
+    "index.ts",
+    "mina-live-middleware.ts",
+    "../../apps/keadex-mina/src/env.d.ts"
   ]
 }
