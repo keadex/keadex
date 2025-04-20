@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic'
 
-const MinaLive = dynamic(() => import('@keadex/mina-live/MinaLive'), {
+const MinaLive = dynamic(() => import('@keadex/mina-live-npm'), {
   ssr: false,
 })
 

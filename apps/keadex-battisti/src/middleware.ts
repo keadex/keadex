@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server'
 import acceptLanguage from 'accept-language'
 import { fallbackLng, languages, cookieName } from './app/i18n/settings'
-import { minaMiddleware } from '@keadex/mina-live/nextjs/mina-middleware'
+import { minaMiddleware } from '@keadex/mina-live-npm/nextjs-middleware'
 
 acceptLanguage.languages(languages)
 

@@ -10,7 +10,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 const CopyPlugin = require('copy-webpack-plugin')
-const withMinaLive = require('@keadex/mina-live/nextjs/mina-plugin')
+const withMinaLive = require('@keadex/mina-live-npm/nextjs-plugin')
 
 const ALL_SOURCES = '/(.*)'
 const MINA_LIVE_EDITOR_SOURCE = '/(.*)/mina-live'
@@ -121,7 +121,7 @@ const plugins = [
   withNx,
   withNextra,
   withBundleAnalyzer,
-  withMinaLive,
+  withMinaLive({ minaLivePackageAlias: '@keadex/mina-live-npm' }),
 ]
 
 module.exports = composePlugins(...plugins)(nextConfig)
