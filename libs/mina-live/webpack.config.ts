@@ -1,7 +1,8 @@
 import { withReact } from '@nx/react'
 import { composePlugins, withNx } from '@nx/webpack'
-import { join } from 'path'
-import { Configuration, optimize } from 'webpack'
+import { join, resolve } from 'path'
+import { Configuration, optimize, DefinePlugin } from 'webpack'
+import { readFileSync } from 'fs'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const CopyPlugin = require('copy-webpack-plugin')
@@ -44,10 +45,20 @@ export default composePlugins(
   withNoNxSensitiveVars(),
   (defaultconfig) => {
     const config: Configuration = {
-      entry: path.resolve(__dirname, 'index.ts'),
+      entry: {
+        index: path.resolve(__dirname, 'index.ts'),
+        'mina-live-middleware': path.resolve(
+          __dirname,
+          'src/nextjs/mina-live-middleware.ts',
+        ),
+        'mina-live-plugin': path.resolve(
+          __dirname,
+          'src/nextjs/mina-live-plugin.js',
+        ),
+      },
       output: {
         path: path.resolve(__dirname, './dist'),
-        filename: 'index.js',
+        filename: '[name].js',
         libraryTarget: 'commonjs-module',
         library: {
           type: 'module',
@@ -60,10 +71,16 @@ export default composePlugins(
       devtool: defaultconfig.devtool,
 
       resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.wasm'],
         fallback: {
           util: false,
           path: false,
+        },
+        alias: {
+          '@tauri-apps/api/webviewWindow': resolve(
+            __dirname,
+            './src/tauri/tauri-web-adapter.ts',
+          ),
         },
       },
 
@@ -74,8 +91,9 @@ export default composePlugins(
       },
 
       externals: [
+        { canvas: 'commonjs canvas' },
         nodeExternals({
-          allowlist: [/^@keadex/],
+          allowlist: [/^@keadex/, '@tauri-apps/api/webviewWindow'],
         }),
       ],
 
@@ -95,6 +113,38 @@ export default composePlugins(
             {
               from: join(__dirname, 'static/mina-react-logo.svg'),
               to: 'static/mina-react-logo.svg',
+            },
+            {
+              from: join(__dirname, './src/webpack/webpack.config.js'),
+              to: 'webpack.config.js',
+            },
+          ],
+        }),
+        new DefinePlugin({
+          'import.meta.env': {
+            VITE_AI_ENABLED: JSON.stringify(true),
+            VITE_WEB_MODE: JSON.stringify(true),
+            VITE_APP_VERSION: JSON.stringify(
+              JSON.parse(
+                readFileSync(join(__dirname, '../../package.json')).toString(),
+              ).version,
+            ),
+          },
+        }),
+        new CopyPlugin({
+          patterns: [
+            {
+              from: 'apps/keadex-mina/public/locales',
+              to() {
+                return 'static/keadex-mina/locales'
+              },
+            },
+            {
+              from: 'apps/keadex-mina/public/**/*.+(svg|png|jpeg|jpg)',
+
+              to() {
+                return 'static/keadex-mina/[name][ext]'
+              },
             },
           ],
         }),

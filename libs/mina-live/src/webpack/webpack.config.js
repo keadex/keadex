@@ -1,63 +1,101 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const CopyPlugin = require('copy-webpack-plugin')
-const { readFileSync } = require('fs')
-const { join } = require('path')
-const { DefinePlugin } = require('webpack')
+const { relative } = eval('require')('path')
 
-function withMinaLiveWebpackConfig(config) {
-  if (!config.externals) config.externals = []
-  if (!config.resolve) config.resolve = {}
-  if (!config.plugins) config.plugins = []
+/**
+ * @typedef {Object} MinaLiveWebpackOptions
+ * @property {String | undefined} minaLivePackageAlias
+ * @property {boolean | undefined} isNextJsConfig
+ */
 
-  config.externals.push({
-    canvas: 'commonjs canvas',
-  })
-
-  config.resolve.alias = {
-    ...config.resolve.alias,
-    '@tauri-apps/api/webviewWindow': require.resolve(
-      '@keadex/mina-live/tauri-web-adapter',
-    ),
-  }
-  config.resolve.extensions.push('.wasm')
-
-  config.experiments = {
-    ...config.experiments,
-    asyncWebAssembly: true,
+/**
+ * Returns the webpack configuration to use Mina Live
+ * @param {MinaLiveWebpackOptions | undefined} options
+ * @returns
+ */
+function withMinaLiveWebpackConfig(options) {
+  let isNextJsConfig = false
+  let minaLivePackageAlias = '@keadex/mina-live'
+  if (options) {
+    isNextJsConfig = options.isNextJsConfig
+    minaLivePackageAlias = options.minaLivePackageAlias ?? minaLivePackageAlias
   }
 
-  config.plugins.push(
-    new DefinePlugin({
-      'import.meta.env': {
-        VITE_AI_ENABLED: JSON.stringify(true),
-        VITE_WEB_MODE: JSON.stringify(true),
-        VITE_APP_VERSION: JSON.stringify(
-          JSON.parse(readFileSync(join(__dirname, '../../package.json')))
-            .version,
-        ),
-      },
-    }),
-  )
-  config.plugins.push(
-    new CopyPlugin({
-      patterns: [
+  let minaLiveRoot = eval('require').resolve(minaLivePackageAlias)
+  minaLiveRoot = minaLiveRoot.replace(/\\/g, '/').replace('/index.js', '')
+
+  return function (config) {
+    if (!config.plugins) config.plugins = []
+    const patterns = []
+    if (!isNextJsConfig) {
+      patterns.push(
         {
-          from: '../keadex-mina/public/locales',
-          to() {
-            return 'static/keadex-mina/locales'
+          from: `${minaLiveRoot}/*.wasm`,
+          to({ context, absoluteFilename }) {
+            return 'static/js/[name][ext]'
           },
         },
         {
-          from: '../keadex-mina/public/**/*.+(svg|png|jpeg|jpg)',
-          to() {
-            return 'static/keadex-mina/[name][ext]'
+          from: `${minaLiveRoot}/static/keadex-mina/locales`,
+          to({ context, absoluteFilename }) {
+            return '_next/static/keadex-mina/locales'
           },
         },
-      ],
-    }),
-  )
+        {
+          from: `${minaLiveRoot}/static/keadex-mina/**/*`,
+          globOptions: {
+            ignore: ['**/locales'],
+          },
+          to({ context, absoluteFilename }) {
+            return `${relative(
+              `${minaLiveRoot}/static/keadex-mina/`,
+              absoluteFilename,
+            )}`
+          },
+        },
+      )
+    } else {
+      patterns.push(
+        {
+          from: `${minaLiveRoot}/*.wasm`,
+          to({ context, absoluteFilename }) {
+            return 'static/chunks/[name][ext]'
+          },
+        },
+        {
+          from: `${minaLiveRoot}/static/keadex-mina/**/*`,
+          to({ context, absoluteFilename }) {
+            return `static/keadex-mina/${relative(
+              `${minaLiveRoot}/static/keadex-mina/`,
+              absoluteFilename,
+            )}`
+          },
+        },
+      )
+    }
 
-  return config
+    config.plugins.push(
+      new CopyPlugin({
+        patterns,
+      }),
+    )
+
+    config.module = {
+      ...config.module,
+      rules: config.module.rules.map((rule) => {
+        if (rule.oneOf instanceof Array) {
+          // eslint-disable-next-line no-param-reassign
+          rule.oneOf[rule.oneOf.length - 1].exclude = [
+            /\.(js|mjs|jsx|cjs|ts|tsx)$/,
+            /\.html$/,
+            /\.json$/,
+          ]
+        }
+        return rule
+      }),
+    }
+
+    return config
+  }
 }
 
 module.exports = {
