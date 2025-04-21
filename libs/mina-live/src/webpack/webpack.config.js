@@ -53,6 +53,22 @@ function withMinaLiveWebpackConfig(options) {
           },
         },
       )
+
+      // Create React App does not support .cjs files: https://github.com/facebook/create-react-app/issues/12700
+      config.module = {
+        ...config.module,
+        rules: config.module.rules.map((rule) => {
+          if (rule.oneOf instanceof Array) {
+            // eslint-disable-next-line no-param-reassign
+            rule.oneOf[rule.oneOf.length - 1].exclude = [
+              /\.(js|mjs|jsx|cjs|ts|tsx)$/,
+              /\.html$/,
+              /\.json$/,
+            ]
+          }
+          return rule
+        }),
+      }
     } else {
       patterns.push(
         {
@@ -78,21 +94,6 @@ function withMinaLiveWebpackConfig(options) {
         patterns,
       }),
     )
-
-    config.module = {
-      ...config.module,
-      rules: config.module.rules.map((rule) => {
-        if (rule.oneOf instanceof Array) {
-          // eslint-disable-next-line no-param-reassign
-          rule.oneOf[rule.oneOf.length - 1].exclude = [
-            /\.(js|mjs|jsx|cjs|ts|tsx)$/,
-            /\.html$/,
-            /\.json$/,
-          ]
-        }
-        return rule
-      }),
-    }
 
     return config
   }
