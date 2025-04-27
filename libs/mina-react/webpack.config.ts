@@ -1,7 +1,8 @@
 import { withReact } from '@nx/react'
 import { composePlugins, withNx } from '@nx/webpack'
+import { readFileSync } from 'fs'
 import { join } from 'path'
-import { Configuration, optimize } from 'webpack'
+import { Configuration, optimize, DefinePlugin } from 'webpack'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const CopyPlugin = require('copy-webpack-plugin')
@@ -97,6 +98,17 @@ export default composePlugins(
               to: 'static/mina-react-logo.svg',
             },
           ],
+        }),
+        new DefinePlugin({
+          'import.meta.env': {
+            VITE_AI_ENABLED: JSON.stringify(true),
+            VITE_WEB_MODE: JSON.stringify(true),
+            VITE_APP_VERSION: JSON.stringify(
+              JSON.parse(
+                readFileSync(join(__dirname, '../../package.json')).toString(),
+              ).version,
+            ),
+          },
         }),
       ],
     }

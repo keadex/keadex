@@ -46,9 +46,11 @@
       "dependsOn": ["build-wasm"]
     },
     "build-wasm": {
-      "executor": "nx:run-script",
+      "executor": "nx:run-commands",
       "options": {
-        "script": "wasm-pack build ./src-rust --target bundler"
+        "cwd": "libs/mina-react",
+        "commands": ["yarn wasm-pack build ./src-rust --target bundler"],
+        "parallel": false
       }
     },
     "lint": {
