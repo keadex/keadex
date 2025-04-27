@@ -23,6 +23,7 @@ use crate::resolve_to_write;
 use convert_case::{Case, Casing};
 use std::path::MAIN_SEPARATOR;
 use std::str::FromStr;
+use wasm_bindgen::prelude::wasm_bindgen;
 
 /**
 Returns a human-readable format of a diagram's name, starting from its folder's name.
@@ -517,6 +518,7 @@ pub fn diagram_spec_url_from_name_type(
   ))
 }
 
+#[cfg_attr(web, wasm_bindgen)]
 pub fn diagram_url_from_link_string(
   project_root_url: &str,
   link_string: &str,
@@ -554,6 +556,7 @@ pub fn diagram_spec_url_from_link_string(
   )
 }
 
+#[cfg_attr(web, wasm_bindgen)]
 pub fn diagram_plantuml_url_from_diagram_url(
   project_root_url: &str,
   diagram_url: &str,
@@ -562,6 +565,7 @@ pub fn diagram_plantuml_url_from_diagram_url(
   diagram_plantuml_url_from_name_type(project_root_url, &diagram_name, &diagram_type)
 }
 
+#[cfg_attr(web, wasm_bindgen)]
 pub fn diagram_spec_url_from_diagram_url(
   project_root_url: &str,
   diagram_url: &str,
