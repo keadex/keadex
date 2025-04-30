@@ -1,5 +1,5 @@
-import MinaLiveClient from "@/components/MinaLiveClient/MinaLiveClient";
+import MinaLiveClient from '@/components/MinaLiveClient/MinaLiveClient'
 
-export default function Home() {
-  return <MinaLiveClient />;
+export default function MinaLive() {
+  return <MinaLiveClient />
 }
