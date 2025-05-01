@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import '@keadex/mina-live-npm/index.css'
 
 const MinaLive = dynamic(() => import('@keadex/mina-live-npm'), {
   ssr: false,
