@@ -248,8 +248,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               external: true,
             },
             {
+              id: 'keadex-mina_live-component',
+              title: 'Mina Live',
+              href: 'https://www.npmjs.com/package/@keadex/mina-live',
+              external: true,
+            },
+            {
               id: 'keadex-mina_react-component',
-              title: 'React Component',
+              title: 'Mina React',
               href: 'https://www.npmjs.com/package/@keadex/mina-react',
               external: true,
             },
