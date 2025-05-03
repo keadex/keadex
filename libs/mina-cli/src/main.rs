@@ -30,7 +30,7 @@ use model::cli::{Cli, Commands};
 use std::path::PathBuf;
 
 async fn init_keadex_mina(project_path: &PathBuf) -> Result<(), MinaError> {
-  let _app = keadex_mina::core::app::App::default();
+  let _app = keadex_mina::core::app::App::new();
   let _project = load_project(project_path.to_str().unwrap()).await?;
   return Ok(());
 }

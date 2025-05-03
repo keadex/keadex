@@ -777,8 +777,10 @@ checksum = "7e36cc9d416881d2e24f9a963be5fb1cd90966419ac844274161d10488b3e825"
 dependencies = [
  "android-tzdata",
  "iana-time-zone",
+ "js-sys",
  "num-traits",
  "serde",
+ "wasm-bindgen",
  "windows-targets 0.52.6",
 ]
 
@@ -2789,6 +2791,7 @@ dependencies = [
  "async-trait",
  "bomboni_wasm",
  "cfg_aliases 0.2.1",
+ "chrono",
  "convert_case 0.6.0",
  "data-url 0.2.0",
  "dotenv",
@@ -2797,6 +2800,7 @@ dependencies = [
  "fs2",
  "futures",
  "js-sys",
+ "keadex_mina_macro",
  "layout-rs",
  "log",
  "notify",
@@ -2826,6 +2830,18 @@ dependencies = [
  "ts-rs",
  "uuid",
  "walkdir",
+ "wasm-bindgen",
+]
+
+[[package]]
+name = "keadex_mina_macro"
+version = "1.0.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "serde",
+ "serde-wasm-bindgen",
+ "syn 2.0.82",
  "wasm-bindgen",
 ]
 
