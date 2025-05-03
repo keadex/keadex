@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "base_data": {
+      "alias": "minaC4modelUIKit",
+      "label": "C4 Model UI Kit",
+      "description": "Fabric.js components and modules to render C4 model diagrams.",
+      "link": "component/c4-model-ui-kit",
+      "uuid": "ea1057a5-dee1-4aa6-bb00-5201fed8f53d"
+    },
+    "technology": "Fabric.js",
+    "container_type": "Container"
+  }
+]

@@ -76,7 +76,7 @@ System_Ext(minaOS, "Operating System", "Local OS")
 
 Container(minaReact, "Mina React", "React", "Library that provides React components to render interactive C4 Model diagrams created with Keadex Mina.")
 
-Container(minaC4modelUIKit, "C4 Model UI Kit", "Fabric.js", "Fabric.js components and modules to render C4 model diagrams.")
+Container(minaC4modelUIKit, "C4 Model UI Kit", "Fabric.js", "Fabric.js components and modules to render C4 model diagrams.", $link="component/c4-model-ui-kit")
 
 Container(minaKeadexUIKit, "Keadex UI Kit", "React", "Components, hooks, styles and utilities to render Keadex applications.")
 

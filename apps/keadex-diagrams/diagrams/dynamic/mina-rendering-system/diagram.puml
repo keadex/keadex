@@ -36,12 +36,12 @@ Container_Boundary(mina, "Keadex Mina"){
   Rel(minaFEBridge, minaBEControllers, "[2] calls API to read the diagram data (specs and puml) as JSON data", "Tauri")
 }
 
-Container(minaC4modelUIKit, "C4 Model UI Kit", "Fabric.js", "Fabric.js components and modules to render C4 model diagrams.")
+Container(minaC4modelUIKit, "C4 Model UI Kit", "Fabric.js", "Fabric.js components and modules to render C4 model diagrams.", $link="component/c4-model-ui-kit")
 
 Rel(userMinaRendering, minaFrontendContainer, "[1] opens a diagram", "UI")
 
 Rel(minaFrontend, minaC4modelUIKit, "[9] invokes to render the diagram with the given specs and puml", "Typescript")
 
-Rel(minaC4modelUIKit, minaC4modelUIKit, "[10] instantiates and renders the interactive C4 Model UI components", "Typescript")
+Rel(minaC4modelUIKit, minaC4modelUIKit, "[10] auto-generate the layout,\ninstantiates and renders the interactive C4 Model UI components", "Typescript")
 
 @enduml

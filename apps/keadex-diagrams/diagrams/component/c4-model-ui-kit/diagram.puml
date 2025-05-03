@@ -21,7 +21,11 @@ Container_Boundary(c4modelUiKitRenderingSystem, "Rendering System"){
     Component(c4modelUiKitRelationshipRenderer, "Relationship Renderer", "Typescript", "Responsible for rendering a C4 Relationship element.")
   }
 
+  Component(c4modelUiKitAutoLayout, "Auto Layout", "Graphviz", "Automatically arranges the layout of the diagram..")
+
   Rel(c4modelUiKitDiagramRenderer, c4modelUiKitElementsRenderers, "invokes to render", "Typescript")
+
+  Rel(c4modelUiKitDiagramRenderer, c4modelUiKitAutoLayout, "invokes to generate positions", "Typescript")
 }
 
 Container_Boundary(c4modelUiKitComponents, "Components"){

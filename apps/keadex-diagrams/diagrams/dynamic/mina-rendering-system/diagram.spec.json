@@ -15,7 +15,7 @@
       },
       "size": {
         "width": 121.0,
-        "height": 141.0,
+        "height": 181.0,
         "scale_x": 1.0,
         "scale_y": 1.0
       }
@@ -33,7 +33,7 @@
       },
       "size": {
         "width": 221.0,
-        "height": 187.0,
+        "height": 189.228,
         "scale_x": 1.0,
         "scale_y": 1.0
       }
@@ -51,7 +51,7 @@
       },
       "size": {
         "width": 221.0,
-        "height": 101.0,
+        "height": 103.228,
         "scale_x": 1.0,
         "scale_y": 1.0
       }
@@ -175,7 +175,7 @@
               },
               "size": {
                 "width": 221.0,
-                "height": 101.0,
+                "height": 103.228,
                 "scale_x": 1.0,
                 "scale_y": 1.0
               }
@@ -193,7 +193,7 @@
               },
               "size": {
                 "width": 221.0,
-                "height": 101.0,
+                "height": 103.228,
                 "scale_x": 1.0,
                 "scale_y": 1.0
               }
@@ -224,7 +224,7 @@
               "position": {
                 "left": 135.0,
                 "top": 880.0,
-                "z_index": 61,
+                "z_index": 59,
                 "angle": 0.0
               },
               "size": {
@@ -724,7 +724,7 @@
           },
           "size": {
             "width": 221.0,
-            "height": 101.0,
+            "height": 103.228,
             "scale_x": 1.0,
             "scale_y": 1.0
           }
@@ -742,7 +742,7 @@
           },
           "size": {
             "width": 221.0,
-            "height": 101.0,
+            "height": 103.228,
             "scale_x": 1.0,
             "scale_y": 1.0
           }
@@ -773,7 +773,7 @@
           "position": {
             "left": 135.0,
             "top": 880.0,
-            "z_index": 61,
+            "z_index": 59,
             "angle": 0.0
           },
           "size": {
@@ -1175,7 +1175,7 @@
       },
       "size": {
         "width": 221.0,
-        "height": 101.0,
+        "height": 103.228,
         "scale_x": 1.0,
         "scale_y": 1.0
       }
@@ -1193,7 +1193,7 @@
       },
       "size": {
         "width": 221.0,
-        "height": 101.0,
+        "height": 103.228,
         "scale_x": 1.0,
         "scale_y": 1.0
       }
@@ -1651,7 +1651,7 @@
       "position": {
         "left": 135.0,
         "top": 880.0,
-        "z_index": 61,
+        "z_index": 59,
         "angle": 0.0
       },
       "size": {
@@ -1817,5 +1817,8 @@
       }
     }
   ],
-  "shapes": []
+  "shapes": [],
+  "auto_layout_enabled": false,
+  "auto_layout_orientation": "TopToBottom",
+  "auto_layout_only_straight_arrows": false
 }
