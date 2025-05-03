@@ -117,7 +117,7 @@ Container_Boundary(minaLive, "Mina Live"){
 
   Container(minaLiveWasmBridge, "Wasm Bridge", "Typescript", "Bridge to invoke wasm functions.")
 
-  Container(minaLiveBackend, "Backend", "Wasm", "Keadex Mina backend compiled to wasm.")
+  Container(minaLiveBackend, "Wasm Backend", "WebAssembly", "Keadex Mina backend compiled to wasm.")
 
   Rel(minaLiveTauriWebAdapter, minaLiveWasmBridge, "invokes", "Typescript")
 

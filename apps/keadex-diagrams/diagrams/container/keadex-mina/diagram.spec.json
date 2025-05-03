@@ -62,7 +62,7 @@
           "shape_type": "RECTANGLE",
           "position": {
             "left": -150.0,
-            "top": 74.99999999999997,
+            "top": 75.0,
             "z_index": 4
           },
           "size": {
@@ -348,7 +348,7 @@
               "shape_type": "RECTANGLE",
               "position": {
                 "left": -140.0,
-                "top": 495.00000000000006,
+                "top": 495.0,
                 "z_index": 34
               },
               "size": {
@@ -447,7 +447,7 @@
               "position": {
                 "left": 610.0,
                 "top": 860.0,
-                "z_index": 41,
+                "z_index": 40,
                 "angle": 0.0
               },
               "size": {
@@ -465,7 +465,7 @@
                   "position": {
                     "left": 215.0,
                     "top": 1230.0,
-                    "z_index": 40
+                    "z_index": 41
                   },
                   "size": {
                     "scale_x": 1.0,
@@ -1971,7 +1971,7 @@
           "shape_type": "RECTANGLE",
           "position": {
             "left": -140.0,
-            "top": 495.00000000000006,
+            "top": 495.0,
             "z_index": 34
           },
           "size": {
@@ -2070,7 +2070,7 @@
           "position": {
             "left": 610.0,
             "top": 860.0,
-            "z_index": 41,
+            "z_index": 40,
             "angle": 0.0
           },
           "size": {
@@ -2088,7 +2088,7 @@
               "position": {
                 "left": 215.0,
                 "top": 1230.0,
-                "z_index": 40
+                "z_index": 41
               },
               "size": {
                 "scale_x": 1.0,
@@ -3085,7 +3085,7 @@
           "position": {
             "left": 215.0,
             "top": 1230.0,
-            "z_index": 40
+            "z_index": 41
           },
           "size": {
             "scale_x": 1.0,
@@ -3149,7 +3149,7 @@
       "position": {
         "left": 610.0,
         "top": 860.0,
-        "z_index": 41,
+        "z_index": 40,
         "angle": 0.0
       },
       "size": {
@@ -3830,7 +3830,7 @@
       "position": {
         "left": 1495.0,
         "top": 370.0,
-        "z_index": 112,
+        "z_index": 113,
         "angle": 0.0
       },
       "size": {
@@ -4794,6 +4794,14 @@
       "to": "minaOS",
       "shapes": [
         {
+          "shape_type": "RECTANGLE",
+          "position": {}
+        },
+        {
+          "shape_type": "LINE",
+          "position": {}
+        },
+        {
           "shape_type": "DOT",
           "position": {
             "left": 596.5,
@@ -4826,14 +4834,6 @@
             "scale_x": 1.0,
             "scale_y": 1.0
           }
-        },
-        {
-          "shape_type": "LINE",
-          "position": {}
-        },
-        {
-          "shape_type": "RECTANGLE",
-          "position": {}
         }
       ],
       "element_type": {
