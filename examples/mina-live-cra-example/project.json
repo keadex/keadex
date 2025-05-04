@@ -1,8 +1,0 @@
-{
-  "name": "mina-live-cra-example",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "examples/mina-live-cra-example/src",
-  "projectType": "application",
-  "targets": {},
-  "tags": []
-}
