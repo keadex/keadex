@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/mina-confluence-plugin/src",
   "projectType": "library",
+  "implicitDependencies": ["mina-confluence-app"],
   "tags": [],
   "targets": {
     "semantic-release": {

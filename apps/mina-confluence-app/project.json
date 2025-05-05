@@ -2,6 +2,7 @@
   "name": "mina-confluence-app",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/mina-confluence-app/src",
+  "implicitDependencies": ["!mina-confluence-plugin", "mina-react"],
   "projectType": "application",
   "targets": {
     "build": {
