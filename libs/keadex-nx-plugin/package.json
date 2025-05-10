@@ -4,7 +4,7 @@
   "dependencies": {
     "@microsoft/api-documenter": "^7.25.2",
     "@microsoft/api-extractor": "^7.46.2",
-    "@nx/devkit": "18.2.4",
+    "@nx/devkit": "21.0.3",
     "replace-in-file": "^7.2.0",
     "tslib": "^2.6.2"
   },

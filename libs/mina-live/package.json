@@ -32,8 +32,8 @@
     "./webpack-config": "./webpack.config.js"
   },
   "devDependencies": {
-    "@nx/react": "18.2.4",
-    "@nx/webpack": "18.2.4",
+    "@nx/react": "21.0.3",
+    "@nx/webpack": "21.0.3",
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "webpack": "^5.98.0",
     "webpack-node-externals": "^3.0.0",
