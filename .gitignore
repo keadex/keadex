@@ -55,4 +55,5 @@ act-secrets.env
 .next
 
 # Nx
-.nx
+.nx/workspace-data
+.nx/cache
