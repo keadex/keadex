@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "release-keadex-projects": {
+      "implementation": "./src/executors/release-keadex-projects",
+      "schema": "./src/executors/schema.json",
+      "description": "release-keadex-projects executor"
+    }
+  }
+}

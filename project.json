@@ -1,0 +1,8 @@
+{
+  "name": "keadex-monorepo",
+  "targets": {
+    "release-keadex-projects": {
+      "executor": "@keadex/keadex-nx-plugin:release-keadex-projects"
+    }
+  }
+}
