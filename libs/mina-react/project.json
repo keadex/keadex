@@ -6,13 +6,6 @@
   "implicitDependencies": ["keadex-mina"],
   "tags": [],
   "targets": {
-    "semantic-release": {
-      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
-      "options": {
-        "buildTarget": "build",
-        "outputPath": "libs/mina-react/dist"
-      }
-    },
     "build": {
       "executor": "nx:run-commands",
       "options": {

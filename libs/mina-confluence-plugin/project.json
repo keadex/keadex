@@ -6,13 +6,19 @@
   "implicitDependencies": ["mina-confluence-app"],
   "tags": [],
   "targets": {
-    "semantic-release": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'Done'"
+      },
+      "dependsOn": [{ "projects": ["mina-confluence-app"], "target": "build" }]
+    },
+    "nx-release-publish": {
       "executor": "nx:run-commands",
       "options": {
         "cwd": "libs/mina-confluence-plugin",
         "command": "forge deploy -e production"
-      },
-      "dependsOn": [{ "projects": ["mina-confluence-app"], "target": "build" }]
+      }
     }
   }
 }
