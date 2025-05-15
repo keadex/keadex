@@ -7,5 +7,6 @@
   "eslint.validate": ["json"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "never"
-  }
+  },
+  "nxConsole.generateAiAgentRules": true
 }
