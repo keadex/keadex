@@ -30,10 +30,21 @@ const runExecutor: PromiseExecutor<
   }
   console.info('Projects to release:', projectsToRelease)
 
+  // Version the projects
+  console.info('Versioning the projects...')
+  let result = await version(projectsToRelease, options)
+  if (!result) {
+    console.error('Failed to version projects.')
+    return {
+      success: false,
+    }
+  }
+  console.info('Projects versioned successfully.')
+
   // Build the projects
   console.info('Building the projects...')
-  const result = await buildProjects(projectsToRelease, options)
-  if (!result.success) {
+  result = await buildProjects(projectsToRelease, options)
+  if (!result) {
     console.error('Failed to build projects.')
     return {
       success: false,
@@ -41,12 +52,19 @@ const runExecutor: PromiseExecutor<
   }
   console.info('Projects built successfully.')
 
-  // Version and publish the projects
-  console.info('Versioning and publishing the projects...')
-  const success = await release(projectsToRelease, options)
+  // Publish the projects
+  console.info('Publishing the projects...')
+  result = await publish(projectsToRelease, options)
+  if (!result) {
+    console.error('Failed to publish projects.')
+    return {
+      success: false,
+    }
+  }
+  console.info('Projects published successfully.')
 
   return {
-    success,
+    success: result,
   }
 }
 
@@ -65,7 +83,7 @@ async function getLatestVersionPlan(): Promise<string | undefined> {
 async function buildProjects(
   projects: string[],
   options: ReleaseKeadexProjectsExecutorSchema,
-): Promise<{ success: boolean }> {
+): Promise<boolean> {
   const command = 'yarn'
   const args = [
     'nx',
@@ -86,29 +104,29 @@ async function buildProjects(
         child.on('close', (code) => {
           if (code === 0) {
             console.info('Command executed successfully.')
-            resolve({ success: true })
+            resolve(true)
           } else {
             console.error(`Command failed with exit code ${code}.`)
-            resolve({ success: false })
+            resolve(false)
           }
         })
 
         child.on('error', (error) => {
           console.error('Error executing command:', error)
-          resolve({ success: false })
+          resolve(false)
         })
       })
     } catch (error) {
       console.error('Unexpected error:', error)
-      return { success: false }
+      return false
     }
   } else {
     console.info('Dry run mode: skipping command execution.')
-    return { success: true }
+    return true
   }
 }
 
-async function release(
+async function version(
   projects: string[],
   options: ReleaseKeadexProjectsExecutorSchema,
 ): Promise<boolean> {
@@ -123,7 +141,13 @@ async function release(
     dryRun: options.dryRun,
     verbose: options.verbose,
   })
+  return true
+}
 
+async function publish(
+  projects: string[],
+  options: ReleaseKeadexProjectsExecutorSchema,
+): Promise<boolean> {
   // publishResults contains a map of project names and their exit codes
   const publishResults = await releasePublish({
     dryRun: options.dryRun,
@@ -133,4 +157,5 @@ async function release(
 
   return Object.values(publishResults).every((result) => result.code === 0)
 }
+
 export default runExecutor
