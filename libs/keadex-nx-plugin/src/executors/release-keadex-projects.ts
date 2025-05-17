@@ -10,18 +10,22 @@ const runExecutor: PromiseExecutor<
   ReleaseKeadexProjectsExecutorSchema
 > = async (options) => {
   // Check if the version plan file exists
-  const latestVersionPlan = await getLatestVersionPlan()
-  if (!latestVersionPlan) {
+  const versionPlans = await getVersionPlans()
+  if (!versionPlans) {
     console.error('No version plans found.')
     return {
       success: false,
     }
   }
-  console.info('Latest version plan:', latestVersionPlan)
+  console.info('Version plans:', versionPlans)
 
-  // Read the latest version plan file
-  const { data } = matter(readFileSync(latestVersionPlan))
-  const projectsToRelease = Object.keys(data)
+  // Read the version plans files and extract the projects to release
+  const projectsToRelease = versionPlans.reduce((acc, versionPlan) => {
+    const { data } = matter(readFileSync(versionPlan))
+    const projects = Object.keys(data)
+    return acc.concat(projects)
+  }, [])
+
   if (projectsToRelease.length === 0) {
     console.error('No projects to release found in the latest version plan.')
     return {
@@ -68,7 +72,7 @@ const runExecutor: PromiseExecutor<
   }
 }
 
-async function getLatestVersionPlan(): Promise<string | undefined> {
+async function getVersionPlans(): Promise<string[] | undefined> {
   const versionPlans = await glob('.nx/version-plans/*.md', {
     stat: true,
     withFileTypes: true,
@@ -77,7 +81,7 @@ async function getLatestVersionPlan(): Promise<string | undefined> {
     .sort((a, b) => b.mtimeMs - a.mtimeMs)
     .map((path) => path.fullpath())
 
-  return timeSortedFiles.length > 0 ? timeSortedFiles[0] : undefined
+  return timeSortedFiles.length > 0 ? timeSortedFiles : undefined
 }
 
 async function buildProjects(
@@ -140,6 +144,7 @@ async function version(
     version: workspaceVersion,
     dryRun: options.dryRun,
     verbose: options.verbose,
+    projects,
   })
   return true
 }
