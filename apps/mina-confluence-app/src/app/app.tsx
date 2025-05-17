@@ -1,31 +1,32 @@
-import { view } from '@forge/bridge'
-import { FullContext } from '@forge/bridge/out/types'
+import { useConfig } from '@forge/react'
 import { useAppBootstrap } from '@keadex/keadex-ui-kit/cross'
 import { type MinaMacroConfig } from '@keadex/mina-confluence-plugin'
 import MinaReact from '@keadex/mina-react/src/components/MinaReact/MinaReact'
-import { useEffect, useState } from 'react'
 
 export function App() {
+  const configData = useConfig() as MinaMacroConfig | undefined
+
   async function initializeTailwindElements() {
     const { initTE, Dropdown } = await import('tw-elements')
     await initTE({ Dropdown })
   }
 
-  const [context, setContext] = useState<FullContext | null>(null)
-
-  useEffect(() => {
-    view.getContext().then(setContext)
-  }, [])
-
   useAppBootstrap({ initTE: initializeTailwindElements })
 
+  function isNotEmpty(value: string | undefined) {
+    return value && value.replace(/ /g, '').length > 0
+  }
+
   let height, ghToken, projectRootUrl, diagramUrl
-  if (context?.extension && context?.extension.config) {
-    const config = context?.extension.config as MinaMacroConfig
-    height = config.height
-    ghToken = config.ghToken
-    projectRootUrl = config.projectRootUrl
-    diagramUrl = config.diagramUrl
+  if (configData) {
+    height = isNotEmpty(configData.height) ? configData.height : undefined
+    ghToken = isNotEmpty(configData.ghToken) ? configData.ghToken : undefined
+    projectRootUrl = isNotEmpty(configData.projectRootUrl)
+      ? configData.projectRootUrl
+      : undefined
+    diagramUrl = isNotEmpty(configData.diagramUrl)
+      ? configData.diagramUrl
+      : undefined
   }
 
   if (projectRootUrl && diagramUrl) {

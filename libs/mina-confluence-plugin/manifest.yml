@@ -2,27 +2,25 @@ modules:
   macro:
     - key: mina-confluence-macro
       resource: main
-      resolver:
-        function: resolver
       title: Keadex Mina diagram
       description: Include a C4 Model diagram created with Keadex Mina
       icon: resource:images;mina-logo.svg
       config:
-        function: config-function-key
-  function:
-    - key: resolver
-      handler: index.handler
-    - key: config-function-key
-      handler: index.config
+        resource: macro-config
+        render: native
+        viewportSize: max
+        title: Keadex Mina Diagram Configuration
 resources:
   - key: main
     path: static/build
   - key: images
     path: static/images
+  - key: macro-config
+    path: src/Config.tsx
 app:
   id: ari:cloud:ecosystem::app/592fbf5b-017b-4db1-b3db-3cdced81f381
   runtime:
-    name: nodejs18.x
+    name: nodejs20.x
 permissions:
   content:
     styles:
