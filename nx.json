@@ -24,6 +24,11 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "{projectRoot}/dist"
+      }
     }
   },
   "generators": {
@@ -43,5 +48,26 @@
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "sharedGlobals": [],
     "production": ["default"]
+  },
+  "release": {
+    "versionPlans": true,
+    "projects": [
+      "libs/docusaurus-plugin-mina",
+      "libs/mina-confluence-plugin",
+      "libs/mina-live",
+      "libs/mina-react"
+    ],
+    "projectsRelationship": "independent",
+    "releaseTagPattern": "{projectName}@{version}",
+    "version": {
+      "manifestRootsToUpdate": ["{projectRoot}"]
+    },
+    "changelog": {
+      "projectChangelogs": {
+        "renderer": "{workspaceRoot}/libs/keadex-nx-plugin/src/tools/changelog-renderer.ts",
+        "file": false,
+        "createRelease": "github"
+      }
+    }
   }
 }
