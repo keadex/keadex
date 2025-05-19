@@ -9,7 +9,11 @@ import { TFunction } from 'i18next'
 import { Location, NavigateFunction } from 'react-router'
 import { toast } from 'react-toastify'
 import { AppEvent, AppEventType } from '../../context/AppEventContext'
-import { HOME, HOME_PROJECT } from '../../core/router/routes'
+import {
+  EXTERNAL_DIAGRAMS_BASE_URL,
+  HOME,
+  HOME_PROJECT,
+} from '../../core/router/routes'
 import {
   closeProject as closeProjectEvent,
   openProject as openProjectEvent,
@@ -165,6 +169,10 @@ const factory: WindowTitlebarMenuFactory<
     })
   }
 
+  const handleBackToHome = () => {
+    navigate(HOME)
+  }
+
   const handleExit = () => {
     handleCloseProject(() => {
       exit()
@@ -232,18 +240,29 @@ const factory: WindowTitlebarMenuFactory<
       //   onClick: undefined,
       //   disabled: true,
       // },
-      {
-        isHeaderMenuItem: false,
-        id: 'wbar_file_open_project',
-        label: t('common.action.open_project').toString(),
-        onClick: handleOpenProject,
-      },
-      {
-        isHeaderMenuItem: false,
-        id: 'wbar_file_close_project',
-        label: t('common.action.close_project').toString(),
-        onClick: () => handleCloseProject(),
-      },
+      ...(!location.pathname.startsWith(EXTERNAL_DIAGRAMS_BASE_URL)
+        ? [
+            {
+              isHeaderMenuItem: false,
+              id: 'wbar_file_open_project',
+              label: t('common.action.open_project').toString(),
+              onClick: handleOpenProject,
+            },
+            {
+              isHeaderMenuItem: false,
+              id: 'wbar_file_close_project',
+              label: t('common.action.close_project').toString(),
+              onClick: () => handleCloseProject(),
+            },
+          ]
+        : [
+            {
+              isHeaderMenuItem: false,
+              id: 'wbar_file_close',
+              label: t('common.close').toString(),
+              onClick: handleBackToHome,
+            },
+          ]),
       {
         id: 'wbar_file_separator',
         isSepator: true,
@@ -267,7 +286,11 @@ const factory: WindowTitlebarMenuFactory<
   }
 
   //------- Edit menu item
-  if (location.pathname !== HOME && !ENV_SETTINGS.WEB_MODE) {
+  if (
+    location.pathname !== HOME &&
+    !location.pathname.startsWith(EXTERNAL_DIAGRAMS_BASE_URL) &&
+    !ENV_SETTINGS.WEB_MODE
+  ) {
     menuItemsProps.push({
       isHeaderMenuItem: true,
       id: 'wbar_edit',

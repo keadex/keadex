@@ -29,14 +29,18 @@ import ROUTES, {
   DEPENDENCY_TABLE,
   DEPENDENCY_TABLE_ALIAS_URL_PARAM,
   EDIT_DIAGRAM,
+  EXTERNAL_DIAGRAMS,
+  EXTERNAL_DIAGRAMS_DIAGRAM_URL_PARAM,
   HOME,
   HOME_PROJECT,
   OPEN_DEPENDENCY_TABLE_DEEP_LINK,
   OPEN_DIAGRAM_DEEP_LINK,
+  OPEN_EXTERNAL_DIAGRAM_DEEP_LINK,
   PERSONS_LIBRARY,
   PROJECT_SETTINGS,
   SOFTWARE_SYSTEMS_LIBRARY,
 } from './routes'
+import ExternalDiagrams from '../../views/ExternalDiagrams/ExternalDiagrams'
 
 export const router = createMemoryRouter([
   {
@@ -78,6 +82,10 @@ export const router = createMemoryRouter([
         path: ROUTES[DEPENDENCY_TABLE].path,
         element: <DependencyTable />,
       },
+      {
+        path: ROUTES[EXTERNAL_DIAGRAMS].path,
+        element: <ExternalDiagrams />,
+      },
     ],
   },
 ])
@@ -97,44 +105,61 @@ export function useDeepLinkRouter() {
       },
     )
     if (foundRoute) {
-      if (foundRoute.data?.requiresProject) {
-        if (store.getState().project.value) {
-          const deepLinkParams = deepLink.replace(foundRoute.path, '')
-          switch (foundRoute.path) {
-            case OPEN_DIAGRAM_DEEP_LINK:
-              try {
-                await openDiagram(
-                  deepLinkParams,
-                  'link',
-                  location.pathname,
-                  context,
-                  safeExit,
+      if (
+        foundRoute.data?.requiresProject &&
+        store.getState().project.value === undefined
+      ) {
+        toast.error(t('deep_link.required_open_project', { deepLink }))
+      } else {
+        const deepLinkParams = deepLink.replace(foundRoute.path, '')
+        switch (foundRoute.path) {
+          case OPEN_DIAGRAM_DEEP_LINK:
+            try {
+              await openDiagram(
+                deepLinkParams,
+                'link',
+                location.pathname,
+                context,
+                safeExit,
+              )
+            } catch (e) {
+              toast.error(t('deep_link.invalid_diagram_path', { deepLink }))
+            }
+            break
+          case OPEN_DEPENDENCY_TABLE_DEEP_LINK:
+            {
+              const depGraphParams = deepLinkParams.split('/')
+              if (
+                depGraphParams.length !== 1 ||
+                (depGraphParams.length === 1 &&
+                  depGraphParams[0].replace(/ /gi, '').length === 0)
+              ) {
+                toast.error(
+                  t('deep_link.invalid_dependency_table_path', { deepLink }),
                 )
-              } catch (e) {
-                toast.error(t('deep_link.invalid_diagram_path', { deepLink }))
+              } else {
+                openDependencyTable(safeExit, depGraphParams[0])
               }
-              break
-            case OPEN_DEPENDENCY_TABLE_DEEP_LINK:
-              {
-                const depGraphParams = deepLinkParams.split('/')
-                if (
-                  depGraphParams.length !== 1 ||
-                  (depGraphParams.length === 1 &&
-                    depGraphParams[0].replace(/ /gi, '').length === 0)
-                ) {
-                  toast.error(
-                    t('deep_link.invalid_dependency_table_path', { deepLink }),
-                  )
-                } else {
-                  openDependencyTable(safeExit, depGraphParams[0])
-                }
+            }
+            break
+          case OPEN_EXTERNAL_DIAGRAM_DEEP_LINK:
+            {
+              const externalDiagramParams = deepLinkParams.split('/')
+              if (
+                externalDiagramParams.length !== 1 ||
+                (externalDiagramParams.length === 1 &&
+                  externalDiagramParams[0].replace(/ /gi, '').length === 0)
+              ) {
+                toast.error(
+                  t('deep_link.invalid_external_diagram_path', { deepLink }),
+                )
+              } else {
+                openExternalDiagram(safeExit, externalDiagramParams[0])
               }
-              break
-            default:
-              toast.error(t('deep_link.unsupported_deep_link'))
-          }
-        } else {
-          toast.error(t('deep_link.required_open_project', { deepLink }))
+            }
+            break
+          default:
+            toast.error(t('deep_link.unsupported_deep_link'))
         }
       }
     } else {
@@ -185,5 +210,20 @@ export function openDependencyTable(
 ) {
   safeExit(
     DEPENDENCY_TABLE.replace(DEPENDENCY_TABLE_ALIAS_URL_PARAM, alias ?? ''),
+  )
+}
+
+export function openExternalDiagram(
+  safeExit: (
+    destination: string,
+    navigateOptions?: NavigateOptions | undefined,
+  ) => void,
+  diagram?: string,
+) {
+  safeExit(
+    EXTERNAL_DIAGRAMS.replace(
+      EXTERNAL_DIAGRAMS_DIAGRAM_URL_PARAM,
+      diagram ?? '',
+    ),
   )
 }

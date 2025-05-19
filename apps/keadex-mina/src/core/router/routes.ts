@@ -95,10 +95,21 @@ ROUTES[DEPENDENCY_TABLE] = {
   titlebarMenuFactory,
 }
 
+// ----- External Diagrams Paths
+export const EXTERNAL_DIAGRAMS_DIAGRAM_URL_PARAM = ':diagram?'
+export const EXTERNAL_DIAGRAMS_BASE_URL = `/external-diagrams`
+export const EXTERNAL_DIAGRAMS = `${EXTERNAL_DIAGRAMS_BASE_URL}/${EXTERNAL_DIAGRAMS_DIAGRAM_URL_PARAM}`
+ROUTES[EXTERNAL_DIAGRAMS] = {
+  path: EXTERNAL_DIAGRAMS,
+  isAppMenuVisible: false,
+  titlebarMenuFactory,
+}
+
 //---------------- DEEP LINKS ROUTES
 export const DEEP_LINK_SCHEME = 'mina://'
 export const OPEN_DIAGRAM_DEEP_LINK = `${DEEP_LINK_SCHEME}open-diagram/`
 export const OPEN_DEPENDENCY_TABLE_DEEP_LINK = `${DEEP_LINK_SCHEME}dependency-table/`
+export const OPEN_EXTERNAL_DIAGRAM_DEEP_LINK = `${DEEP_LINK_SCHEME}external-diagrams/`
 
 ROUTES[OPEN_DIAGRAM_DEEP_LINK] = {
   path: OPEN_DIAGRAM_DEEP_LINK,
@@ -111,6 +122,13 @@ ROUTES[OPEN_DEPENDENCY_TABLE_DEEP_LINK] = {
   path: OPEN_DEPENDENCY_TABLE_DEEP_LINK,
   data: {
     requiresProject: true,
+  },
+}
+
+ROUTES[OPEN_EXTERNAL_DIAGRAM_DEEP_LINK] = {
+  path: OPEN_EXTERNAL_DIAGRAM_DEEP_LINK,
+  data: {
+    requiresProject: false,
   },
 }
 
