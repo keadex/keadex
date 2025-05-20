@@ -160,6 +160,7 @@
     "kernel_version": "Kernel Version"
   },
   "deep_link": {
+    "external_diagrams_project_opened": "Cannot open the external diagram. The project is already opened. To proceed, close the current project.",
     "invalid_diagram_path": "The deep link '{{deepLink}}' contains an invalid diagram link.",
     "invalid_dependency_table_path": "The deep link '{{deepLink}}' contains an invalid dependency table parameter. It should contain only the alias parameter.",
     "invalid_external_diagram_path": "The deep link '{{deepLink}}' contains an invalid external diagram parameter. It should contain only the parameter of the diagram to open.",

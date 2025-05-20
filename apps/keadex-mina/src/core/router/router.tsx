@@ -143,7 +143,9 @@ export function useDeepLinkRouter() {
             }
             break
           case OPEN_EXTERNAL_DIAGRAM_DEEP_LINK:
-            {
+            if (location.pathname !== ROUTES[HOME].path) {
+              toast.error(t('deep_link.external_diagrams_project_opened'))
+            } else {
               const externalDiagramParams = deepLinkParams.split('/')
               if (
                 externalDiagramParams.length !== 1 ||
@@ -157,6 +159,7 @@ export function useDeepLinkRouter() {
                 openExternalDiagram(safeExit, externalDiagramParams[0])
               }
             }
+
             break
           default:
             toast.error(t('deep_link.unsupported_deep_link'))
