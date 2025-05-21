@@ -14,6 +14,7 @@ import DependencyTable from '../../views/DependencyTable/DependencyTable'
 import DiagramEditor, {
   DiagramEditorState,
 } from '../../views/DiagramEditor/DiagramEditor'
+import ExternalDiagrams from '../../views/ExternalDiagrams/ExternalDiagrams'
 import Home from '../../views/Home/Home'
 import HomeProject from '../../views/HomeProject/HomeProject'
 import LibraryElement from '../../views/LibraryElement/LibraryElement'
@@ -30,7 +31,10 @@ import ROUTES, {
   DEPENDENCY_TABLE_ALIAS_URL_PARAM,
   EDIT_DIAGRAM,
   EXTERNAL_DIAGRAMS,
+  EXTERNAL_DIAGRAMS_BASE_URL,
   EXTERNAL_DIAGRAMS_DIAGRAM_URL_PARAM,
+  EXTERNAL_DIAGRAMS_GH_TOKEN_PARAM,
+  EXTERNAL_DIAGRAMS_PROJECT_ROOT_URL_PARAM,
   HOME,
   HOME_PROJECT,
   OPEN_DEPENDENCY_TABLE_DEEP_LINK,
@@ -40,7 +44,6 @@ import ROUTES, {
   PROJECT_SETTINGS,
   SOFTWARE_SYSTEMS_LIBRARY,
 } from './routes'
-import ExternalDiagrams from '../../views/ExternalDiagrams/ExternalDiagrams'
 
 export const router = createMemoryRouter([
   {
@@ -97,6 +100,7 @@ export function useDeepLinkRouter() {
   const location = useLocation()
 
   async function routeDeepLink(deepLink: string) {
+    console.debug('Routing deep link:', deepLink)
     const foundRoute = findRoute(
       deepLink,
       ROUTES,
@@ -143,20 +147,22 @@ export function useDeepLinkRouter() {
             }
             break
           case OPEN_EXTERNAL_DIAGRAM_DEEP_LINK:
-            if (location.pathname !== ROUTES[HOME].path) {
+            if (
+              location.pathname !== ROUTES[HOME].path &&
+              !location.pathname.startsWith(EXTERNAL_DIAGRAMS_BASE_URL)
+            ) {
               toast.error(t('deep_link.external_diagrams_project_opened'))
             } else {
               const externalDiagramParams = deepLinkParams.split('/')
               if (
-                externalDiagramParams.length !== 1 ||
-                (externalDiagramParams.length === 1 &&
-                  externalDiagramParams[0].replace(/ /gi, '').length === 0)
+                externalDiagramParams.length < 2 ||
+                externalDiagramParams.length > 3
               ) {
                 toast.error(
                   t('deep_link.invalid_external_diagram_path', { deepLink }),
                 )
               } else {
-                openExternalDiagram(safeExit, externalDiagramParams[0])
+                openExternalDiagram(safeExit, externalDiagramParams)
               }
             }
 
@@ -221,12 +227,23 @@ export function openExternalDiagram(
     destination: string,
     navigateOptions?: NavigateOptions | undefined,
   ) => void,
-  diagram?: string,
+  params: string[],
 ) {
-  safeExit(
-    EXTERNAL_DIAGRAMS.replace(
-      EXTERNAL_DIAGRAMS_DIAGRAM_URL_PARAM,
-      diagram ?? '',
-    ),
+  const fixedParams = []
+  for (let i = 0; i < 3; i++) {
+    if (params.length > i) {
+      fixedParams.push(params[i])
+    } else {
+      fixedParams.push('')
+    }
+  }
+
+  const urlWithParams = EXTERNAL_DIAGRAMS.replace(
+    EXTERNAL_DIAGRAMS_PROJECT_ROOT_URL_PARAM,
+    fixedParams[0],
   )
+    .replace(EXTERNAL_DIAGRAMS_DIAGRAM_URL_PARAM, fixedParams[1])
+    .replace(EXTERNAL_DIAGRAMS_GH_TOKEN_PARAM, fixedParams[2])
+
+  safeExit(urlWithParams)
 }

@@ -2,6 +2,7 @@ import { DiagramType } from '@keadex/c4-model-ui-kit'
 import ROUTES, {
   OPEN_DEPENDENCY_TABLE_DEEP_LINK,
   OPEN_DIAGRAM_DEEP_LINK,
+  OPEN_EXTERNAL_DIAGRAM_DEEP_LINK,
 } from '../core/router/routes'
 import { diagramToLinkString } from '../core/tauri-rust-bridge'
 
@@ -15,4 +16,16 @@ export async function generateDiagramDeepLink(
 
 export function generateDependencyTableDeepLink(alias: string) {
   return `${ROUTES[OPEN_DEPENDENCY_TABLE_DEEP_LINK].path}${alias}`
+}
+
+export function generateExternalDiagramDeepLink(
+  projectRootUrl: string,
+  diagramUrl: string,
+  ghToken?: string,
+) {
+  let deepLink = `${ROUTES[OPEN_EXTERNAL_DIAGRAM_DEEP_LINK].path}${projectRootUrl}/${diagramUrl}`
+  if (ghToken) {
+    deepLink = deepLink.concat(`/${ghToken}`)
+  }
+  return deepLink
 }

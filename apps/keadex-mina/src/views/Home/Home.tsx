@@ -101,7 +101,7 @@ export const Home = React.memo((props: HomeProps) => {
   }
 
   async function handleExternalDiagrams() {
-    openExternalDiagram(safeExit, '')
+    openExternalDiagram(safeExit, [])
   }
 
   async function isDirectory(filePath: string) {

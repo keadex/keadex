@@ -1,34 +1,154 @@
-import { useModal, useQueryParams } from '@keadex/keadex-ui-kit/cross'
-import React from 'react'
+import { Button, Input } from '@keadex/keadex-ui-kit/cross'
+import { writeText } from '@tauri-apps/plugin-clipboard-manager'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useAppDispatch } from '../../core/store/hooks'
+import { useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { generateExternalDiagramDeepLink } from '../../helper/deep-link-helper'
 
 export type ExternalDiagramsParams = {
-  diagram: string
+  projectRootUrl?: string
+  diagramUrl?: string
+  ghToken?: string
 }
 
 /* eslint-disable-next-line */
 export interface ExternalDiagramsProps {}
 
-export const ExternalDiagrams = React.memo((props: ExternalDiagramsProps) => {
+export const ExternalDiagrams = (props: ExternalDiagramsProps) => {
   const { t } = useTranslation()
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
-  const { modal, showModal, hideModal } = useModal()
 
-  const { diagram: diagramParam } = useParams<ExternalDiagramsParams>()
-  const queryParams = useQueryParams()
+  const {
+    projectRootUrl: projectRootUrlParam,
+    diagramUrl: diagramUrlParam,
+    ghToken: ghTokenParam,
+  } = useParams<ExternalDiagramsParams>()
 
-  console.log('diagramParam', diagramParam)
-  console.log('queryParams', queryParams)
+  const [projectRootUrl, setProjectRootUrl] = useState(
+    !projectRootUrlParam || projectRootUrlParam.replace(/ /g, '').length === 0
+      ? 'https://raw.githubusercontent.com/keadex/keadex/main/apps/keadex-diagrams'
+      : decodeURI(projectRootUrlParam),
+  )
+  const [diagramUrl, setDiagramUrl] = useState(
+    !diagramUrlParam || diagramUrlParam.replace(/ /g, '').length === 0
+      ? 'https://raw.githubusercontent.com/keadex/keadex/main/apps/keadex-diagrams/diagrams/container/keadex-mina'
+      : decodeURI(diagramUrlParam),
+  )
+  const [ghToken, setGhToken] = useState(
+    !ghTokenParam || ghTokenParam.replace(/ /g, '').length === 0
+      ? ''
+      : ghTokenParam,
+  )
+
+  const [projectRootUrlRendered, setProjectRootUrlRendered] = useState('')
+  const [diagramUrlRendered, setDiagramUrlRendered] = useState('')
+  const [ghTokenRendered, setGhTokenRendered] = useState('')
+
+  function isButtonDisabled() {
+    return (
+      projectRootUrl.replace(/ /g, '').length === 0 ||
+      diagramUrl.replace(/ /g, '').length === 0
+    )
+  }
+
+  function renderDiagram(
+    projectRootUrl: string | undefined,
+    diagramUrl: string | undefined,
+    ghToken: string | undefined,
+  ) {
+    if (projectRootUrl && diagramUrl) {
+      console.log('Rendering diagram...')
+      console.log('projectRootUrl:', projectRootUrl)
+      console.log('diagramUrl:', diagramUrl)
+      console.log('ghToken:', ghToken)
+      setProjectRootUrlRendered(projectRootUrl)
+      setDiagramUrlRendered(diagramUrl)
+      if (ghToken) setGhTokenRendered(ghToken)
+    }
+  }
+
+  function handleCopyLinkClick() {
+    if (projectRootUrl && diagramUrl) {
+      const link = generateExternalDiagramDeepLink(
+        projectRootUrl,
+        diagramUrl,
+        ghToken,
+      )
+      writeText(link)
+      toast.info(t('external_diagrams.link_copied'))
+      if (ghToken)
+        toast.warn(t('external_diagrams.gh_token_copy_warning'), {
+          autoClose: false,
+        })
+    }
+  }
+
+  useEffect(() => {
+    renderDiagram(projectRootUrl, diagramUrl, ghToken)
+  }, [])
+
+  useEffect(() => {
+    if (projectRootUrlParam) setProjectRootUrl(projectRootUrlParam)
+    if (diagramUrlParam) setDiagramUrl(diagramUrlParam)
+    if (ghTokenParam) setGhToken(ghTokenParam)
+    renderDiagram(projectRootUrlParam, diagramUrlParam, ghTokenParam)
+  }, [projectRootUrlParam, diagramUrlParam, ghTokenParam])
 
   return (
-    <div className={`relative flex h-full w-full flex-col justify-center`}>
-      {modal}
-      Hello
+    <div className={`w-full min-h-full p-3 flex flex-col`}>
+      <div
+        className={`text-accent-primary inline-block text-2xl font-bold pointer-events-none mt-2`}
+      >
+        {t('external_diagrams.title')}
+      </div>
+      <div className="w-full mt-5">{t('external_diagrams.description')}</div>
+      <div className={`w-full mt-10 flex flex-col`}>
+        <Input
+          value={projectRootUrl}
+          onChange={(e) => setProjectRootUrl(e.target.value)}
+          label={`${t('external_diagrams.project_root_url')}*`}
+          info={`*${t('common.required')}`}
+        />
+        <Input
+          value={diagramUrl}
+          onChange={(e) => setDiagramUrl(e.target.value)}
+          label={`${t('external_diagrams.diagram_url')}*`}
+          info={`*${t('common.required')}`}
+          classNameRoot="mt-5"
+        />
+        <Input
+          value={ghToken}
+          onChange={(e) => setGhToken(e.target.value)}
+          label={t('common.github_token')}
+          info={t('external_diagrams.gh_token_info')}
+          classNameRoot="mt-5"
+        />
+        <div className="flex flex-col md:flex-row mx-auto mt-5">
+          <Button
+            disabled={isButtonDisabled()}
+            className="mr-0 md:mr-2 w-48"
+            onClick={() => renderDiagram(projectRootUrl, diagramUrl, ghToken)}
+          >
+            {t('common.render')}
+          </Button>
+          <Button
+            disabled={isButtonDisabled()}
+            className="mt-2 md:mt-0 w-48"
+            onClick={handleCopyLinkClick}
+          >
+            {t('external_diagrams.copy_link_to_share')}
+          </Button>
+        </div>
+        {/* <div className="w-full h-[50rem] mt-14 bg-white">
+        <MemoizedMinaReact
+          projectRootUrl={projectRootUrlRendered}
+          diagramUrl={diagramUrlRendered}
+          ghToken={ghTokenRendered}
+        />
+      </div> */}
+      </div>
     </div>
   )
-})
+}
 
 export default ExternalDiagrams
