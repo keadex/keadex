@@ -5,8 +5,10 @@ Exposes to the front-end the commands to manage diagrams.
 
 use crate::core::serializer::deserialize_plantuml_by_string as deserialize_plantuml_by_string_helper;
 use crate::error_handling::mina_error::MinaError;
+use crate::helper::diagram_helper;
 use crate::helper::diagram_helper::diagram_from_link_string as diagram_from_link_string_helper;
 use crate::helper::diagram_helper::diagram_name_type_from_path as diagram_name_type_from_path_helper;
+use crate::helper::diagram_helper::diagram_name_type_from_url;
 use crate::helper::diagram_helper::diagram_to_link_string as diagram_to_link_string_helper;
 use crate::model::diagram::diagram_plantuml::{
   serialize_elements_to_plantuml, DiagramElementType, DiagramPlantUML,
@@ -19,6 +21,7 @@ use crate::service::diagram_service::dependent_elements_in_diagram as dependent_
 use crate::service::diagram_service::get_diagram as get_diagram_service;
 use keadex_mina_macro::web_controller;
 use std::collections::HashMap;
+use wasm_bindgen::prelude::wasm_bindgen;
 
 /**
 Returns the list of the diagrams in the opened project.
@@ -58,6 +61,45 @@ pub async fn open_diagram(
   diagram_type: DiagramType,
 ) -> Result<Diagram, MinaError> {
   Ok(diagram_repository::open_diagram(&diagram_name, diagram_type).await?)
+}
+
+/**
+Opens a remote diagram.
+Returns the opened and parsed diagram.
+# Arguments
+  * `project_root_url` - URL of the project's root.
+  * `diagram_url` - URL of the diagram.
+  * `raw_plantuml` - Raw PlantUML of the diagram.
+  * `raw_diagram_spec` - Raw (stringified json) specifications of the diagram.
+*/
+#[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, wasm_bindgen)]
+pub async fn open_remote_diagram(
+  project_root_url: &str,
+  diagram_url: &str,
+  raw_plantuml: &str,
+  raw_diagram_spec: &str,
+) -> Result<Diagram, MinaError> {
+  let diagram_plantuml = deserialize_plantuml_by_string(raw_plantuml.to_string()).await?;
+  let diagram_spec = serde_json::from_str::<DiagramSpec>(raw_diagram_spec)?;
+  let (diagram_name, diagram_type) = diagram_name_type_from_url(project_root_url, diagram_url)?;
+  // let mut auto_layout = None;
+  // if diagram_spec.auto_layout_enabled {
+  //   auto_layout = Some(generate_positions(
+  //     &diagram_plantuml.elements,
+  //     &diagram_spec.auto_layout_orientation,
+  //   ));
+  // }
+
+  Ok(Diagram {
+    diagram_name: Some(diagram_name),
+    diagram_type: Some(diagram_type),
+    diagram_plantuml: Some(diagram_plantuml),
+    diagram_spec: Some(diagram_spec),
+    raw_plantuml: Some(String::from(raw_plantuml)),
+    last_modified: None,
+    auto_layout: None,
+  })
 }
 
 /**
@@ -286,4 +328,46 @@ pub async fn dependent_elements_in_diagram(
   diagram_type: DiagramType,
 ) -> Result<Vec<String>, MinaError> {
   return dependent_elements_in_diagram_service(&alias, &diagram_name, diagram_type).await;
+}
+
+/**
+Returns the PlantUML URL of a diagram.
+# Arguments
+  * `project_root_url` - URL of the project's root.
+  * `diagram_url` - URL of the diagram.
+*/
+#[cfg_attr(desktop, tauri::command)]
+pub async fn diagram_plantuml_url_from_diagram_url(
+  project_root_url: &str,
+  diagram_url: &str,
+) -> Result<String, MinaError> {
+  diagram_helper::diagram_plantuml_url_from_diagram_url(project_root_url, diagram_url)
+}
+
+/**
+Returns the specifications URL of a diagram.
+# Arguments
+  * `project_root_url` - URL of the project's root.
+  * `diagram_url` - URL of the diagram.
+*/
+#[cfg_attr(desktop, tauri::command)]
+pub async fn diagram_spec_url_from_diagram_url(
+  project_root_url: &str,
+  diagram_url: &str,
+) -> Result<String, MinaError> {
+  diagram_helper::diagram_spec_url_from_diagram_url(project_root_url, diagram_url)
+}
+
+/**
+Returns the diagram URL from a link string.
+# Arguments
+  * `project_root_url` - URL of the project's root.
+  * `link_string` - Link string of the diagram.
+*/
+#[cfg_attr(desktop, tauri::command)]
+pub async fn diagram_url_from_link_string(
+  project_root_url: &str,
+  link_string: &str,
+) -> Result<String, MinaError> {
+  diagram_helper::diagram_url_from_link_string(project_root_url, link_string)
 }

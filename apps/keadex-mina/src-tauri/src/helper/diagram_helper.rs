@@ -518,6 +518,12 @@ pub fn diagram_spec_url_from_name_type(
   ))
 }
 
+/**
+Returns the diagram URL from a link string.
+# Arguments
+  * `project_root_url` - URL of the project's root.
+  * `link_string` - Link string of the diagram.
+*/
 #[cfg_attr(web, wasm_bindgen)]
 pub fn diagram_url_from_link_string(
   project_root_url: &str,
@@ -556,6 +562,13 @@ pub fn diagram_spec_url_from_link_string(
   )
 }
 
+/**
+Returns the PlantUML URL of a diagram.
+# Arguments
+  * `project_root_url` - URL of the project's root.
+  * `diagram_url` - URL of the diagram.
+  * `alias` - Alias of the architectural element.
+*/
 #[cfg_attr(web, wasm_bindgen)]
 pub fn diagram_plantuml_url_from_diagram_url(
   project_root_url: &str,
@@ -565,6 +578,12 @@ pub fn diagram_plantuml_url_from_diagram_url(
   diagram_plantuml_url_from_name_type(project_root_url, &diagram_name, &diagram_type)
 }
 
+/**
+Returns the specifications URL of a diagram.
+# Arguments
+  * `project_root_url` - URL of the project's root.
+  * `diagram_url` - URL of the diagram.
+*/
 #[cfg_attr(web, wasm_bindgen)]
 pub fn diagram_spec_url_from_diagram_url(
   project_root_url: &str,

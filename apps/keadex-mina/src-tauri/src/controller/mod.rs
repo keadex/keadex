@@ -6,5 +6,3 @@ pub mod project_controller;
 #[cfg(web)]
 pub mod project_controller_web;
 pub mod search_controller;
-#[cfg(web)]
-pub mod web_viewer_controller;

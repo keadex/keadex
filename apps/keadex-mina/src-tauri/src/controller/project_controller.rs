@@ -1,5 +1,6 @@
 use crate::core::project_initializer::{create_empty_project, load_project, unload_project};
 use crate::error_handling::mina_error::MinaError;
+use crate::helper::project_helper;
 use crate::model::project::Project;
 use crate::model::project_settings::ProjectSettings;
 use crate::repository::project_repository;
@@ -55,4 +56,14 @@ pub async fn save_project_settings(
 ) -> Result<ProjectSettings, MinaError> {
   log::info!("Save project settings");
   Ok(project_repository::save_project_settings(project_settings).await?)
+}
+
+/**
+Generates the full project settings URL.
+# Arguments
+  * `project_root_url` - URL of the project's root
+*/
+#[cfg_attr(desktop, tauri::command)]
+pub async fn project_settings_url(project_root_url: &str) -> Result<String, MinaError> {
+  Ok(project_helper::project_settings_url(project_root_url))
 }
