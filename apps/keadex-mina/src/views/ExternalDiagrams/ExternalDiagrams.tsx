@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { generateExternalDiagramDeepLink } from '../../helper/deep-link-helper'
+import ExternalDiagramViewer from '../../components/ExternalDiagramViewer/ExternalDiagramViewer'
 
 export type ExternalDiagramsParams = {
   projectRootUrl?: string
@@ -40,9 +41,10 @@ export const ExternalDiagrams = (props: ExternalDiagramsProps) => {
       : ghTokenParam,
   )
 
-  const [projectRootUrlRendered, setProjectRootUrlRendered] = useState('')
-  const [diagramUrlRendered, setDiagramUrlRendered] = useState('')
-  const [ghTokenRendered, setGhTokenRendered] = useState('')
+  const [projectRootUrlRendered, setProjectRootUrlRendered] =
+    useState(projectRootUrl)
+  const [diagramUrlRendered, setDiagramUrlRendered] = useState(diagramUrl)
+  const [ghTokenRendered, setGhTokenRendered] = useState(ghToken)
 
   function isButtonDisabled() {
     return (
@@ -57,10 +59,6 @@ export const ExternalDiagrams = (props: ExternalDiagramsProps) => {
     ghToken: string | undefined,
   ) {
     if (projectRootUrl && diagramUrl) {
-      console.log('Rendering diagram...')
-      console.log('projectRootUrl:', projectRootUrl)
-      console.log('diagramUrl:', diagramUrl)
-      console.log('ghToken:', ghToken)
       setProjectRootUrlRendered(projectRootUrl)
       setDiagramUrlRendered(diagramUrl)
       if (ghToken) setGhTokenRendered(ghToken)
@@ -139,13 +137,13 @@ export const ExternalDiagrams = (props: ExternalDiagramsProps) => {
             {t('external_diagrams.copy_link_to_share')}
           </Button>
         </div>
-        {/* <div className="w-full h-[50rem] mt-14 bg-white">
-        <MemoizedMinaReact
-          projectRootUrl={projectRootUrlRendered}
-          diagramUrl={diagramUrlRendered}
-          ghToken={ghTokenRendered}
-        />
-      </div> */}
+        <div className="w-full h-[50rem] mt-14 bg-white">
+          <ExternalDiagramViewer
+            projectRootUrl={projectRootUrlRendered}
+            diagramUrl={diagramUrlRendered}
+            ghToken={ghTokenRendered}
+          />
+        </div>
       </div>
     </div>
   )

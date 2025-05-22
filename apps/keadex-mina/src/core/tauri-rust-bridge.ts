@@ -24,6 +24,7 @@ export const CREATE_PROJECT_CMD = 'create_project'
 export const OPEN_PROJECT_CMD = 'open_project'
 export const CLOSE_PROJECT_CMD = 'close_project'
 export const SAVE_PROJECT_SETTINGS_CMD = 'save_project_settings'
+export const PROJECT_SETTINGS_URL_CMD = 'project_settings_url'
 
 export async function createProject(
   projectSettings: ProjectSettings,
@@ -51,6 +52,12 @@ export async function saveProjectSettings(
   projectSettings: ProjectSettings,
 ): Promise<ProjectSettings> {
   return invoke(SAVE_PROJECT_SETTINGS_CMD, { projectSettings })
+}
+
+export async function projectSettingsUrl(
+  projectRootUrl: string,
+): Promise<string> {
+  return invoke(PROJECT_SETTINGS_URL_CMD, { projectRootUrl })
 }
 
 /*########################*/
@@ -94,6 +101,7 @@ export const LIST_DIAGRAMS_CMD = 'list_diagrams'
 export const GET_DIAGRAM_CMD = 'get_diagram'
 export const LOAD_DIAGRAM_CMD = 'open_diagram'
 export const CLOSE_DIAGRAM_CMD = 'close_diagram'
+export const OPEN_REMOTE_DIAGRAM_CMD = 'open_remote_diagram'
 export const CREATE_DIAGRAM_CMD = 'create_diagram'
 export const DELETE_DIAGRAM_CMD = 'delete_diagram'
 export const SAVE_SPEC_DIAGRAM_RAW_PLANTUML_CMD =
@@ -107,6 +115,11 @@ export const DESERIALIZE_PLANTUML_BY_STRING_CMD =
   'deserialize_plantuml_by_string'
 export const DIAGRAM_NAME_TYPE_FROM_PATH_CMD = 'diagram_name_type_from_path'
 export const DEPENDENT_ELEMENTS_IN_DIAGRAM_CMD = 'dependent_elements_in_diagram'
+export const DIAGRAM_PLANTUML_URL_FROM_DIAGRAM_URL =
+  'diagram_plantuml_url_from_diagram_url'
+export const DIAGRAM_SPEC_URL_FROM_DIAGRAM_URL =
+  'diagram_spec_url_from_diagram_url'
+export const DIAGRAM_URL_FROM_LINK_STRING = 'diagram_url_from_link_string'
 
 export async function listDiagrams(): Promise<{
   [key in DiagramType]: string[]
@@ -138,6 +151,20 @@ export async function closeDiagram(
   return invoke(CLOSE_DIAGRAM_CMD, {
     diagramName,
     diagramType,
+  })
+}
+
+export async function openRemoteDiagram(
+  projectRootUrl: string,
+  diagramUrl: string,
+  rawPlantuml: string,
+  rawDiagramSpec: string,
+): Promise<Diagram> {
+  return invoke(OPEN_REMOTE_DIAGRAM_CMD, {
+    projectRootUrl,
+    diagramUrl,
+    rawPlantuml,
+    rawDiagramSpec,
   })
 }
 
@@ -244,6 +271,36 @@ export async function dependentElementsInDiagram(
     alias,
     diagramName,
     diagramType,
+  })
+}
+
+export async function diagramPlantUMLUrlFromDiagramUrl(
+  projectRootUrl: string,
+  diagramUrl: string,
+): Promise<string> {
+  return invoke(DIAGRAM_PLANTUML_URL_FROM_DIAGRAM_URL, {
+    projectRootUrl,
+    diagramUrl,
+  })
+}
+
+export async function diagramSpecUrlFromDiagramUrl(
+  projectRootUrl: string,
+  diagramUrl: string,
+): Promise<string> {
+  return invoke(DIAGRAM_SPEC_URL_FROM_DIAGRAM_URL, {
+    projectRootUrl,
+    diagramUrl,
+  })
+}
+
+export async function diagramUrlFromLinkString(
+  projectRootUrl: string,
+  linkString: string,
+): Promise<string> {
+  return invoke(DIAGRAM_URL_FROM_LINK_STRING, {
+    projectRootUrl,
+    linkString,
   })
 }
 
