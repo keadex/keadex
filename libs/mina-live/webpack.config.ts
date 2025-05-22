@@ -111,8 +111,8 @@ export default composePlugins(
             { from: join(__dirname, 'package.json'), to: 'package.json' },
             { from: join(__dirname, 'README.md'), to: 'README.md' },
             {
-              from: join(__dirname, 'static/mina-react-logo.svg'),
-              to: 'static/mina-react-logo.svg',
+              from: join(__dirname, 'static/mina-live-logo.svg'),
+              to: 'static/mina-live-logo.svg',
             },
             {
               from: join(__dirname, './src/webpack/webpack.config.js'),
