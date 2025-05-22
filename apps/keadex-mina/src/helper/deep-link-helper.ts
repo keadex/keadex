@@ -23,7 +23,9 @@ export function generateRemoteDiagramDeepLink(
   diagramUrl: string,
   ghToken?: string,
 ) {
-  let deepLink = `${ROUTES[OPEN_REMOTE_DIAGRAM_DEEP_LINK].path}${projectRootUrl}/${diagramUrl}`
+  let deepLink = `${ROUTES[OPEN_REMOTE_DIAGRAM_DEEP_LINK].path}${btoa(
+    projectRootUrl,
+  )}/${btoa(diagramUrl)}`
   if (ghToken) {
     deepLink = deepLink.concat(`/${ghToken}`)
   }

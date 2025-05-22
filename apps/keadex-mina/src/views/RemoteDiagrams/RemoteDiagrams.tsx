@@ -19,21 +19,31 @@ export interface RemoteDiagramsProps {}
 export const RemoteDiagrams = (props: RemoteDiagramsProps) => {
   const { t } = useTranslation()
 
+  const decodeParams = (params: RemoteDiagramsParams): RemoteDiagramsParams => {
+    return {
+      projectRootUrl: params.projectRootUrl
+        ? atob(params.projectRootUrl)
+        : undefined,
+      diagramUrl: params.diagramUrl ? atob(params.diagramUrl) : undefined,
+      ghToken: params.ghToken,
+    }
+  }
+
   const {
     projectRootUrl: projectRootUrlParam,
     diagramUrl: diagramUrlParam,
     ghToken: ghTokenParam,
-  } = useParams<RemoteDiagramsParams>()
+  } = decodeParams(useParams<RemoteDiagramsParams>())
 
   const [projectRootUrl, setProjectRootUrl] = useState(
     !projectRootUrlParam || projectRootUrlParam.replace(/ /g, '').length === 0
       ? 'https://raw.githubusercontent.com/keadex/keadex/main/apps/keadex-diagrams'
-      : decodeURI(projectRootUrlParam),
+      : projectRootUrlParam,
   )
   const [diagramUrl, setDiagramUrl] = useState(
     !diagramUrlParam || diagramUrlParam.replace(/ /g, '').length === 0
       ? 'https://raw.githubusercontent.com/keadex/keadex/main/apps/keadex-diagrams/diagrams/container/keadex-mina'
-      : decodeURI(diagramUrlParam),
+      : diagramUrlParam,
   )
   const [ghToken, setGhToken] = useState(
     !ghTokenParam || ghTokenParam.replace(/ /g, '').length === 0
