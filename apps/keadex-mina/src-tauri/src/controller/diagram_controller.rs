@@ -80,7 +80,7 @@ pub async fn open_remote_diagram(
   raw_plantuml: &str,
   raw_diagram_spec: &str,
 ) -> Result<Diagram, MinaError> {
-  let diagram_plantuml = deserialize_plantuml_by_string(raw_plantuml.to_string()).await?;
+  let diagram_plantuml = deserialize_plantuml_by_string_helper(&raw_plantuml.to_string())?;
   let diagram_spec = serde_json::from_str::<DiagramSpec>(raw_diagram_spec)?;
   let (diagram_name, diagram_type) = diagram_name_type_from_url(project_root_url, diagram_url)?;
   // let mut auto_layout = None;
