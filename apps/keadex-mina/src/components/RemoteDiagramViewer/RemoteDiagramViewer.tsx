@@ -12,14 +12,14 @@ import {
   projectSettingsUrl as projectSettingsUrlApi,
 } from '../../core/tauri-rust-bridge'
 
-export interface ExternalDiagramViewerProps {
+export interface RemoteDiagramViewerProps {
   projectRootUrl: string
   diagramUrl: string
   ghToken?: string
 }
 
-export const ExternalDiagramViewer = React.memo(
-  (props: ExternalDiagramViewerProps) => {
+export const RemoteDiagramViewer = React.memo(
+  (props: RemoteDiagramViewerProps) => {
     const { projectRootUrl, diagramUrl, ghToken } = props
 
     const diagramDesignViewRef = useRef<DiagramDesignViewCommands>(null)
@@ -171,4 +171,4 @@ export const ExternalDiagramViewer = React.memo(
   },
 )
 
-export default ExternalDiagramViewer
+export default RemoteDiagramViewer

@@ -4,26 +4,26 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { generateExternalDiagramDeepLink } from '../../helper/deep-link-helper'
-import ExternalDiagramViewer from '../../components/ExternalDiagramViewer/ExternalDiagramViewer'
+import { generateRemoteDiagramDeepLink } from '../../helper/deep-link-helper'
+import RemoteDiagramViewer from '../../components/RemoteDiagramViewer/RemoteDiagramViewer'
 
-export type ExternalDiagramsParams = {
+export type RemoteDiagramsParams = {
   projectRootUrl?: string
   diagramUrl?: string
   ghToken?: string
 }
 
 /* eslint-disable-next-line */
-export interface ExternalDiagramsProps {}
+export interface RemoteDiagramsProps {}
 
-export const ExternalDiagrams = (props: ExternalDiagramsProps) => {
+export const RemoteDiagrams = (props: RemoteDiagramsProps) => {
   const { t } = useTranslation()
 
   const {
     projectRootUrl: projectRootUrlParam,
     diagramUrl: diagramUrlParam,
     ghToken: ghTokenParam,
-  } = useParams<ExternalDiagramsParams>()
+  } = useParams<RemoteDiagramsParams>()
 
   const [projectRootUrl, setProjectRootUrl] = useState(
     !projectRootUrlParam || projectRootUrlParam.replace(/ /g, '').length === 0
@@ -67,15 +67,15 @@ export const ExternalDiagrams = (props: ExternalDiagramsProps) => {
 
   function handleCopyLinkClick() {
     if (projectRootUrl && diagramUrl) {
-      const link = generateExternalDiagramDeepLink(
+      const link = generateRemoteDiagramDeepLink(
         projectRootUrl,
         diagramUrl,
         ghToken,
       )
       writeText(link)
-      toast.info(t('external_diagrams.link_copied'))
+      toast.info(t('remote_diagrams.link_copied'))
       if (ghToken)
-        toast.warn(t('external_diagrams.gh_token_copy_warning'), {
+        toast.warn(t('remote_diagrams.gh_token_copy_warning'), {
           autoClose: false,
         })
     }
@@ -97,20 +97,20 @@ export const ExternalDiagrams = (props: ExternalDiagramsProps) => {
       <div
         className={`text-accent-primary inline-block text-2xl font-bold pointer-events-none mt-2`}
       >
-        {t('external_diagrams.title')}
+        {t('remote_diagrams.title')}
       </div>
-      <div className="w-full mt-5">{t('external_diagrams.description')}</div>
+      <div className="w-full mt-5">{t('remote_diagrams.description')}</div>
       <div className={`w-full mt-10 flex flex-col`}>
         <Input
           value={projectRootUrl}
           onChange={(e) => setProjectRootUrl(e.target.value)}
-          label={`${t('external_diagrams.project_root_url')}*`}
+          label={`${t('remote_diagrams.project_root_url')}*`}
           info={`*${t('common.required')}`}
         />
         <Input
           value={diagramUrl}
           onChange={(e) => setDiagramUrl(e.target.value)}
-          label={`${t('external_diagrams.diagram_url')}*`}
+          label={`${t('remote_diagrams.diagram_url')}*`}
           info={`*${t('common.required')}`}
           classNameRoot="mt-5"
         />
@@ -118,7 +118,7 @@ export const ExternalDiagrams = (props: ExternalDiagramsProps) => {
           value={ghToken}
           onChange={(e) => setGhToken(e.target.value)}
           label={t('common.github_token')}
-          info={t('external_diagrams.gh_token_info')}
+          info={t('remote_diagrams.gh_token_info')}
           classNameRoot="mt-5"
         />
         <div className="flex flex-col md:flex-row mx-auto mt-5">
@@ -134,11 +134,11 @@ export const ExternalDiagrams = (props: ExternalDiagramsProps) => {
             className="mt-2 md:mt-0 w-48"
             onClick={handleCopyLinkClick}
           >
-            {t('external_diagrams.copy_link_to_share')}
+            {t('remote_diagrams.copy_link_to_share')}
           </Button>
         </div>
         <div className="w-full h-[50rem] mt-14 bg-white">
-          <ExternalDiagramViewer
+          <RemoteDiagramViewer
             projectRootUrl={projectRootUrlRendered}
             diagramUrl={diagramUrlRendered}
             ghToken={ghTokenRendered}
@@ -149,4 +149,4 @@ export const ExternalDiagrams = (props: ExternalDiagramsProps) => {
   )
 }
 
-export default ExternalDiagrams
+export default RemoteDiagrams

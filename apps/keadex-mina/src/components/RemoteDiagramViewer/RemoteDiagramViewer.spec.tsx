@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react'
 
-import ExternalDiagramViewer from './ExternalDiagramViewer'
+import RemoteDiagramViewer from './RemoteDiagramViewer'
 
-describe('ExternalDiagramViewer', () => {
+describe('RemoteDiagramViewer', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
-      <ExternalDiagramViewer projectRootUrl={''} diagramUrl={''} />,
+      <RemoteDiagramViewer projectRootUrl={''} diagramUrl={''} />,
     )
     expect(baseElement).toBeTruthy()
   })

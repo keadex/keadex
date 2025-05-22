@@ -177,7 +177,7 @@ export const Home = React.memo((props: HomeProps) => {
               onClick={handleExternalDiagrams}
               className="w-60"
             >
-              <span className="text-lg">{t('home.external_diagrams')}</span>
+              <span className="text-lg">{t('home.remote_diagrams')}</span>
             </IconButton>
           </div>
         </>

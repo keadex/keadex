@@ -10,7 +10,7 @@ import { Location, NavigateFunction } from 'react-router'
 import { toast } from 'react-toastify'
 import { AppEvent, AppEventType } from '../../context/AppEventContext'
 import {
-  EXTERNAL_DIAGRAMS_BASE_URL,
+  REMOTE_DIAGRAMS_BASE_URL,
   HOME,
   HOME_PROJECT,
 } from '../../core/router/routes'
@@ -240,7 +240,7 @@ const factory: WindowTitlebarMenuFactory<
       //   onClick: undefined,
       //   disabled: true,
       // },
-      ...(!location.pathname.startsWith(EXTERNAL_DIAGRAMS_BASE_URL)
+      ...(!location.pathname.startsWith(REMOTE_DIAGRAMS_BASE_URL)
         ? [
             {
               isHeaderMenuItem: false,
@@ -288,7 +288,7 @@ const factory: WindowTitlebarMenuFactory<
   //------- Edit menu item
   if (
     location.pathname !== HOME &&
-    !location.pathname.startsWith(EXTERNAL_DIAGRAMS_BASE_URL) &&
+    !location.pathname.startsWith(REMOTE_DIAGRAMS_BASE_URL) &&
     !ENV_SETTINGS.WEB_MODE
   ) {
     menuItemsProps.push({

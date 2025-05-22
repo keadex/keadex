@@ -14,7 +14,7 @@ import DependencyTable from '../../views/DependencyTable/DependencyTable'
 import DiagramEditor, {
   DiagramEditorState,
 } from '../../views/DiagramEditor/DiagramEditor'
-import ExternalDiagrams from '../../views/ExternalDiagrams/ExternalDiagrams'
+import RemoteDiagrams from '../../views/RemoteDiagrams/RemoteDiagrams'
 import Home from '../../views/Home/Home'
 import HomeProject from '../../views/HomeProject/HomeProject'
 import LibraryElement from '../../views/LibraryElement/LibraryElement'
@@ -30,16 +30,16 @@ import ROUTES, {
   DEPENDENCY_TABLE,
   DEPENDENCY_TABLE_ALIAS_URL_PARAM,
   EDIT_DIAGRAM,
-  EXTERNAL_DIAGRAMS,
-  EXTERNAL_DIAGRAMS_BASE_URL,
-  EXTERNAL_DIAGRAMS_DIAGRAM_URL_PARAM,
-  EXTERNAL_DIAGRAMS_GH_TOKEN_PARAM,
-  EXTERNAL_DIAGRAMS_PROJECT_ROOT_URL_PARAM,
+  REMOTE_DIAGRAMS,
+  REMOTE_DIAGRAMS_BASE_URL,
+  REMOTE_DIAGRAMS_DIAGRAM_URL_PARAM,
+  REMOTE_DIAGRAMS_GH_TOKEN_PARAM,
+  REMOTE_DIAGRAMS_PROJECT_ROOT_URL_PARAM,
   HOME,
   HOME_PROJECT,
   OPEN_DEPENDENCY_TABLE_DEEP_LINK,
   OPEN_DIAGRAM_DEEP_LINK,
-  OPEN_EXTERNAL_DIAGRAM_DEEP_LINK,
+  OPEN_REMOTE_DIAGRAM_DEEP_LINK,
   PERSONS_LIBRARY,
   PROJECT_SETTINGS,
   SOFTWARE_SYSTEMS_LIBRARY,
@@ -86,8 +86,8 @@ export const router = createMemoryRouter([
         element: <DependencyTable />,
       },
       {
-        path: ROUTES[EXTERNAL_DIAGRAMS].path,
-        element: <ExternalDiagrams />,
+        path: ROUTES[REMOTE_DIAGRAMS].path,
+        element: <RemoteDiagrams />,
       },
     ],
   },
@@ -146,12 +146,12 @@ export function useDeepLinkRouter() {
               }
             }
             break
-          case OPEN_EXTERNAL_DIAGRAM_DEEP_LINK:
+          case OPEN_REMOTE_DIAGRAM_DEEP_LINK:
             if (
               location.pathname !== ROUTES[HOME].path &&
-              !location.pathname.startsWith(EXTERNAL_DIAGRAMS_BASE_URL)
+              !location.pathname.startsWith(REMOTE_DIAGRAMS_BASE_URL)
             ) {
-              toast.error(t('deep_link.external_diagrams_project_opened'))
+              toast.error(t('deep_link.remote_diagrams_project_opened'))
             } else {
               const externalDiagramParams = deepLinkParams.split('/')
               if (
@@ -159,7 +159,7 @@ export function useDeepLinkRouter() {
                 externalDiagramParams.length > 3
               ) {
                 toast.error(
-                  t('deep_link.invalid_external_diagram_path', { deepLink }),
+                  t('deep_link.invalid_remote_diagram_path', { deepLink }),
                 )
               } else {
                 openExternalDiagram(safeExit, externalDiagramParams)
@@ -238,12 +238,12 @@ export function openExternalDiagram(
     }
   }
 
-  const urlWithParams = EXTERNAL_DIAGRAMS.replace(
-    EXTERNAL_DIAGRAMS_PROJECT_ROOT_URL_PARAM,
+  const urlWithParams = REMOTE_DIAGRAMS.replace(
+    REMOTE_DIAGRAMS_PROJECT_ROOT_URL_PARAM,
     fixedParams[0],
   )
-    .replace(EXTERNAL_DIAGRAMS_DIAGRAM_URL_PARAM, fixedParams[1])
-    .replace(EXTERNAL_DIAGRAMS_GH_TOKEN_PARAM, fixedParams[2])
+    .replace(REMOTE_DIAGRAMS_DIAGRAM_URL_PARAM, fixedParams[1])
+    .replace(REMOTE_DIAGRAMS_GH_TOKEN_PARAM, fixedParams[2])
 
   safeExit(urlWithParams)
 }
