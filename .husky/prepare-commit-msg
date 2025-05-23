@@ -1,0 +1,1 @@
+exec < /dev/tty && yarn git-cz --hook || true
