@@ -125,7 +125,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               id: 'keadex-mina_deep-links',
               title: 'Deep Links',
               href: ROUTES[MINA_DEEP_LINKS].path,
-              disableTOC: true,
+              disableTOC: false,
             },
             {
               id: 'keadex-mina_dependency-table',
