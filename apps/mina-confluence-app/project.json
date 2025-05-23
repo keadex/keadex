@@ -67,7 +67,7 @@
       "dependsOn": [{ "projects": ["mina-react"], "target": "build-wasm" }]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/mina-confluence-app/**/*.{ts,tsx,js,jsx}"]
