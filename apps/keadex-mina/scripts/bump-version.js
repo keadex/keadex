@@ -41,42 +41,30 @@ const filesToUpdate = [
     pattern: `"mainBinaryName": "Keadex Mina",\n  "version": "${version}"`,
   },
 
+  // Mina CLI
+  {
+    path: 'libs/mina-cli/Cargo.toml',
+    pattern: `name = "mina-cli"\nversion = "${version}"`,
+  },
+  {
+    path: 'libs/mina-cli/Cargo.lock',
+    pattern: `name = "mina-cli"\nversion = "${version}"`,
+  },
+  {
+    path: 'libs/mina-cli/Cargo.lock',
+    pattern: `name = "keadex_mina"\nversion = "${version}"`,
+  },
+
   // Mina React
   {
     path: 'libs/mina-react/src-rust/Cargo.lock',
     pattern: `name = "keadex_mina"\nversion = "${version}"`,
   },
 
-  // Mina CLI
-  {
-    path: 'libs/mina-cli/Cargo.lock',
-    pattern: `name = "keadex_mina"\nversion = "${version}"`,
-  },
-  {
-    path: 'libs/mina-cli/Cargo.lock',
-    pattern: `name = "mina-cli"\nversion = "${version}"`,
-  },
-  {
-    path: 'libs/mina-cli/Cargo.toml',
-    pattern: `name = "mina-cli"\nversion = "${version}"`,
-  },
-
   // Mina Live
   {
-    path: 'libs/mina-live/package.json',
-    pattern: `"version": "${version}"`,
-  },
-  {
     path: 'libs/mina-live/src-rust/Cargo.lock',
     pattern: `name = "keadex_mina"\nversion = "${version}"`,
-  },
-  {
-    path: 'libs/mina-live/src-rust/Cargo.lock',
-    pattern: `name = "mina-live"\nversion = "${version}"`,
-  },
-  {
-    path: 'libs/mina-live/src-rust/Cargo.toml',
-    pattern: `name = "mina-live"\nversion = "${version}"`,
   },
 
   // Keadex Battisti

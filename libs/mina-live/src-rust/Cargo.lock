@@ -1235,7 +1235,7 @@ dependencies = [
 
 [[package]]
 name = "keadex_mina"
-version = "2.0.0-1"
+version = "2.0.0"
 dependencies = [
  "async-openai-wasm",
  "async-std",
@@ -1397,7 +1397,7 @@ dependencies = [
 
 [[package]]
 name = "mina-live"
-version = "2.0.0-1"
+version = "2.0.0"
 dependencies = [
  "keadex_mina",
  "wasm-bindgen",
