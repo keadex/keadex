@@ -144,7 +144,7 @@ export const RemoteDiagrams = (props: RemoteDiagramsProps) => {
             className="mt-2 md:mt-0 w-48"
             onClick={handleCopyLinkClick}
           >
-            {t('remote_diagrams.copy_link_to_share')}
+            {t('common.action.copy_deep_link')}
           </Button>
         </div>
         <div className="w-full h-[50rem] mt-14 bg-white">

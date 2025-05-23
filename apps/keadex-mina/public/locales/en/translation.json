@@ -221,7 +221,6 @@
     }
   },
   "remote_diagrams": {
-    "copy_link_to_share": "Copy deep link to share",
     "description": "Use this feature to share or preview remote architectural diagrams created with Keadex Mina.",
     "diagram_url": "Mina Diagram URL",
     "gh_token_copy_warning": "The link you copied contains the GitHub token, which is SENSITIVE INFORMATION. Please share it only with trusted stakeholders to ensure security.",
