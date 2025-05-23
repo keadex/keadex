@@ -1,4 +1,8 @@
-import { faFolderOpen, faPlus } from '@fortawesome/free-solid-svg-icons'
+import {
+  faFolderOpen,
+  faPlus,
+  faCloud,
+} from '@fortawesome/free-solid-svg-icons'
 import { IconButton, useModal, useSafeExit } from '@keadex/keadex-ui-kit/cross'
 import { isWebFsSupported } from '@keadex/keadex-utils'
 import { path } from '@tauri-apps/api'
@@ -8,7 +12,6 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { faKeadexMina } from '../../assets/icons'
 import ModalCreateProject from '../../components/ModalCreateProject/ModalCreateProject'
 import { ENV_SETTINGS } from '../../core/env-settings'
 import { openExternalDiagram } from '../../core/router/router'
@@ -173,7 +176,7 @@ export const Home = React.memo((props: HomeProps) => {
               <span className="text-lg">{t('home.create_project')}</span>
             </IconButton>
             <IconButton
-              icon={faKeadexMina}
+              icon={faCloud}
               onClick={handleExternalDiagrams}
               className="w-60"
             >
