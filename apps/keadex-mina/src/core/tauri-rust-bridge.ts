@@ -115,11 +115,11 @@ export const DESERIALIZE_PLANTUML_BY_STRING_CMD =
   'deserialize_plantuml_by_string'
 export const DIAGRAM_NAME_TYPE_FROM_PATH_CMD = 'diagram_name_type_from_path'
 export const DEPENDENT_ELEMENTS_IN_DIAGRAM_CMD = 'dependent_elements_in_diagram'
-export const DIAGRAM_PLANTUML_URL_FROM_DIAGRAM_URL =
+export const DIAGRAM_PLANTUML_URL_FROM_DIAGRAM_URL_CMD =
   'diagram_plantuml_url_from_diagram_url'
-export const DIAGRAM_SPEC_URL_FROM_DIAGRAM_URL =
+export const DIAGRAM_SPEC_URL_FROM_DIAGRAM_URL_CMD =
   'diagram_spec_url_from_diagram_url'
-export const DIAGRAM_URL_FROM_LINK_STRING = 'diagram_url_from_link_string'
+export const DIAGRAM_URL_FROM_LINK_STRING_CMD = 'diagram_url_from_link_string'
 
 export async function listDiagrams(): Promise<{
   [key in DiagramType]: string[]
@@ -278,7 +278,7 @@ export async function diagramPlantUMLUrlFromDiagramUrl(
   projectRootUrl: string,
   diagramUrl: string,
 ): Promise<string> {
-  return invoke(DIAGRAM_PLANTUML_URL_FROM_DIAGRAM_URL, {
+  return invoke(DIAGRAM_PLANTUML_URL_FROM_DIAGRAM_URL_CMD, {
     projectRootUrl,
     diagramUrl,
   })
@@ -288,7 +288,7 @@ export async function diagramSpecUrlFromDiagramUrl(
   projectRootUrl: string,
   diagramUrl: string,
 ): Promise<string> {
-  return invoke(DIAGRAM_SPEC_URL_FROM_DIAGRAM_URL, {
+  return invoke(DIAGRAM_SPEC_URL_FROM_DIAGRAM_URL_CMD, {
     projectRootUrl,
     diagramUrl,
   })
@@ -298,7 +298,7 @@ export async function diagramUrlFromLinkString(
   projectRootUrl: string,
   linkString: string,
 ): Promise<string> {
-  return invoke(DIAGRAM_URL_FROM_LINK_STRING, {
+  return invoke(DIAGRAM_URL_FROM_LINK_STRING_CMD, {
     projectRootUrl,
     linkString,
   })
