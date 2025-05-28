@@ -18,9 +18,27 @@
       "options": {
         "script": "tsc --p ./tsconfig.lib.json"
       },
-      "dependsOn": ["build-code"]
+      "dependsOn": ["build-node-code"]
     },
-    "build-code": {
+    "build-node-code": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "deleteOutputPath": false,
+        "compiler": "babel",
+        "outputPath": "libs/mina-react/dist",
+        "tsConfig": "libs/mina-react/tsconfig.lib.json",
+        "webpackConfig": "libs/mina-react/webpack.node.config.ts",
+        "optimization": true,
+        "sourceMap": false,
+        "namedChunks": false,
+        "extractLicenses": true,
+        "vendorChunk": false,
+        "externalDependencies": "all"
+      },
+      "dependsOn": ["build-web-code"]
+    },
+    "build-web-code": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {

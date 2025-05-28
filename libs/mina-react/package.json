@@ -22,8 +22,16 @@
     "render",
     "mina"
   ],
-  "main": "index.js",
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./main.css": "./main.css",
+    "./core": "./core.js",
+    "./src/components/MinaReact/MinaReact": {
+      "import": "./src/components/MinaReact/MinaReact.tsx",
+      "types": "./src/components/MinaReact/MinaReact.d.ts"
+    }
+  },
   "devDependencies": {
     "@nx/react": "21.0.3",
     "@nx/webpack": "21.0.3",

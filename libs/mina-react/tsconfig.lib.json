@@ -24,6 +24,7 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "index.ts",
+    "core.ts",
     "../../apps/keadex-mina/src/env.d.ts"
   ]
 }
