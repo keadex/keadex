@@ -8025,10 +8025,10 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
-"@types/fabric@^5.3.4":
-  version "5.3.4"
-  resolved "https://registry.yarnpkg.com/@types/fabric/-/fabric-5.3.4.tgz#67d87054bfd1d0dcdbafb4c0a226d637c23fb9ca"
-  integrity sha512-tunniULcy73pbFbH7W8vtNF6MbOBxL40DNWjT2CrBPe+MJ9Wb8qIpbNAFB7eIpDZkmzYySnIZnxrDMSg8iPNvA==
+"@types/fabric@^5.3.10":
+  version "5.3.10"
+  resolved "https://registry.yarnpkg.com/@types/fabric/-/fabric-5.3.10.tgz#0f0e83786ac8b8101c780018ba75070478782313"
+  integrity sha512-fsJIuVkU+B2AnmQh+Ml2X0ax3NmRIqLvEXmZ+squX60HaF89TvdIP6tI6Uk5srXaauswTwPOOfWE7k2QboUZCg==
 
 "@types/fontfaceobserver@^2.1.2":
   version "2.1.2"
@@ -12996,6 +12996,14 @@ fabric@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/fabric/-/fabric-5.3.0.tgz#199297b6409e3a6279c16c1166da2b2a9e3e8b9b"
   integrity sha512-AVayKuzWoXM5cTn7iD3yNWBlfEa8r1tHaOe2g8NsZrmWKAHjryTxT/j6f9ncRfOWOF0I1Ci1AId3y78cC+GExQ==
+  optionalDependencies:
+    canvas "^2.8.0"
+    jsdom "^19.0.0"
+
+fabric@^5.5.2:
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/fabric/-/fabric-5.5.2.tgz#2ebaab11a916211f381108c711cadcf3e9042e20"
+  integrity sha512-krvnxxyhslNBAkG0SpxPxFVsD6YD2mTJByyPxV92E1BxXtjXEcWsTSJpzX8+2Jprvs7oOLYFAjHO3o1ZvjoBrQ==
   optionalDependencies:
     canvas "^2.8.0"
     jsdom "^19.0.0"
