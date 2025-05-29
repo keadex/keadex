@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { generateRemoteDiagramDeepLink } from '../../helper/deep-link-helper'
 import RemoteDiagramViewer from '../../components/RemoteDiagramViewer/RemoteDiagramViewer'
+import { generateRemoteDiagramDeepLink } from '../../helper/deep-link-helper'
+import { generateRemoteDiagramSSRLink } from '../../helper/ssr-link-helper'
 
 export type RemoteDiagramsParams = {
   projectRootUrl?: string
@@ -75,13 +76,13 @@ export const RemoteDiagrams = (props: RemoteDiagramsProps) => {
     }
   }
 
-  function handleCopyLinkClick() {
+  function handleCopyLinkClick(type: 'deep-link' | 'ssr') {
+    const generateLink =
+      type === 'deep-link'
+        ? generateRemoteDiagramDeepLink
+        : generateRemoteDiagramSSRLink
     if (projectRootUrl && diagramUrl) {
-      const link = generateRemoteDiagramDeepLink(
-        projectRootUrl,
-        diagramUrl,
-        ghToken,
-      )
+      const link = generateLink(projectRootUrl, diagramUrl, ghToken)
       writeText(link)
       toast.info(t('remote_diagrams.link_copied'))
       if (ghToken)
@@ -134,17 +135,24 @@ export const RemoteDiagrams = (props: RemoteDiagramsProps) => {
         <div className="flex flex-col md:flex-row mx-auto mt-5">
           <Button
             disabled={isButtonDisabled()}
-            className="mr-0 md:mr-2 w-48"
+            className="mr-2 w-48"
             onClick={() => renderDiagram(projectRootUrl, diagramUrl, ghToken)}
           >
             {t('common.render')}
           </Button>
           <Button
             disabled={isButtonDisabled()}
-            className="mt-2 md:mt-0 w-48"
-            onClick={handleCopyLinkClick}
+            className="mr-2 w-48"
+            onClick={() => handleCopyLinkClick('deep-link')}
           >
             {t('common.action.copy_deep_link')}
+          </Button>
+          <Button
+            disabled={isButtonDisabled()}
+            className="w-48"
+            onClick={() => handleCopyLinkClick('ssr')}
+          >
+            {t('common.action.copy_ssr_link')}
           </Button>
         </div>
         <div className="w-full h-[50rem] mt-14 bg-white">
