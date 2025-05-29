@@ -99,18 +99,32 @@ const nextConfig = {
     ]
   },
   webpack: function (config, options) {
-    config.plugins.push(
-      new CopyPlugin({
-        patterns: [
-          {
-            from: '../../node_modules/@keadex/mina-react-npm/*.wasm',
-            to() {
-              return 'static/chunks/[name][ext]'
-            },
-          },
-        ],
-      }),
-    )
+    config.experiments = {
+      ...config.experiments,
+      asyncWebAssembly: true,
+    }
+
+    const patterns = [
+      {
+        from: '../../node_modules/@keadex/mina-react-npm/*.wasm',
+        to() {
+          return 'static/chunks/[name][ext]'
+        },
+      },
+    ]
+
+    if (options.isServer) {
+      // Following is required only for server-side rendering
+      // of Mina diagrams (apps\keadex-battisti\src\app\api\mina-diagram\route.ts).
+      patterns.push({
+        from: '../../node_modules/@keadex/mina-react-npm/*.wasm',
+        to() {
+          return 'server/vendor-chunks/[name][ext]'
+        },
+      })
+    }
+    config.plugins.push(new CopyPlugin({ patterns }))
+
     return config
   },
 }
