@@ -51,12 +51,12 @@ export default function MinaShareDiagram({
   const [projectRootUrl, setProjectRootUrl] = useState(
     !projectRootUrlParam || projectRootUrlParam.replace(/ /g, '').length === 0
       ? 'https://raw.githubusercontent.com/keadex/keadex/main/apps/keadex-diagrams'
-      : decodeURI(projectRootUrlParam),
+      : atob(projectRootUrlParam),
   )
   const [diagramUrl, setDiagramUrl] = useState(
     !diagramUrlParam || diagramUrlParam.replace(/ /g, '').length === 0
       ? 'https://raw.githubusercontent.com/keadex/keadex/main/apps/keadex-diagrams/diagrams/container/keadex-mina'
-      : decodeURI(diagramUrlParam),
+      : atob(diagramUrlParam),
   )
   const [ghToken, setGhToken] = useState(
     !ghTolenParam || ghTolenParam.replace(/ /g, '').length === 0
@@ -133,7 +133,7 @@ export default function MinaShareDiagram({
         </Button>
         <Button
           disabled={isButtonDisabled()}
-          className="mr-0 md:mr-2 w-40"
+          className="mt-2 md:mt-0 mr-0 md:mr-2 w-40"
           onClick={() => handleCopyLinkClick('share-link')}
         >
           {t('keadex_mina.share_diagram.copy_link_to_share')}
