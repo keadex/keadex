@@ -76,7 +76,7 @@ export const RemoteDiagrams = (props: RemoteDiagramsProps) => {
     }
   }
 
-  function handleCopyLinkClick(type: 'deep-link' | 'ssr') {
+  function handleCopyLinkClick(type: 'deep-link' | 'ssr-link') {
     const generateLink =
       type === 'deep-link'
         ? generateRemoteDiagramDeepLink
@@ -150,7 +150,7 @@ export const RemoteDiagrams = (props: RemoteDiagramsProps) => {
           <Button
             disabled={isButtonDisabled()}
             className="w-48"
-            onClick={() => handleCopyLinkClick('ssr')}
+            onClick={() => handleCopyLinkClick('ssr-link')}
           >
             {t('common.action.copy_ssr_link')}
           </Button>
