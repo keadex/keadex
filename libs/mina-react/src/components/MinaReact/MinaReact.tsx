@@ -66,6 +66,7 @@ export const MinaReact = (props: MinaReactProps) => {
   }
 
   async function openDiagram(diagramUrl: string) {
+    diagramDesignViewRef.current?.resetCanvas()
     let diagramData
     try {
       diagramData = await downloadDiagramData(
