@@ -34,6 +34,7 @@ import ROUTES, {
   MINA_CLI_COMMANDS,
   MINA_CONTINUOUS_INTEGRATION,
   MINA_SHARE_DIAGRAMS,
+  MINA_SSR,
 } from '../core/routes'
 import {
   MenuItem,
@@ -182,6 +183,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               id: 'keadex-mina_search',
               title: 'Search',
               href: ROUTES[MINA_SEARCH].path,
+              disableTOC: true,
+            },
+            {
+              id: 'keadex-mina_ssr',
+              title: 'Server Side Rendering',
+              href: ROUTES[MINA_SSR].path,
               disableTOC: true,
             },
             {

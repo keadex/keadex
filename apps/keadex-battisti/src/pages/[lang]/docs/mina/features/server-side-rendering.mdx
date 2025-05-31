@@ -1,0 +1,23 @@
+# Server Side Rendering (SSR)
+
+Keadex Mina diagrams support Server Side Rendering (SSR), allowing you to generate and display diagrams directly on the server. This feature is particularly useful for integrating diagrams into documentation, blogs, or any web application where you want to display architectural elements without relying on client-side rendering (e.g., [Markdown files](./share-diagrams.mdx#markdown-files)).
+
+To render a diagram server side, you can use the following API endpoint:
+
+```bash
+GET https://keadex.dev/api/mina-diagram/<PROJECT_ROOT_URL>/<DIAGRAM_URL>/<GH_TOKEN>
+```
+
+### Parameters
+
+- `<PROJECT_ROOT_URL> (required)`: URL of the Keadex Mina project root, encoded to Base64.
+- `<DIAGRAM_URL> (required)`: URL of the Keadex Mina diagram, encoded to Base64.
+- `<GH_TOKEN> (optional)`: GitHub API Token. This token is necessary to access private repositories or to fetch diagrams from remote sources.
+
+### Example
+
+https://keadex.dev/api/mina-diagram/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2tlYWRleC9rZWFkZXgvbWFpbi9hcHBzL2tlYWRleC1kaWFncmFtcw==/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2tlYWRleC9rZWFkZXgvbWFpbi9hcHBzL2tlYWRleC1kaWFncmFtcy9kaWFncmFtcy9jb250YWluZXIva2VhZGV4LW1pbmE=
+
+### SSR Link Generation
+
+You can generate the SSR link from the [**Share Diagram**](https://keadex.dev/en/projects/keadex-mina/share-diagram) page or the **Remote Diagrams** feature in Keadex Mina.
