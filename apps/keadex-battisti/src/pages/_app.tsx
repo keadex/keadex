@@ -33,6 +33,7 @@ import ROUTES, {
   MINA_CLI_OVERVIEW,
   MINA_CLI_COMMANDS,
   MINA_CONTINUOUS_INTEGRATION,
+  MINA_SHARE_DIAGRAMS,
 } from '../core/routes'
 import {
   MenuItem,
@@ -182,6 +183,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               title: 'Search',
               href: ROUTES[MINA_SEARCH].path,
               disableTOC: true,
+            },
+            {
+              id: 'keadex-mina_share-diagrams',
+              title: 'Share Diagrams',
+              href: ROUTES[MINA_SHARE_DIAGRAMS].path,
+              disableTOC: false,
             },
             {
               id: 'keadex-mina_tags',

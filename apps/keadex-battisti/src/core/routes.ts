@@ -97,6 +97,7 @@ export const MINA_LINKS = `${MINA_FEATURES}/links`
 export const MINA_LOW_CODING = `${MINA_FEATURES}/low-coding`
 export const MINA_PLANTUML = `${MINA_FEATURES}/plantuml`
 export const MINA_SEARCH = `${MINA_FEATURES}/search`
+export const MINA_SHARE_DIAGRAMS = `${MINA_FEATURES}/share-diagrams`
 export const MINA_TAGS = `${MINA_FEATURES}/tags`
 export const MINA_THEMES = `${MINA_FEATURES}/themes`
 export const MINA_VERSIONING = `${MINA_FEATURES}/versioning`
@@ -198,6 +199,9 @@ ROUTES[MINA_PLANTUML] = {
 }
 ROUTES[MINA_SEARCH] = {
   path: MINA_SEARCH,
+}
+ROUTES[MINA_SHARE_DIAGRAMS] = {
+  path: MINA_SHARE_DIAGRAMS,
 }
 ROUTES[MINA_TAGS] = {
   path: MINA_TAGS,
