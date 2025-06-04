@@ -1,4 +1,8 @@
-import type { DropdownMenuProps, ModalProps } from '@keadex/keadex-ui-kit/cross'
+import type {
+  DropdownMenuItemProps,
+  DropdownMenuProps,
+  ModalProps,
+} from '@keadex/keadex-ui-kit/cross'
 import { WindowTitlebarMenuFactory } from '@keadex/keadex-ui-kit/desktop'
 import { AnyAction, Dispatch } from '@reduxjs/toolkit'
 import * as dialog from '@tauri-apps/plugin-dialog'
@@ -92,30 +96,30 @@ const factory: WindowTitlebarMenuFactory<
       confirmMessage = 'common.question.confirm_close_project'
     }
 
-    if (data.currentProjectRoot) {
-      data.showModal({
-        id: 'confirmCloseProjectModal',
-        title: t('common.confirmation').toString(),
-        body: t(confirmMessage).toString(),
-        buttons: [
-          {
-            key: 'button-cancel',
-            children: <span>{t('common.cancel')}</span>,
-            'data-te-modal-dismiss': true,
+    data.showModal({
+      id: 'confirmCloseProjectModal',
+      title: t('common.confirmation').toString(),
+      body: t(confirmMessage).toString(),
+      buttons: [
+        {
+          key: 'button-cancel',
+          children: <span>{t('common.cancel')}</span>,
+          'data-te-modal-dismiss': true,
+        },
+        {
+          key: 'button-confirm',
+          children: <span>{t('common.info.i_saved_my_changes')}</span>,
+          className: 'button--safe',
+          onClick: () => {
+            if (data.currentProjectRoot) {
+              closeProject(data.currentProjectRoot, _onClosed!)
+            } else {
+              _onClosed!()
+            }
           },
-          {
-            key: 'button-confirm',
-            children: <span>{t('common.info.i_saved_my_changes')}</span>,
-            className: 'button--safe',
-            onClick: () => {
-              closeProject(data.currentProjectRoot!, _onClosed!)
-            },
-          },
-        ],
-      })
-    } else {
-      _onClosed!()
-    }
+        },
+      ],
+    })
   }
 
   const handleOpenProject = () => {
@@ -227,55 +231,45 @@ const factory: WindowTitlebarMenuFactory<
   }
 
   //-------------------------------- Menu
-  const menuItemsProps = []
+  const menuItemsProps: DropdownMenuItemProps[] = []
 
   //------- File menu item
   const fileSubMenuItems = []
   if (location.pathname !== HOME) {
-    fileSubMenuItems.push(
-      // {
-      //   isHeaderMenuItem: false,
-      //   id: 'wbar_file_new_project',
-      //   label: t('common.action.new_project').toString(),
-      //   onClick: undefined,
-      //   disabled: true,
-      // },
-      ...(!location.pathname.startsWith(REMOTE_DIAGRAMS_BASE_URL)
-        ? [
-            {
-              isHeaderMenuItem: false,
-              id: 'wbar_file_open_project',
-              label: t('common.action.open_project').toString(),
-              onClick: handleOpenProject,
-            },
-            {
-              isHeaderMenuItem: false,
-              id: 'wbar_file_close_project',
-              label: t('common.action.close_project').toString(),
-              onClick: () => handleCloseProject(),
-            },
-          ]
-        : [
-            {
-              isHeaderMenuItem: false,
-              id: 'wbar_file_close',
-              label: t('common.close').toString(),
-              onClick: handleBackToHome,
-            },
-          ]),
-      {
-        id: 'wbar_file_separator',
-        isSepator: true,
-      },
-    )
+    if (!location.pathname.startsWith(REMOTE_DIAGRAMS_BASE_URL)) {
+      if (!ENV_SETTINGS.WEB_MODE) {
+        fileSubMenuItems.push({
+          isHeaderMenuItem: false,
+          id: 'wbar_file_open_project',
+          label: t('common.action.open_project').toString(),
+          onClick: handleOpenProject,
+        })
+      }
+      fileSubMenuItems.push({
+        isHeaderMenuItem: false,
+        id: 'wbar_file_close_project',
+        label: t('common.action.close_project').toString(),
+        onClick: () => handleCloseProject(),
+      })
+    } else {
+      fileSubMenuItems.push({
+        isHeaderMenuItem: false,
+        id: 'wbar_file_close',
+        label: t('common.close').toString(),
+        onClick: handleBackToHome,
+      })
+    }
   }
-  fileSubMenuItems.push({
-    isHeaderMenuItem: false,
-    id: 'wbar_file_exit',
-    label: t('common.exit').toString(),
-    onClick: handleExit,
-  })
   if (!ENV_SETTINGS.WEB_MODE) {
+    fileSubMenuItems.push({
+      isHeaderMenuItem: false,
+      id: 'wbar_file_exit',
+      label: t('common.exit').toString(),
+      onClick: handleExit,
+    })
+  }
+
+  if (fileSubMenuItems.length > 0) {
     menuItemsProps.push({
       isHeaderMenuItem: true,
       id: 'wbar_file',
