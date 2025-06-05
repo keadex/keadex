@@ -1,5 +1,9 @@
-<p align="center">
-  <a href="https://keadex.dev/en/projects/keadex-mina" target="_blank"><img src="https://raw.githubusercontent.com/keadex/keadex/refs/heads/main/apps/keadex-mina/public/mina-banner.svg" width="100%" alt="Keadex Mina Logo" /></a>
+/**
+Generates the default readme file of the Mina project.
+*/
+pub fn generate_readme_file() -> String {
+  String::from("<p align=\"center\">
+  <a href=\"https://keadex.dev/en/projects/keadex-mina\" target=\"_blank\"><img src=\"https://raw.githubusercontent.com/keadex/keadex/refs/heads/main/apps/keadex-mina/public/mina-banner.svg\" width=\"100%\" alt=\"Keadex Mina Logo\" /></a>
 </p>
 
 # Keadex Mina Project
@@ -83,3 +87,5 @@ This is the default, auto-generated README file that you can modify to document 
 - [Website](https://keadex.dev/en/projects/keadex-mina)
 - [Documentation](https://keadex.dev/en/docs/mina/introduction)
 - [GitHub Repository](https://github.com/keadex/keadex)
+")
+}

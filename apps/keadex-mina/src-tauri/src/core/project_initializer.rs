@@ -32,6 +32,7 @@ use crate::resolve_to_write;
 use crate::templates::demo_diagram_puml::generate_demo_diagram_puml;
 use crate::templates::demo_diagram_spec::generate_demo_diagram_spec;
 use crate::templates::hooks_js_file::generate_hooks_js_file;
+use crate::templates::readme_file::generate_readme_file;
 use crate::validator::project_validator::{
   validate_output_project_directory, validate_project_structure,
 };
@@ -287,7 +288,7 @@ pub async fn create_empty_project(
     )))
     .await?;
   readme_file
-    .write_all(b"# My new Mina project\n\nThis is my new auto-generated Mina project.")
+    .write_all(generate_readme_file().as_bytes())
     .await?;
 
   // Generate .gitignore file
