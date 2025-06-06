@@ -10,9 +10,13 @@ export type KeadexCanvasOptions = fabric.ICanvasOptions & {
   readOnly?: boolean
   enableSnapToGrid?: boolean
   gridSize?: number
+  gridEnabled?: boolean
 }
 
 export class KeadexCanvas extends fabric.Canvas {
+  private gridEnabled?: boolean
+  private gridBgColor?: string | fabric.Pattern | fabric.Gradient
+
   constructor(
     element: HTMLCanvasElement | string | null,
     options?: KeadexCanvasOptions,
@@ -26,14 +30,20 @@ export class KeadexCanvas extends fabric.Canvas {
     element: HTMLCanvasElement | string | null,
     options?: KeadexCanvasOptions,
   ): fabric.Canvas {
+    this.gridEnabled = options?.gridEnabled
+
     setCanvasZoom(this)
     setCanvasPanning(this)
     if (options?.readOnly === true) {
       this.setReadOnly()
     }
+    if (options?.gridEnabled === true) {
+      this.enableGrid()
+    }
     if (options?.enableSnapToGrid === true) {
       enableSnapToGrid(this, options.gridSize)
     }
+
     return super.initialize(element, options)
   }
 
@@ -102,6 +112,44 @@ export class KeadexCanvas extends fabric.Canvas {
 
   resetPan() {
     this.absolutePan(new fabric.Point(0, 0))
+  }
+
+  isGridEnabled() {
+    return this.gridEnabled ?? false
+  }
+
+  enableGrid() {
+    if (!this.gridEnabled) {
+      this.gridEnabled = true
+      this.gridBgColor = this.backgroundColor
+      const gridSvg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><rect width="160" height="160" fill="${this.gridBgColor}" /><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><rect x="0.38" y="0.38" width="160" height="160" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.75px"/><line x1="0.38" y1="140.38" x2="160.38" y2="140.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.25px"/><line x1="0.38" y1="120.38" x2="160.38" y2="120.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.25px"/><line x1="0.38" y1="100.38" x2="160.38" y2="100.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.25px"/><line x1="0.38" y1="80.38" x2="160.38" y2="80.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.5px"/><line x1="0.38" y1="60.38" x2="160.38" y2="60.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.25px"/><line x1="0.38" y1="40.38" x2="160.38" y2="40.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.25px"/><line x1="0.38" y1="20.38" x2="160.38" y2="20.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.25px"/><line x1="140.38" y1="0.38" x2="140.38" y2="160.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.25px"/><line x1="120.38" y1="0.38" x2="120.38" y2="160.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.25px"/><line x1="100.38" y1="0.38" x2="100.38" y2="160.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.25px"/><line x1="80.38" y1="0.38" x2="80.38" y2="160.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.5px"/><line x1="60.38" y1="0.38" x2="60.38" y2="160.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.25px"/><line x1="40.38" y1="0.38" x2="40.38" y2="160.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.25px"/><line x1="20.38" y1="0.38" x2="20.38" y2="160.38" style="fill:none;stroke:#bcbec0;stroke-miterlimit:10;stroke-width:0.25px"/></g></g></svg>
+`
+
+      // Create a data URI from the SVG string
+      const svgBlob = new Blob([gridSvg], { type: 'image/svg+xml' })
+      const svgUrl = URL.createObjectURL(svgBlob)
+
+      fabric.Image.fromURL(svgUrl, (img) => {
+        img.scaleToWidth(this.width ?? 0)
+        img.scaleToHeight(this.height ?? 0)
+        const pattern = new fabric.Pattern({
+          source: img.getElement() as HTMLImageElement,
+          repeat: 'repeat',
+        })
+        this.setBackgroundColor(pattern, this.renderAll.bind(this))
+      })
+    }
+  }
+
+  disableGrid() {
+    if (this.gridEnabled) {
+      this.gridEnabled = false
+      if (this.gridBgColor) {
+        this.setBackgroundColor(this.gridBgColor, this.renderAll.bind(this))
+        this.gridBgColor = undefined
+      }
+    }
   }
 }
 
