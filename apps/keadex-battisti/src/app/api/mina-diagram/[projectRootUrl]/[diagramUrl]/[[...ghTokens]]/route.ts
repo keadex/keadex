@@ -1,4 +1,5 @@
 import { DiagramListener, DiagramRenderer } from '@keadex/c4-model-ui-kit'
+import { KeadexCanvas } from '@keadex/keadex-ui-kit/cross'
 import { openRemoteDiagram } from '@keadex/mina-react-npm/core'
 import { fabric } from 'fabric'
 import { NextRequest } from 'next/server'
@@ -58,7 +59,7 @@ export async function GET(
 
   const diagram = await openRemoteDiagram(projectRootUrl, diagramUrl, ghToken)
   if (diagram) {
-    const canvas = new fabric.Canvas(null)
+    const canvas = new KeadexCanvas(null)
     diagramRenderer.renderDiagram(canvas, listener, diagram, undefined)
 
     // Set canvas size to fit content
