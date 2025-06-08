@@ -62,6 +62,8 @@ pub struct DiagramSpec {
   pub auto_layout_orientation: DiagramOrientation,
   #[serde(default)]
   pub auto_layout_only_straight_arrows: bool,
+  #[serde(default)]
+  pub grid_enabled: bool,
 }
 
 impl Default for DiagramSpec {
@@ -75,6 +77,7 @@ impl Default for DiagramSpec {
       auto_layout_enabled: true,
       auto_layout_orientation: DiagramOrientation::TopToBottom,
       auto_layout_only_straight_arrows: false,
+      grid_enabled: false,
     }
   }
 }
