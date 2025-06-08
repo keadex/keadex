@@ -209,13 +209,13 @@ export default function MinaSummary({
               </div>
               <div className="flex flex-col ml-0 lg:ml-2 mt-4 lg:mt-0">
                 <Button
-                  className="!text-sm w-fit h-fit mb-2"
+                  className="!text-sm w-36 h-fit mb-2"
                   onClick={() =>
                     window.open(ROUTES[KEADEX_MINA_LIVE_EDITOR].path, '_blank')
                   }
                 >
                   <FontAwesomeIcon icon={faGlobe} className="mr-3" />
-                  <span>Mina Live</span>
+                  <Trans i18nKey="common.start" t={t} />
                 </Button>
               </div>
             </div>
