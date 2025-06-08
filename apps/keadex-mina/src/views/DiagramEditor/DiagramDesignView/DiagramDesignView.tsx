@@ -40,6 +40,7 @@ import FontFaceObserver from 'fontfaceobserver'
 import { DiagramDesignViewToolbarCommands } from '../../../components/DiagramDesignViewToolbar/DiagramDesignViewToolbar'
 import ModalAutoLayout from '../../../components/ModalAutoLayout/ModalAutoLayout'
 import DiagramInfoPanel from '../../../components/DiagramInfoPanel/DiagramInfoPanel'
+import ModalDiagramDesignViewSettings from '../../../components/ModalDiagramDesignViewSettings/ModalDiagramDesignViewSettings'
 
 const MARGIN_EXPORTED_DIAGRAM = 50
 
@@ -57,6 +58,10 @@ export interface DiagramDesignViewProps {
   saveDiagram?: () => void
   readOnly?: boolean
   target: 'web' | 'desktop'
+}
+
+export type DiagramDesignViewSettings = {
+  gridEnabled?: boolean
 }
 
 export interface DiagramDesignViewCommands {
@@ -77,6 +82,10 @@ export interface DiagramDesignViewCommands {
     orientation: DiagramOrientation,
     generateOnlyStraightArrows: boolean,
   ): void
+  updateDiagramDesignViewSettings: (
+    settings?: DiagramDesignViewSettings,
+  ) => void
+  diagramDesignViewSettings: () => DiagramDesignViewSettings | undefined
 }
 
 export const DiagramDesignView = forwardRef(
@@ -344,6 +353,62 @@ export const DiagramDesignView = forwardRef(
       }
     }
 
+    function diagramDesignViewSettings():
+      | DiagramDesignViewSettings
+      | undefined {
+      if (currentRenderedDiagram.current?.diagram_spec) {
+        return {
+          gridEnabled: currentRenderedDiagram.current.diagram_spec.grid_enabled,
+        }
+      }
+    }
+
+    function updateDiagramDesignViewSettings(
+      settings?: DiagramDesignViewSettings,
+    ) {
+      if (
+        settings &&
+        canvas.current &&
+        currentRenderedDiagram.current &&
+        !readOnly
+      ) {
+        showModal({
+          id: `showDiagramDesignViewSettingsModal`,
+          title: `${t('common.settings')}`,
+          body: (
+            <ModalDiagramDesignViewSettings
+              settings={settings}
+              hideModal={hideModal}
+              onSettingsChanged={(settings) => {
+                if (
+                  canvas.current &&
+                  currentRenderedDiagram.current &&
+                  !readOnly
+                ) {
+                  if (settings.gridEnabled) {
+                    canvas.current.enableGrid()
+                  } else {
+                    canvas.current.disableGrid()
+                  }
+
+                  // On saving, diagram_spec are retrieved from the DiagramDesignView
+                  // (check handleSaveDiagram() in DiagramEditor). So it's ok changing the
+                  // settings here.
+                  if (currentRenderedDiagram.current.diagram_spec)
+                    currentRenderedDiagram.current.diagram_spec.grid_enabled =
+                      settings.gridEnabled ?? false
+
+                  isDiagramChanged.current = true
+                  if (saveDiagram) saveDiagram()
+                }
+              }}
+            />
+          ),
+          buttons: false,
+        })
+      }
+    }
+
     function setCanvasMode() {
       if (
         currentRenderedDiagram.current?.diagram_spec &&
@@ -468,6 +533,8 @@ export const DiagramDesignView = forwardRef(
       autoLayoutOrientation,
       updateAutoLayoutOptions,
       isGenerateOnlyStraightArrowsEnabled,
+      updateDiagramDesignViewSettings,
+      diagramDesignViewSettings,
     }))
 
     useLayoutEffect(() => {

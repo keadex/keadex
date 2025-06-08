@@ -195,7 +195,8 @@
     "warning_enable_autolayout": "You are enabling the auto layout. All the changes you made to the diagram layout will be discarded and replaced with the automatically generated layout."
   },
   "diagrams_settings": {
-    "gen_only_straight_arrows": "Generate only straight arrows"
+    "gen_only_straight_arrows": "Generate only straight arrows",
+    "grid_enabled": "Grid enabled"
   },
   "home": {
     "chose_parent_dir_project": "Choose the parent directory of the project",
