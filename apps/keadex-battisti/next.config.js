@@ -62,6 +62,15 @@ const nextConfig = {
     webpackBuildWorker: true,
   },
   transpilePackages: ['../../libs/keadex-ui-kit/src/web.ts'],
+  async redirects() {
+    return [
+      {
+        source: '/:lang/mina',
+        destination: '/:lang/projects/keadex-mina',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {
