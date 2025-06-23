@@ -24,7 +24,10 @@
         "@nx/enforce-module-boundaries": [
           "error",
           {
-            "checkDynamicDependenciesExceptions": ["@keadex/keadex-ui-kit"]
+            "checkDynamicDependenciesExceptions": [
+              "@keadex/keadex-ui-kit",
+              "@keadex/mina-live"
+            ]
           }
         ]
       }

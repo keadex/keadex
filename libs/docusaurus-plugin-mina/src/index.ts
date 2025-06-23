@@ -41,6 +41,10 @@ function pluginMina({
       }
 
       if (isServer) {
+        if (!newConfig.externals) {
+          newConfig.externals = []
+        }
+        newConfig.externals.push({ canvas: 'commonjs canvas' })
         newConfig.module = {
           rules: [
             {

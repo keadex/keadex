@@ -23,9 +23,11 @@ pub async fn execute_hook(payload: HookPayload) -> Result<bool, MinaError> {
 
   const CREATE_NO_WINDOW: u32 = 0x08000000;
 
-  let store = ROOT_RESOLVER.get().read().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
 
   let hooks_file_path = hooks_path(&project_settings.root);

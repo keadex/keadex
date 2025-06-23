@@ -3,8 +3,9 @@
 import { PropsWithChildren } from 'react'
 import { Trans } from 'react-i18next'
 import { useTranslation } from '../../app/i18n/client'
-import projectStructureGif from '../../../public/img/mina/project-structure.gif'
-import Image from 'next/image'
+import dynamic from 'next/dynamic'
+
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
 
 export type MinaProjectStructureProps = {
   lang: string
@@ -41,11 +42,23 @@ export default function MinaProjectStructure({
           </div>
         </div>
         <div className="flex flex-col w-full md:w-1/2 pl-0 md:pl-10 mt-10 md:mt-0">
-          <Image
-            src={projectStructureGif}
-            alt="Mina project structure flow"
-            className="w-full h-auto my-auto"
-          />
+          <div className="my-auto">
+            <ReactPlayer
+              url="https://vimeo.com/1070152500/8b11627a96"
+              playing
+              muted
+              loop
+              width="100%"
+              height="100%"
+              config={{
+                vimeo: {
+                  playerOptions: {
+                    responsive: true,
+                  },
+                },
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import { PropsWithChildren } from 'react'
 import { ToastContainer } from 'react-toastify'
 import { NEWS } from '../../core/news'
 import ROUTES from '../../core/routes'
+import { initConsole } from '@keadex/keadex-utils'
 
 const Header = dynamic(() => import('../Header/Header'))
 const Footer = dynamic(() => import('../Footer/Footer'))
@@ -15,15 +16,7 @@ export type LayourProps = {
   lang: string
 }
 
-//---------- Disable debug and log levels in production
-if (process.env.NODE_ENV === 'production') {
-  console.log = () => {
-    // do nothing
-  }
-  console.debug = () => {
-    // do nothing
-  }
-}
+initConsole()
 
 export default function Layout(props: PropsWithChildren<LayourProps>) {
   const { lang, children } = props

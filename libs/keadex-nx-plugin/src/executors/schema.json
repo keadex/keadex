@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "ReleaseKeadexProjects executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "dryRun": {
+      "type": "boolean",
+      "description": "If true, the command will be run in dry run mode. This means that no changes will be made to the file system.",
+      "default": false
+    },
+    "verbose": {
+      "type": "boolean",
+      "description": "If true, the command will be run in verbose mode. This means that more information will be printed to the console.",
+      "default": true
+    }
+  },
+  "required": []
+}

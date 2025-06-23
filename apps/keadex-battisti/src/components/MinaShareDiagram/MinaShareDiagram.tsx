@@ -7,6 +7,14 @@ import { PropsWithChildren, memo, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useTranslation } from '../../app/i18n/client'
 import { MinaReactProps } from '@keadex/mina-react-npm/src/components/MinaReact/MinaReact'
+import {
+  DIAGRAM_URL_PARAM_NAME,
+  GH_TOKEN_PARAM_NAME,
+  PROJECT_ROOT_URL_PARAM_NAME,
+  generateShareLink,
+} from '../../helper/share-link-helper'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { generateRemoteDiagramSSRLink } from '@keadex/keadex-mina/src/helper/ssr-link-helper'
 
 export const MinaReact = dynamic(() => import('@keadex/mina-react-npm'), {
   ssr: false,
@@ -28,10 +36,6 @@ export type MinaShareDiagramProps = {
   className?: string
 }
 
-const PROJECT_ROOT_URL_PARAM_NAME = 'projectRootUrl'
-const DIAGRAM_URL_PARAM_NAME = 'diagramUrl'
-const GH_TOKEN_PARAM_NAME = 'ghToken'
-
 export default function MinaShareDiagram({
   children,
   lang,
@@ -47,12 +51,12 @@ export default function MinaShareDiagram({
   const [projectRootUrl, setProjectRootUrl] = useState(
     !projectRootUrlParam || projectRootUrlParam.replace(/ /g, '').length === 0
       ? 'https://raw.githubusercontent.com/keadex/keadex/main/apps/keadex-diagrams'
-      : decodeURI(projectRootUrlParam),
+      : atob(projectRootUrlParam),
   )
   const [diagramUrl, setDiagramUrl] = useState(
     !diagramUrlParam || diagramUrlParam.replace(/ /g, '').length === 0
       ? 'https://raw.githubusercontent.com/keadex/keadex/main/apps/keadex-diagrams/diagrams/container/keadex-mina'
-      : decodeURI(diagramUrlParam),
+      : atob(diagramUrlParam),
   )
   const [ghToken, setGhToken] = useState(
     !ghTolenParam || ghTolenParam.replace(/ /g, '').length === 0
@@ -79,18 +83,11 @@ export default function MinaShareDiagram({
     }
   }
 
-  function handleCopyLinkClick() {
+  function handleCopyLinkClick(type: 'share-link' | 'ssr-link') {
+    const generateLink =
+      type === 'share-link' ? generateShareLink : generateRemoteDiagramSSRLink
     if (projectRootUrl && diagramUrl) {
-      const projectRootUrlParam = `${PROJECT_ROOT_URL_PARAM_NAME}=${encodeURI(
-        projectRootUrl,
-      )}`
-      const diagramUrlParam = `&${DIAGRAM_URL_PARAM_NAME}=${encodeURI(
-        diagramUrl,
-      )}`
-      const ghTokenParam = `&${GH_TOKEN_PARAM_NAME}=${ghToken}`
-      const link = `${window.location.origin}${
-        window.location.pathname
-      }?${projectRootUrlParam}${diagramUrlParam}${ghToken ? ghTokenParam : ''}`
+      const link = generateLink(projectRootUrl, diagramUrl, ghToken)
       navigator.clipboard.writeText(link)
       toast.info(t('keadex_mina.share_diagram.link_copied'))
       if (ghToken)
@@ -136,10 +133,17 @@ export default function MinaShareDiagram({
         </Button>
         <Button
           disabled={isButtonDisabled()}
-          className="mt-2 md:mt-0 w-40"
-          onClick={handleCopyLinkClick}
+          className="mt-2 md:mt-0 mr-0 md:mr-2 w-40"
+          onClick={() => handleCopyLinkClick('share-link')}
         >
           {t('keadex_mina.share_diagram.copy_link_to_share')}
+        </Button>
+        <Button
+          disabled={isButtonDisabled()}
+          className="mt-2 md:mt-0 w-40"
+          onClick={() => handleCopyLinkClick('ssr-link')}
+        >
+          {t('keadex_mina.share_diagram.copy_ssr_link')}
         </Button>
       </div>
       <div className="w-full h-[50rem] mt-14 bg-white">

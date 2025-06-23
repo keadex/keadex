@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { PageProps } from '../layout'
 
-const PrivacyPolicy: NextPage<PageProps> = async ({ params: { lang } }) => {
+const PrivacyPolicy: NextPage<PageProps> = async () => {
   return (
     <div className="page font-light flex flex-col pb-10">
       <h1>Privacy Policy for Keadex</h1>

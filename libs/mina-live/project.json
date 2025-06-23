@@ -1,0 +1,70 @@
+{
+  "name": "mina-live",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mina-live/src",
+  "projectType": "library",
+  "implicitDependencies": ["keadex-mina"],
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn nx build-types mina-live"
+      },
+      "dependsOn": []
+    },
+    "build-types": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "tsc --p ./tsconfig.lib.json"
+      },
+      "dependsOn": ["build-code"]
+    },
+    "build-code": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "compiler": "babel",
+        "outputPath": "libs/mina-live/dist",
+        "outputHashing": "none",
+        "main": "libs/mina-live/index.ts",
+        "tsConfig": "libs/mina-live/tsconfig.lib.json",
+        "webpackConfig": "libs/mina-live/webpack.config.ts",
+        "optimization": true,
+        "sourceMap": false,
+        "namedChunks": false,
+        "extractLicenses": true,
+        "vendorChunk": false,
+        "externalDependencies": "all"
+      },
+      "dependsOn": ["build-wasm"]
+    },
+    "build-wasm": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "libs/mina-live",
+        "commands": ["yarn wasm-pack build ./src-rust --target bundler"],
+        "parallel": false
+      }
+    },
+    "build-wasm-debug": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "libs/mina-live",
+        "commands": [
+          "yarn wasm-pack build --debug ./src-rust --target bundler",
+          "npx rimraf src-rust/pkg/.gitignore"
+        ],
+        "parallel": false
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/mina-live/**/*.{ts,tsx,js,jsx}"],
+        "ignorePath": "libs/mina-live/.eslintignore"
+      }
+    }
+  }
+}

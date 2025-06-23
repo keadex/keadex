@@ -30,10 +30,9 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
     onDefaultOptionSelected,
     allowedChars,
     info,
+    key,
     ...otherProps
-  } = {
-    ...props,
-  }
+  } = props
 
   const dataAttributes = getDataAttributes(props)
   const [localInputValue, setLocalInputValue] = useState(
@@ -131,6 +130,7 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
     <div className={`${props.id} autocomplete relative mb-3 ${className}`}>
       <select
         data-te-select-init
+        key={key}
         {...otherProps}
         {...dataAttributes}
         value={localInputValue}

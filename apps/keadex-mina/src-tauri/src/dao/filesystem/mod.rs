@@ -1,46 +1,35 @@
-#[cfg(feature = "desktop")]
 pub mod binary_dao;
 pub mod diagram;
-#[cfg(feature = "desktop")]
 pub mod library;
 pub mod project_settings_dao;
 
-#[cfg(feature = "desktop")]
+use crate::api::filesystem::CrossFile;
+use crate::api::filesystem::FileSystemAPI as FsApiTrait;
+use crate::core::app::ROOT_RESOLVER;
+use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::core::serializer::{deserialize_json_by_file, serialize_obj_to_json_string};
-#[cfg(feature = "desktop")]
 use crate::dao::DAO;
-#[cfg(feature = "desktop")]
 use crate::error_handling::errors::{
   CANNOT_OPEN_FILE_ERROR_MSG, FILE_DOES_NOT_EXIST, IO_ERROR_CODE, NO_CACHED_FILE_ERROR_MSG,
 };
-#[cfg(feature = "desktop")]
 use crate::error_handling::mina_error::MinaError;
-#[cfg(feature = "desktop")]
-use fs2::FileExt;
-#[cfg(feature = "desktop")]
+use crate::resolve_to_write;
 use serde::de;
-#[cfg(feature = "desktop")]
 use std::collections::hash_map::Entry;
-#[cfg(feature = "desktop")]
 use std::collections::HashMap;
-#[cfg(feature = "desktop")]
-use std::fs::{File, OpenOptions};
-#[cfg(feature = "desktop")]
-use std::io::Write;
-#[cfg(feature = "desktop")]
+use std::future::Future;
 use std::path::Path;
 
 /**
 Specialization of the DAO to interact with data stored in the file system.
 */
-#[cfg(feature = "desktop")]
-pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
+pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + Sync>: DAO {
   /*
     I need to cache the opened files because in order to lock a file for the entire
     duration of the application, the reference to the "File" must not to be destroyed
     starting from the time you lock it.
   */
-  fn get_opened_files(&mut self) -> &mut HashMap<String, File>;
+  fn get_opened_files(&mut self) -> &mut HashMap<String, Box<dyn CrossFile>>;
 
   /**
   Opens, unlocks and returns the requested file
@@ -52,34 +41,35 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
     path: &Path,
     append: bool,
     truncate: bool,
-  ) -> Result<&File, MinaError> {
-    // log::debug!("Open and unlock file {:?}", path);
-    let file = OpenOptions::new()
-      .read(true)
-      .write(true)
-      .append(append)
-      .truncate(truncate)
-      .open(path);
-    match file {
-      Ok(file) => {
-        let _ = file.unlock();
-        self.get_opened_files().remove(path.to_str().unwrap());
-        if let Entry::Vacant(v) = self
-          .get_opened_files()
-          .entry(path.to_str().unwrap().to_string())
-        {
-          // log::debug!("Update cached file {:?}", path);
-          return Ok(v.insert(file));
+  ) -> impl Future<Output = Result<&mut Box<dyn CrossFile>, MinaError>> {
+    async move {
+      // log::debug!("Open and unlock file {:?}", path);
+      let store = ROOT_RESOLVER.get().read().await;
+      let file = resolve_to_write!(store, FileSystemAPI)
+        .await
+        .open(true, true, append, truncate, &path)
+        .await;
+      match file {
+        Ok(file) => {
+          let _ = file.unlock();
+          self.get_opened_files().remove(path.to_str().unwrap());
+          if let Entry::Vacant(v) = self
+            .get_opened_files()
+            .entry(path.to_str().unwrap().to_string())
+          {
+            // log::debug!("Update cached file {:?}", path);
+            return Ok(v.insert(file));
+          }
+        }
+        Err(error) => {
+          log::error!("{}", error);
+          return Err(error.into());
         }
       }
-      Err(error) => {
-        log::error!("{}", error);
-        return Err(error.into());
-      }
+      let error = MinaError::new(IO_ERROR_CODE, CANNOT_OPEN_FILE_ERROR_MSG);
+      log::error!("{}", error);
+      Err(error)
     }
-    let error = MinaError::new(IO_ERROR_CODE, CANNOT_OPEN_FILE_ERROR_MSG);
-    log::error!("{}", error);
-    Err(error)
   }
 
   /**
@@ -167,14 +157,16 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
   # Arguments
     * `path` - Path of the file
   */
-  fn get(&mut self, path: &Path) -> Result<T, MinaError>
+  fn get(&mut self, path: &Path) -> impl Future<Output = Result<T, MinaError>>
   where
     T: de::DeserializeOwned,
   {
-    let file = self.open_and_unlock_file(path, true, false)?;
-    let result = deserialize_json_by_file::<T>(&file, path)?;
-    let _ = self.lock_file(path);
-    Ok(result)
+    async {
+      let mut file = self.open_and_unlock_file(path, true, false).await?;
+      let result = deserialize_json_by_file::<T>(&mut file, path).await?;
+      let _ = self.lock_file(path);
+      Ok(result)
+    }
   }
 
   /**
@@ -185,14 +177,16 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
   # Arguments
     * `path` - Path of the file
   */
-  fn get_all(&mut self, path: &Path) -> Result<Vec<T>, MinaError>
+  fn get_all(&mut self, path: &Path) -> impl Future<Output = Result<Vec<T>, MinaError>>
   where
     T: de::DeserializeOwned,
   {
-    let file = self.open_and_unlock_file(path, true, false)?;
-    let results = deserialize_json_by_file::<Vec<T>>(&file, path)?;
-    let _ = self.lock_file(path);
-    Ok(results)
+    async {
+      let mut file = self.open_and_unlock_file(path, true, false).await?;
+      let results = deserialize_json_by_file::<Vec<T>>(&mut file, path).await?;
+      let _ = self.lock_file(path);
+      Ok(results)
+    }
   }
 
   /**
@@ -203,19 +197,34 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
     * `path` - Path of the file in which save the data
     * `create_if_not_exist` - If you want to create the file if it does not exist
   */
-  fn save(&mut self, data: &T, path: &Path, create_if_not_exist: bool) -> Result<(), MinaError> {
-    if !Path::new(&path).exists() {
-      if create_if_not_exist {
-        File::create(&path)?;
-      } else {
-        return Err(MinaError::new(IO_ERROR_CODE, FILE_DOES_NOT_EXIST));
+  fn save(
+    &mut self,
+    data: &T,
+    path: &Path,
+    create_if_not_exist: bool,
+  ) -> impl Future<Output = Result<(), MinaError>> {
+    async move {
+      let store = ROOT_RESOLVER.get().read().await;
+      if !resolve_to_write!(store, FileSystemAPI)
+        .await
+        .path_exists(Path::new(&path))
+        .await?
+      {
+        if create_if_not_exist {
+          resolve_to_write!(store, FileSystemAPI)
+            .await
+            .create(&path)
+            .await?;
+        } else {
+          return Err(MinaError::new(IO_ERROR_CODE, FILE_DOES_NOT_EXIST));
+        }
       }
+      let file = self.open_and_unlock_file(path, false, true).await?;
+      let serialized_json = serialize_obj_to_json_string(data, true)?;
+      file.write_all(serialized_json.as_bytes()).await?;
+      let _ = self.lock_file(path);
+      Ok(())
     }
-    let mut file = self.open_and_unlock_file(path, false, true)?;
-    let serialized_json = serialize_obj_to_json_string(data, true)?;
-    file.write_all(serialized_json.as_bytes())?;
-    let _ = self.lock_file(path);
-    Ok(())
   }
 
   /**
@@ -225,12 +234,18 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
     * `data` - Data to save
     * `path` - Path of the file in which save the data
   */
-  fn save_all(&mut self, data: &Vec<T>, path: &Path) -> Result<(), MinaError> {
-    let mut file = self.open_and_unlock_file(path, false, true)?;
-    let serialized_json = serialize_obj_to_json_string(data, true)?;
-    file.write_all(serialized_json.as_bytes())?;
-    let _ = self.lock_file(path);
-    Ok(())
+  fn save_all(
+    &mut self,
+    data: &Vec<T>,
+    path: &Path,
+  ) -> impl Future<Output = Result<(), MinaError>> {
+    async {
+      let file = self.open_and_unlock_file(path, false, true).await?;
+      let serialized_json = serialize_obj_to_json_string(data, true)?;
+      file.write_all(serialized_json.as_bytes()).await?;
+      let _ = self.lock_file(path);
+      Ok(())
+    }
   }
 
   /**
@@ -238,11 +253,18 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug>: DAO {
   # Arguments
     * `path` - Path of the file to delete
   */
-  fn delete(&mut self, path: &Path) -> Result<(), MinaError> {
-    // Ignoring a possible error during unlock, since it reasonable that a diagram could not
-    // be opened before the deletion.
-    let _ = self.unlock_file(path, true);
-    std::fs::remove_file(path)?;
-    Ok(())
+  fn delete(&mut self, path: &Path) -> impl Future<Output = Result<(), MinaError>> {
+    async {
+      // Ignoring a possible error during unlock, since it reasonable that a diagram could not
+      // be opened before the deletion.
+      let _ = self.unlock_file(path, true);
+
+      let store = ROOT_RESOLVER.get().read().await;
+      resolve_to_write!(store, FileSystemAPI)
+        .await
+        .remove_file(path)
+        .await?;
+      Ok(())
+    }
   }
 }

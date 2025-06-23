@@ -33,6 +33,7 @@ import { renderDeploymentNodeDiagramElement } from './deployment-node-renderer'
 import { renderPersonDiagramElement } from './person-renderer'
 import { renderRelationshipDiagramElement } from './relationship-renderer'
 import { renderSoftwareSystemDiagramElement } from './software-system-renderer'
+import { KeadexCanvas } from '@keadex/keadex-ui-kit/cross'
 
 export class DiagramRenderer {
   graphviz?: Graphviz
@@ -43,7 +44,7 @@ export class DiagramRenderer {
   }
 
   renderDiagram(
-    canvas: fabric.Canvas,
+    canvas: KeadexCanvas,
     diagramListener: DiagramListener,
     diagram: Diagram | undefined,
     diagramsThemeSettings: DiagramsThemeSettings | undefined,
@@ -63,6 +64,12 @@ export class DiagramRenderer {
           console.error(
             'Graphviz not initialized. Cannot generate auto layout.',
           )
+      }
+
+      if (diagram.diagram_spec?.grid_enabled) {
+        canvas.enableGrid()
+      } else {
+        canvas.disableGrid()
       }
 
       const components = renderElements(
@@ -90,7 +97,7 @@ export interface RenderElementsOptions {
 }
 
 export const renderElements = (
-  canvas: fabric.Canvas | undefined,
+  canvas: KeadexCanvas | undefined,
   diagramElements: DiagramElementType[] | undefined,
   diagramSpec: DiagramSpec | undefined,
   autoLayout: Record<string, ElementData>,

@@ -2,6 +2,7 @@
   "name": "mina-confluence-app",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/mina-confluence-app/src",
+  "implicitDependencies": ["!mina-confluence-plugin", "mina-react"],
   "projectType": "application",
   "targets": {
     "build": {
@@ -66,7 +67,7 @@
       "dependsOn": [{ "projects": ["mina-react"], "target": "build-wasm" }]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/mina-confluence-app/**/*.{ts,tsx,js,jsx}"]

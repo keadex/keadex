@@ -55,4 +55,8 @@ act-secrets.env
 .next
 
 # Nx
-.nx
+.nx/workspace-data
+.nx/cache
+
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md

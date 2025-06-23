@@ -15,7 +15,8 @@ const AboutMeSummary = dynamic(
   () => import('../../components/AboutMeSummary/AboutMeSummary'),
 )
 
-const Home: NextPage<PageProps> = async ({ params: { lang } }) => {
+const Home: NextPage<PageProps> = async ({ params }) => {
+  const { lang } = await params
   return (
     <div className="overflow-x-hidden">
       <KeadexSummary lang={lang} />

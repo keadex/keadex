@@ -25,6 +25,7 @@ import { Ref, forwardRef, useEffect, useImperativeHandle } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from 'tw-elements'
 import { DiagramCodeViewCommands } from '../../views/DiagramEditor/DiagramCodeView/DiagramCodeView'
+import { ENV_SETTINGS } from '../../core/env-settings'
 
 export interface DiagramCodeViewToolbarProps {
   diagramCodeViewCommands: DiagramCodeViewCommands | null
@@ -47,7 +48,7 @@ export const DiagramCodeViewToolbar = forwardRef(
   ) => {
     const { diagramCodeViewCommands } = props
 
-    const AI_ENABLED = JSON.parse(import.meta.env.VITE_AI_ENABLED)
+    const AI_ENABLED = ENV_SETTINGS.AI_ENABLED
     const { t } = useTranslation()
     const { forceUpdate } = useForceUpdate()
 

@@ -6,6 +6,7 @@ import MinaShareDiagramComponent from '../../../../../components/MinaShareDiagra
 import { useTranslation } from '../../../../i18n'
 import { PageProps } from '../../../layout'
 import ROUTES, { PROJECT_KEADEX_MINA } from '../../../../../core/routes'
+import { Suspense } from 'react'
 
 const seo = {
   title: 'Keadex Mina - Share Diagram',
@@ -34,7 +35,8 @@ export const metadata: Metadata = {
   },
 }
 
-const MinaShareDiagram: NextPage<PageProps> = async ({ params: { lang } }) => {
+const MinaShareDiagram: NextPage<PageProps> = async ({ params }) => {
+  const { lang } = await params
   const { t } = await useTranslation(lang)
   return (
     <div className="page font-light flex flex-col pt-10 pb-10">
@@ -52,7 +54,9 @@ const MinaShareDiagram: NextPage<PageProps> = async ({ params: { lang } }) => {
             __html: t('keadex_mina.share_diagram.description'),
           }}
         />
-        <MinaShareDiagramComponent lang={lang} className="mt-8" />
+        <Suspense>
+          <MinaShareDiagramComponent lang={lang} className="mt-8" />
+        </Suspense>
       </div>
     </div>
   )

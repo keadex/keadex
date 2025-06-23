@@ -1,13 +1,26 @@
+import dynamic from 'next/dynamic'
+
+export const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
+
 # Search
 
 In the case of complex architectures, with many diagrams and shared architectural elements, it's important to **quickly search** for the existence of specific content to avoid duplication and encourage reuse.
 
 For this reason, in addition to the standard search functionalities (within the library or in the list of diagrams), Mina integrates a keyword search feature in your diagrams with the ability to **access** them quickly with a click.
 
-<iframe
-  src="https://www.youtube.com/embed/oCje5uU8SXQ"
-  className="w-full h-80 my-14 border-0"
-  frameBorder="0"
-  allowFullScreen
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-/>
+<div className="w-full h-[30rem] my-14 border-0">
+  <ReactPlayer
+    url="https://vimeo.com/1072369776/70ea26605e"
+    muted
+    width="100%"
+    height="100%"
+    controls
+    config={{
+      vimeo: {
+        playerOptions: {
+          transparent: false,
+        },
+      },
+    }}
+  />
+</div>

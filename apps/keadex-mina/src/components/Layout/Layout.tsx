@@ -18,13 +18,13 @@ import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { v4 as uuidv4 } from 'uuid'
-import icon from '../../../src-tauri/icons/icon.png'
 import AppEventContext from '../../context/AppEventContext'
 import { useDeepLinkRouter } from '../../core/router/router'
 import ROUTES from '../../core/router/routes'
 import { useAppDispatch, useAppSelector } from '../../core/store/hooks'
 import AppMenu, { AppMenuCommands } from '../AppMenu/AppMenu'
 import { createButtons } from './window-titlebar-buttons'
+import { ENV_SETTINGS } from '../../core/env-settings'
 
 const appWindow = getCurrentWebviewWindow()
 
@@ -166,10 +166,17 @@ export const Layout = React.memo((props: LayoutProps) => {
       <ModalRoot />
       <Window>
         <WindowTitlebar
-          rightButtonsProps={rightButtons}
-          icon={icon}
+          rightButtonsProps={ENV_SETTINGS.WEB_MODE ? [] : rightButtons}
+          icon={'mina-logo.svg'}
           menuProps={windowTitlebarMenu}
-          title="Keadex Mina"
+          title={
+            <div>
+              <div className="inline opacity-20">Keadex Mina</div>
+              <div className="inline ml-1 px-1 py-[0.10rem] bg-primary text-brand1 rounded text-sm">
+                v2
+              </div>
+            </div>
+          }
         />
         <div className="absolute bottom-0 left-0 right-0 top-8 overflow-auto">
           <AppMenu visible={isAppMenuVisible} ref={appMenuRef}>

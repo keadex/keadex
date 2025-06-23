@@ -26,7 +26,11 @@ Container_Boundary(mina, "Keadex Mina"){
 
     Container(minaBEResolver, "Resolver", "Rust", "The resolver allows to store and resolve singletons.")
 
-    ContainerDb(minaBEFileSystem, "File System", "OS", "Local OS file system.")
+    Container_Boundary(minaBEFileSystemAPIs, "File System APIs"){
+      Container(minaBENativeFS, "Native File System APIs", "OS", "Native File System.")
+
+      Container(minaBEWebFS, "Web File System APIs", "Javascript", "Web File System.")
+    }
 
     ContainerDb(minaBEMemory, "Memory", "OS", "Local OS memory.")
 
@@ -72,7 +76,7 @@ System_Ext(minaOS, "Operating System", "Local OS")
 
 Container(minaReact, "Mina React", "React", "Library that provides React components to render interactive C4 Model diagrams created with Keadex Mina.")
 
-Container(minaC4modelUIKit, "C4 Model UI Kit", "Fabric.js", "Fabric.js components and modules to render C4 model diagrams.")
+Container(minaC4modelUIKit, "C4 Model UI Kit", "Fabric.js", "Fabric.js components and modules to render C4 model diagrams.", $link="component/c4-model-ui-kit")
 
 Container(minaKeadexUIKit, "Keadex UI Kit", "React", "Components, hooks, styles and utilities to render Keadex applications.")
 
@@ -103,5 +107,33 @@ Rel(minaConfluenceApp, minaReact, "imports", "React")
 Rel(minaConfluencePlugin, minaConfluenceApp, "includes as a resource the static build of", "Forge")
 
 Rel(mina, minaOS, "interacts with", "OS")
+
+Container_Boundary(minaLive, "Mina Live"){
+  Container(minaLiveTauriPluginAdapter, "Tauri Plugin Adapter", "Typescript", "Tauri plugin implementations for the web.")
+
+  Container(minaLiveTauriWebAdapter, "Tauri Web Adapter", "Typescript", "Tauri implementations for the web.")
+
+  Container(minaLiveComponent, "Mina Live Component", "React", "React component to include Keadex Mina.")
+
+  Container(minaLiveWasmBridge, "Wasm Bridge", "Typescript", "Bridge to invoke wasm functions.")
+
+  Container(minaLiveBackend, "Wasm Backend", "WebAssembly", "Keadex Mina backend compiled to wasm.")
+
+  Rel(minaLiveTauriWebAdapter, minaLiveWasmBridge, "invokes", "Typescript")
+
+  Rel(minaLiveWasmBridge, minaLiveBackend, "invokes", "Typescript")
+}
+
+Container(minaCLI, "Mina CLI", "Rust", "CLI to interact with Mina projects.")
+
+Rel(minaLiveComponent, minaFrontend, "imports", "React")
+
+Rel(minaFrontend, minaLiveTauriPluginAdapter, "invokes", "Typescript")
+
+Rel(minaFrontend, minaLiveTauriWebAdapter, "invokes", "Typescript")
+
+Rel(minaBackend, minaLiveBackend, "compiled to wasm", "wasm-pack")
+
+Rel(minaCLI, minaBackend, "uses subset features of", "Rust")
 
 @enduml

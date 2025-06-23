@@ -3,6 +3,9 @@ Project Validator.
 It contains the validators that validate different requirements of a Mina project.
 */
 
+use crate::api::filesystem::FileSystemAPI as FsApiTrait;
+use crate::core::app::ROOT_RESOLVER;
+use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::dao::filesystem::library::{
   component_dao, container_dao, person_dao, software_system_dao,
 };
@@ -16,7 +19,7 @@ use crate::error_handling::mina_error::MinaError;
 use crate::helper::diagram_helper::diagrams_path;
 use crate::helper::library_helper::project_library_path;
 use crate::helper::project_helper::project_settings_path;
-use std::fs::metadata;
+use crate::resolve_to_write;
 use std::path::{Path, MAIN_SEPARATOR};
 
 /**
@@ -24,16 +27,26 @@ Checks if the provided root contains a valid Mina project.
 # Arguments
   * `root` - root of the Mina project
 */
-pub fn validate_project_structure(root: &str) -> Result<(), MinaError> {
-  contains_mina_config_file(root)?;
-  contains_diagrams_folder(root)?;
-  contains_project_library(root)?;
+pub async fn validate_project_structure(root: &str) -> Result<(), MinaError> {
+  contains_mina_config_file(root).await?;
+  contains_diagrams_folder(root).await?;
+  contains_project_library(root).await?;
   Ok(())
 }
 
-fn contains_mina_config_file(root: &str) -> Result<(), MinaError> {
+async fn contains_mina_config_file(root: &str) -> Result<(), MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
+
   let full_path = project_settings_path(root);
-  if Path::new(&root).exists() && !Path::new(&full_path).exists() {
+  if resolve_to_write!(store, FileSystemAPI)
+    .await
+    .path_exists(&Path::new(root))
+    .await?
+    && !resolve_to_write!(store, FileSystemAPI)
+      .await
+      .path_exists(&Path::new(&full_path))
+      .await?
+  {
     let error = MinaError::new(
       MISSING_MINA_CONFIG_ERROR_CODE,
       MISSING_MINA_CONFIG_ERROR_MSG,
@@ -44,9 +57,15 @@ fn contains_mina_config_file(root: &str) -> Result<(), MinaError> {
   Ok(())
 }
 
-fn contains_diagrams_folder(root: &str) -> Result<(), MinaError> {
+async fn contains_diagrams_folder(root: &str) -> Result<(), MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
+
   let full_path = diagrams_path(root);
-  if !Path::new(&full_path).exists() {
+  if !resolve_to_write!(store, FileSystemAPI)
+    .await
+    .path_exists(&Path::new(&full_path))
+    .await?
+  {
     let error = MinaError::new(
       INVALID_PROJECT_STRUCTURE_ERROR_CODE,
       format!(
@@ -61,10 +80,16 @@ fn contains_diagrams_folder(root: &str) -> Result<(), MinaError> {
   Ok(())
 }
 
-fn contains_project_library(root: &str) -> Result<(), MinaError> {
+async fn contains_project_library(root: &str) -> Result<(), MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
+
   let library_folder_path = project_library_path(root);
   // Check root library folder exists
-  if !Path::new(&library_folder_path).exists() {
+  if !resolve_to_write!(store, FileSystemAPI)
+    .await
+    .path_exists(&Path::new(&library_folder_path))
+    .await?
+  {
     let error = MinaError::new(
       INVALID_PROJECT_STRUCTURE_ERROR_CODE,
       format!(
@@ -89,7 +114,11 @@ fn contains_project_library(root: &str) -> Result<(), MinaError> {
       "{}{}{}",
       library_folder_path, MAIN_SEPARATOR, expected_file_name
     );
-    if !Path::new(&expected_file_path).exists() {
+    if !resolve_to_write!(store, FileSystemAPI)
+      .await
+      .path_exists(&Path::new(&expected_file_path))
+      .await?
+    {
       let error = MinaError::new(
         INVALID_PROJECT_STRUCTURE_ERROR_CODE,
         format!(
@@ -111,20 +140,30 @@ Checks if the provided path satisfies the requirement to contain a new project.
   * `root` - root of the new project
   * `project_folder` - folder of the new project
 */
-pub fn validate_output_project_directory(
+pub async fn validate_output_project_directory(
   root: &str,
   project_folder: &str,
 ) -> Result<String, MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
+
   let full_project_root = format!("{}{}{}", root, MAIN_SEPARATOR, project_folder);
 
-  if !Path::new(root).exists() {
+  if !resolve_to_write!(store, FileSystemAPI)
+    .await
+    .path_exists(&Path::new(root))
+    .await?
+  {
     return Err(MinaError::new(
       INVALID_NEW_PROJECT_PATH_ERROR_CODE,
       NOT_EXISTING_PARENT_PATH_PROJECT_ERROR_MSG,
     ));
   }
 
-  if Path::new(&full_project_root).exists() {
+  if resolve_to_write!(store, FileSystemAPI)
+    .await
+    .path_exists(&Path::new(&full_project_root))
+    .await?
+  {
     return Err(MinaError::new(
       INVALID_NEW_PROJECT_PATH_ERROR_CODE,
       &format!(
@@ -134,7 +173,11 @@ pub fn validate_output_project_directory(
     ));
   }
 
-  if !metadata(root).unwrap().is_dir() {
+  let metadata = resolve_to_write!(store, FileSystemAPI)
+    .await
+    .metadata(&Path::new(root))
+    .await?;
+  if !metadata.is_dir {
     return Err(MinaError::new(
       INVALID_NEW_PROJECT_PATH_ERROR_CODE,
       NOT_A_DIRECTORY_ERROR_MSG,

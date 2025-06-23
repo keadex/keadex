@@ -1,6 +1,9 @@
+use crate::api::filesystem::CrossPathBuf;
+use crate::api::filesystem::FileSystemAPI as FsApiTrait;
 use crate::core::app::ROOT_RESOLVER;
 use crate::core::project_initializer::load_project;
 use crate::core::project_initializer::unload_project;
+use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::core::resolver::ResolvableModules::ProjectSettingsIMDAO;
 use crate::dao::inmemory::InMemoryDAO;
 use crate::error_handling::mina_error::MinaError;
@@ -16,14 +19,14 @@ use crate::model::file_search_results::FileSearchCategory;
 use crate::model::file_search_results::{FileSearchResult, FileSearchResults};
 use crate::repository::library::library_repository::search_library_element;
 use crate::resolve_to_write;
-use std::collections::HashMap;
-use std::fs::rename;
-use std::fs::File;
+use async_std::sync::Arc;
+use async_std::sync::RwLock;
+use futures::future::join_all;
+use std::collections::BTreeMap;
+use std::future::Future;
 use std::io::BufRead;
-use std::io::BufReader;
-use std::io::Write;
-use walkdir::DirEntry;
-use walkdir::WalkDir;
+use std::path::Path;
+use std::usize;
 
 /**
 Generates the file search category of a file with the given path.
@@ -43,7 +46,7 @@ fn get_category(path: &str, diagrams_dir: &str, library_dir: &str) -> FileSearch
 }
 
 /**
-Checks if the given directory entry is searchable.
+Checks if the given entry (directory or file) is searchable.
 # Arguments
   * `entry` - Directory entry to check.
   * `include_diagrams_dir` - If you want to include the diagrams directory in the search.
@@ -51,20 +54,23 @@ Checks if the given directory entry is searchable.
   * `diagrams_dir` - Path of the diagrams directory.
   * `library_dir`- Path of the project library directory.
 */
-fn is_searchable_dir(
-  entry: &DirEntry,
+fn is_searchable_entry(
+  entry: &CrossPathBuf,
   root_dir: &str,
   include_diagrams_dir: bool,
   include_library_dir: bool,
   diagrams_dir: &str,
   library_dir: &str,
 ) -> bool {
-  if let Some(path) = entry.path().to_str() {
-    let is_searchable = path.eq(root_dir)
+  if let Some(path) = entry.path.as_ref() {
+    let is_searchable_path = path.eq(root_dir)
       || ((path.starts_with(diagrams_dir) || path.starts_with(library_dir))
         && (include_diagrams_dir || (!include_diagrams_dir && !path.starts_with(diagrams_dir)))
         && (include_library_dir || (!include_library_dir && !path.starts_with(library_dir))));
-    return is_searchable;
+    let is_searchable_file = entry.is_dir
+      || (!entry.is_dir && entry.file_name.ends_with(".json")
+        || entry.file_name.ends_with(".puml"));
+    return is_searchable_path && is_searchable_file;
   } else {
     return false;
   }
@@ -78,14 +84,24 @@ Searches by using the given callback in the project's files.
   * `include_library` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
-pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> Result<bool, MinaError>>(
+pub async fn search_in_project<F, Fut>(
+  concurrent: bool,
   mut predicate: F,
   include_diagrams: bool,
   include_library: bool,
-  limit: i32,
-) -> Result<bool, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
+  limit: usize,
+) -> Result<bool, MinaError>
+where
+  F: FnMut(String, usize, String, String, String) -> Fut,
+  Fut: Future<Output = Result<bool, MinaError>>,
+{
+  let max_concurrent_predicates: usize = 10000;
+
+  let store = ROOT_RESOLVER.get().read().await;
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .get()
+    .await;
 
   if let Some(project_settings) = project_settings {
     let temp_root_1 = String::from(&project_settings.root);
@@ -96,15 +112,16 @@ pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> Result<boo
 
     let mut count = 0;
     let mut reached_limit = false;
+    let mut concurrent_predicates = vec![];
 
     // Unload the project since we need to unlock all the project's file in order to read them
-    unload_project(&project_settings.root)?;
+    unload_project(&project_settings.root).await?;
 
     // Search for the given string in all the project's files
-    for entry in WalkDir::new(temp_root_1)
-      .into_iter()
-      .filter_entry(|e| {
-        is_searchable_dir(
+    let project_files = resolve_to_write!(store, FileSystemAPI)
+      .await
+      .walk_dir(&Path::new(&temp_root_1), |e| {
+        is_searchable_entry(
           e,
           &temp_root_2,
           include_diagrams,
@@ -113,27 +130,61 @@ pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> Result<boo
           &library_directory,
         )
       })
-      .filter_map(|e| e.ok())
-    {
-      if entry.file_type().is_file() {
-        let file = File::options().read(true).write(false).open(entry.path())?;
-        let reader = BufReader::new(file);
-        let path = entry.path().to_str().unwrap();
+      .await?;
+
+    for entry in project_files {
+      if !entry.is_dir {
+        let path = entry.path.unwrap();
+        let file = resolve_to_write!(store, FileSystemAPI)
+          .await
+          .open(true, false, false, false, &Path::new(&path))
+          .await?;
+        let reader = file.get_buffer().await?;
 
         for (line_num, line) in reader.lines().enumerate() {
           if let Ok(line) = line {
-            if predicate(
-              line,
-              line_num,
-              path,
-              &diagrams_directory,
-              &library_directory,
-            )? {
-              count += 1;
-              if count > limit {
-                reached_limit = true;
-                count -= 1;
-                break;
+            if concurrent {
+              // Execute the predicates in parallel
+              concurrent_predicates.push(predicate(
+                line,
+                line_num,
+                path.clone(),
+                diagrams_directory.clone(),
+                library_directory.clone(),
+              ));
+
+              if concurrent_predicates.len() == max_concurrent_predicates {
+                let results = join_all(concurrent_predicates).await;
+                for result in results {
+                  if result.is_ok_and(|predicate_result| predicate_result) {
+                    count += 1;
+                    if count > limit {
+                      reached_limit = true;
+                      break;
+                    }
+                  }
+                }
+                concurrent_predicates = vec![];
+                if reached_limit {
+                  break;
+                }
+              }
+            } else {
+              // Execute the predicates sequentially
+              if predicate(
+                line,
+                line_num,
+                path.clone(),
+                diagrams_directory.clone(),
+                library_directory.clone(),
+              )
+              .await?
+              {
+                count += 1;
+                if count > limit {
+                  reached_limit = true;
+                  break;
+                }
               }
             }
           } else {
@@ -147,8 +198,22 @@ pub fn search_in_project<F: FnMut(String, usize, &str, &str, &str) -> Result<boo
       }
     }
 
+    if concurrent && !reached_limit && concurrent_predicates.len() > 0 {
+      // There are still some predicates to execute
+      let results = join_all(concurrent_predicates).await;
+      for result in results {
+        if result.is_ok_and(|predicate_result| predicate_result) {
+          count += 1;
+          if count > limit {
+            reached_limit = true;
+            break;
+          }
+        }
+      }
+    }
+
     // (Re)load the project to make it available again to the client
-    load_project(&temp_root_2)?;
+    load_project(&temp_root_2).await?;
 
     Ok(reached_limit)
   } else {
@@ -163,68 +228,121 @@ Searches for the given text in the project's files and replace it with the given
   * `replacement` - Replacement.
   * `include_diagrams` - If you want to include the diagrams directory in the search.
   * `include_library` - If you want to include the library directory in the search.
-  * `limit` - Limit of the returned results.
 */
-pub fn search_and_replace_text(
+pub async fn search_and_replace_text(
   text_to_search: &str,
   replacement: &str,
   include_diagrams: bool,
   include_library: bool,
-  limit: i32,
 ) -> Result<FileSearchResults, MinaError> {
   log::debug!("Search {} and replace with {}", text_to_search, replacement);
 
-  let mut current_path = String::from("");
-  let mut temp_file_opt = None;
-  let mut new_line = String::from("");
+  let current_path_rc = Arc::new(RwLock::new(String::from("")));
+  let updated_content_opt_rc = Arc::new(RwLock::<Option<String>>::new(None));
+  let new_line_rc = Arc::new(RwLock::new(String::from("")));
+  let results_rc = Arc::new(RwLock::new(BTreeMap::new()));
 
-  let mut results = HashMap::new();
   let reached_limit = search_in_project(
+    false,
     |line, line_num, path, diagrams_directory, library_directory| {
-      if !path.eq(&current_path) {
-        if !current_path.eq("") {
-          rename(format!("{}.tmp", current_path), &current_path)?;
+      let current_path = Arc::clone(&current_path_rc);
+      let updated_content_opt = Arc::clone(&updated_content_opt_rc);
+      let new_line = Arc::clone(&new_line_rc);
+      let results = Arc::clone(&results_rc);
+      async move {
+        if !current_path.read().await.eq(&path) {
+          let store = ROOT_RESOLVER.get().read().await;
+          if !current_path.read().await.eq("") {
+            resolve_to_write!(store, FileSystemAPI)
+              .await
+              .open(
+                true,
+                true,
+                false,
+                false,
+                Path::new(&(current_path.read().await.as_str())),
+              )
+              .await?
+              .write_all(
+                updated_content_opt
+                  .read()
+                  .await
+                  .as_ref()
+                  .unwrap()
+                  .as_bytes(),
+              )
+              .await?;
+          }
+          *current_path.write().await = path.to_string();
+          *updated_content_opt.write().await = Some(String::from(""));
         }
-        current_path = path.to_string();
-        temp_file_opt = Some(File::create(format!("{}.tmp", path))?);
-      }
 
-      let mut is_found = Ok(false);
-      if let Some(temp_file) = temp_file_opt.as_mut() {
-        if line.eq(&text_to_search) {
-          new_line = replacement.to_string();
-          is_found = Ok(true);
+        let mut is_found = Ok(false);
+        if updated_content_opt.read().await.is_some() {
+          if line.eq(&text_to_search) {
+            *new_line.write().await = replacement.to_string();
+            is_found = Ok(true);
 
-          results
-            .entry(String::from(path))
-            .or_insert(Vec::new())
-            .push(FileSearchResult {
-              line_content: String::from(line),
-              line_number: line_num + 1,
-              category: get_category(path, &diagrams_directory, &library_directory),
-              path: String::from(path),
-            });
-        } else {
-          new_line = line;
-          is_found = Ok(false)
+            results
+              .write()
+              .await
+              .entry(String::from(&path))
+              .or_insert(Vec::new())
+              .push(FileSearchResult {
+                line_content: String::from(line),
+                line_number: line_num + 1,
+                category: get_category(&path, &diagrams_directory, &library_directory),
+                path: String::from(path),
+              });
+          } else {
+            *new_line.write().await = line;
+            is_found = Ok(false)
+          }
+
+          updated_content_opt
+            .write()
+            .await
+            .as_mut()
+            .unwrap()
+            .push_str(&format!("{}\n", new_line.read().await));
+
+          return is_found;
         }
-        writeln!(temp_file, "{}", new_line)?;
         return is_found;
       }
-      return is_found;
     },
     include_diagrams,
     include_library,
-    limit,
-  )?;
+    usize::MAX,
+  )
+  .await?;
 
-  if !current_path.eq("") {
-    rename(format!("{}.tmp", current_path), &current_path)?;
+  if !current_path_rc.read().await.eq("") {
+    let store = ROOT_RESOLVER.get().read().await;
+    resolve_to_write!(store, FileSystemAPI)
+      .await
+      .open(
+        true,
+        true,
+        false,
+        false,
+        Path::new(&(current_path_rc.read().await.as_str())),
+      )
+      .await?
+      .write_all(
+        updated_content_opt_rc
+          .read()
+          .await
+          .as_ref()
+          .unwrap()
+          .as_bytes(),
+      )
+      .await?;
   }
 
-  let count = results.len().try_into().unwrap();
+  let count = results_rc.read().await.len().try_into().unwrap();
   Ok(FileSearchResults {
-    results,
+    results: Arc::try_unwrap(results_rc).unwrap().into_inner(),
     count,
     reached_limit,
   })
@@ -238,37 +356,46 @@ Searches for the given text in the project's files.
   * `include_library` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
-pub fn search_text(
+pub async fn search_text(
   text_to_search: &str,
   include_diagrams: bool,
   include_library: bool,
-  limit: i32,
+  limit: usize,
 ) -> Result<FileSearchResults, MinaError> {
-  let mut results = HashMap::new();
+  let results_rc = Arc::new(RwLock::new(BTreeMap::new()));
   let reached_limit = search_in_project(
+    true,
     |line, line_num, path, diagrams_directory, library_directory| {
-      if line.to_lowercase().contains(&text_to_search.to_lowercase()) {
-        results
-          .entry(String::from(path))
-          .or_insert(Vec::new())
-          .push(FileSearchResult {
-            line_content: String::from(line),
-            line_number: line_num + 1,
-            category: get_category(path, &diagrams_directory, &library_directory),
-            path: String::from(path),
-          });
-        return Ok(true);
+      let results = Arc::clone(&results_rc);
+      async move {
+        if line.to_lowercase().contains(&text_to_search.to_lowercase()) {
+          if results.read().await.len() <= limit {
+            results
+              .write()
+              .await
+              .entry(String::from(&path))
+              .or_insert(Vec::new())
+              .push(FileSearchResult {
+                line_content: String::from(line),
+                line_number: line_num + 1,
+                category: get_category(&path, &diagrams_directory, &library_directory),
+                path: String::from(path),
+              });
+          }
+          return Ok(true);
+        }
+        return Ok(false);
       }
-      return Ok(false);
     },
     include_diagrams,
     include_library,
     limit,
-  )?;
+  )
+  .await?;
 
-  let count = results.len().try_into().unwrap();
+  let count = results_rc.read().await.len().try_into().unwrap();
   Ok(FileSearchResults {
-    results,
+    results: Arc::try_unwrap(results_rc).unwrap().into_inner(),
     count,
     reached_limit,
   })
@@ -283,82 +410,92 @@ Searches for the given diagram element in the project's files.
   * `include_library_dir` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
-pub fn search_diagram_element(
+pub async fn search_diagram_element(
   alias: &str,
   plantuml_diagram_element: &str,
   include_diagrams: bool,
   include_library: bool,
-  limit: i32,
+  limit: usize,
 ) -> Result<DiagramElementSearchResults, MinaError> {
   // clean the plantuml
   let cleaned_plantuml_diagram_element = clean_plantuml_diagram_element(plantuml_diagram_element)?;
-
   let re_diagrams_dir = create_search_diagram_elem_in_plantuml_regex(alias);
 
-  let mut results = HashMap::new();
+  let results_rc = Arc::new(RwLock::new(BTreeMap::new()));
   let mut reached_limit = false;
 
   // SEARCH IN DIAGRAMS
   if include_diagrams {
     reached_limit = search_in_project(
+      true,
       |line, _line_num, path, diagrams_directory, library_directory| {
-        // clean the line
-        let cleaned_line = clean_plantuml_diagram_element(&line)?;
+        let re_diagrams_dir_clone = re_diagrams_dir.clone();
+        let cleaned_plantuml_diagram_element_clone = cleaned_plantuml_diagram_element.clone();
+        let results = Arc::clone(&results_rc);
+        async move {
+          // clean the line
+          let cleaned_line = clean_plantuml_diagram_element(&line)?;
 
-        let category = get_category(path, diagrams_directory, library_directory);
+          let category = get_category(&path, &diagrams_directory, &library_directory);
 
-        let result = re_diagrams_dir.is_match(&cleaned_line);
-        if result.is_ok() {
-          let did_match = result.unwrap();
-          if did_match {
-            let mut result = DiagramElementSearchResult {
-              category,
-              path: String::from(path),
-              partial_match: true,
-            };
+          let result = re_diagrams_dir_clone.is_match(&cleaned_line);
+          if result.is_ok() {
+            let did_match = result.unwrap();
+            if did_match {
+              if results.read().await.len() <= limit {
+                let mut result = DiagramElementSearchResult {
+                  category,
+                  path: String::from(&path),
+                  partial_match: true,
+                };
 
-            // The line matches the regex, which means that it is a valid diagram element with the alias to find.
-            // So check if the line (PlantUML) matches exactly the PlantUML of the diagram to find.
-            // If it does not match, this means the alias has been used for another diagram element, which is prohibited.
+                // The line matches the regex, which means that it is a valid diagram element with the alias to find.
+                // So check if the line (PlantUML) matches exactly the PlantUML of the diagram to find.
+                // If it does not match, this means the alias has been used for another diagram element, which is prohibited.
 
-            // In theory, you should check if the two strings are equal. But by doing so, elements
-            // with nested elements will be excluded:
-            //    - cleaned_plantuml_diagram_element:
-            //        "System_Boundary(boundary, "boundary") {
-            //
-            //         }"
-            //    - cleaned_line:
-            //        "System_Boundary(boundary, "boundary") {"
-            //    - cleaned_plantuml_diagram_element !== cleaned_line
-            //
-            // By using the "starts with" condition you cover also this case.
-            //    - cleaned_plantuml_diagram_element starts with cleaned_line
-            if cleaned_plantuml_diagram_element.starts_with(&cleaned_line) {
-              result.partial_match = false
+                // In theory, you should check if the two strings are equal. But by doing so, elements
+                // with nested elements will be excluded:
+                //    - cleaned_plantuml_diagram_element:
+                //        "System_Boundary(boundary, "boundary") {
+                //
+                //         }"
+                //    - cleaned_line:
+                //        "System_Boundary(boundary, "boundary") {"
+                //    - cleaned_plantuml_diagram_element !== cleaned_line
+                //
+                // By using the "starts with" condition you cover also this case.
+                //    - cleaned_plantuml_diagram_element starts with cleaned_line
+                if cleaned_plantuml_diagram_element_clone.starts_with(&cleaned_line) {
+                  result.partial_match = false
+                }
+
+                results
+                  .write()
+                  .await
+                  .entry(String::from(&path))
+                  .or_insert(Vec::new())
+                  .push(result);
+              }
+              return Ok(true);
             }
-
-            results
-              .entry(String::from(path))
-              .or_insert(Vec::new())
-              .push(result);
-
-            return Ok(true);
           }
-        }
 
-        return Ok(false);
+          return Ok(false);
+        }
       },
       include_diagrams,
       false,
       limit,
-    )?;
+    )
+    .await?;
   }
 
   // SEARCH IN LIBRARY
   if include_library {
-    let found_lib_element = search_library_element(alias)?;
+    let found_lib_element = search_library_element(alias).await?;
     if let Some(lib_element) = found_lib_element {
-      let path = path_from_element_type(&lib_element)?;
+      let results = Arc::clone(&results_rc);
+      let path = path_from_element_type(&lib_element).await?;
       let mut result = DiagramElementSearchResult {
         category: FileSearchCategory::Library,
         path: path.clone(),
@@ -377,15 +514,17 @@ pub fn search_diagram_element(
       }
 
       results
+        .write()
+        .await
         .entry(path.clone())
         .or_insert(Vec::new())
         .push(result);
     }
   }
 
-  let count = results.len().try_into().unwrap();
+  let count = results_rc.read().await.len().try_into().unwrap();
   return Ok(DiagramElementSearchResults {
-    results,
+    results: Arc::try_unwrap(results_rc).unwrap().into_inner(),
     count,
     reached_limit,
   });

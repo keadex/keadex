@@ -15,9 +15,7 @@ export const Textarea = React.memo((props: TextareaProps) => {
   >(props.value)
   const dataAttributes = getDataAttributes(props)
 
-  const { classNameRoot, ...otherProps } = {
-    ...props,
-  }
+  const { classNameRoot, key, ...otherProps } = props
 
   useEffect(() => {
     setValue(props.value)
@@ -40,6 +38,7 @@ export const Textarea = React.memo((props: TextareaProps) => {
 
       <textarea
         rows={3}
+        key={key}
         {...otherProps}
         {...dataAttributes}
         onChange={(e) => {

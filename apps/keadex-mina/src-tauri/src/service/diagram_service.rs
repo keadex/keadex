@@ -27,9 +27,12 @@ Returns the data of a diagram.
   * `diagram_name` - Name of the diagram to open.
   * `diagram_type` - Type of the diagram to open.
 */
-pub fn get_diagram(diagram_name: &str, diagram_type: DiagramType) -> Result<Diagram, MinaError> {
-  let diagram = open_diagram(diagram_name, diagram_type.clone())?;
-  close_diagram(diagram_name, diagram_type.clone())?;
+pub async fn get_diagram(
+  diagram_name: &str,
+  diagram_type: DiagramType,
+) -> Result<Diagram, MinaError> {
+  let diagram = open_diagram(diagram_name, diagram_type.clone()).await?;
+  close_diagram(diagram_name, diagram_type.clone()).await?;
   Ok(diagram)
 }
 
@@ -41,7 +44,7 @@ Returns the validated diagram.
   * `diagram_name` - Name of the diagram to check.
   * `diagram_type` - Type of the diagram to check.
 */
-pub fn validate_diagram(
+pub async fn validate_diagram(
   raw_plantuml: &str,
   diagram_name: &str,
   diagram_type: &DiagramType,
@@ -55,7 +58,8 @@ pub fn validate_diagram(
     &diagram_plantuml.elements,
     Some(diagram_name),
     Some(diagram_type),
-  )?;
+  )
+  .await?;
   return Ok(diagram_plantuml);
 }
 
@@ -93,7 +97,7 @@ Returns an error if the diagram contains duplicated aliases.
   * `diagram_name` - Name of the diagram to check.
   * `diagram_type` - Type of the diagram to check.
 */
-pub fn check_cross_diagrams_elements_aliases(
+pub async fn check_cross_diagrams_elements_aliases(
   diagram_plantuml_elements: &Vec<DiagramElementType>,
   diagram_name: Option<&str>,
   diagram_type: Option<&DiagramType>,
@@ -127,16 +131,22 @@ pub fn check_cross_diagrams_elements_aliases(
       DiagramElementType::Boundary(boundary) => {
         alias_to_check = boundary.base_data.alias;
         should_check = true;
-        check_cross_diagrams_elements_aliases(&boundary.sub_elements, diagram_name, diagram_type)?;
+        Box::pin(check_cross_diagrams_elements_aliases(
+          &boundary.sub_elements,
+          diagram_name,
+          diagram_type,
+        ))
+        .await?;
       }
       DiagramElementType::DeploymentNode(deployment_node) => {
         alias_to_check = deployment_node.base_data.alias;
         should_check = true;
-        check_cross_diagrams_elements_aliases(
+        Box::pin(check_cross_diagrams_elements_aliases(
           &deployment_node.sub_elements,
           diagram_name,
           diagram_type,
-        )?;
+        ))
+        .await?;
       }
       DiagramElementType::Include(_) => (),
       DiagramElementType::Comment(_) => (),
@@ -149,14 +159,16 @@ pub fn check_cross_diagrams_elements_aliases(
           &plantuml_diagram_elem_to_check,
           true,
           true,
-          i32::MAX,
-        )?;
+          usize::MAX,
+        )
+        .await?;
         let mut partial_paths_found = vec![];
         for (path, search_results) in search_diagram_elemen_result.results {
           for seach_result in search_results {
             if seach_result.partial_match {
               if seach_result.category == FileSearchCategory::Diagram {
-                let (found_diagram_name, found_diagram_type) = diagram_name_type_from_path(&path)?;
+                let (found_diagram_name, found_diagram_type) =
+                  diagram_name_type_from_path(&path).await?;
                 if diagram_name.is_none()
                   || diagram_type.is_none()
                   || diagram_name.is_some_and(|diagram_name_value| {
@@ -173,7 +185,10 @@ pub fn check_cross_diagrams_elements_aliases(
               } else if seach_result.category == FileSearchCategory::Library {
                 partial_paths_found.push(format!(
                   "library/{}s",
-                  element_type_from_path(&path)?.to_string().to_case(Lower)
+                  element_type_from_path(&path)
+                    .await?
+                    .to_string()
+                    .to_case(Lower)
                 ));
               }
               break;
@@ -274,12 +289,12 @@ Retrieves the dependents of an architectural element with the given alias in the
   * `diagram_name` - Name of the diagram.
   * `diagram_type` - Type of the diagram.
 */
-pub fn dependent_elements_in_diagram(
+pub async fn dependent_elements_in_diagram(
   alias: &str,
   diagram_name: &str,
   diagram_type: DiagramType,
 ) -> Result<Vec<String>, MinaError> {
-  let diagram = get_diagram(diagram_name, diagram_type)?;
+  let diagram = get_diagram(diagram_name, diagram_type).await?;
   if let Some(diagram_plantuml) = diagram.diagram_plantuml {
     let dependents = find_dependent_elements_in_diagram(alias, &diagram_plantuml.elements)?;
     return Ok(dependents);

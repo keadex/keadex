@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { PropsWithChildren } from 'react'
 import { Trans } from 'react-i18next'
-import minaPlantUML from '../../../public/img/mina/mina-plantuml.jpg'
+import minaPlantUML from '../../../public/img/mina/mina-plantuml.png'
 import logoPlantUML from '../../../public/img/mina/logo-plantuml.png'
 import { useTranslation } from '../../app/i18n/client'
 

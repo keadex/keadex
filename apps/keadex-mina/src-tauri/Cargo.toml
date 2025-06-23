@@ -1,6 +1,6 @@
 [package]
 name = "keadex_mina"
-version = "1.16.0"
+version = "2.0.0"
 description = "Desktop application to draw, manage and share the architectures of software systems."
 authors = ["Keadex"]
 license = "MIT"
@@ -13,6 +13,7 @@ rust-version = "1.77.1"
 
 [build-dependencies]
 tauri-build = { version = "2", features = [], optional = true }
+cfg_aliases = "0.2.1"
 
 [dependencies]
 serde_json = "1.0"
@@ -23,7 +24,7 @@ state = "0.6"
 strum = { version = "0.24", features = ["derive"] }
 strum_macros = "0.24"
 notify = "4.0.17"
-walkdir = "2.4.0"
+walkdir = { version = "2", optional = true }
 fs2 = { version = "0.4.3", optional = true }
 pest = "2.7.4"
 pest_derive = "2.7.4"
@@ -34,9 +35,10 @@ uuid = { version = "1.4.1", features = [
   "v4",
   "fast-rng",
   "macro-diagnostics",
-], optional = true }
+  "js"
+] }
 data-url = "0.2.0"
-async-openai = { version = "0.10.3", optional = true }
+async-openai-wasm = { version = "0.26.0" }
 dotenv = "0.15.0"
 wasm-bindgen = "0.2"
 serde-wasm-bindgen = "0.6"
@@ -46,9 +48,31 @@ bomboni_wasm = { version = "0.1", features = [
 ], default-features = false }
 fancy-regex = "0.13.0"
 layout-rs = { version = "0.1.2", features = [] }
+js-sys = "0.3"
+web-sys = { version = "0.3", features = [
+  "File",
+  "FileReader",
+  "FileSystemDirectoryHandle",
+  "FileSystemGetDirectoryOptions",
+  "FileSystemFileHandle",
+  "FileSystemGetFileOptions",
+  "FileSystemWritableFileStream",
+  "FileSystemHandleKind",
+  "FileSystemRemoveOptions",
+  "FileSystemCreateWritableOptions",
+  "console",
+], optional = true }
+wasm-bindgen-futures = {version = "0.4", optional = true}
+console_log = {version = "1", optional = true}
 tauri = { version = "2", features = [
   "macos-private-api",
 ], optional = true }
+console_error_panic_hook = {version = "0.1", optional = true}
+async-std = "1.13"
+async-trait = "0.1"
+futures = "0.3"
+chrono = "0.4"
+keadex_mina_macro = { path = "../src-macro" }
 tauri-plugin-http = { version = "2", optional = true }
 tauri-plugin-clipboard-manager = { version = "2.0.1", optional = true }
 tauri-plugin-os = { version = "2", optional = true }
@@ -63,9 +87,10 @@ tauri-plugin-deep-link = { version = "2", optional = true }
 tauri-plugin-single-instance = { version = "2", features = ["deep-link"], optional = true }
 
 [features]
+# default = ["web"]
 default = ["desktop", "custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
 desktop = [
-  "web",
   "tauri",
   "tauri-plugin-http",
   "tauri-plugin-clipboard-manager",
@@ -79,10 +104,13 @@ desktop = [
   "tauri-plugin-updater",
   "tauri-plugin-deep-link",
   "tauri-plugin-single-instance",
-  "dep:uuid",
-  "dep:async-openai",
   "dep:tauri-build",
   "dep:fs2",
+  "dep:walkdir"
 ]
-custom-protocol = ["tauri/custom-protocol"]
-web = []
+web = [
+  "dep:web-sys",
+  "dep:wasm-bindgen-futures",
+  "dep:console_error_panic_hook",
+  "dep:console_log"
+]

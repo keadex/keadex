@@ -13,7 +13,7 @@ export type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
 }
 
 export const Select = React.memo((props: SelectProps) => {
-  const { label, className, ...otherProps } = { ...props }
+  const { label, className, key, ...otherProps } = props
 
   const dataAttributes = getDataAttributes(props)
 
@@ -23,7 +23,7 @@ export const Select = React.memo((props: SelectProps) => {
       renderedOptions.push(
         <option value={option.value} key={option.value?.toString()}>
           {option.label}
-        </option>
+        </option>,
       )
     })
     return renderedOptions
@@ -45,14 +45,14 @@ export const Select = React.memo((props: SelectProps) => {
           selectLabelSizeDefault: 'select__label-size-default',
           selectLabel: 'select__label',
           selectArrow: 'select__arrow top-[0.65rem]',
-        }
+        },
       )
     }
   })
 
   return (
     <div className={`relative mb-3 ${className}`}>
-      <select data-te-select-init {...otherProps} {...dataAttributes}>
+      <select data-te-select-init key={key} {...otherProps} {...dataAttributes}>
         {renderOptions()}
       </select>
       <label data-te-select-label-ref>{label}</label>

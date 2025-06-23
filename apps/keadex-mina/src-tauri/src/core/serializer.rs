@@ -2,14 +2,18 @@
 Helper module which exports functions to serialize/deserialize files.
 */
 
+use crate::api::filesystem::CrossFile;
+use crate::api::filesystem::FileSystemAPI as FsApiTrait;
+use crate::core::app::ROOT_RESOLVER;
+use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::error_handling::errors::{SERDE_PARSING_ERROR_CODE, SERDE_SERIALIZE_ERROR_CODE};
 use crate::error_handling::mina_error::MinaError;
 use crate::model::diagram::diagram_plantuml::{DiagramPlantUML, PlantUMLSerializer};
 use crate::parser::plantuml::plantuml_parser::{C4PlantUMLParser, Rule};
+use crate::resolve_to_write;
 use pest::Parser;
 use serde::de;
-use std::fs::File;
-use std::io::{BufReader, Read};
+use std::io::Read;
 use std::path::Path;
 
 /**
@@ -43,13 +47,16 @@ Deserializes a JSON file by giving its path
 # Arguments
   * `path` - Path of the file
 */
-#[cfg(feature = "desktop")]
-pub fn deserialize_json_by_path<T>(path: &Path) -> Result<T, MinaError>
+pub async fn deserialize_json_by_path<T>(path: &Path) -> Result<T, MinaError>
 where
   T: de::DeserializeOwned,
 {
-  let file = File::open(path)?;
-  return deserialize_json_by_file(&file, path);
+  let store = ROOT_RESOLVER.get().read().await;
+  let mut file = resolve_to_write!(store, FileSystemAPI)
+    .await
+    .open(true, false, false, false, path)
+    .await?;
+  return deserialize_json_by_file(&mut file, path).await;
 }
 
 /**
@@ -57,12 +64,14 @@ Deserializes a JSON file
 # Arguments
   * `file` - File
 */
-#[cfg(feature = "desktop")]
-pub fn deserialize_json_by_file<T>(file: &File, path: &Path) -> Result<T, MinaError>
+pub async fn deserialize_json_by_file<T>(
+  file: &mut Box<dyn CrossFile>,
+  path: &Path,
+) -> Result<T, MinaError>
 where
   T: de::DeserializeOwned,
 {
-  let reader = BufReader::new(file);
+  let reader = file.get_buffer().await?;
   let result = serde_json::from_reader(reader);
   if let Err(error) = result {
     log::error!("{}", error);
@@ -77,9 +86,10 @@ Deserializes a PlantUML file
 # Arguments
   * `file` - File
 */
-#[cfg(feature = "desktop")]
-pub fn deserialize_plantuml_by_file(file: &File) -> Result<DiagramPlantUML, MinaError> {
-  let mut reader = BufReader::new(file);
+pub async fn deserialize_plantuml_by_file(
+  file: &mut Box<dyn CrossFile>,
+) -> Result<DiagramPlantUML, MinaError> {
+  let mut reader = file.get_buffer().await?;
   let mut buffer = String::new();
   reader.read_to_string(&mut buffer).unwrap();
   deserialize_plantuml_by_string(&buffer)

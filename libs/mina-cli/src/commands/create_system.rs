@@ -5,7 +5,7 @@ use keadex_mina::model::diagram::diagram_plantuml::DiagramElementType;
 use keadex_mina::repository::library::library_repository::create_element;
 use uuid::Uuid;
 
-pub fn create_system(args: CreateSystem) -> Result<(), MinaError> {
+pub async fn create_system(args: CreateSystem) -> Result<(), MinaError> {
   let mut system = SoftwareSystem::default();
   system.base_data.uuid = Some(Uuid::new_v4().to_string());
   system.base_data.alias = Some(args.alias);
@@ -15,6 +15,6 @@ pub fn create_system(args: CreateSystem) -> Result<(), MinaError> {
   system.base_data.notes = args.notes;
   system.system_type = Some(args.system_type);
 
-  create_element(&DiagramElementType::SoftwareSystem(system))?;
+  create_element(&DiagramElementType::SoftwareSystem(system)).await?;
   return Ok(());
 }

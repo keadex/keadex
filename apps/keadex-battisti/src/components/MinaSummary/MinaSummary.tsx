@@ -4,6 +4,7 @@ import { faConfluence, faNpm } from '@fortawesome/free-brands-svg-icons'
 import {
   faBook,
   faDesktop,
+  faGlobe,
   faShareNodes,
   faTerminal,
 } from '@fortawesome/free-solid-svg-icons'
@@ -16,12 +17,19 @@ import { Trans } from 'react-i18next'
 import minaLogo from '../../../public/img/keadex-mina-logo-color.svg'
 import { useTranslation } from '../../app/i18n/client'
 import ROUTES, {
+  KEADEX_MINA_LIVE_EDITOR,
   KEADEX_MINA_SHARE_DIAGRAM,
   MINA_INTRODUCTION,
 } from '../../core/routes'
 
 export type MinaSummaryProps = {
   lang: string
+}
+
+type AppDetails = {
+  platform?: string
+  architecture?: string
+  downloadUrl: string
 }
 
 export default function MinaSummary({
@@ -44,8 +52,10 @@ export default function MinaSummary({
     )
   }
 
-  async function downloadMina(direct: boolean) {
-    let url
+  function getMinaAppDetails(direct: boolean): AppDetails {
+    const appDetails: AppDetails = {
+      downloadUrl: '',
+    }
 
     if (direct) {
       const userAgent = navigator?.userAgent.toLowerCase()
@@ -60,26 +70,38 @@ export default function MinaSummary({
       const windows64 = `${baseURL}_x64-setup.exe`
       const macOS = `${baseURL}_x64.dmg`
       const linux64 = `${baseURL}_amd64.AppImage`
+      appDetails.architecture = 'x64'
 
-      url = windows64 // default windows x64
+      appDetails.downloadUrl = windows64 // default windows x64
+      appDetails.platform = 'Windows'
 
       // You can add more checks for specific OS if needed
       if (userAgent.includes('win')) {
-        url = windows64
+        appDetails.downloadUrl = windows64
+        appDetails.platform = 'Windows'
       } else if (userAgent.includes('mac')) {
-        url = macOS
+        appDetails.downloadUrl = macOS
+        appDetails.platform = 'macOS'
       } else if (userAgent.includes('linux')) {
-        url = linux64
+        appDetails.downloadUrl = linux64
+        appDetails.platform = 'Linux'
       }
     } else {
-      url = `https://github.com/keadex/keadex/releases/tag/keadex-mina-v${latestMinaVersion}`
+      appDetails.downloadUrl = `https://github.com/keadex/keadex/releases/tag/keadex-mina-v${latestMinaVersion}`
     }
 
-    window.open(url, '_blank')
+    return appDetails
   }
 
-  async function downloadMinaCLI(direct: boolean) {
-    let url
+  async function downloadMina(direct: boolean) {
+    const appDetails = getMinaAppDetails(direct)
+    window.open(appDetails.downloadUrl, '_blank')
+  }
+
+  function getMinaCLIAppDetails(direct: boolean): AppDetails {
+    const appDetails: AppDetails = {
+      downloadUrl: '',
+    }
 
     if (direct) {
       const userAgent = navigator?.userAgent.toLowerCase()
@@ -92,21 +114,32 @@ export default function MinaSummary({
       const windows64 = `${baseURL}Windows-msvc-x86_64.zip`
       const macOS = `${baseURL}macOS-arm64.tar.gz`
       const linux64 = `${baseURL}Linux-gnu-x86_64.tar.gz`
+      appDetails.architecture = 'x64'
 
-      url = windows64 // default windows x64
+      appDetails.downloadUrl = windows64 // default windows x64
+      appDetails.platform = 'Windows'
 
       // You can add more checks for specific OS if needed
       if (userAgent.includes('win')) {
-        url = windows64
+        appDetails.downloadUrl = windows64
+        appDetails.platform = 'Windows'
       } else if (userAgent.includes('mac')) {
-        url = macOS
+        appDetails.downloadUrl = macOS
+        appDetails.platform = 'macOS'
       } else if (userAgent.includes('linux')) {
-        url = linux64
+        appDetails.downloadUrl = linux64
+        appDetails.platform = 'Linux'
       }
     } else {
-      url = `https://github.com/keadex/keadex/releases/mina-cli%40${latestMinaVersion}`
+      appDetails.downloadUrl = `https://github.com/keadex/keadex/releases/mina-cli%40${latestMinaVersion}`
     }
-    window.open(url, '_blank')
+
+    return appDetails
+  }
+
+  async function downloadMinaCLI(direct: boolean) {
+    const appDetails = getMinaCLIAppDetails(direct)
+    window.open(appDetails.downloadUrl, '_blank')
   }
 
   useEffect(() => {
@@ -139,7 +172,7 @@ export default function MinaSummary({
                 components={{ span: <span /> }}
               />
             </div>
-            <div className="flex flex-col md:flex-row">
+            <div className="flex flex-col lg:flex-row">
               <div className="flex flex-col">
                 <Button
                   className="!text-sm w-fit h-fit mb-2"
@@ -157,7 +190,7 @@ export default function MinaSummary({
                   <Trans i18nKey="keadex_mina.other_download_options" t={t} />
                 </a>
               </div>
-              <div className="flex flex-col ml-0 md:ml-2 mt-4 md:mt-0">
+              <div className="flex flex-col ml-0 lg:ml-2 mt-4 lg:mt-0">
                 <Button
                   className="!text-sm w-fit h-fit mb-2"
                   onClick={() => downloadMinaCLI(true)}
@@ -173,6 +206,17 @@ export default function MinaSummary({
                 >
                   <Trans i18nKey="keadex_mina.other_download_options" t={t} />
                 </a>
+              </div>
+              <div className="flex flex-col ml-0 lg:ml-2 mt-4 lg:mt-0">
+                <Button
+                  className="!text-sm w-36 h-fit mb-2"
+                  onClick={() =>
+                    window.open(ROUTES[KEADEX_MINA_LIVE_EDITOR].path, '_blank')
+                  }
+                >
+                  <FontAwesomeIcon icon={faGlobe} className="mr-3" />
+                  <Trans i18nKey="common.start" t={t} />
+                </Button>
               </div>
             </div>
             <div className="flex flex-col md:flex-row mt-5">

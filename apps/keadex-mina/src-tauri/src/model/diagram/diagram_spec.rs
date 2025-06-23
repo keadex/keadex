@@ -10,7 +10,6 @@ use serde::{Deserialize, Serialize};
 use strum::Display;
 use strum::EnumString;
 use ts_rs::TS;
-#[cfg(feature = "desktop")]
 use uuid::Uuid;
 use wasm_bindgen::prelude::wasm_bindgen;
 
@@ -63,15 +62,14 @@ pub struct DiagramSpec {
   pub auto_layout_orientation: DiagramOrientation,
   #[serde(default)]
   pub auto_layout_only_straight_arrows: bool,
+  #[serde(default)]
+  pub grid_enabled: bool,
 }
 
 impl Default for DiagramSpec {
   fn default() -> Self {
     DiagramSpec {
-      #[cfg(feature = "desktop")]
       uuid: Uuid::new_v4().to_string(),
-      #[cfg(not(feature = "desktop"))]
-      uuid: String::from("null"),
       description: None,
       tags: None,
       elements_specs: vec![],
@@ -79,6 +77,7 @@ impl Default for DiagramSpec {
       auto_layout_enabled: true,
       auto_layout_orientation: DiagramOrientation::TopToBottom,
       auto_layout_only_straight_arrows: false,
+      grid_enabled: false,
     }
   }
 }

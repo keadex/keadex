@@ -1,0 +1,62 @@
+import { faShareNodes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import shareDiagrams from '../../../../../../public/img/mina/share-diagrams.png'
+import Image from 'next/image'
+import { Callout } from 'nextra/components'
+
+# Share Mina Diagrams
+
+There are several ways to share and show your architectural diagrams:
+
+- Through version control systems
+- Through documentantion platforms
+- Through Markdown files
+- Through deep links
+- Through websites
+
+<div className="my-10 flex items-center justify-center">
+  <Image
+    src={shareDiagrams}
+    alt="Representation of possible ways for sharing Mina Diagrams"
+    height={300}
+    className="mx-auto my-5 md:mx-5"
+  />
+</div>
+
+## Version Control Systems
+
+Keadex Mina is designed to work seamlessly with version control systems like Git. You can commit your diagrams and architectural elements directly to your repository, allowing you to track changes over time and collaborate with your team.
+
+Refer to the [Versioning](./versioning.mdx) documentation for more details.
+
+## Documentation Platforms
+
+You can share your diagrams through documentation platforms like [Confluence](https://www.atlassian.com/software/confluence) or [Docusaurus](https://docusaurus.io/). This allows you to integrate your architectural diagrams into your project documentation, making it easier for your team to understand the architecture.
+
+Refer to the [Plugins](../plugins/overview.mdx) documentation for more details.
+
+## Markdown Files
+
+You can also share your diagrams through [Markdown](https://www.markdownguide.org/) files. Keadex Mina provides an API that allows you to render diagrams server side and export them as SVG, making it easy to include them in your Markdown documentation.
+
+```mdx
+![Mina Diagram](https://keadex.dev/api/mina-diagram/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2tlYWRleC9rZWFkZXgvbWFpbi9hcHBzL2tlYWRleC1kaWFncmFtcw==/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2tlYWRleC9rZWFkZXgvbWFpbi9hcHBzL2tlYWRleC1kaWFncmFtcy9kaWFncmFtcy9jb250YWluZXIva2VhZGV4LW1pbmE=)
+```
+
+You can generate the SSR link from the [**Share Diagram**](https://keadex.dev/en/projects/keadex-mina/share-diagram) page or **Remote Diagrams** feature in Keadex Mina.
+
+Refer to the [Server Side Rendering](./server-side-rendering.mdx) documentation for more details.
+
+## Deep Links
+
+You can share your diagrams through **deep links**. These links allow you to open specific diagrams or architectural elements directly in Keadex Mina, making it easy to navigate to the relevant parts of your architecture.
+You can generate deep links directly from Keadex Mina.
+
+Refer to the [Deep Links](./deep-links.mdx) documentation for more details.
+
+## Websites
+
+You can also share your diagrams through websites. Keadex Mina provides two ways to do this:
+
+- Through the [**share diagram page**](https://keadex.dev/en/projects/keadex-mina/share-diagram)
+- Through the [**Mina React component**](https://www.npmjs.com/package/@keadex/mina-react)

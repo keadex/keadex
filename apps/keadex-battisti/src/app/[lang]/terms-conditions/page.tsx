@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { PageProps } from '../layout'
 
-const TermsConditions: NextPage<PageProps> = async ({ params: { lang } }) => {
+const TermsConditions: NextPage<PageProps> = async () => {
   return (
     <div className="page font-light flex flex-col pb-10">
       <h1>Terms and Conditions</h1>

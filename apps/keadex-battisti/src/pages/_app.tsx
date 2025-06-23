@@ -33,6 +33,8 @@ import ROUTES, {
   MINA_CLI_OVERVIEW,
   MINA_CLI_COMMANDS,
   MINA_CONTINUOUS_INTEGRATION,
+  MINA_SHARE_DIAGRAMS,
+  MINA_SSR,
 } from '../core/routes'
 import {
   MenuItem,
@@ -42,16 +44,9 @@ import { NewsBanner } from '@keadex/keadex-ui-kit/cross'
 import { NEWS } from '../core/news'
 import '../styles/index.css'
 import '../styles/nextra.css'
+import { initConsole } from '@keadex/keadex-utils'
 
-//---------- Disable debug and log levels in production
-if (process.env.NODE_ENV === 'production') {
-  console.log = () => {
-    // do nothing
-  }
-  console.debug = () => {
-    // do nothing
-  }
-}
+initConsole()
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -132,7 +127,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               id: 'keadex-mina_deep-links',
               title: 'Deep Links',
               href: ROUTES[MINA_DEEP_LINKS].path,
-              disableTOC: true,
+              disableTOC: false,
             },
             {
               id: 'keadex-mina_dependency-table',
@@ -189,6 +184,18 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               title: 'Search',
               href: ROUTES[MINA_SEARCH].path,
               disableTOC: true,
+            },
+            {
+              id: 'keadex-mina_ssr',
+              title: 'Server Side Rendering',
+              href: ROUTES[MINA_SSR].path,
+              disableTOC: true,
+            },
+            {
+              id: 'keadex-mina_share-diagrams',
+              title: 'Share Diagrams',
+              href: ROUTES[MINA_SHARE_DIAGRAMS].path,
+              disableTOC: false,
             },
             {
               id: 'keadex-mina_tags',
@@ -255,8 +262,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               external: true,
             },
             {
+              id: 'keadex-mina_live-component',
+              title: 'Mina Live',
+              href: 'https://www.npmjs.com/package/@keadex/mina-live',
+              external: true,
+            },
+            {
               id: 'keadex-mina_react-component',
-              title: 'React Component',
+              title: 'Mina React',
               href: 'https://www.npmjs.com/package/@keadex/mina-react',
               external: true,
             },

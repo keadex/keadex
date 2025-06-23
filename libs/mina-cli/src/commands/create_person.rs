@@ -5,7 +5,7 @@ use keadex_mina::model::diagram::diagram_plantuml::DiagramElementType;
 use keadex_mina::repository::library::library_repository::create_element;
 use uuid::Uuid;
 
-pub fn create_person(args: CreatePerson) -> Result<(), MinaError> {
+pub async fn create_person(args: CreatePerson) -> Result<(), MinaError> {
   let mut person = Person::default();
   person.base_data.uuid = Some(Uuid::new_v4().to_string());
   person.base_data.alias = Some(args.alias);
@@ -14,6 +14,6 @@ pub fn create_person(args: CreatePerson) -> Result<(), MinaError> {
   person.base_data.notes = args.notes;
   person.person_type = Some(args.person_type);
 
-  create_element(&DiagramElementType::Person(person))?;
+  create_element(&DiagramElementType::Person(person)).await?;
   return Ok(());
 }

@@ -37,7 +37,8 @@ export const metadata: Metadata = {
   },
 }
 
-const KeadexMina: NextPage<PageProps> = async ({ params: { lang } }) => {
+const KeadexMina: NextPage<PageProps> = async ({ params }) => {
+  const { lang } = await params
   return (
     <div className="overflow-x-hidden">
       <MinaSummary lang={lang} />

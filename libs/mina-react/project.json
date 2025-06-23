@@ -3,15 +3,9 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/mina-react/src",
   "projectType": "library",
+  "implicitDependencies": ["keadex-mina"],
   "tags": [],
   "targets": {
-    "semantic-release": {
-      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
-      "options": {
-        "buildTarget": "build",
-        "outputPath": "libs/mina-react/dist"
-      }
-    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
@@ -24,9 +18,27 @@
       "options": {
         "script": "tsc --p ./tsconfig.lib.json"
       },
-      "dependsOn": ["build-code"]
+      "dependsOn": ["build-node-code"]
     },
-    "build-code": {
+    "build-node-code": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "deleteOutputPath": false,
+        "compiler": "babel",
+        "outputPath": "libs/mina-react/dist",
+        "tsConfig": "libs/mina-react/tsconfig.lib.json",
+        "webpackConfig": "libs/mina-react/webpack.node.config.ts",
+        "optimization": true,
+        "sourceMap": false,
+        "namedChunks": false,
+        "extractLicenses": true,
+        "vendorChunk": false,
+        "externalDependencies": "all"
+      },
+      "dependsOn": ["build-web-code"]
+    },
+    "build-web-code": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
@@ -46,13 +58,15 @@
       "dependsOn": ["build-wasm"]
     },
     "build-wasm": {
-      "executor": "nx:run-script",
+      "executor": "nx:run-commands",
       "options": {
-        "script": "wasm-pack build ./src-rust --target bundler"
+        "cwd": "libs/mina-react",
+        "commands": ["yarn wasm-pack build ./src-rust --target bundler"],
+        "parallel": false
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/mina-react/**/*.{ts,tsx,js,jsx}"],

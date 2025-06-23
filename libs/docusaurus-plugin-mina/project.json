@@ -4,13 +4,6 @@
   "sourceRoot": "libs/docusaurus-plugin-mina/src",
   "projectType": "library",
   "targets": {
-    "semantic-release": {
-      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
-      "options": {
-        "buildTarget": "build",
-        "outputPath": "libs/docusaurus-plugin-mina/dist"
-      }
-    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
@@ -32,7 +25,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [

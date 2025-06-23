@@ -16,20 +16,26 @@ use crate::model::c4_element::relationship::{Relationship, RelationshipType};
 use crate::model::c4_element::software_system::{SoftwareSystem, SystemType};
 use crate::model::diagram::diagram_plantuml::{serialize_elements_to_plantuml, DiagramElementType};
 use crate::{core::app::ROOT_RESOLVER, error_handling::mina_error::MinaError, resolve_to_write};
-use async_openai::types::{
-  ChatCompletionRequestMessage, CreateChatCompletionRequestArgs,
-  Role::{System, User},
+use async_openai_wasm::config::OpenAIConfig;
+use async_openai_wasm::types::{
+  ChatCompletionRequestMessage, ChatCompletionRequestSystemMessage,
+  ChatCompletionRequestSystemMessageContent, CreateChatCompletionRequestArgs,
 };
-use async_openai::Client;
+use async_openai_wasm::types::{
+  ChatCompletionRequestUserMessage, ChatCompletionRequestUserMessageContent,
+};
+use async_openai_wasm::Client;
 use fancy_regex::Regex;
 
 /**
 Return the AI Settings
 */
-fn get_ai_settings() -> Option<AISettings> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+async fn get_ai_settings() -> Option<AISettings> {
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
   return project_settings.ai_settings;
 }
@@ -41,28 +47,27 @@ Returns a string containing the PlantUML.
   * `description` - Description of the digram to generate.
 */
 pub async fn generate_plantuml(description: &str) -> Result<String, MinaError> {
-  if let Some(ai_settings) = get_ai_settings() {
+  if let Some(ai_settings) = get_ai_settings().await {
     if ai_settings.api_base_url.is_some()
       && ai_settings.api_key.is_some()
       && ai_settings.model.is_some()
     {
-      let client = Client::new()
+      let config = OpenAIConfig::new()
         .with_api_base(ai_settings.api_base_url.unwrap())
         .with_api_key(ai_settings.api_key.unwrap());
+      let client = Client::with_config(config);
 
       let request = CreateChatCompletionRequestArgs::default()
         .model(ai_settings.model.unwrap())
         .max_tokens(2048_u16)
         .stream(false)
-        .messages([ChatCompletionRequestMessage {
-          role: System,
-          content: String::from("You are a helpful assistant."),
+        .messages([ChatCompletionRequestMessage::System(ChatCompletionRequestSystemMessage {
+          content: ChatCompletionRequestSystemMessageContent::Text(String::from("You are a helpful assistant.")),
           name: None,
-        }, ChatCompletionRequestMessage {
-          role: User,
-          content: format!("Generate a C4 Model diagram for the following architecture: \"{}\". To represent the diagram, generate a JSON which satisfies the following JSON schema: {{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{{\"diagram_elements\":{{\"type\":\"array\",\"items\":[{{\"type\":\"object\",\"properties\":{{\"alias\":{{\"type\":\"string\"}},\"label\":{{\"type\":\"string\"}},\"description\":{{\"type\":\"string\"}},\"technology\":{{\"type\":\"string\"}},\"element_type\":{{\"enum\":[\"Person\",\"SoftwareSystem\",\"Container\",\"Component\",\"Relationship\"]}},\"from_alias\":{{\"type\":\"string\"}},\"to_alias\":{{\"type\":\"string\"}}}},\"required\":[\"alias\",\"name\",\"technology\", \"type\"]}}]}}}},\"required\":[\"diagram_elements\"]}}, where: \"alias\" is a snake case string, unique identifier for the diagram element; \"label\" is the name of the diagram element or the verb in case of relationships; \"description\" and \"technology\" represent the description and technology of the diagram element; \"element_type\" is the C4 Model type or it's set to \"relationship\" if the diagram element represents a relationship; \"from_alais\" and \"to_alias\" are present only for relationships and contain the IDs of the starting and ending diagram elements involved in the relationship. Please respond with only the JSON, without explanations and without wrapping the JSON in a markdown code block. Ensure to wrap JSON property names and values in double quotes.", description),
+        }), ChatCompletionRequestMessage::User(ChatCompletionRequestUserMessage {
+          content: ChatCompletionRequestUserMessageContent::Text(format!("Generate a C4 Model diagram for the following architecture: \"{}\". To represent the diagram, generate a JSON which satisfies the following JSON schema: {{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{{\"diagram_elements\":{{\"type\":\"array\",\"items\":[{{\"type\":\"object\",\"properties\":{{\"alias\":{{\"type\":\"string\"}},\"label\":{{\"type\":\"string\"}},\"description\":{{\"type\":\"string\"}},\"technology\":{{\"type\":\"string\"}},\"element_type\":{{\"enum\":[\"Person\",\"SoftwareSystem\",\"Container\",\"Component\",\"Relationship\"]}},\"from_alias\":{{\"type\":\"string\"}},\"to_alias\":{{\"type\":\"string\"}}}},\"required\":[\"alias\",\"name\",\"technology\", \"type\"]}}]}}}},\"required\":[\"diagram_elements\"]}}, where: \"alias\" is a snake case string, unique identifier for the diagram element; \"label\" is the name of the diagram element or the verb in case of relationships; \"description\" and \"technology\" represent the description and technology of the diagram element; \"element_type\" is the C4 Model type or it's set to \"relationship\" if the diagram element represents a relationship; \"from_alais\" and \"to_alias\" are present only for relationships and contain the IDs of the starting and ending diagram elements involved in the relationship. Please respond with only the JSON, without explanations and without wrapping the JSON in a markdown code block. Ensure to wrap JSON property names and values in double quotes.", description)),
           name: None,
-        }])
+        })])
         .build()
         .unwrap();
 
@@ -77,7 +82,7 @@ pub async fn generate_plantuml(description: &str) -> Result<String, MinaError> {
         let re_clear = Regex::new(r"(`|\n|\r|\t|json)").unwrap();
         let re_quotes = Regex::new(r#"(`\")"#).unwrap();
         generated_json = re_clear
-          .replace_all(&choices[0].clone().message.content, "")
+          .replace_all(&choices[0].clone().message.content.unwrap(), "")
           .to_string();
         generated_json = re_quotes.replace_all(&generated_json, "\"").to_string();
         if let Some(start_index) = generated_json.find("{") {

@@ -23,6 +23,7 @@ if (!newVersion || newVersion === 'null') {
 }
 
 const filesToUpdate = [
+  // Keadex Mina
   {
     path: 'apps/keadex-mina/package.json',
     pattern: `"version": "${version}"`,
@@ -39,10 +40,34 @@ const filesToUpdate = [
     path: 'apps/keadex-mina/src-tauri/tauri.conf.json',
     pattern: `"mainBinaryName": "Keadex Mina",\n  "version": "${version}"`,
   },
+
+  // Mina CLI
+  {
+    path: 'libs/mina-cli/Cargo.toml',
+    pattern: `name = "mina-cli"\nversion = "${version}"`,
+  },
+  {
+    path: 'libs/mina-cli/Cargo.lock',
+    pattern: `name = "mina-cli"\nversion = "${version}"`,
+  },
+  {
+    path: 'libs/mina-cli/Cargo.lock',
+    pattern: `name = "keadex_mina"\nversion = "${version}"`,
+  },
+
+  // Mina React
   {
     path: 'libs/mina-react/src-rust/Cargo.lock',
     pattern: `name = "keadex_mina"\nversion = "${version}"`,
   },
+
+  // Mina Live
+  {
+    path: 'libs/mina-live/src-rust/Cargo.lock',
+    pattern: `name = "keadex_mina"\nversion = "${version}"`,
+  },
+
+  // Keadex Battisti
   {
     path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/continuous-integration.mdx',
     pattern: `/mina-cli%40${version}/`,
@@ -54,18 +79,6 @@ const filesToUpdate = [
   {
     path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/cli/overview.mdx',
     pattern: `Download Mina CLI v${version}`,
-  },
-  {
-    path: 'libs/mina-cli/Cargo.lock',
-    pattern: `name = "keadex_mina"\nversion = "${version}"`,
-  },
-  {
-    path: 'libs/mina-cli/Cargo.lock',
-    pattern: `name = "mina-cli"\nversion = "${version}"`,
-  },
-  {
-    path: 'libs/mina-cli/Cargo.toml',
-    pattern: `name = "mina-cli"\nversion = "${version}"`,
   },
 ]
 

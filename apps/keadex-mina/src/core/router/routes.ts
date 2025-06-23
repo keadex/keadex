@@ -95,10 +95,23 @@ ROUTES[DEPENDENCY_TABLE] = {
   titlebarMenuFactory,
 }
 
+// ----- Remote Diagrams Paths
+export const REMOTE_DIAGRAMS_PROJECT_ROOT_URL_PARAM = ':projectRootUrl?'
+export const REMOTE_DIAGRAMS_DIAGRAM_URL_PARAM = ':diagramUrl?'
+export const REMOTE_DIAGRAMS_GH_TOKEN_PARAM = ':ghToken?'
+export const REMOTE_DIAGRAMS_BASE_URL = `/remote-diagrams`
+export const REMOTE_DIAGRAMS = `${REMOTE_DIAGRAMS_BASE_URL}/${REMOTE_DIAGRAMS_PROJECT_ROOT_URL_PARAM}/${REMOTE_DIAGRAMS_DIAGRAM_URL_PARAM}/${REMOTE_DIAGRAMS_GH_TOKEN_PARAM}`
+ROUTES[REMOTE_DIAGRAMS] = {
+  path: REMOTE_DIAGRAMS,
+  isAppMenuVisible: false,
+  titlebarMenuFactory,
+}
+
 //---------------- DEEP LINKS ROUTES
 export const DEEP_LINK_SCHEME = 'mina://'
 export const OPEN_DIAGRAM_DEEP_LINK = `${DEEP_LINK_SCHEME}open-diagram/`
 export const OPEN_DEPENDENCY_TABLE_DEEP_LINK = `${DEEP_LINK_SCHEME}dependency-table/`
+export const OPEN_REMOTE_DIAGRAM_DEEP_LINK = `${DEEP_LINK_SCHEME}remote-diagrams/`
 
 ROUTES[OPEN_DIAGRAM_DEEP_LINK] = {
   path: OPEN_DIAGRAM_DEEP_LINK,
@@ -111,6 +124,13 @@ ROUTES[OPEN_DEPENDENCY_TABLE_DEEP_LINK] = {
   path: OPEN_DEPENDENCY_TABLE_DEEP_LINK,
   data: {
     requiresProject: true,
+  },
+}
+
+ROUTES[OPEN_REMOTE_DIAGRAM_DEEP_LINK] = {
+  path: OPEN_REMOTE_DIAGRAM_DEEP_LINK,
+  data: {
+    requiresProject: false,
   },
 }
 

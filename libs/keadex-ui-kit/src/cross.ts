@@ -92,3 +92,4 @@ export {
   ColorPicker,
   type ColorPickerProps,
 } from './components/cross/ColorPicker/ColorPicker'
+export { useQueryParams } from './hooks/useQueryParams/useQueryParams'

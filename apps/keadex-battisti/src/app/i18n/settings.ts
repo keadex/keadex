@@ -7,7 +7,7 @@ export const cookieName = 'i18next'
 
 export function getOptions(lang = fallbackLng, ns = defaultNS): InitOptions {
   return {
-    // debug: true,
+    debug: false, //process.env.NODE_ENV !== 'production',
     supportedLngs: languages,
     fallbackLng,
     lng: lang,

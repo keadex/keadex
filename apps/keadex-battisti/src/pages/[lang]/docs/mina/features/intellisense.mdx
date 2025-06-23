@@ -1,6 +1,7 @@
-import Image from 'next/image'
-import minaIntellisense from '../../../../../../public/img/mina/mina-intellisense.gif'
 import { Callout } from 'nextra/components'
+import dynamic from 'next/dynamic'
+
+export const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
 
 # IntelliSense
 
@@ -11,10 +12,24 @@ Keadex Mina is one of the few tools with a code editor that provides an IntelliS
 
 With IntelliSense integrated into the Mina code editor, you and your team can code diagrams faster and with fewer errors. The parameter info and member lists will also assist you if you're not experienced with the C4 PlantUML syntax.
 
-<div className="my-5 block md:flex md:flex-wrap items-center justify-center">
-  <Image src={minaIntellisense} alt="Animated gif showing how the C4 PlantUML IntelliSense works in the Mina code editor" height={500} className="mx-0 my-5 md:mx-5"/>
+<div className="w-full h-[30rem] my-14 border-0">
+  <ReactPlayer
+    url="https://vimeo.com/1072231318/1e86f9b6bd"
+    muted
+    width="100%"
+    height="100%"
+    controls
+    config={{
+      vimeo: {
+        playerOptions: {
+          transparent: false,
+        },
+      },
+    }}
+  />
 </div>
 
 <Callout type="info" emoji="ℹ️">
-  Not sure if you really want to code diagrams? Maybe you're interested in the [low-coding Mina feature](/en/docs/mina/features/low-coding).
+  Not sure if you really want to code diagrams? Maybe you're interested in the
+  [low-coding Mina feature](/en/docs/mina/features/low-coding).
 </Callout>

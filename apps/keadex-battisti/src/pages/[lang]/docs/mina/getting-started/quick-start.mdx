@@ -1,14 +1,25 @@
+import { Tabs } from 'nextra/components'
+
 # Quick Start
 
-### 1. Download & Install Keadex Mina
+### 1. Open Keadex Mina
 
-Download Keadex Mina from [keadex.dev](https://keadex.dev/projects/keadex-mina) and install it on your machine.
+<Tabs items={['Desktop', 'Web']} defaultIndex="0">
+  <Tabs.Tab>
+    1. Download Keadex Mina from [keadex.dev](https://keadex.dev/projects/keadex-mina) and install it on your machine
+    2. Open Keadex Mina
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+   1. Open [Mina Live](http://keadex.dev/en/mina-live)
+   
+   </Tabs.Tab>
+</Tabs>
 
 ### 2. Create a new Mina project
 
-1. Open Keadex Mina
-2. Click on _"Create a new project"_ in the welcome page
-3. Fill the form with the required data
+1. Click on _"Create a new project"_ in the welcome page
+2. Fill the form with the required data
    - Select an empty **folder** where the project will be created. Check out the [Project Structure](/en/docs/mina/getting-started/project-structure) documentation for more details about the generated files and folders.
    - Choose a short **name** for your project.
    - Fill in the **version** following the [Semantic Versioning](https://semver.org/) syntax.
@@ -23,12 +34,4 @@ Check out the _"Features"_ section of this documentation for details on the avai
 
 ### 3-bis. Share your diagrams
 
-There are several ways to share and show your architectural diagrams:
-
-- Through your version control system.
-- Through your documentantion platform ([Confluence](https://www.atlassian.com/software/confluence) or [Docusaurus](https://docusaurus.io/)).
-- Through your custom React application.
-- Through [deep links](../features/deep-links.mdx).
-- Through the following page: https://keadex.dev/en/projects/keadex-mina/share-diagram
-
-Check out the _"Plugins and Components"_ section of this documentation for more details.
+Refer to the [Share Diagrams](../features/share-diagrams.mdx) documentation for details on how to share your diagrams with your team and the world.

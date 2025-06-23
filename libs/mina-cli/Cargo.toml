@@ -1,6 +1,6 @@
 [package]
 name = "mina-cli"
-version = "1.16.0"
+version = "2.0.0"
 description = "CLI for interacting with Mina projects."
 authors = ["Keadex"]
 license = "MIT"
@@ -10,10 +10,11 @@ rust-version = "1.77.1"
 
 [dependencies]
 wasm-bindgen = "0.2"
-clap = {version = "4.5.20", features = ["derive"]}
-clap-markdown = "0.1.4"
+clap = {version = "4.5", features = ["derive"]}
+clap-markdown = "0.1"
 serde = { version = "1.0", features = ["derive"] }
-strfmt = "0.2.4"
+strfmt = "0.2"
+tokio = "1.43"
 uuid = { version = "1.4.1", features = [
   "v4",
   "fast-rng",

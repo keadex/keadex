@@ -12,12 +12,12 @@ use keadex_mina::repository::library::library_repository::search_library_element
 use std::collections::HashMap;
 use strfmt::strfmt;
 
-pub fn upsert_person(args: UpdatePerson) -> Result<(), MinaError> {
-  let result = search_library_element(&args.alias);
+pub async fn upsert_person(args: UpdatePerson) -> Result<(), MinaError> {
+  let result = search_library_element(&args.alias).await;
   if let Ok(found) = result {
     if found.is_some() {
       // The element exists, so we can update it
-      let result = update_person(args);
+      let result = update_person(args).await;
       if result.is_ok() {
         let response = Response {
           code: 0,
@@ -46,7 +46,7 @@ pub fn upsert_person(args: UpdatePerson) -> Result<(), MinaError> {
       description: args.new_description,
       notes: args.new_notes,
     };
-    let result = create_person(create_args);
+    let result = create_person(create_args).await;
     if result.is_ok() {
       let response = Response {
         code: 0,

@@ -1,5 +1,6 @@
 import {
   faFileExport,
+  faGear,
   faRotateLeft,
   faRotateRight,
 } from '@fortawesome/free-solid-svg-icons'
@@ -95,6 +96,19 @@ export const DiagramDesignViewToolbar = forwardRef(
               }}
             />
             <Separator />
+            <IconButton
+              icon={faGear}
+              className={`${styleButton}`}
+              data-te-toggle="tooltip"
+              data-te-placement="bottom"
+              title={t('common.settings').toString()}
+              onClick={() => {
+                diagramDesignViewCommands?.current?.updateDiagramDesignViewSettings(
+                  diagramDesignViewCommands?.current?.diagramDesignViewSettings(),
+                )
+                forceUpdate()
+              }}
+            />
             <div
               className={`${styleButton} w-fit px-3 cursor-pointer flex truncate`}
               data-te-toggle="tooltip"

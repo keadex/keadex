@@ -2,33 +2,28 @@
 Helper module which exports utilities for diagrams.
 */
 
-#[cfg(feature = "desktop")]
 use crate::core::app::ROOT_RESOLVER;
-#[cfg(feature = "desktop")]
 use crate::core::resolver::ResolvableModules::ProjectSettingsIMDAO;
 use crate::dao::filesystem::diagram::diagram_plantuml_dao::FILE_NAME as DIAGRAM_PLANTUML_FILE_NAME;
 use crate::dao::filesystem::diagram::diagram_spec_dao::FILE_NAME as DIAGRAM_SPEC_FILE_NAME;
 use crate::dao::filesystem::diagram::DIAGRAMS_FOLDER;
-#[cfg(feature = "desktop")]
 use crate::dao::inmemory::InMemoryDAO;
 use crate::error_handling::errors::{
   GENERIC_PARSING_ERROR_CODE, PARSING_DIAGRAM_PATH_ERROR_MSG, PROJECT_NOT_LOADED_ERROR_CODE,
   PROJECT_NOT_LOADED_ERROR_MSG,
 };
 use crate::error_handling::mina_error::MinaError;
-#[cfg(feature = "desktop")]
 use crate::helper::distribution_helper::dist_path;
 use crate::model::c4_element::base_element::BaseElement;
 use crate::model::diagram::diagram_plantuml::{DiagramElementType, DiagramPlantUML};
 use crate::model::diagram::diagram_spec::DiagramSpec;
 use crate::model::diagram::Diagram;
 use crate::model::diagram::DiagramType;
-#[cfg(feature = "desktop")]
 use crate::resolve_to_write;
 use convert_case::{Case, Casing};
-#[cfg(feature = "desktop")]
 use std::path::MAIN_SEPARATOR;
 use std::str::FromStr;
+use wasm_bindgen::prelude::wasm_bindgen;
 
 /**
 Returns a human-readable format of a diagram's name, starting from its folder's name.
@@ -56,15 +51,17 @@ Example: <PROJECT_ROOT>/diagrams/<DIAGRAM_TYPE>/<DIAGRAM_NAME>/diagram.puml -> (
 # Arguments
   * `path` - Path to process
 */
-#[cfg(feature = "desktop")]
-pub fn diagram_name_type_from_path(path: &str) -> Result<(String, DiagramType), MinaError> {
+pub async fn diagram_name_type_from_path(path: &str) -> Result<(String, DiagramType), MinaError> {
   /*
   A diagram's path has the following syntax: "<PROJECT_ROOT>/diagrams/<DIAGRAM_TYPE>/<DIAGRAM_NAME>/diagram.puml"
   So I'm splitting the path two times. The first time to remove the "<PROJECT_ROOT>/diagrams/" part and the
   second time to extract DIAGRAM_TYPE and DIAGRAM_NAME.
   */
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
+  let store = ROOT_RESOLVER.get().read().await;
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .get()
+    .await;
   if let None = project_settings {
     return Err(MinaError::new(
       PROJECT_NOT_LOADED_ERROR_CODE,
@@ -137,7 +134,6 @@ Example: ROOT/diagrams
 # Arguments
   * `root` - Root of the Mina project
 */
-#[cfg(feature = "desktop")]
 pub fn diagrams_path(root: &str) -> String {
   diagrams_path_separator(root, MAIN_SEPARATOR)
 }
@@ -166,7 +162,6 @@ of a specific type: e.g., ROOT/diagrams/container
   * `root` - Root of the Mina project
   * `dir_type_name` - Name of the diagram's type directory
 */
-#[cfg(feature = "desktop")]
 pub fn diagram_type_path(root: &str, dir_type_name: &str) -> String {
   diagram_type_path_separator(root, dir_type_name, MAIN_SEPARATOR)
 }
@@ -178,13 +173,15 @@ Example: ROOT/diagrams/container/diagram-name
   * `name` - Name of the diagram
   * `diagram_type` - Type of the diagram
 */
-#[cfg(feature = "desktop")]
-pub fn diagram_dir_path_from_name_type(
+pub async fn diagram_dir_path_from_name_type(
   diagram_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<String, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
+  let store = ROOT_RESOLVER.get().read().await;
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .get()
+    .await;
   if let None = project_settings {
     return Err(MinaError::new(
       PROJECT_NOT_LOADED_ERROR_CODE,
@@ -208,14 +205,13 @@ Example: ROOT/diagrams/container/diagram-name/diagram.puml
   * `name` - Name of the diagram
   * `diagram_type` - Type of the diagram
 */
-#[cfg(feature = "desktop")]
-pub fn diagram_plantuml_path_from_name_type(
+pub async fn diagram_plantuml_path_from_name_type(
   diagram_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<String, MinaError> {
   Ok(format!(
     "{}{}{}",
-    diagram_dir_path_from_name_type(diagram_name, diagram_type)?,
+    diagram_dir_path_from_name_type(diagram_name, diagram_type).await?,
     MAIN_SEPARATOR,
     DIAGRAM_PLANTUML_FILE_NAME
   ))
@@ -228,14 +224,13 @@ Example: ROOT/diagrams/container/diagram-name/diagram.spec.json
   * `name` - Name of the diagram
   * `diagram_type` - Type of the diagram
 */
-#[cfg(feature = "desktop")]
-pub fn diagram_spec_path_from_name_type(
+pub async fn diagram_spec_path_from_name_type(
   diagram_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<String, MinaError> {
   Ok(format!(
     "{}{}{}",
-    diagram_dir_path_from_name_type(diagram_name, diagram_type)?,
+    diagram_dir_path_from_name_type(diagram_name, diagram_type).await?,
     MAIN_SEPARATOR,
     DIAGRAM_SPEC_FILE_NAME
   ))
@@ -309,7 +304,6 @@ pub fn get_all_elements_aliases(elements: &Vec<DiagramElementType>) -> Vec<Strin
   aliases
 }
 
-#[cfg(feature = "desktop")]
 pub fn clean_diagram_specs(
   diagram_plantuml: &DiagramPlantUML,
   diagram_spec: &DiagramSpec,
@@ -337,13 +331,15 @@ Example: ROOT/dist/diagrams/container/diagram-name
   * `name` - Name of the diagram
   * `diagram_type` - Type of the diagram
 */
-#[cfg(feature = "desktop")]
-pub fn diagram_dist_dir_path_from_name_type(
+pub async fn diagram_dist_dir_path_from_name_type(
   diagram_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<String, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO).get();
+  let store = ROOT_RESOLVER.get().read().await;
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .get()
+    .await;
   if let None = project_settings {
     return Err(MinaError::new(
       PROJECT_NOT_LOADED_ERROR_CODE,
@@ -353,7 +349,7 @@ pub fn diagram_dist_dir_path_from_name_type(
   let project_root = project_settings.unwrap().root;
 
   let dist_path = dist_path(&project_root);
-  let diagram_dir_path = diagram_dir_path_from_name_type(diagram_name, diagram_type);
+  let diagram_dir_path = diagram_dir_path_from_name_type(diagram_name, diagram_type).await;
 
   Ok(format!(
     "{}{}",
@@ -369,7 +365,6 @@ Example: container/diagram-name
   * `diagram_human_name` - Human name of the diagram
   * `diagram_type` - Type of the diagram
 */
-#[cfg(feature = "desktop")]
 pub fn diagram_to_link_string(
   diagram_human_name: &str,
   diagram_type: &DiagramType,
@@ -414,7 +409,6 @@ Utility which deletes all the references of the given diagram, from the base dat
   * `diagram_type` - Type of the diagram to delete
   * `base_data` - Base data of the diagram's element from which remove the references
 */
-#[cfg(feature = "desktop")]
 pub fn delete_references_from_base_data(
   diagram_human_name: &str,
   diagram_type: &DiagramType,
@@ -524,6 +518,13 @@ pub fn diagram_spec_url_from_name_type(
   ))
 }
 
+/**
+Returns the diagram URL from a link string.
+# Arguments
+  * `project_root_url` - URL of the project's root.
+  * `link_string` - Link string of the diagram.
+*/
+#[cfg_attr(web, wasm_bindgen)]
 pub fn diagram_url_from_link_string(
   project_root_url: &str,
   link_string: &str,
@@ -561,6 +562,14 @@ pub fn diagram_spec_url_from_link_string(
   )
 }
 
+/**
+Returns the PlantUML URL of a diagram.
+# Arguments
+  * `project_root_url` - URL of the project's root.
+  * `diagram_url` - URL of the diagram.
+  * `alias` - Alias of the architectural element.
+*/
+#[cfg_attr(web, wasm_bindgen)]
 pub fn diagram_plantuml_url_from_diagram_url(
   project_root_url: &str,
   diagram_url: &str,
@@ -569,6 +578,13 @@ pub fn diagram_plantuml_url_from_diagram_url(
   diagram_plantuml_url_from_name_type(project_root_url, &diagram_name, &diagram_type)
 }
 
+/**
+Returns the specifications URL of a diagram.
+# Arguments
+  * `project_root_url` - URL of the project's root.
+  * `diagram_url` - URL of the diagram.
+*/
+#[cfg_attr(web, wasm_bindgen)]
 pub fn diagram_spec_url_from_diagram_url(
   project_root_url: &str,
   diagram_url: &str,

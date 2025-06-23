@@ -54,6 +54,7 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
   const { t } = useTranslation()
   const [newDiagram, setNewDiagram] = useState(emptyDiagram)
   const [newDiagramTags, setNewDiagramTags] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     if (props.diagramName && props.diagramType) {
@@ -74,8 +75,10 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
     }
 
     if (props.mode === 'create' || props.mode === 'duplicate') {
+      setIsLoading(true)
       createDiagram(diagram)
         .then((success) => {
+          setIsLoading(false)
           if (success) {
             toast.info(t('common.info.done'))
             executeHook({
@@ -87,6 +90,7 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
           }
         })
         .catch((error: MinaError) => {
+          setIsLoading(false)
           toast.error(error.msg)
         })
     } else if (props.mode === 'edit') {
@@ -96,6 +100,7 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
         diagram.raw_plantuml &&
         diagram.diagram_spec
       ) {
+        setIsLoading(true)
         saveSpecDiagramRawPlantuml(
           diagram.diagram_name,
           diagram.diagram_type,
@@ -103,6 +108,7 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
           diagram.diagram_spec,
         )
           .then(() => {
+            setIsLoading(false)
             toast.info(t('common.info.done'))
             executeHook({
               data: { Diagram: diagram },
@@ -112,6 +118,7 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
             props.hideModal()
           })
           .catch((error: MinaError) => {
+            setIsLoading(false)
             toast.error(error.msg)
           })
       }
@@ -282,6 +289,7 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
           [
             {
               key: 'button-cancel',
+              disabled: isLoading,
               children: <span>{t('common.cancel')}</span>,
               'data-te-modal-dismiss': true,
             } as ButtonProps,
@@ -299,6 +307,7 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
                     ),
                     disabled:
                       !newDiagram.diagram_name || !newDiagram.diagram_type,
+                    isLoading,
                     onClick: handleConfirmClick,
                   },
                 ]

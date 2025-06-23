@@ -28,14 +28,16 @@ List the elements of the given type stored in the library.
 # Arguments
   * `filter_c4_element_type` - Type of the diagram's element to filter
 */
-pub fn list_library_elements(
+pub async fn list_library_elements(
   filter_c4_element_type: Option<C4ElementType>,
 ) -> Result<C4Elements, MinaError> {
   log::info!("List {:?} from the library", filter_c4_element_type);
 
-  let store = ROOT_RESOLVER.get().read().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
   let c4elements = resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
     .get()
+    .await
     .unwrap()
     .elements;
 
@@ -62,10 +64,12 @@ Returns the updated library.
 # Arguments
   * `diagram_element` - Diagram's element to create
 */
-pub fn create_element(diagram_element: &DiagramElementType) -> Result<ProjectLibrary, MinaError> {
+pub async fn create_element(
+  diagram_element: &DiagramElementType,
+) -> Result<ProjectLibrary, MinaError> {
   log::info!("Create element in library");
 
-  check_cross_diagrams_elements_aliases(&vec![diagram_element.clone()], None, None)?;
+  check_cross_diagrams_elements_aliases(&vec![diagram_element.clone()], None, None).await?;
 
   let error = MinaError {
     code: INVALID_LIB_ELEMENT_ERROR_CODE,
@@ -81,40 +85,44 @@ pub fn create_element(diagram_element: &DiagramElementType) -> Result<ProjectLib
   match diagram_element {
     DiagramElementType::Person(person) => {
       if search_library_element(person.base_data.alias.as_ref().unwrap())
+        .await
         .is_ok_and(|result| result.is_some())
       {
         return Err(error_existing_element);
       } else {
-        return Ok(person_repository::create_person(person.clone())?);
+        return Ok(person_repository::create_person(person.clone()).await?);
       }
     }
     DiagramElementType::SoftwareSystem(software_system) => {
       if search_library_element(software_system.base_data.alias.as_ref().unwrap())
+        .await
         .is_ok_and(|result| result.is_some())
       {
         return Err(error_existing_element);
       } else {
-        return Ok(software_system_repository::create_software_system(
-          software_system.clone(),
-        )?);
+        return Ok(
+          software_system_repository::create_software_system(software_system.clone()).await?,
+        );
       }
     }
     DiagramElementType::Container(container) => {
       if search_library_element(container.base_data.alias.as_ref().unwrap())
+        .await
         .is_ok_and(|result| result.is_some())
       {
         return Err(error_existing_element);
       } else {
-        return Ok(container_repository::create_container(container.clone())?);
+        return Ok(container_repository::create_container(container.clone()).await?);
       }
     }
     DiagramElementType::Component(component) => {
       if search_library_element(component.base_data.alias.as_ref().unwrap())
+        .await
         .is_ok_and(|result| result.is_some())
       {
         return Err(error_existing_element);
       } else {
-        return Ok(component_repository::create_component(component.clone())?);
+        return Ok(component_repository::create_component(component.clone()).await?);
       }
     }
     DiagramElementType::Boundary(_) => return Err(error),
@@ -132,7 +140,7 @@ Returns the updated library.
   * `old_diagram_element` - Diagram's element before the changes
   * `new_diagram_element` - Diagram's element updated
 */
-pub fn update_element(
+pub async fn update_element(
   old_diagram_element: &DiagramElementType,
   new_diagram_element: &DiagramElementType,
 ) -> Result<ProjectLibrary, MinaError> {
@@ -147,18 +155,17 @@ pub fn update_element(
   // Create the element
   match new_diagram_element {
     DiagramElementType::Person(person) => {
-      result = Ok(person_repository::update_person(person.clone())?)
+      result = Ok(person_repository::update_person(person.clone()).await?)
     }
     DiagramElementType::SoftwareSystem(software_system) => {
-      result = Ok(software_system_repository::update_software_system(
-        software_system.clone(),
-      )?)
+      result =
+        Ok(software_system_repository::update_software_system(software_system.clone()).await?)
     }
     DiagramElementType::Container(container) => {
-      result = Ok(container_repository::update_container(container.clone())?)
+      result = Ok(container_repository::update_container(container.clone()).await?)
     }
     DiagramElementType::Component(component) => {
-      result = Ok(component_repository::update_component(component.clone())?)
+      result = Ok(component_repository::update_component(component.clone()).await?)
     }
     DiagramElementType::Boundary(_) => (),
     DiagramElementType::DeploymentNode(_) => (),
@@ -178,13 +185,8 @@ pub fn update_element(
       &vec![new_diagram_element.clone()],
       0,
     ))?;
-    let _ = search_and_replace_text(
-      &cleaned_old_plantuml,
-      &cleaned_new_plantuml,
-      true,
-      false,
-      i32::MAX,
-    )?;
+    let _ =
+      search_and_replace_text(&cleaned_old_plantuml, &cleaned_new_plantuml, true, false).await?;
   }
 
   return result;
@@ -197,7 +199,7 @@ Returns updated project's library.
   * `uuid_element` - UUID of the diagram's element to delete
   * `element_type` - Type of the diagram's element to delete
 */
-pub fn delete_element_by_uuid(
+pub async fn delete_element_by_uuid(
   uuid_element: &str,
   element_type: C4ElementType,
 ) -> Result<ProjectLibrary, MinaError> {
@@ -205,16 +207,20 @@ pub fn delete_element_by_uuid(
 
   // Delete the element
   match element_type {
-    C4ElementType::Person => person_repository::delete_element_by_uuid(uuid_element)?,
+    C4ElementType::Person => person_repository::delete_element_by_uuid(uuid_element).await?,
     C4ElementType::SoftwareSystem => {
-      software_system_repository::delete_element_by_uuid(uuid_element)?
+      software_system_repository::delete_element_by_uuid(uuid_element).await?
     }
-    C4ElementType::Container => container_repository::delete_element_by_uuid(uuid_element)?,
-    C4ElementType::Component => component_repository::delete_element_by_uuid(uuid_element)?,
+    C4ElementType::Container => container_repository::delete_element_by_uuid(uuid_element).await?,
+    C4ElementType::Component => component_repository::delete_element_by_uuid(uuid_element).await?,
   };
 
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let result = resolve_to_write!(store, ProjectLibraryIMDAO).get().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
+  let result = resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .get()
+    .await
+    .unwrap();
   Ok(result)
 }
 
@@ -225,17 +231,21 @@ Returns updated project's library.
   * `diagram_human_name` - Human name of the diagram to delete
   * `diagram_type` - Type of the diagram to delete
 */
-pub fn delete_diagram_references(
+pub async fn delete_diagram_references(
   diagram_human_name: &str,
   diagram_type: &DiagramType,
 ) -> Result<ProjectLibrary, MinaError> {
-  person_repository::delete_diagram_references(diagram_human_name, diagram_type)?;
-  software_system_repository::delete_diagram_references(diagram_human_name, diagram_type)?;
-  container_repository::delete_diagram_references(diagram_human_name, diagram_type)?;
-  component_repository::delete_diagram_references(diagram_human_name, diagram_type)?;
+  person_repository::delete_diagram_references(diagram_human_name, diagram_type).await?;
+  software_system_repository::delete_diagram_references(diagram_human_name, diagram_type).await?;
+  container_repository::delete_diagram_references(diagram_human_name, diagram_type).await?;
+  component_repository::delete_diagram_references(diagram_human_name, diagram_type).await?;
 
-  let store = ROOT_RESOLVER.get().read().unwrap();
-  let result = resolve_to_write!(store, ProjectLibraryIMDAO).get().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
+  let result = resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .get()
+    .await
+    .unwrap();
   Ok(result)
 }
 
@@ -245,8 +255,8 @@ Returns the found element, if any.
 # Arguments
   * `alias` - Alias of the element to search for
 */
-pub fn search_library_element(alias: &str) -> Result<Option<DiagramElementType>, MinaError> {
-  let library_elements = list_library_elements(None)?;
+pub async fn search_library_element(alias: &str) -> Result<Option<DiagramElementType>, MinaError> {
+  let library_elements = list_library_elements(None).await?;
 
   let found_person = library_elements
     .persons

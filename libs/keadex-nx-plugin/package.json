@@ -2,9 +2,11 @@
   "name": "@keadex/keadex-nx-plugin",
   "version": "0.0.1",
   "dependencies": {
+    "@nx/devkit": "21.0.3",
     "@microsoft/api-documenter": "^7.25.2",
     "@microsoft/api-extractor": "^7.46.2",
-    "@nx/devkit": "18.2.4",
+    "glob": "11.0.2",
+    "gray-matter": "4.0.3",
     "replace-in-file": "^7.2.0",
     "tslib": "^2.6.2"
   },
@@ -12,5 +14,6 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "private": true,
-  "generators": "./generators.json"
+  "generators": "./generators.json",
+  "executors": "./executors.json"
 }

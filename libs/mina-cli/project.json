@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/mina-cli/src",
   "projectType": "library",
+  "implicitDependencies": ["keadex-mina"],
   "tags": [],
   "targets": {
     "build": {

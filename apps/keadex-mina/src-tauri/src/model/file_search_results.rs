@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use strum_macros::{Display, EnumString};
 use ts_rs::TS;
 
@@ -42,7 +42,7 @@ pub struct FileSearchResult {
 )]
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct FileSearchResults {
-  pub results: HashMap<String, Vec<FileSearchResult>>,
+  pub results: BTreeMap<String, Vec<FileSearchResult>>,
   pub count: i32,
   pub reached_limit: bool,
 }

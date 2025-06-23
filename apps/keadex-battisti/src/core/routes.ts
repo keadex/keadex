@@ -18,7 +18,10 @@ ROUTES[ABOUT_ME] = {
 
 // ----- Projects Paths
 export const PROJECTS = '/projects'
+
 export const PROJECT_KEADEX_MINA = `${PROJECTS}/keadex-mina`
+export const KEADEX_MINA_LIVE_EDITOR = `/mina-live`
+
 export const KEADEX_MINA_SHARE_DIAGRAM = `${PROJECT_KEADEX_MINA}/share-diagram`
 export const PROJECT_KEADEX_BATTISTI = `${PROJECTS}/keadex-battisti`
 export const PROJECT_KEADEX_DOCS = `${PROJECTS}/keadex-docs`
@@ -32,14 +35,22 @@ export const PROJECTS_ROUTES = [
 ROUTES[PROJECTS] = {
   path: PROJECTS,
 }
+
 ROUTES[PROJECT_KEADEX_MINA] = {
   path: PROJECT_KEADEX_MINA,
+}
+ROUTES[KEADEX_MINA_LIVE_EDITOR] = {
+  path: KEADEX_MINA_LIVE_EDITOR,
+  isNewsbarVisible: false,
+  isHeaderVisible: false,
+  isFooterVisible: false,
 }
 ROUTES[KEADEX_MINA_SHARE_DIAGRAM] = {
   path: KEADEX_MINA_SHARE_DIAGRAM,
   isHeaderVisible: false,
   isFooterVisible: false,
 }
+
 ROUTES[PROJECT_KEADEX_BATTISTI] = {
   path: PROJECT_KEADEX_BATTISTI,
 }
@@ -86,6 +97,8 @@ export const MINA_LINKS = `${MINA_FEATURES}/links`
 export const MINA_LOW_CODING = `${MINA_FEATURES}/low-coding`
 export const MINA_PLANTUML = `${MINA_FEATURES}/plantuml`
 export const MINA_SEARCH = `${MINA_FEATURES}/search`
+export const MINA_SSR = `${MINA_FEATURES}/server-side-rendering`
+export const MINA_SHARE_DIAGRAMS = `${MINA_FEATURES}/share-diagrams`
 export const MINA_TAGS = `${MINA_FEATURES}/tags`
 export const MINA_THEMES = `${MINA_FEATURES}/themes`
 export const MINA_VERSIONING = `${MINA_FEATURES}/versioning`
@@ -187,6 +200,12 @@ ROUTES[MINA_PLANTUML] = {
 }
 ROUTES[MINA_SEARCH] = {
   path: MINA_SEARCH,
+}
+ROUTES[MINA_SSR] = {
+  path: MINA_SSR,
+}
+ROUTES[MINA_SHARE_DIAGRAMS] = {
+  path: MINA_SHARE_DIAGRAMS,
 }
 ROUTES[MINA_TAGS] = {
   path: MINA_TAGS,

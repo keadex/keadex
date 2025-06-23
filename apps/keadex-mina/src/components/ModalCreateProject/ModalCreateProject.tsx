@@ -3,7 +3,10 @@ import ProjectSettings from '../../views/ProjectSettings/ProjectSettings'
 export interface ModalCreateProjectProps {
   mode: 'edit' | 'create'
   hideModal: () => void
-  onProjectCreated?: (projectRoot: string) => void
+  onProjectCreated?: (
+    projectRoot: string | undefined,
+    dirHandle: FileSystemDirectoryHandle | undefined,
+  ) => void
 }
 
 export const ModalCreateProject = (props: ModalCreateProjectProps) => {

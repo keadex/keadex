@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@keadex/mina-react": "^1.16.0",
+    "@keadex/mina-react": "^2.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "14.0.0",
     "@testing-library/user-event": "^13.5.0",

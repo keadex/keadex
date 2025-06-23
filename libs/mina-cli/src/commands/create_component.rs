@@ -5,7 +5,7 @@ use keadex_mina::model::diagram::diagram_plantuml::DiagramElementType;
 use keadex_mina::repository::library::library_repository::create_element;
 use uuid::Uuid;
 
-pub fn create_component(args: CreateComponent) -> Result<(), MinaError> {
+pub async fn create_component(args: CreateComponent) -> Result<(), MinaError> {
   let mut component = Component::default();
   component.base_data.uuid = Some(Uuid::new_v4().to_string());
   component.base_data.alias = Some(args.alias);
@@ -16,6 +16,6 @@ pub fn create_component(args: CreateComponent) -> Result<(), MinaError> {
   component.component_type = Some(args.component_type);
   component.technology = Some(args.technology);
 
-  create_element(&DiagramElementType::Component(component))?;
+  create_element(&DiagramElementType::Component(component)).await?;
   return Ok(());
 }

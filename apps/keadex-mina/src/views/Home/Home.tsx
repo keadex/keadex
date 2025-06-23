@@ -1,5 +1,10 @@
-import { faFolderOpen, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { IconButton, useModal } from '@keadex/keadex-ui-kit/cross'
+import {
+  faFolderOpen,
+  faPlus,
+  faCloud,
+} from '@fortawesome/free-solid-svg-icons'
+import { IconButton, useModal, useSafeExit } from '@keadex/keadex-ui-kit/cross'
+import { isWebFsSupported } from '@keadex/keadex-utils'
 import { path } from '@tauri-apps/api'
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import * as dialog from '@tauri-apps/plugin-dialog'
@@ -8,7 +13,9 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import ModalCreateProject from '../../components/ModalCreateProject/ModalCreateProject'
-import { HOME_PROJECT } from '../../core/router/routes'
+import { ENV_SETTINGS } from '../../core/env-settings'
+import { openExternalDiagram } from '../../core/router/router'
+import ROUTES, { HOME_PROJECT } from '../../core/router/routes'
 import { useAppDispatch } from '../../core/store/hooks'
 import { openProject as openProjectEvent } from '../../core/store/slices/project-slice'
 import { openProject as openProjectAPI } from '../../core/tauri-rust-bridge'
@@ -25,10 +32,14 @@ export const Home = React.memo((props: HomeProps) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { modal, showModal, hideModal } = useModal()
+  const { modal: modalSafeExit, safeExit } = useSafeExit(ROUTES)
   const [isHovering, setIsHovering] = useState(false)
 
-  function openProject(path: string) {
-    openProjectAPI(path)
+  function openProject(
+    path: string | undefined,
+    dirHandle: FileSystemDirectoryHandle | undefined,
+  ) {
+    openProjectAPI(path, dirHandle)
       .then((project) => {
         dispatch(openProjectEvent(project))
         navigate(HOME_PROJECT)
@@ -40,13 +51,40 @@ export const Home = React.memo((props: HomeProps) => {
       })
   }
 
-  function handleOpenProject() {
-    dialog.open({ directory: true }).then(async (path) => {
-      if (Array.isArray(path)) toast.error(t('common.error.invalid_path'))
-      else if (path) {
-        openProject(path)
+  async function handleOpenProject() {
+    if (ENV_SETTINGS.WEB_MODE) {
+      try {
+        const directoryHandle = await window.showDirectoryPicker({
+          mode: 'readwrite',
+        })
+        openProject(undefined, directoryHandle)
+      } catch (e) {
+        // user has closed the dir picker without choosing the directory
       }
-    })
+    } else {
+      dialog.open({ directory: true }).then(async (path) => {
+        if (Array.isArray(path)) toast.error(t('common.error.invalid_path'))
+        else if (path) {
+          openProject(path, undefined)
+        }
+      })
+    }
+  }
+
+  async function handleOnProjectCreated(
+    projectRoot: string | undefined,
+    dirHandle: FileSystemDirectoryHandle | undefined,
+  ) {
+    let newDirHandle = dirHandle
+    if (ENV_SETTINGS.WEB_MODE && dirHandle) {
+      for await (const entry of dirHandle.entries()) {
+        if (entry[0] === projectRoot?.replace('/', '')) {
+          newDirHandle = entry[1] as FileSystemDirectoryHandle
+          break
+        }
+      }
+    }
+    openProject(projectRoot, newDirHandle)
   }
 
   function handleCreateProject() {
@@ -57,12 +95,16 @@ export const Home = React.memo((props: HomeProps) => {
         <ModalCreateProject
           hideModal={hideModal}
           mode="create"
-          onProjectCreated={openProject}
+          onProjectCreated={handleOnProjectCreated}
         />
       ),
       buttons: false,
       size: 'lg',
     })
+  }
+
+  async function handleExternalDiagrams() {
+    openExternalDiagram(safeExit, [])
   }
 
   async function isDirectory(filePath: string) {
@@ -75,25 +117,27 @@ export const Home = React.memo((props: HomeProps) => {
   }
 
   useEffect(() => {
-    const unlisten = appWindow.onDragDropEvent(async (event) => {
-      if (event.payload.type === 'over') {
-        setIsHovering(true)
-      } else if (event.payload.type === 'drop') {
-        if (
-          event.payload.paths &&
-          event.payload.paths.length > 0 &&
-          (await isDirectory(event.payload.paths[0]))
-        ) {
-          openProject(event.payload.paths[0])
+    if (!ENV_SETTINGS.WEB_MODE) {
+      const unlisten = appWindow.onDragDropEvent(async (event) => {
+        if (event.payload.type === 'over') {
+          setIsHovering(true)
+        } else if (event.payload.type === 'drop') {
+          if (
+            event.payload.paths &&
+            event.payload.paths.length > 0 &&
+            (await isDirectory(event.payload.paths[0]))
+          ) {
+            openProject(event.payload.paths[0], undefined)
+          }
+          setIsHovering(false)
+        } else {
+          setIsHovering(false)
         }
-        setIsHovering(false)
-      } else {
-        setIsHovering(false)
+      })
+      checkForUpdates(showModal, t, false)
+      return () => {
+        if (unlisten) unlisten.then((f) => f())
       }
-    })
-    checkForUpdates(showModal, t, false)
-    return () => {
-      if (unlisten) unlisten.then((f) => f())
     }
   }, [])
 
@@ -104,26 +148,57 @@ export const Home = React.memo((props: HomeProps) => {
       }`}
     >
       {modal}
-      <div className="-mt-28 text-center">
-        <img
-          src="mina-logo-full.svg"
-          width={650}
-          alt="Keadex Mina Logo "
-          className="inline-block pointer-events-none"
-        />
-      </div>
-      <div className="mt-20 text-center text-5xl">
-        <IconButton
-          icon={faFolderOpen}
-          className="mr-20"
-          onClick={handleOpenProject}
-        >
-          <span className="text-lg">{t('home.open_project')}</span>
-        </IconButton>
-        <IconButton icon={faPlus} onClick={handleCreateProject}>
-          <span className="text-lg">{t('home.create_project')}</span>
-        </IconButton>
-      </div>
+      {modalSafeExit}
+      {((ENV_SETTINGS.WEB_MODE && isWebFsSupported(window)) ||
+        !ENV_SETTINGS.WEB_MODE) && (
+        <>
+          <div className="-mt-28 text-center">
+            <img
+              src="mina-logo-full.svg"
+              width={650}
+              alt="Keadex Mina Logo "
+              className="inline-block pointer-events-none"
+            />
+          </div>
+          <div className="mt-20 text-center text-5xl">
+            <IconButton
+              icon={faFolderOpen}
+              className="w-60"
+              onClick={handleOpenProject}
+            >
+              <span className="text-lg">{t('home.open_project')}</span>
+            </IconButton>
+            <IconButton
+              icon={faPlus}
+              onClick={handleCreateProject}
+              className="w-60"
+            >
+              <span className="text-lg">{t('home.create_project')}</span>
+            </IconButton>
+            <IconButton
+              icon={faCloud}
+              onClick={handleExternalDiagrams}
+              className="w-60"
+            >
+              <span className="text-lg">{t('home.remote_diagrams')}</span>
+            </IconButton>
+          </div>
+        </>
+      )}
+      {ENV_SETTINGS.WEB_MODE && !isWebFsSupported(window) && (
+        <div className="text-center text-lg">
+          This browser does not support opening local folders.
+          <br /> Check the list of compatible browsers{' '}
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/API/Window/showDirectoryPicker#browser_compatibility"
+            target="_blank"
+            rel="noreferrer"
+          >
+            here
+          </a>
+          .
+        </div>
+      )}
     </div>
   )
 })

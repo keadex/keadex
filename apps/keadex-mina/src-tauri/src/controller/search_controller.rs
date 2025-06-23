@@ -7,6 +7,7 @@ use crate::model::file_search_results::FileSearchResults;
 use crate::resolve_to_write;
 use crate::service::search_service::search_diagram_element;
 use crate::service::search_service::search_text;
+use keadex_mina_macro::web_controller;
 
 /**
 Searches for the given string in the project's files.
@@ -16,25 +17,31 @@ Searches for the given string in the project's files.
   * `include_library_dir` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn search(
-  string_to_search: &str,
+  string_to_search: String,
   include_diagrams_dir: bool,
   include_library_dir: bool,
-  limit: i32,
+  limit: usize,
 ) -> Result<FileSearchResults, MinaError> {
-  let store = ROOT_RESOLVER.get().read().unwrap();
+  let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
     .get()
+    .await
     .unwrap();
   log::info!("Search {} in {}", string_to_search, project_settings.root);
 
-  Ok(search_text(
-    string_to_search,
-    include_diagrams_dir,
-    include_library_dir,
-    limit,
-  )?)
+  Ok(
+    search_text(
+      &string_to_search,
+      include_diagrams_dir,
+      include_library_dir,
+      limit,
+    )
+    .await?,
+  )
 }
 
 /**
@@ -45,12 +52,14 @@ Searches for the given diagram element alias in the project's files.
   * `include_library_dir` - If you want to include the library directory in the search.
   * `limit` - Limit of the returned results.
 */
-#[tauri::command]
+#[cfg_attr(desktop, tauri::command)]
+#[cfg_attr(web, web_controller)]
 pub async fn search_diagram_element_alias(
-  alias: &str,
+  alias: String,
   include_diagrams_dir: bool,
   include_library_dir: bool,
-  limit: i32,
+  limit: usize,
 ) -> Result<DiagramElementSearchResults, MinaError> {
-  return search_diagram_element(alias, "", include_diagrams_dir, include_library_dir, limit);
+  return search_diagram_element(&alias, "", include_diagrams_dir, include_library_dir, limit)
+    .await;
 }

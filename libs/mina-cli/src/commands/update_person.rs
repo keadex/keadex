@@ -5,8 +5,8 @@ use keadex_mina::repository::library::library_repository::{
   search_library_element, update_element,
 };
 
-pub fn update_person(update_person_args: UpdatePerson) -> Result<(), MinaError> {
-  let person = search_library_element(&update_person_args.alias)?;
+pub async fn update_person(update_person_args: UpdatePerson) -> Result<(), MinaError> {
+  let person = search_library_element(&update_person_args.alias).await?;
   if let Some(found_person) = person {
     if let DiagramElementType::Person(found_person) = found_person {
       let old_person = found_person.clone();
@@ -28,7 +28,8 @@ pub fn update_person(update_person_args: UpdatePerson) -> Result<(), MinaError> 
       update_element(
         &DiagramElementType::Person(old_person),
         &DiagramElementType::Person(new_person),
-      )?;
+      )
+      .await?;
       return Ok(());
     }
   }

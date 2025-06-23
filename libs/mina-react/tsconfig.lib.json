@@ -5,12 +5,7 @@
     "rootDir": ".",
     "outDir": "dist",
     "declaration": true,
-    "emitDeclarationOnly": true,
-    "types": [
-      "node",
-      "@nx/react/typings/cssmodule.d.ts",
-      "@nx/react/typings/image.d.ts"
-    ]
+    "emitDeclarationOnly": true
   },
   "exclude": [
     "jest.config.ts",
@@ -23,5 +18,13 @@
     "src/**/*.spec.jsx",
     "src/**/*.test.jsx"
   ],
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", "index.ts"]
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "index.ts",
+    "core.ts",
+    "../../apps/keadex-mina/src/env.d.ts"
+  ]
 }

@@ -54,6 +54,7 @@
     "generate": "Generate",
     "generating": "Generating",
     "github_repo": "GitHub Repo",
+    "github_token": "GitHub Token",
     "global": "Global",
     "help": "Help",
     "internal": "Internal",
@@ -82,7 +83,9 @@
     "project": "Project",
     "redo": "Redo",
     "relationship": "Relationship",
+    "render": "Render",
     "rendering": "Rendering",
+    "required": "Required",
     "reset": "Reset",
     "result": "Result",
     "results": "Results",
@@ -109,6 +112,9 @@
       "check_for_updates": "Check for Updates...",
       "close_project": "Close Project",
       "copy_deep_link": "Copy deep link",
+      "copy_ssr_link": "Copy SSR link",
+      "download_desktop_app": "Download desktop app",
+      "download_mina_cli": "Download Mina CLI",
       "link_existing_diagram": "Link an existing diagram",
       "link_to_diagram": "Link \"{{alias}}\" to...",
       "new_project": "New Project",
@@ -160,7 +166,9 @@
   "deep_link": {
     "invalid_diagram_path": "The deep link '{{deepLink}}' contains an invalid diagram link.",
     "invalid_dependency_table_path": "The deep link '{{deepLink}}' contains an invalid dependency table parameter. It should contain only the alias parameter.",
+    "invalid_remote_diagram_path": "The deep link '{{deepLink}}' contains an invalid remote diagram parameter. It should contain only the parameter of the diagram to open.",
     "required_open_project": "The deep link '{{deepLink}}' requires an active project to be open.",
+    "remote_diagrams_project_opened": "Cannot open the remote diagram. A project is currently opened. Close the project to open the remote diagram.",
     "unsupported_deep_link": "Unsupported deep link."
   },
   "dependency_table": {
@@ -187,12 +195,14 @@
     "warning_enable_autolayout": "You are enabling the auto layout. All the changes you made to the diagram layout will be discarded and replaced with the automatically generated layout."
   },
   "diagrams_settings": {
-    "gen_only_straight_arrows": "Generate only straight arrows"
+    "gen_only_straight_arrows": "Generate only straight arrows",
+    "grid_enabled": "Grid enabled"
   },
   "home": {
     "chose_parent_dir_project": "Choose the parent directory of the project",
     "create_project": "Create a new project",
-    "open_project": "Open an existing project"
+    "open_project": "Open an existing project",
+    "remote_diagrams": "Remote diagrams"
   },
   "project_settings": {
     "title": "Project Settings",
@@ -211,6 +221,15 @@
         "title": "Diagrams Theme"
       }
     }
+  },
+  "remote_diagrams": {
+    "description": "Use this feature to share or preview remote architectural diagrams created with Keadex Mina.",
+    "diagram_url": "Mina Diagram URL",
+    "gh_token_copy_warning": "The link you copied contains the GitHub token, which is SENSITIVE INFORMATION. Please share it only with trusted stakeholders to ensure security.",
+    "gh_token_info": "Required only for private repositories. Refer to the GitHub documentation for details on generating a GitHub token. Ensure you keep it secure and do not share it, as it is SENSITIVE INFORMATION!",
+    "link_copied": "The link has been copied to your clipboard!",
+    "project_root_url": "Mina project root URL",
+    "title": "Remote Diagrams"
   },
   "table": {
     "go_to_page": "Go to page",

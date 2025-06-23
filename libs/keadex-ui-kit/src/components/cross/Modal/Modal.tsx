@@ -29,9 +29,11 @@ export function renderButtons(
   if (typeof buttons !== 'boolean' && buttons) {
     buttons.forEach((buttonProps, index, array) => {
       const dataAttributes = getDataAttributes(buttonProps)
+      const { key, ...buttonPropsWithoutKey } = buttonProps
       renderedButtons.push(
         <Button
-          {...buttonProps}
+          key={key}
+          {...buttonPropsWithoutKey}
           {...dataAttributes}
           className={`${index !== 0 && array.length > 1 ? 'ml-3' : ''} ${
             buttonProps.className

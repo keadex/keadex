@@ -7,11 +7,14 @@ on:
 env:
   FORGE_EMAIL: ${{ secrets.FORGE_EMAIL }}
   FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
-  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.BOT_ACCESS_TOKEN }}
 
 jobs:
   release-libraries:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write # needed for provenance data generation
     outputs:
       is_mina_affected: ${{ steps.affected.outputs.is_mina_affected }}
     steps:
@@ -51,11 +54,8 @@ jobs:
 
       - uses: nrwl/nx-set-shas@v4
 
-      - name: release affected libraries
-        run: yarn nx affected -t semantic-release --parallel=1
+      - name: release libraries with nx version plans
+        run: yarn nx release-keadex-projects
         env:
-          GITHUB_TOKEN: ${{ secrets.BOT_ACCESS_TOKEN }}
-          GIT_AUTHOR_NAME: Keadex Bot
-          GIT_AUTHOR_EMAIL: 159919634+keadexbot@users.noreply.github.com
-          GIT_COMMITTER_NAME: Keadex Bot
-          GIT_COMMITTER_EMAIL: 159919634+keadexbot@users.noreply.github.com
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
