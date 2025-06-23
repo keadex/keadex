@@ -17,7 +17,12 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "libs/mina-confluence-plugin",
-        "command": "forge deploy -e production"
+        "commands": [
+          {
+            "command": "forge deploy -e production",
+            "forwardAllArgs": false
+          }
+        ]
       }
     }
   }

@@ -68,6 +68,9 @@
         "file": false,
         "createRelease": "github"
       }
+    },
+    "git": {
+      "commitMessage": "[skip actions] chore(release): {version}"
     }
   }
 }
