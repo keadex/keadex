@@ -2,7 +2,7 @@ import { PromiseExecutor } from '@nx/devkit'
 import { ReleaseKeadexProjectsExecutorSchema } from './schema'
 import { glob } from 'glob'
 import * as matter from 'gray-matter'
-import { readFileSync, renameSync } from 'fs'
+import { readFileSync } from 'fs'
 import { spawn } from 'child_process'
 import { releaseChangelog, releasePublish, releaseVersion } from 'nx/release'
 
@@ -57,12 +57,8 @@ const runExecutor: PromiseExecutor<
   console.info('Projects built successfully.')
 
   // Publish the projects
-  // The following line is a workaround to force Nx to use npm to publish the packages instead of yarn.
-  // Nx, in fact, uses the lock file to detect the package manager: https://github.com/nrwl/nx/blob/master/packages/create-nx-workspace/src/utils/package-manager.ts#L14
-  renameSync('yarn.lock', 'yarn.lock.backup')
   console.info('Publishing the projects...')
   result = await publish(projectsToRelease, options)
-  renameSync('yarn.lock.backup', 'yarn.lock')
   if (!result) {
     console.error('Failed to publish projects.')
     return {
