@@ -47,6 +47,7 @@ const emptyDiagram: Diagram = {
     auto_layout_enabled: true,
     auto_layout_orientation: 'TopToBottom',
     auto_layout_only_straight_arrows: false,
+    grid_enabled: false,
   },
 }
 
