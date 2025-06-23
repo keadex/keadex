@@ -56,11 +56,6 @@ jobs:
 
       - uses: nrwl/nx-set-shas@v4
 
-      # The following step is a workaround to force Nx to use npm to publish the packages instead of yarn.
-      # Nx, in fact, uses the lock file to detect the package manager: https://github.com/nrwl/nx/blob/master/packages/create-nx-workspace/src/utils/package-manager.ts#L14
-      - name: delete yarn.lock
-        run: rm -f yarn.lock
-
       - name: release libraries with nx version plans
         run: yarn nx release-keadex-projects
         env:
