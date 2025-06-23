@@ -15,7 +15,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@keadex/mina-react-npm": "npm:@keadex/mina-react@^2.0.0",
+    "@keadex/mina-react-npm": "npm:@keadex/mina-react@^1.16.0",
     "@next/bundle-analyzer": "^15.1.7",
     "accept-language": "^3.0.18",
     "animate.css": "^4.1.1",
