@@ -60,17 +60,20 @@
     "projectsRelationship": "independent",
     "releaseTagPattern": "{projectName}@{version}",
     "version": {
-      "manifestRootsToUpdate": ["{projectRoot}"]
+      "manifestRootsToUpdate": ["{projectRoot}"],
+      "git": {
+        "commitMessage": "[skip actions] chore(release): {version}"
+      }
     },
     "changelog": {
       "projectChangelogs": {
         "renderer": "{workspaceRoot}/libs/keadex-nx-plugin/src/tools/changelog-renderer.ts",
         "file": false,
         "createRelease": "github"
+      },
+      "git": {
+        "commitMessage": "[skip actions] chore(release): {version}"
       }
-    },
-    "git": {
-      "commitMessage": "[skip actions] chore(release): {version}"
     }
   }
 }
