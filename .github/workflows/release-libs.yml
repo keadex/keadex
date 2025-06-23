@@ -8,6 +8,7 @@ env:
   FORGE_EMAIL: ${{ secrets.FORGE_EMAIL }}
   FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.BOT_ACCESS_TOKEN }}
+  HUSKY: 0
 
 jobs:
   release-libraries:

@@ -5,6 +5,9 @@ on:
       - main
       - prerelease/keadex-mina*
 
+env:
+  HUSKY: 0
+
 jobs:
   check-affected:
     runs-on: ubuntu-latest
