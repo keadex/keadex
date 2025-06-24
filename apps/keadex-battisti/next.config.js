@@ -125,8 +125,13 @@ const nextConfig = {
     if (options.isServer) {
       // Following is required only for server-side rendering
       // of Mina diagrams (apps\keadex-battisti\src\app\api\mina-diagram\route.ts).
+      const fromGlob = require
+        .resolve('@keadex/mina-react-npm')
+        .replace(/index\.js$/, '')
+        .replace(/\\/g, '/')
+        .concat('*.wasm')
       patterns.push({
-        from: '../../node_modules/@keadex/mina-react-npm/*.wasm',
+        from: fromGlob,
         to() {
           return 'server/vendor-chunks/[name][ext]'
         },
