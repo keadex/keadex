@@ -5054,13 +5054,6 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "6.4.2"
 
-"@fortawesome/react-fontawesome@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@fortawesome/react-fontawesome/-/react-fontawesome-0.2.0.tgz#d90dd8a9211830b4e3c08e94b63a0ba7291ddcf4"
-  integrity sha512-uHg75Rb/XORTtVt7OS9WoK8uM276Ufi7gCzshVWkUJbHhh3svsUUeqXerrM96Wm7fRiDzfKRwSoahhMIkGAYHw==
-  dependencies:
-    prop-types "^15.8.1"
-
 "@fortawesome/react-fontawesome@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@fortawesome/react-fontawesome/-/react-fontawesome-0.2.2.tgz#68b058f9132b46c8599875f6a636dad231af78d4"
@@ -5658,21 +5651,69 @@
   resolved "https://registry.yarnpkg.com/@jsonjoy.com/util/-/util-1.6.0.tgz#23991b2fe12cb3a006573d9dc97c768d3ed2c9f1"
   integrity sha512-sw/RMbehRhN68WRtcKCpQOPfnH6lLP4GJfqzi3iYej8tnzpZUDr6UkZYJjcjjC0FWEJOJbyM3PTIwxucUmDG2A==
 
-"@keadex/mina-react-npm@npm:@keadex/mina-react@^1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-1.16.0.tgz#de99f4cdfe4420fab11acf33c8b82e4caaf72a0a"
-  integrity sha512-XSbRcgq/XCXO7AFcvdkksDm2mvdi3X/YwPclX52qotb4WkI0StVgQzanvibDfVgLLz16QibXZYqPTFoy5CTiBw==
+"@keadex/mina-live-npm@npm:@keadex/mina-live@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-live/-/mina-live-2.0.0.tgz#a1c9fbc782deeb307c9c2150837f826cebf27b1f"
+  integrity sha512-1sbmt4l0c0WEMFMTwfn+NySnbNOJMDJXgiuEYXm4nsndJ2WBR6FAz+cDCOl/Pxvz7+PaQcKgUU0lMiXnwQekng==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
-    "@fortawesome/react-fontawesome" "^0.2.0"
+    "@fortawesome/react-fontawesome" "^0.2.2"
+    "@hpcc-js/wasm-graphviz" "^1.7.0"
+    "@monaco-editor/react" "^4.6.0"
+    "@reduxjs/toolkit" "^1.9.7"
+    "@tanstack/react-table" "^8.10.7"
+    "@tauri-apps/api" "^2.2.0"
+    "@tauri-apps/plugin-clipboard-manager" "^2.2.1"
+    "@tauri-apps/plugin-deep-link" "^2.2.0"
+    "@tauri-apps/plugin-dialog" "^2.2.0"
+    "@tauri-apps/plugin-os" "^2.2.0"
+    "@tauri-apps/plugin-process" "^2.2.0"
+    "@tauri-apps/plugin-shell" "^2.2.0"
+    "@tauri-apps/plugin-updater" "^2.5.0"
+    "@yaireo/tagify" "^4.24.0"
+    ahooks "^3.7.8"
+    buffer "^6.0.3"
+    change-case "^5.4.3"
+    copy-webpack-plugin "^12.0.2"
+    escape-html "^1.0.3"
+    escape-string-regexp "^5.0.0"
+    fabric "^5.5.2"
+    fontfaceobserver "^2.3.0"
+    i18next "^23.5.1"
+    i18next-http-backend "^2.2.2"
+    lodash.clonedeep "^4.5.0"
+    monaco-editor "^0.44.0"
+    pluralize "^8.0.0"
+    react-color "^2.19.3"
+    react-ga4 "^2.1.0"
+    react-hotkeys-hook "^4.4.1"
+    react-html-parser "^2.0.2"
+    react-i18next "^15.4.0"
+    react-redux "^8.1.3"
+    react-resizable "^3.0.5"
+    react-resize-detector "^9.1.0"
+    react-toastify "^11.0.3"
+    ts-key-enum "^2.0.12"
+    tw-elements "1.0.0"
+    uuid "^9.0.1"
+    wasm-pack "^0.12.1"
+
+"@keadex/mina-react-npm@npm:@keadex/mina-react@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-2.0.0.tgz#c87797c7d64cf8fe1c3c795fa316b50393a80be0"
+  integrity sha512-gTqN2idxhHoO7e9H7SjUjw6jNLrPajBtIAD4sof0ZPU1dqEUic83CrtsOPUJ+tR9Ex8p6TA6MF6JJ2q464gYaQ==
+  dependencies:
+    "@fortawesome/fontawesome-svg-core" "^6.4.2"
+    "@fortawesome/free-solid-svg-icons" "^6.4.2"
+    "@fortawesome/react-fontawesome" "^0.2.2"
     "@hpcc-js/wasm-graphviz" "^1.7.0"
     "@tanstack/react-table" "^8.10.7"
-    "@tauri-apps/api" "^2.0.3"
+    "@tauri-apps/api" "^2.2.0"
     "@yaireo/tagify" "^4.24.0"
     buffer "^6.0.3"
     change-case "^5.4.3"
-    fabric "^5.3.0"
+    fabric "^5.5.2"
     fontfaceobserver "^2.3.0"
     js-cookie "^3.0.5"
     lodash.clonedeep "^4.5.0"
@@ -5681,9 +5722,9 @@
     react-ga4 "^2.1.0"
     react-hotkeys-hook "^4.4.1"
     react-html-parser "^2.0.2"
-    react-i18next "^13.3.0"
+    react-i18next "^15.4.0"
     react-resize-detector "^9.1.0"
-    react-toastify "^9.1.3"
+    react-toastify "^11.0.3"
     tailwindcss "^3.3.3"
     ts-key-enum "^2.0.12"
     tw-elements "1.0.0"
@@ -7620,7 +7661,7 @@
   resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.0.0-beta.60.tgz#fcac07cb182d41929208899062de8c9510cf42ed"
   integrity sha512-QlCdhsV1+JIf0c0U6ge6SQmpwsyAT0oQaOSZk50AtEeAyQl9tQrd6qCHAslxQpgphrfe945abvKG8uYvw3hIGA==
 
-"@tauri-apps/api@^2.0.0", "@tauri-apps/api@^2.0.3":
+"@tauri-apps/api@^2.0.0":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-2.0.3.tgz#a5cce324373e56d12a43ca2f6a8d730c04e92f80"
   integrity sha512-840qk6n8rbXBXMA5/aAgTYsg5JAubKO0nXw5wf7IzGnUuYKGbB4oFBIZtXOIWy+E0kNTDI3qhq5iqsoMJfwp8g==
@@ -12991,14 +13032,6 @@ extsprintf@^1.2.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.1.tgz#8d172c064867f235c0c84a596806d279bf4bcc07"
   integrity sha512-Wrk35e8ydCKDj/ArClo1VrPVmN8zph5V4AtHwIuHhvMXsKf73UT3BOD+azBIW+3wOJ4FhEH7zyaJCFvChjYvMA==
-
-fabric@^5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/fabric/-/fabric-5.3.0.tgz#199297b6409e3a6279c16c1166da2b2a9e3e8b9b"
-  integrity sha512-AVayKuzWoXM5cTn7iD3yNWBlfEa8r1tHaOe2g8NsZrmWKAHjryTxT/j6f9ncRfOWOF0I1Ci1AId3y78cC+GExQ==
-  optionalDependencies:
-    canvas "^2.8.0"
-    jsdom "^19.0.0"
 
 fabric@^5.5.2:
   version "5.5.2"
@@ -19901,14 +19934,6 @@ react-html-parser@^2.0.2:
   dependencies:
     htmlparser2 "^3.9.0"
 
-react-i18next@^13.3.0:
-  version "13.3.0"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-13.3.0.tgz#8e39c0101f654db7eb971f159bb55067a78925c3"
-  integrity sha512-FlR9xjYHSPIJfQspEmkN0yOlxgRyNuiJKJ8gCaZH08UJ7SZHG+VrptEPcpEMEchjNoCOZdKcvJ3PnmHEZhkeXg==
-  dependencies:
-    "@babel/runtime" "^7.22.5"
-    html-parse-stringify "^3.0.1"
-
 react-i18next@^15.4.0:
   version "15.4.0"
   resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-15.4.0.tgz#87c755fb6d7a567eec134e4759b022a0baacb19e"
@@ -20122,13 +20147,6 @@ react-toastify@^11.0.3:
   integrity sha512-cbPtHJPfc0sGqVwozBwaTrTu1ogB9+BLLjd4dDXd863qYLj7DGrQ2sg5RAChjFUB4yc3w8iXOtWcJqPK/6xqRQ==
   dependencies:
     clsx "^2.1.1"
-
-react-toastify@^9.1.3:
-  version "9.1.3"
-  resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-9.1.3.tgz#1e798d260d606f50e0fab5ee31daaae1d628c5ff"
-  integrity sha512-fPfb8ghtn/XMxw3LkxQBk3IyagNpF/LIKjOBflbexr2AWxAH1MJgvnESwEwBn9liLFXgTKWgBSdZpw9m4OTHTg==
-  dependencies:
-    clsx "^1.1.1"
 
 react-transition-group@^4.4.1:
   version "4.4.5"
