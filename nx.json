@@ -28,7 +28,7 @@
     "nx-release-publish": {
       "options": {
         "packageRoot": "{projectRoot}/dist",
-        "registry": "https://registry.npmjs.org"
+        "registry": "https://registry.npmjs.org/"
       }
     }
   },

@@ -157,6 +157,7 @@ async function publish(
   const publishResults = await releasePublish({
     dryRun: options.dryRun,
     verbose: options.verbose,
+    access: 'public',
     projects,
   })
 
