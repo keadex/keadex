@@ -9,6 +9,9 @@ env:
   FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.BOT_ACCESS_TOKEN }}
   HUSKY: 0
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  NPM_CONFIG_PROVENANCE: true
 
 jobs:
   release-libraries:
@@ -58,6 +61,8 @@ jobs:
 
       - name: release libraries with nx version plans
         run: yarn nx release-keadex-projects
+        shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
