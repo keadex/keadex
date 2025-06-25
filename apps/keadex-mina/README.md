@@ -22,7 +22,7 @@ It is based on the **Diagram as Code** concept: you can diagram software archite
 Mina is designed to be used in large projects and provides features to organize your diagrams.
 
 <div align="center" style="margin-top: 20px">
-  <a href="https://www.youtube.com/watch?v=Cy6KzhWjNLo" target="_blank"><img src="./public/mina-plantuml.png" alt="Keadex Mina demo" width="70%" /></a>
+  <a href="https://www.youtube.com/watch?v=ukyEA9OKJ6E" target="_blank"><img src="./public/mina-plantuml.png" alt="Keadex Mina demo" width="70%" /></a>
 </div>
 
 ## Download

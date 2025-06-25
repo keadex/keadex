@@ -1,8 +1,10 @@
 import { DiagramListener, DiagramRenderer } from '@keadex/c4-model-ui-kit'
 import { KeadexCanvas } from '@keadex/keadex-ui-kit/cross'
-import { openRemoteDiagram } from '@keadex/mina-react-npm/core'
 import { fabric } from 'fabric'
 import { NextRequest } from 'next/server'
+import * as fs from 'fs'
+import { join } from 'path'
+import { registerFont } from 'canvas'
 
 type BaseRemoteDiagramsParams = {
   projectRootUrl: string
@@ -57,9 +59,48 @@ export async function GET(
     },
   }
 
+  // Patch fs.readFile to handle wasm files from @keadex/mina-react-npm.
+  // When deployed on Vercel, the wasm files are not in the same location as in local development.
+  const originalReadFile = fs.readFile
+  ;(fs as any).readFile = function (
+    filePath: fs.PathLike | number,
+    maybeCallback?: any,
+  ) {
+    let patchedPath = filePath
+    if (
+      typeof filePath !== 'number' &&
+      filePath instanceof URL &&
+      filePath.toString().includes('@keadex/mina-react-npm') &&
+      filePath.toString().endsWith('.wasm')
+    ) {
+      const pathURL = filePath as URL
+      const wasmFileName = pathURL.pathname.substring(
+        pathURL.pathname.lastIndexOf('/') + 1,
+      )
+
+      const nodeModule = join(
+        process.cwd(),
+        '../../node_modules/@keadex/mina-react-npm',
+        wasmFileName,
+      )
+      patchedPath = nodeModule
+    }
+    return originalReadFile(patchedPath, maybeCallback)
+  }
+
+  const openRemoteDiagram = (await import('@keadex/mina-react-npm/core'))
+    .openRemoteDiagram
+
+  // Restore original readFile function after having successfully loaded the wasm file
+  ;(fs as any).readFile = originalReadFile
+
   const diagram = await openRemoteDiagram(projectRootUrl, diagramUrl, ghToken)
   if (diagram) {
+    if (diagram.diagram_spec?.grid_enabled) {
+      diagram.diagram_spec.grid_enabled = false
+    }
     const canvas = new KeadexCanvas(null)
+    registerFonts()
     diagramRenderer.renderDiagram(canvas, listener, diagram, undefined)
 
     // Set canvas size to fit content
@@ -115,5 +156,19 @@ export async function GET(
   }
   return new Response('Bad Request', {
     status: 400,
+  })
+}
+
+function registerFonts() {
+  const fonts = [
+    join(process.cwd(), 'public/fonts/Roboto-Bold.ttf'),
+    join(process.cwd(), 'public/fonts/Roboto-Italic.ttf'),
+    join(process.cwd(), 'public/fonts/Roboto-Regular.ttf'),
+  ]
+
+  fonts.forEach((file) => {
+    registerFont(file, {
+      family: 'Roboto',
+    })
   })
 }

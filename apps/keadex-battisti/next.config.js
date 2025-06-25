@@ -62,6 +62,13 @@ const nextConfig = {
     webpackBuildWorker: true,
   },
   transpilePackages: ['../../libs/keadex-ui-kit/src/web.ts'],
+  outputFileTracingIncludes: {
+    '/api/mina-diagram/\\[projectRootUrl\\]/\\[diagramUrl\\]/\\[\\[\\.\\.\\.ghTokens\\]\\]':
+      [
+        '../../node_modules/@keadex/mina-react-npm/*.wasm',
+        'public/fonts/*.ttf',
+      ],
+  },
   async redirects() {
     return [
       {

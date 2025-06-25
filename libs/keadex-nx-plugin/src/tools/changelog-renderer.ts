@@ -13,9 +13,7 @@ export default class VersionPlanChangelogRenderer extends DefaultChangelogRender
       changes = changelogs[changelogIndex + 1]
     }
 
-    const changelog = `
-# ${this.project}@${this.changelogEntryVersion}${changes}
-    `
+    const changelog = `${changes}`
     return Promise.resolve(changelog)
   }
 }

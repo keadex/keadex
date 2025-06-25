@@ -280,7 +280,7 @@ export default function MinaSummary({
             </div>
           </div>
           <iframe
-            src="https://www.youtube.com/embed/Cy6KzhWjNLo"
+            src="https://www.youtube.com/embed/ukyEA9OKJ6E"
             className="w-full mt-10 md:w-1/2 md:mt-0 h-80 border-0 pl-0 md:pl-8"
             frameBorder="0"
             allowFullScreen
