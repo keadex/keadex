@@ -186,7 +186,7 @@ pub async fn update_element(
       0,
     ))?;
     let _ =
-      search_and_replace_text(&cleaned_old_plantuml, &cleaned_new_plantuml, true, false).await?;
+      search_and_replace_text(cleaned_old_plantuml, cleaned_new_plantuml, true, false).await?;
   }
 
   return result;

@@ -17,13 +17,13 @@ use crate::model::diagram_element_search_results::DiagramElementSearchResult;
 use crate::model::diagram_element_search_results::DiagramElementSearchResults;
 use crate::model::file_search_results::FileSearchCategory;
 use crate::model::file_search_results::{FileSearchResult, FileSearchResults};
+use crate::multithreading::parallel_executor::MinaFuture;
+use crate::multithreading::parallel_executor::ParallelExecutor;
 use crate::repository::library::library_repository::search_library_element;
 use crate::resolve_to_write;
 use async_std::sync::Arc;
 use async_std::sync::RwLock;
-use futures::future::join_all;
 use std::collections::BTreeMap;
-use std::future::Future;
 use std::io::BufRead;
 use std::path::Path;
 use std::usize;
@@ -93,7 +93,7 @@ pub async fn search_in_project<F, Fut>(
 ) -> Result<bool, MinaError>
 where
   F: FnMut(String, usize, String, String, String) -> Fut,
-  Fut: Future<Output = Result<bool, MinaError>>,
+  Fut: MinaFuture,
 {
   let max_concurrent_predicates: usize = 10000;
 
@@ -112,7 +112,12 @@ where
 
     let mut count = 0;
     let mut reached_limit = false;
-    let mut concurrent_predicates = vec![];
+    // let mut multitask_value = Multitask::<Fut>::new();
+    let mut parallel_executor = ParallelExecutor::<Fut>::new();
+    // let multitask_box2 = multitask_box1.clone();
+    // let multitask = multitask_box1.clone();
+    // let multitask: &mut Multitask<Fut> = &mut multitask_value;
+    // let mut concurrent_predicates = vec![];
 
     // Unload the project since we need to unlock all the project's file in order to read them
     unload_project(&project_settings.root).await?;
@@ -145,7 +150,7 @@ where
           if let Ok(line) = line {
             if concurrent {
               // Execute the predicates in parallel
-              concurrent_predicates.push(predicate(
+              parallel_executor.add(predicate(
                 line,
                 line_num,
                 path.clone(),
@@ -153,8 +158,8 @@ where
                 library_directory.clone(),
               ));
 
-              if concurrent_predicates.len() == max_concurrent_predicates {
-                let results = join_all(concurrent_predicates).await;
+              if parallel_executor.len() == max_concurrent_predicates {
+                let results = parallel_executor.join_all().await;
                 for result in results {
                   if result.is_ok_and(|predicate_result| predicate_result) {
                     count += 1;
@@ -164,7 +169,7 @@ where
                     }
                   }
                 }
-                concurrent_predicates = vec![];
+                parallel_executor = ParallelExecutor::<Fut>::new(); // Reset the multitask for the next batch
                 if reached_limit {
                   break;
                 }
@@ -198,9 +203,9 @@ where
       }
     }
 
-    if concurrent && !reached_limit && concurrent_predicates.len() > 0 {
+    if concurrent && !reached_limit && parallel_executor.len() > 0 {
       // There are still some predicates to execute
-      let results = join_all(concurrent_predicates).await;
+      let results = parallel_executor.join_all().await;
       for result in results {
         if result.is_ok_and(|predicate_result| predicate_result) {
           count += 1;
@@ -230,12 +235,16 @@ Searches for the given text in the project's files and replace it with the given
   * `include_library` - If you want to include the library directory in the search.
 */
 pub async fn search_and_replace_text(
-  text_to_search: &str,
-  replacement: &str,
+  text_to_search_in: String,
+  replacement_in: String,
   include_diagrams: bool,
   include_library: bool,
 ) -> Result<FileSearchResults, MinaError> {
-  log::debug!("Search {} and replace with {}", text_to_search, replacement);
+  log::debug!(
+    "Search {} and replace with {}",
+    text_to_search_in,
+    replacement_in
+  );
 
   let current_path_rc = Arc::new(RwLock::new(String::from("")));
   let updated_content_opt_rc = Arc::new(RwLock::<Option<String>>::new(None));
@@ -249,6 +258,8 @@ pub async fn search_and_replace_text(
       let updated_content_opt = Arc::clone(&updated_content_opt_rc);
       let new_line = Arc::clone(&new_line_rc);
       let results = Arc::clone(&results_rc);
+      let text_to_search = text_to_search_in.clone();
+      let replacement = replacement_in.clone();
       async move {
         if !current_path.read().await.eq(&path) {
           let store = ROOT_RESOLVER.get().read().await;
@@ -357,7 +368,7 @@ Searches for the given text in the project's files.
   * `limit` - Limit of the returned results.
 */
 pub async fn search_text(
-  text_to_search: &str,
+  text_to_search_in: String,
   include_diagrams: bool,
   include_library: bool,
   limit: usize,
@@ -367,6 +378,7 @@ pub async fn search_text(
     true,
     |line, line_num, path, diagrams_directory, library_directory| {
       let results = Arc::clone(&results_rc);
+      let text_to_search = text_to_search_in.clone();
       async move {
         if line.to_lowercase().contains(&text_to_search.to_lowercase()) {
           if results.read().await.len() <= limit {

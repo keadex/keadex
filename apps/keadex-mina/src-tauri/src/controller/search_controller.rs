@@ -35,7 +35,7 @@ pub async fn search(
 
   Ok(
     search_text(
-      &string_to_search,
+      string_to_search,
       include_diagrams_dir,
       include_library_dir,
       limit,
