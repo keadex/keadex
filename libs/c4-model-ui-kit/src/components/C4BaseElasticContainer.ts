@@ -1,3 +1,4 @@
+import { faLink } from '@fortawesome/free-solid-svg-icons'
 import { DropdownMenuItemProps } from '@keadex/keadex-ui-kit/cross'
 import { fabric } from 'fabric'
 import { IEvent } from 'fabric/fabric-impl'
@@ -27,6 +28,7 @@ import {
   isC4Component,
   VirtualGroupSelection,
 } from './C4BaseComponent'
+import { C4BaseBoxOptions } from './C4BaseBox'
 
 export enum BaseElasticContainerObjects {
   Rectangle = 'RECTANGLE',
@@ -197,17 +199,36 @@ const createFooter = (
     fontFamily: ELEMENT.FONT.FAMILY,
     fill: options.textColor,
   }
+
+  // ----- Link icon
+  let linkIcon
+  if (data.base_data?.link) {
+    linkIcon = new fabric.Path(faLink.icon[4].toString(), {
+      fill: options.textColor,
+      opacity: 1,
+      originX: 'left',
+      originY: 'top',
+      top: 1,
+      left: 0,
+    })
+    linkIcon.scaleToWidth(10)
+    objects.push(linkIcon)
+  }
+
+  // ----- Label
+  let label
   if (data.base_data?.label) {
-    const label = new fabric.Text(data.base_data.label, {
+    label = new fabric.Text(data.base_data.label, {
       ...textOptions,
       fontSize: BASE_ELASTIC_CONTAINER.FONT.SIZE_LABEL,
       fontWeight: 'bold',
     })
     label.top = 0
-    label.left = 0
+    label.left = linkIcon?.getScaledWidth() ? linkIcon?.getScaledWidth() + 3 : 0
     objects.push(label)
   }
 
+  // ----- Type and Technology
   let typeTechnology = data.boundary_type ?? data.deployment_node_type ?? ''
   typeTechnology =
     data.boundary_custom_type ??
@@ -219,7 +240,7 @@ const createFooter = (
     ...textOptions,
     fontSize: BASE_ELASTIC_CONTAINER.FONT.SIZE_TYPE_TECHNOLOGY,
     left: 0,
-    top: objects[0].height ?? 0,
+    top: label?.height ?? 0,
   })
   objects.push(technology)
 
@@ -239,6 +260,25 @@ const createFooter = (
   attachListenersToFooter(footer)
   parent.children?.push(footer)
   return footer
+}
+
+const createLinkIcon = (
+  options: C4BaseBoxOptions,
+  box: fabric.Rect,
+  footer: fabric.Rect,
+  parent: C4BaseElastiContainerComponent,
+): fabric.Object => {
+  const path = new fabric.Path(faLink.icon[4].toString(), {
+    fill: options.textColor,
+    opacity: 1,
+    originX: 'left',
+    originY: 'top',
+    left: (box.left ?? 0) + 5,
+    top: (box.top ?? 0) + 5,
+  })
+  path.scaleToWidth(10)
+  parent.children?.push(path)
+  return path
 }
 
 // --------------- UTILITIES

@@ -14,12 +14,8 @@ import {
   OBJECT_EVENTS,
 } from '../constants/fabric-events'
 import {
-  componentDiagramElement,
-  containerDiagramElement,
-  softwareSystemDiagramElement,
-} from '../helper/diagram-helper'
-import {
   isExternalLink,
+  linkableDiagramElement,
   linkLabelFromExternalLink,
   replaceExternalLinkVariables,
 } from '../helper/diagram-link-helper'
@@ -292,8 +288,11 @@ export const createBaseContextMenuItems = (
   asSubMenu = true,
 ): DropdownMenuItemProps[] => {
   const baseContextMenuItems = []
-  const elementType = object.data?.rawDiagramElementSpec?.element_type
-  const diagramLinks = object.data?.rawData?.base_data?.link?.split(
+  const diagramElement =
+    object instanceof VirtualGroupSelection ? object.parent : object
+  const diagramElementData = diagramElement?.data
+  const elementType = diagramElementData?.rawDiagramElementSpec?.element_type
+  const diagramLinks = diagramElementData?.rawData?.base_data?.link?.split(
     DIAGRAM_LINKS_SEPARATOR,
   )
   const isCanvasReadOnly = (canvas as KeadexCanvas).isReadOnly()
@@ -302,12 +301,7 @@ export const createBaseContextMenuItems = (
     elementType !== undefined &&
     diagramLinks &&
     diagramLinks.length > 0 &&
-    (componentDiagramElement(elementType) !== undefined ||
-      containerDiagramElement(elementType) !== undefined ||
-      softwareSystemDiagramElement(elementType) !== undefined)
-  const diagramElement =
-    object instanceof VirtualGroupSelection ? object.parent : object
-  const diagramElementData = diagramElement?.data
+    linkableDiagramElement(elementType) !== undefined
 
   let diagramElementLevel = 0
   let parent = diagramElement?.parent

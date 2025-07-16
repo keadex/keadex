@@ -123,7 +123,7 @@
     },
     "error": {
       "internal": "Internal error: {{errorMessage}}",
-      "cannot_add_link": "Cannot add a link to the selected PlantUML element. Move the cursor on a Software System, Container, or Component in the code editor. ",
+      "cannot_add_link": "You can't add a link to the selected PlantUML element. Please select a Software System, Container, Component, or Boundary in the code editor instead.\nTip: In the design view, you can right-click on an element and choose \"Select code\" to highlight its definition in the editor.",
       "cannot_add_to_library": "Cannot add the selected PlantUML element to the library. Move the cursor on a Person, Software System, Container, or Component in the code editor. ",
       "cannot_delete_diagram": "Cannot delete the diagram: {{errorMessage}}",
       "cannot_delete_element": "Cannot delete this element.",

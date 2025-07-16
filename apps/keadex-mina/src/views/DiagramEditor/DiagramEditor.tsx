@@ -200,7 +200,8 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
               diagramElementLevel,
             )
             diagramCodeViewRef.current?.selectText(
-              plantUMLCode.replace('\n', ''),
+              // Remove leading and trailing new lines
+              plantUMLCode.replace(new RegExp('(^\\n)|(\\n$)', 'gi'), ''),
             )
           } catch (e) {
             // do nothing

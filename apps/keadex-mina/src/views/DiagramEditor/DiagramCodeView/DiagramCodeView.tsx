@@ -1,10 +1,15 @@
 import {
+  Boundary,
   C4ElementType,
   C4ElementTypeExtended,
+  Component,
+  Container,
   DIAGRAM_ELEMENTS_TYPES,
   Diagram,
   DiagramElementType,
   DiagramPlantUML,
+  SoftwareSystem,
+  boundaryDiagramElement,
   componentDiagramElement,
   containerDiagramElement,
   linkableDiagramElement,
@@ -94,7 +99,6 @@ export interface DiagramCodeViewCommands {
     c4ElementType: C4ElementType | C4ElementTypeExtended,
   ) => void
   addDiagramLink: () => void
-  replaceLineContent: (lineNumber: number, newContent: string) => void
   selectText: (text: string) => void
 }
 
@@ -229,7 +233,6 @@ export const DiagramCodeView = forwardRef(
       importFromLibrary: importFromLibrary,
       addDiagramElement: addDiagramElement,
       addDiagramLink: addDiagramLink,
-      replaceLineContent: replaceLineContent,
       selectText: selectText,
     }))
 
@@ -361,7 +364,11 @@ export const DiagramCodeView = forwardRef(
       editorRef.current?.trigger('keyboard', 'type', { text: code })
     }
 
-    function replaceLineContent(lineNumber: number, newContent: string) {
+    function replaceLinesContent(
+      startLineNumber: number,
+      endLineNumber: number,
+      newContent: string,
+    ) {
       const editor = editorRef.current
       const model = editor?.getModel()
 
@@ -377,8 +384,13 @@ export const DiagramCodeView = forwardRef(
 
         if (lines) {
           // Replace the content of the specified line number
-          if (lineNumber >= 1 && lineNumber <= lines.length) {
-            lines[lineNumber - 1] = newContent
+          if (startLineNumber >= 1 && endLineNumber <= lines.length) {
+            lines[startLineNumber - 1] = newContent
+            // If the contentent to replace spans multiple lines, remove the lines in between
+            // because we are replacing them with a single line
+            for (let i = startLineNumber; i < endLineNumber; i++) {
+              lines.splice(startLineNumber, 1)
+            }
           }
 
           // Join the modified lines back into a single string
@@ -548,32 +560,38 @@ export const DiagramCodeView = forwardRef(
         | {
             selectedPlantUMLLine: string
             diagramPlantUML: DiagramPlantUML
-            cursorPosition: monaco.Position
+            selection: monaco.Selection
           }
         | undefined
       const cursorPosition = editorRef.current?.getPosition()
       setEditorPosition(cursorPosition ?? null)
       const selection = editorRef.current?.getSelection()
       if (selection && cursorPosition) {
-        if (
-          selection.startLineNumber === selection.endLineNumber &&
-          selection.startLineNumber === cursorPosition.lineNumber
-        ) {
-          const selectedPlantUMLLine = editorRef.current
-            ?.getModel()
-            ?.getLineContent(cursorPosition.lineNumber)
-          if (selectedPlantUMLLine) {
-            try {
-              result = {
-                selectedPlantUMLLine,
-                diagramPlantUML: await deserializePlantUMLByString(
-                  `@startuml\n${selectedPlantUMLLine}\n@enduml`,
-                ),
-                cursorPosition,
-              }
-            } catch (e) {
-              result = undefined
+        // Get selected line(s) content
+        // Note: "editorRef.current?.getModel()?.getValueInRange(selection)" cannot be used
+        // because it returns the content of the selection, not the selected line(s) content
+        const selectedPlantUMLLine = Array.from(
+          { length: selection.endLineNumber - selection.startLineNumber + 1 },
+          (_, index) => selection.startLineNumber + index,
+        )
+          .map((line) => {
+            return editorRef.current?.getModel()?.getLineContent(line) ?? ''
+          })
+          .join('\n')
+
+        if (selectedPlantUMLLine) {
+          // Try to parse the selected line(s) as PlantUML code
+          try {
+            result = {
+              selectedPlantUMLLine,
+              diagramPlantUML: await deserializePlantUMLByString(
+                `@startuml\n${selectedPlantUMLLine}\n@enduml`,
+              ),
+              selection,
             }
+          } catch (e) {
+            // Selected line(s) are not valid PlantUML code
+            result = undefined
           }
         }
       }
@@ -610,24 +628,35 @@ export const DiagramCodeView = forwardRef(
                   )
                 ) {
                   updatedPlantUML = await parsedElementToPlantUML({
-                    SoftwareSystem: elementToLink,
+                    SoftwareSystem: elementToLink as SoftwareSystem,
                   })
                 } else if (
                   containerDiagramElement(result.diagramPlantUML.elements[0])
                 ) {
                   updatedPlantUML = await parsedElementToPlantUML({
-                    Container: elementToLink,
+                    Container: elementToLink as Container,
                   })
                 } else if (
                   componentDiagramElement(result.diagramPlantUML.elements[0])
                 ) {
                   updatedPlantUML = await parsedElementToPlantUML({
-                    Component: elementToLink,
+                    Component: elementToLink as Component,
+                  })
+                } else if (
+                  boundaryDiagramElement(result.diagramPlantUML.elements[0])
+                ) {
+                  updatedPlantUML = await parsedElementToPlantUML({
+                    Boundary: elementToLink as Boundary,
                   })
                 }
-                replaceLineContent(
-                  result.cursorPosition.lineNumber,
-                  updatedPlantUML.replace(new RegExp('\\n', 'gi'), ''),
+                replaceLinesContent(
+                  result.selection.startLineNumber,
+                  result.selection.endLineNumber,
+                  // Remove leading and trailing new lines
+                  updatedPlantUML.replace(
+                    new RegExp('(^\\n)|(\\n$)', 'gi'),
+                    '',
+                  ),
                 )
                 hideModal()
               }}

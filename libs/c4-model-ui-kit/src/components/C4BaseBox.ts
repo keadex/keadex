@@ -53,6 +53,7 @@ export const C4BaseBox = (
     objects.push(description)
   }
 
+  // ----- Link icon
   if (data.base_data?.link) {
     objects.push(createLinkIcon(box, options))
   }
