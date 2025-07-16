@@ -137,6 +137,7 @@ async function version(
   const { workspaceVersion, projectsVersionData } = await releaseVersion({
     dryRun: options.dryRun,
     verbose: options.verbose,
+    projects,
   })
 
   await releaseChangelog({
