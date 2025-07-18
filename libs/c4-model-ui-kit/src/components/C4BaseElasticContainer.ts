@@ -180,7 +180,6 @@ const createBox = (
   }
   box.data = {
     rawDiagramElementSpec: boxSpecs,
-    rawAutoLayout: autoLayout,
   }
   box.parent = parent
   attachListenersToBox(box)
@@ -261,31 +260,11 @@ const createFooter = (
   })
   footer.data = {
     rawDiagramElementSpec: footerSpecs,
-    rawAutoLayout: autoLayout,
   }
   footer.parent = parent
   attachListenersToFooter(footer)
   parent.children?.push(footer)
   return footer
-}
-
-const createLinkIcon = (
-  options: C4BaseBoxOptions,
-  box: fabric.Rect,
-  footer: fabric.Rect,
-  parent: C4BaseElastiContainerComponent,
-): fabric.Object => {
-  const path = new fabric.Path(faLink.icon[4].toString(), {
-    fill: options.textColor,
-    opacity: 1,
-    originX: 'left',
-    originY: 'top',
-    left: (box.left ?? 0) + 5,
-    top: (box.top ?? 0) + 5,
-  })
-  path.scaleToWidth(10)
-  parent.children?.push(path)
-  return path
 }
 
 // --------------- UTILITIES
