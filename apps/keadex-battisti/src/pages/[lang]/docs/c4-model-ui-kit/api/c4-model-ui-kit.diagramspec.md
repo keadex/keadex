@@ -122,6 +122,23 @@ Array&lt;[DiagramElementSpec](./c4-model-ui-kit.diagramelementspec.md)<!-- -->&g
 </td></tr>
 <tr><td>
 
+[grid\_enabled](./c4-model-ui-kit.diagramspec.grid_enabled.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [shapes](./c4-model-ui-kit.diagramspec.shapes.md)
 
 
