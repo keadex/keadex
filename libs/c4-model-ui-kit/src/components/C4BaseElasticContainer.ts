@@ -294,6 +294,7 @@ const resizeBox = (parent: C4BaseElastiContainerComponent) => {
   let footer: fabric.Object | undefined
   const isAutoLayoutEnabled =
     parent.data?.rawData?.base_data?.alias &&
+    parent.data.rawAutoLayout &&
     parent.data.rawAutoLayout[parent.data.rawData.base_data.alias] !== undefined
   const innerElements: fabric.Object[] = []
 
