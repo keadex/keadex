@@ -251,8 +251,8 @@ export const getAutoSize = (
 ): Size | undefined => {
   if (alias && autoLayout[alias]?.size) {
     return {
-      width: autoLayout[alias].size.x,
-      height: autoLayout[alias].size.y,
+      width: autoLayout[alias].size?.x,
+      height: autoLayout[alias].size?.y,
     }
   }
   return
