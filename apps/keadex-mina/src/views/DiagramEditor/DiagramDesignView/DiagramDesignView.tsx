@@ -425,7 +425,7 @@ export const DiagramDesignView = forwardRef(
 
     //----------------- Start History Implementation
     function initHistory() {
-      console.debug('Init history')
+      // console.debug('Init history')
       historyProcessing.current = false
       if (currentRenderedDiagram.current?.diagram_spec) {
         setHistoryUndo([currentRenderedDiagram.current.diagram_spec])
@@ -437,14 +437,14 @@ export const DiagramDesignView = forwardRef(
       if (!historyProcessing.current) {
         const updatedSpecs = getUpdatedDiagramSpec()
         if (updatedSpecs) {
-          console.debug('Save history')
+          // console.debug('Save history')
           setHistoryUndo((prev) => [...prev, updatedSpecs])
         }
       }
     }
 
     function loadHistory(history: DiagramSpec) {
-      console.debug('Load history')
+      // console.debug('Load history')
       if (canvas.current) {
         resetCanvas(getCanvasState())
         setCanvasMode()

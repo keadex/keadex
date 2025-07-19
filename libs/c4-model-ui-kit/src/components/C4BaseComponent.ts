@@ -134,6 +134,7 @@ export interface C4BaseComponentOptions {
 export interface C4BaseComponentRawData {
   rawDiagramElementSpec: DiagramElementSpec | undefined
   rawData?: C4BaseComponentData
+  rawAutoLayout?: Record<string, ElementData>
 }
 
 export interface IC4BaseComponent {
@@ -173,6 +174,7 @@ export class C4BaseComponent extends fabric.Group implements IC4BaseComponent {
       data: {
         rawDiagramElementSpec: elementSpec,
         rawData: data,
+        rawAutoLayout: autoLayout,
       },
       name: defaults.alias ?? 'undefined',
       left:

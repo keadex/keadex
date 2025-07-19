@@ -48,30 +48,47 @@ export function generateAutoLayout(
         !isSubgraphInvisibleNodeHack(object) &&
         !isSubgraphMarginHack(object)
       ) {
-        const objPositions = object._draw_.filter(
-          (draw) => draw.op === 'p' || draw.op === 'P',
-        )
+        if (object._draw_) {
+          const objPositions = object._draw_.filter(
+            (draw) => draw.op === 'p' || draw.op === 'P',
+          )
 
-        // I'll take the position at "0" index because _draw_ contains the draw data
-        // of each periphery (inner boxes used as an hack to add a space between nodes). The first
-        // draw data are the ones of the innermost box containing the diagram data, that is the
-        // actual diagram box.
-        // But it could be possible that the current object is a subgraph. In this case no peripheries
-        // have been configured, so there will be just one position.
-        const position = objPositions[0]
+          // I'll take the position at "0" index because _draw_ contains the draw data
+          // of each periphery (inner boxes used as an hack to add a space between nodes). The first
+          // draw data are the ones of the innermost box containing the diagram data, that is the
+          // actual diagram box.
+          // But it could be possible that the current object is a subgraph. In this case no peripheries
+          // have been configured, so there will be just one position.
+          const position = objPositions[0]
 
-        const pixelCoordinatesX = graphvizCoordinatesToPx(
-          pad,
-          graphHeight,
-          position.points[2],
-        )[0]
-        const pixelCoordinatesY = graphvizCoordinatesToPx(
-          pad,
-          graphHeight,
-          position.points[0],
-        )[1]
-        positions[object.name] = {
-          position: { x: pixelCoordinatesX, y: pixelCoordinatesY },
+          const pxCoordsLT = graphvizCoordinatesToPx(
+            pad,
+            graphHeight,
+            position.points[0],
+          )
+          const pxCoordsLB = graphvizCoordinatesToPx(
+            pad,
+            graphHeight,
+            position.points[1],
+          )
+          const pxCoordsRB = graphvizCoordinatesToPx(
+            pad,
+            graphHeight,
+            position.points[2],
+          )
+          const pixelCoordinatesX = pxCoordsRB[0]
+          const pixelCoordinatesY = pxCoordsLT[1]
+
+          let size
+          if (position.points.length === 4) {
+            const width = pxCoordsRB[0] - pxCoordsLB[0]
+            const height = pxCoordsLT[1] - pxCoordsLB[1]
+            size = { x: width, y: height }
+          }
+          positions[object.name] = {
+            position: { x: pixelCoordinatesX, y: pixelCoordinatesY },
+            size,
+          }
         }
       }
     })

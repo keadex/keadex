@@ -27,8 +27,8 @@ pub struct ElementData {
   pub svg_path: Option<String>,
   #[serde(skip_serializing_if = "Option::is_none")]
   pub label_position: Option<Point>,
-  // #[serde(skip_serializing_if = "Option::is_none")]
-  // pub size: Option<Point>, // Deprecated
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub size: Option<Point>,
 }
 
 impl ElementData {
@@ -39,7 +39,7 @@ impl ElementData {
     path: Option<Vec<Point>>,
     svg_path: Option<String>,
     label_position: Option<Point>,
-    // size: Option<Point>,
+    size: Option<Point>,
   ) -> Self {
     Self {
       position,
@@ -47,7 +47,8 @@ impl ElementData {
       end,
       path,
       svg_path,
-      label_position, // size,
+      label_position,
+      size,
     }
   }
 }

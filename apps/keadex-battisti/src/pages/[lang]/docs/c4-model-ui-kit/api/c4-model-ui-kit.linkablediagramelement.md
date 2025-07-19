@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-export declare function linkableDiagramElement(element: DiagramElementType): Component | Container | SoftwareSystem | undefined;
+export declare function linkableDiagramElement(element: DiagramElementType | ElementType): Component | Container | SoftwareSystem | Boundary | undefined;
 ```
 
 ## Parameters
@@ -35,7 +35,7 @@ element
 
 </td><td>
 
-[DiagramElementType](./c4-model-ui-kit.diagramelementtype.md)
+[DiagramElementType](./c4-model-ui-kit.diagramelementtype.md) \| [ElementType](./c4-model-ui-kit.elementtype.md)
 
 
 </td><td>
@@ -45,5 +45,5 @@ element
 </tbody></table>
 **Returns:**
 
-[Component](./c4-model-ui-kit.component.md) \| [Container](./c4-model-ui-kit.container.md) \| [SoftwareSystem](./c4-model-ui-kit.softwaresystem.md) \| undefined
+[Component](./c4-model-ui-kit.component.md) \| [Container](./c4-model-ui-kit.container.md) \| [SoftwareSystem](./c4-model-ui-kit.softwaresystem.md) \| [Boundary](./c4-model-ui-kit.boundary.md) \| undefined
 

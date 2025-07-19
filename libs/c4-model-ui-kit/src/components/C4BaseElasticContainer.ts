@@ -3,7 +3,7 @@ import { DropdownMenuItemProps } from '@keadex/keadex-ui-kit/cross'
 import { fabric } from 'fabric'
 import { IEvent } from 'fabric/fabric-impl'
 import { OBJECT_EVENTS } from '../constants/fabric-events'
-import { getAutoPosition } from '../helper/diagram-helper'
+import { getAutoPosition, getAutoSize } from '../helper/diagram-helper'
 import {
   filterVirtualGroups,
   flatVirtualGroupChildren,
@@ -118,7 +118,7 @@ export const C4BaseElasticContainer = (
   const box = createBox(elementSpec, autoLayout, options, parent)
 
   // ----- Footer
-  createFooter(elementSpec, options, data, box, parent)
+  createFooter(elementSpec, autoLayout, options, data, box, parent)
 
   // ----- Inner Objects
   let innerObjects: C4BaseComponent[] = []
@@ -156,7 +156,6 @@ const createBox = (
   const boxSpecs = elementSpecs?.shapes?.filter(
     (shape) => shape.shape_type === BaseElasticContainerObjects.Rectangle,
   )[0] as Shape
-
   const box = new fabric.Rect({
     fill: options.bgColor,
     stroke: options.borderColor,
@@ -174,6 +173,11 @@ const createBox = (
     scaleX: boxSpecs?.size?.scale_x ?? 1,
     scaleY: boxSpecs?.size?.scale_y ?? 1,
   })
+  const autoSize = getAutoSize(elementSpecs.alias, autoLayout)
+  if (autoSize) {
+    box.width = autoSize.width
+    box.height = autoSize.height
+  }
   box.data = {
     rawDiagramElementSpec: boxSpecs,
   }
@@ -185,6 +189,7 @@ const createBox = (
 
 const createFooter = (
   elementSpecs: DiagramElementSpec | undefined,
+  autoLayout: Record<string, ElementData>,
   options: C4BaseElasticContainerOptions,
   data: C4BaseComponentData,
   box: fabric.Rect,
@@ -262,29 +267,14 @@ const createFooter = (
   return footer
 }
 
-const createLinkIcon = (
-  options: C4BaseBoxOptions,
-  box: fabric.Rect,
-  footer: fabric.Rect,
-  parent: C4BaseElastiContainerComponent,
-): fabric.Object => {
-  const path = new fabric.Path(faLink.icon[4].toString(), {
-    fill: options.textColor,
-    opacity: 1,
-    originX: 'left',
-    originY: 'top',
-    left: (box.left ?? 0) + 5,
-    top: (box.top ?? 0) + 5,
-  })
-  path.scaleToWidth(10)
-  parent.children?.push(path)
-  return path
-}
-
 // --------------- UTILITIES
 const resizeBox = (parent: C4BaseElastiContainerComponent) => {
   let box: fabric.Object | undefined
   let footer: fabric.Object | undefined
+  const isAutoLayoutEnabled =
+    parent.data?.rawData?.base_data?.alias &&
+    parent.data.rawAutoLayout &&
+    parent.data.rawAutoLayout[parent.data.rawData.base_data.alias] !== undefined
   const innerElements: fabric.Object[] = []
 
   parent.children?.forEach((child) => {
@@ -324,17 +314,23 @@ const resizeBox = (parent: C4BaseElastiContainerComponent) => {
     boundingBox.width = boundingBox.right - boundingBox.left
     boundingBox.height = boundingBox.bottom - boundingBox.top
 
-    // "* 2" is needed to include padding for both the sides (left and right, top and bottom)
-    box.width = boundingBox.width / scaleX + (paddingBoxX / scaleX) * 2
-    // "* 3" is needed to include padding for both the sides (left and right, top and bottom)
-    // and the padding between the footer and the inner elements
-    box.height =
-      boundingBox.height / scaleY +
-      (paddingBoxY / scaleY) * 3 +
-      (footer.height ?? 0)
+    if (!isAutoLayoutEnabled) {
+      // "* 2" is needed to include padding for both the sides (left and right, top and bottom)
+      box.width = boundingBox.width / scaleX + (paddingBoxX / scaleX) * 2
+      // "* 3" is needed to include padding for both the sides (left and right, top and bottom)
+      // and the padding between the footer and the inner elements
+      box.height =
+        boundingBox.height / scaleY +
+        (paddingBoxY / scaleY) * 3 +
+        (footer.height ?? 0)
 
-    box.left = boundingBox.left - paddingBoxX
-    box.top = boundingBox.top - paddingBoxY
+      box.left = boundingBox.left - paddingBoxX
+      box.top = boundingBox.top - paddingBoxY
+    } else {
+      // In this case the size of the elastic has been set by the auto layout
+      box.left = boundingBox.left - paddingBoxX / 2
+      box.top = boundingBox.top - paddingBoxY / 2
+    }
   } else if (box && footer !== undefined) {
     // Case when the bounding box is undefined since there are no inner elements
     box.width = BASE_ELASTIC_CONTAINER.SIZES.MIN_WIDTH
