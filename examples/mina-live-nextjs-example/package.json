@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@keadex/mina-live": "^2.1.0",
+    "@keadex/mina-live": "^2.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^6.28.0",
