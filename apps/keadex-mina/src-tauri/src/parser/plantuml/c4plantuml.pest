@@ -206,13 +206,17 @@ uri = { (ASCII_ALPHANUMERIC | WHITESPACE | "-" | "_" | "/" | "\\" | "." | ":" | 
 
 string = { (!("\"" | NEWLINE) ~ ANY)+ }
 
+opt_string = { (!("\"" | NEWLINE) ~ ANY)* }
+
 quoted_string = _{ "\"" ~ string ~ "\"" }
+
+quoted_opt_string = _{ "\"" ~ opt_string ~ "\"" }
 
 
 //------ Shared Stdlib C4
 stdlib_c4_alias = { name | quoted_name }
 
-stdlib_c4_label = { quoted_string }
+stdlib_c4_label = { quoted_opt_string }
 
 stdlib_c4_descr = { quoted_string }
 

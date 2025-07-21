@@ -137,7 +137,7 @@ export function generateAutoLayout(
         )
 
       // Edge label
-      const labelPoint = edge._ldraw_.filter((draw) => draw.op === 'T')[0].pt
+      const labelPoint = edge._ldraw_?.filter((draw) => draw.op === 'T')[0].pt
       if (labelPoint) {
         const coords = graphvizCoordinatesToPx(pad, graphHeight, labelPoint)
         elementData.label_position = { x: coords[0], y: coords[1] }

@@ -198,12 +198,14 @@ pub fn serialize_elements_to_plantuml(elements: &Vec<DiagramElementType>, level:
   let mut elements_ser = String::new();
   for element in elements {
     match element {
-      DiagramElementType::Include(uri) => {
-        elements_ser.push_str(&format_with_indent(level, format!("\n!include {}\n", uri)))
-      }
-      DiagramElementType::Comment(comment) => {
-        elements_ser.push_str(&format_with_indent(level, format!("\n{}\n", comment,)))
-      }
+      DiagramElementType::Include(uri) => elements_ser.push_str(&format!(
+        "\n{}\n",
+        format_with_indent(level, format!("!include {}", uri))
+      )),
+      DiagramElementType::Comment(comment) => elements_ser.push_str(&format!(
+        "\n{}",
+        format_with_indent(level, comment.to_string())
+      )),
       DiagramElementType::Person(person) => {
         elements_ser.push_str(&format!("\n{}\n", person.serialize_to_plantuml(level)))
       }

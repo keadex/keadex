@@ -1,8 +1,8 @@
 import { objectsAreEqual } from '@keadex/keadex-utils'
-import Tagify, { BaseTagData, TagData } from '@yaireo/tagify'
+import Tagify from '@yaireo/tagify'
 import React, { useEffect, useState } from 'react'
 
-export interface TagsInputProps<T extends BaseTagData = TagData> {
+export interface TagsInputProps {
   id: string
   tags: string[]
   label?: string
