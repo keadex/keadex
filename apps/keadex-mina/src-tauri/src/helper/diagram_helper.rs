@@ -15,11 +15,13 @@ use crate::error_handling::errors::{
 use crate::error_handling::mina_error::MinaError;
 use crate::helper::distribution_helper::dist_path;
 use crate::model::c4_element::base_element::BaseElement;
+use crate::model::diagram::diagram_aggregated_details::DiagramAggregatedDetails;
 use crate::model::diagram::diagram_plantuml::{DiagramElementType, DiagramPlantUML};
 use crate::model::diagram::diagram_spec::DiagramSpec;
 use crate::model::diagram::Diagram;
 use crate::model::diagram::DiagramType;
 use crate::resolve_to_write;
+use base64::{engine::general_purpose::STANDARD, Engine as _};
 use convert_case::{Case, Casing};
 use std::path::MAIN_SEPARATOR;
 use std::str::FromStr;
@@ -236,79 +238,106 @@ pub async fn diagram_spec_path_from_name_type(
   ))
 }
 
-pub fn get_all_elements_aliases(elements: &Vec<DiagramElementType>) -> Vec<String> {
-  let mut aliases: Vec<String> = vec![];
+/**
+Utility which extracts the aggregated details of a diagram.
+# Arguments
+  * `elements` - Elements of the diagram
+*/
+pub fn extract_diagram_aggregated_details(
+  elements: &Vec<DiagramElementType>,
+) -> DiagramAggregatedDetails {
+  let mut aggregated_details = DiagramAggregatedDetails::default();
 
   // Explicitly add the legend since it is not coded into the PlantUML file
-  aliases.push("legend".to_string());
+  aggregated_details.aliases.push("legend".to_string());
 
   for element in elements.clone() {
     match element {
+      DiagramElementType::AddElementTag(add_element_tag) => {
+        if let Some(tag) = &add_element_tag.tag {
+          aggregated_details
+            .tags
+            .insert(generate_add_element_tag_key(tag), add_element_tag.clone());
+        }
+      }
       DiagramElementType::Person(person) => {
         if let Some(alias) = person.base_data.alias {
-          aliases.push(alias);
+          aggregated_details.aliases.push(alias);
         }
       }
       DiagramElementType::SoftwareSystem(software_system) => {
         if let Some(alias) = software_system.base_data.alias {
-          aliases.push(alias);
+          aggregated_details.aliases.push(alias);
         }
       }
       DiagramElementType::Container(container) => {
         if let Some(alias) = container.base_data.alias {
-          aliases.push(alias);
+          aggregated_details.aliases.push(alias);
         }
       }
       DiagramElementType::Component(component) => {
         if let Some(alias) = component.base_data.alias {
-          aliases.push(alias);
+          aggregated_details.aliases.push(alias);
         }
       }
       DiagramElementType::Boundary(boundary) => {
         if let Some(alias) = boundary.base_data.alias {
-          aliases.push(alias);
+          aggregated_details.aliases.push(alias);
         }
 
         // remove the legend alias since it will be added again in the recursive call
-        let sub_aliases = &mut get_all_elements_aliases(&boundary.sub_elements);
-        let pos_legend_result = sub_aliases.iter().position(|r| r == "legend");
+        let mut sub_aggregated_details = extract_diagram_aggregated_details(&boundary.sub_elements);
+        let pos_legend_result = sub_aggregated_details
+          .aliases
+          .iter()
+          .position(|r| r == "legend");
         if let Some(pos_legend) = pos_legend_result {
-          sub_aliases.remove(pos_legend);
+          sub_aggregated_details.aliases.remove(pos_legend);
         }
 
-        aliases.append(sub_aliases);
+        aggregated_details
+          .aliases
+          .append(sub_aggregated_details.aliases.as_mut());
+        aggregated_details.tags.extend(sub_aggregated_details.tags);
       }
       DiagramElementType::DeploymentNode(deployment_node) => {
         if let Some(alias) = deployment_node.base_data.alias {
-          aliases.push(alias)
+          aggregated_details.aliases.push(alias)
         }
 
         // remove the legend alias since it will be added again in the recursive call
-        let sub_aliases = &mut get_all_elements_aliases(&deployment_node.sub_elements);
-        let pos_legend_result = sub_aliases.iter().position(|r| r == "legend");
+        let mut sub_aggregated_details =
+          extract_diagram_aggregated_details(&deployment_node.sub_elements);
+        let pos_legend_result = sub_aggregated_details
+          .aliases
+          .iter()
+          .position(|r| r == "legend");
         if let Some(pos_legend) = pos_legend_result {
-          sub_aliases.remove(pos_legend);
+          sub_aggregated_details.aliases.remove(pos_legend);
         }
 
-        aliases.append(sub_aliases);
+        aggregated_details
+          .aliases
+          .append(sub_aggregated_details.aliases.as_mut());
+        aggregated_details.tags.extend(sub_aggregated_details.tags);
       }
       DiagramElementType::Relationship(relationship) => {
         if let Some(alias) = relationship.base_data.alias {
-          aliases.push(alias)
+          aggregated_details.aliases.push(alias)
         }
       }
       DiagramElementType::Include(_) => (),
       DiagramElementType::Comment(_) => (),
     }
   }
-  aliases
+  aggregated_details
 }
 
 pub fn clean_diagram_specs(
   diagram_plantuml: &DiagramPlantUML,
   diagram_spec: &DiagramSpec,
 ) -> DiagramSpec {
-  let aliases = get_all_elements_aliases(&diagram_plantuml.elements);
+  let aliases = extract_diagram_aggregated_details(&diagram_plantuml.elements).aliases;
 
   let cleaned_elements_specs = diagram_spec
     .clone()
@@ -600,4 +629,14 @@ Utility which cleans the given PlantUML string from useless chars (new lines, le
 */
 pub fn clean_plantuml_diagram_element(plantuml_string: &str) -> Result<String, MinaError> {
   Ok(plantuml_string.trim().replace(r"\n", ""))
+}
+
+/**
+Utility which generates the key to be used in the map of the AddElementTag elements.
+This utility must be synched with the same one in the JS code.
+# Arguments
+  * `tag` - Tag of the AddElementTag element
+*/
+pub fn generate_add_element_tag_key(tag: &str) -> String {
+  format!("{}", STANDARD.encode(tag))
 }

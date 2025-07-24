@@ -279,3 +279,13 @@ export const diagramContainsSubDiagrams = (
   }
   return false
 }
+
+/**
+ * Utility which generates the key to be used in the map of the AddElementTag elements.
+ * This utility must be synched with the same one in the Rust code.
+ * @param tag
+ * @returns
+ */
+export function generateAddElementTagKey(tag: string) {
+  return btoa(tag)
+}

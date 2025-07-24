@@ -32,6 +32,7 @@ uml = { (uml_element | NEWLINE)+ }
 uml_element = {
 	include |
 	comment |
+	stdlib_c4_add_element_tag |
 	stdlib_c4_context |
 	stdlib_c4_container_component | 
 	stdlib_c4_boundary |
@@ -54,6 +55,25 @@ single_line_comment_content = _{ (!NEWLINE ~ ANY)+ }
 multi_line_comment = _{ "/'" ~ multi_line_comment_content  ~ "'/" ~ ENDLINE }
 
 multi_line_comment_content = _{ (!("'/" | "'") ~ ENDLINE)* }
+
+
+//------ Stdlib C4-PlantUML AddElementTag()
+stdlib_c4_add_element_tag = {
+	"AddElementTag(" ~ WHITESPACE? 
+		~ stdlib_c4_tag ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_bg_color? ~ WHITESPACE? ~ ","? ~ WHITESPACE? 
+		~ stdlib_c4_font_color? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_border_color? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_shadowing? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_shape? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_sprite? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_explicit_techn? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_legend_text? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_legend_sprite? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_border_style? ~ WHITESPACE? ~ ","? ~ WHITESPACE?
+		~ stdlib_c4_border_thickness? ~ ")" ~ ENDLINE
+
+}
 
 
 //------ Stdlib C4 Context
@@ -214,6 +234,8 @@ quoted_opt_string = _{ "\"" ~ opt_string ~ "\"" }
 
 
 //------ Shared Stdlib C4
+stdlib_c4_function = { ASCII_ALPHANUMERIC+ ~ "()" }
+
 stdlib_c4_alias = { name | quoted_name }
 
 stdlib_c4_label = { quoted_opt_string }
@@ -221,6 +243,8 @@ stdlib_c4_label = { quoted_opt_string }
 stdlib_c4_descr = { quoted_string }
 
 stdlib_c4_techn = { quoted_string }
+
+stdlib_c4_tag = { quoted_string }
 
 stdlib_c4_sprite = { "$sprite=" ~ quoted_string }
 
@@ -233,6 +257,26 @@ stdlib_c4_type = { ("$type=" ~ quoted_string) | quoted_string }
 stdlib_c4_from = { name | quoted_name }
 
 stdlib_c4_to = { name | quoted_name }
+
+stdlib_c4_bg_color = { "$bgColor=" ~ quoted_string }
+
+stdlib_c4_font_color = { "$fontColor=" ~ quoted_string }
+
+stdlib_c4_border_color = { "$borderColor=" ~ quoted_string }
+
+stdlib_c4_shadowing = { "$shadowing=" ~ quoted_string }
+
+stdlib_c4_shape = { "$shape=" ~ (stdlib_c4_function | quoted_string) }
+
+stdlib_c4_explicit_techn = { "$techn=" ~ quoted_string }
+
+stdlib_c4_legend_text = { "$legendText=" ~ quoted_string }
+
+stdlib_c4_legend_sprite = { "$legendSprite=" ~ quoted_string }
+
+stdlib_c4_border_style = { "$borderStyle=" ~ (stdlib_c4_function | quoted_string) }
+
+stdlib_c4_border_thickness = { "$borderThickness=" ~ quoted_string }
 
 
 //------ Meta

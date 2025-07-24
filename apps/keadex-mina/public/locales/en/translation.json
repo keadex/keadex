@@ -1,6 +1,7 @@
 {
   "common": {
     "about": "About",
+    "add_element_tag": "Add Element Tag",
     "ai": "AI",
     "alias": "Alias",
     "allowed_pattern": "Allowed pattern",
@@ -98,6 +99,7 @@
     "software_system_external": "Software System External",
     "status": "Status",
     "system": "System",
+    "tag": "Tag",
     "tags": "Tags",
     "technology": "Technology",
     "themes": "Themes",
@@ -203,6 +205,14 @@
     "create_project": "Create a new project",
     "open_project": "Open an existing project",
     "remote_diagrams": "Remote diagrams"
+  },
+  "plantuml": {
+    "properties": {
+      "bg_color": "Background Color",
+      "font_color": "Font Color",
+      "border_color": "Border Color",
+      "legend_text": "Legend Text"
+    }
   },
   "project_settings": {
     "title": "Project Settings",

@@ -2632,11 +2632,12 @@ dependencies = [
 
 [[package]]
 name = "keadex_mina"
-version = "2.1.2"
+version = "2.2.0"
 dependencies = [
  "async-openai-wasm",
  "async-std",
  "async-trait",
+ "base64 0.22.1",
  "bomboni_wasm",
  "cfg_aliases",
  "chrono",

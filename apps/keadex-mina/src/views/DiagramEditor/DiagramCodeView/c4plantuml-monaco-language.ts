@@ -1,4 +1,6 @@
 import {
+  ADD_ELEMENT_TAG_TYPES,
+  AddElementTagType,
   BOUNDARY_TYPES,
   BoundaryType,
   COMPONENT_TYPES,
@@ -32,6 +34,17 @@ type C4PlantUMLParameterType =
   | 'sprite'
   | 'tags'
   | 'link'
+  | 'tag'
+  | 'bgColor'
+  | 'fontColor'
+  | 'borderColor'
+  | 'shadowing'
+  | 'shape'
+  | 'explicitTechnology'
+  | 'legendText'
+  | 'legendSprite'
+  | 'borderStyle'
+  | 'borderThickness'
 
 type C4PlantUMLSignatureType =
   | 'context_person'
@@ -40,6 +53,7 @@ type C4PlantUMLSignatureType =
   | 'boundary'
   | 'relationship'
   | 'deployment_node'
+  | 'add_element_tag'
 
 export const PLANTUML_LANGUAGE = 'plantuml'
 
@@ -125,6 +139,91 @@ const C4PLANTUML_PARAMETERS: Record<
     documentation: {
       value:
         'Optional link for connecting the element to another Mina diagram. The syntax of the link string follows this pattern: `<DIAGRAM_TYPE>/<DIAGRAM_NAME>`.\n\nExample: `$link="system-context/my-diagram"`',
+      isTrusted: true,
+    },
+  },
+  tag: {
+    label: 'tag',
+    documentation: {
+      value:
+        'Tag you want to use to customize elements.\n\nExample: `"my-tag"`',
+      isTrusted: true,
+    },
+  },
+  bgColor: {
+    label: '?bgColor',
+    documentation: {
+      value: 'Optional background color.\n\nExample: `$bgColor="#000000"`',
+      isTrusted: true,
+    },
+  },
+  fontColor: {
+    label: '?fontColor',
+    documentation: {
+      value: 'Optional font color.\n\nExample: `$fontColor="#000000"`',
+      isTrusted: true,
+    },
+  },
+  borderColor: {
+    label: '?borderColor',
+    documentation: {
+      value: 'Optional border color.\n\nExample: `$borderColor="#000000"`',
+      isTrusted: true,
+    },
+  },
+  shadowing: {
+    label: '?shadowing',
+    documentation: {
+      value:
+        'Optional boolean that indicates whether to add a shadow.\nShadowing is ignored by Mina, but it is supported to accept PlantUML code from other PlantUML tools.\n\nExample: `$shadowing="true"`',
+      isTrusted: true,
+    },
+  },
+  shape: {
+    label: '?shape',
+    documentation: {
+      value:
+        'Optional PlantUML function or string to customize the shape.\nShape is ignored by Mina, but it is supported to accept PlantUML code from other PlantUML tools.\n\nExample: `$shape=RoundedBoxShape()`',
+      isTrusted: true,
+    },
+  },
+  explicitTechnology: {
+    label: '?technology',
+    documentation: {
+      value:
+        'Optional technology of the element.\n\nExample: `$techn="My technology"`',
+      isTrusted: true,
+    },
+  },
+  legendText: {
+    label: '?legendText',
+    documentation: {
+      value:
+        'Optional text to display in the legend entry for this tag.\n\nExample: `"My Legend Text"`',
+      isTrusted: true,
+    },
+  },
+  legendSprite: {
+    label: '?legendSprite',
+    documentation: {
+      value:
+        'Optional PlantUML Sprite for the legend entry.\nLegend Sprite is ignored by Mina, but it is supported to accept PlantUML code from other PlantUML tools.\n\nExample: `$legendSprite="my_legend_sprite"`',
+      isTrusted: true,
+    },
+  },
+  borderStyle: {
+    label: '?borderStyle',
+    documentation: {
+      value:
+        'Optional PlantUML function or string to customize the border style.\nBorder Style is ignored by Mina, but it is supported to accept PlantUML code from other PlantUML tools.\n\nExample: `$borderStyle="dashed"`',
+      isTrusted: true,
+    },
+  },
+  borderThickness: {
+    label: '?borderThickness',
+    documentation: {
+      value:
+        'Optional number to customize the border thickness.\nBorder thickness is ignored by Mina, but it is supported to accept PlantUML code from other PlantUML tools.\n\nExample: `$borderThickness="2"`',
       isTrusted: true,
     },
   },
@@ -255,6 +354,25 @@ function generateC4PlantUMLSignatures(): Record<
         ]),
       ],
     },
+    add_element_tag: {
+      label: '',
+      parameters: [
+        C4PLANTUML_PARAMETERS['tag'],
+        aggregateOptionalParameters([
+          'bgColor',
+          'fontColor',
+          'borderColor',
+          'shadowing',
+          'shape',
+          'sprite',
+          'explicitTechnology',
+          'legendText',
+          'legendSprite',
+          'borderStyle',
+          'borderThickness',
+        ]),
+      ],
+    },
   }
 
   Object.keys(signatures).forEach((key) => {
@@ -293,6 +411,8 @@ function getPlantUMLSignature(
       id = 'relationship'
     } else if (DEPLOYMENT_NODE_TYPES.includes(element as DeploymentNodeType)) {
       id = 'deployment_node'
+    } else if (ADD_ELEMENT_TAG_TYPES.includes(element as AddElementTagType)) {
+      id = 'add_element_tag'
     }
 
     if (id && C4PLANTUML_SIGNATURES[id]) {
@@ -345,6 +465,7 @@ function createC4ElementProposals(
     ...BOUNDARY_TYPES,
     ...DEPLOYMENT_NODE_TYPES,
     ...RELATIONSHIP_TYPES,
+    ...ADD_ELEMENT_TAG_TYPES,
   ]
   try {
     return c4Elements.map((element) => {

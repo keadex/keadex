@@ -3,7 +3,8 @@ Model representing the root of a PlantUML diagram.
 */
 
 use crate::core::serializer::format_with_indent;
-use crate::helper::diagram_helper::get_all_elements_aliases;
+use crate::helper::diagram_helper::extract_diagram_aggregated_details;
+use crate::model::c4_element::add_element_tag::AddElementTag;
 use crate::model::c4_element::boundary::Boundary;
 use crate::model::c4_element::component::{Component, ComponentType};
 use crate::model::c4_element::container::{Container, ContainerType};
@@ -16,11 +17,11 @@ use bomboni_wasm::Wasm;
 use pest::error::Error;
 use pest::iterators::{Pair, Pairs};
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 use std::str::FromStr;
 use strum_macros::Display;
 use ts_rs::TS;
 use wasm_bindgen::prelude::wasm_bindgen;
-
 pub trait PlantUMLSerializer {
   fn serialize_to_plantuml(&self, level: usize) -> String;
 }
@@ -35,6 +36,7 @@ pub trait PlantUMLSerializer {
 pub enum DiagramElementType {
   Include(String),
   Comment(String),
+  AddElementTag(AddElementTag),
   Person(Person),
   SoftwareSystem(SoftwareSystem),
   Container(Container),
@@ -56,6 +58,8 @@ pub struct DiagramPlantUML {
   pub diagram_id: Option<String>,
   pub elements: Vec<DiagramElementType>,
   pub aliases: Vec<String>,
+  #[wasm_bindgen(skip)]
+  pub tags: BTreeMap<String, AddElementTag>,
 }
 
 impl<'i> TryFrom<Pair<'i, Rule>> for DiagramPlantUML {
@@ -76,11 +80,12 @@ impl<'i> TryFrom<Pair<'i, Rule>> for DiagramPlantUML {
         _ => {}
       }
     }
-    let aliases = get_all_elements_aliases(&elements);
+    let aggregated_detials = extract_diagram_aggregated_details(&elements);
     Ok(Self {
       diagram_id,
       elements,
-      aliases,
+      aliases: aggregated_detials.aliases,
+      tags: aggregated_detials.tags,
     })
   }
 }
@@ -103,6 +108,9 @@ pub fn parse_uml_element(pair: Pair<Rule>, elements: &mut Vec<DiagramElementType
     }
     Rule::comment => {
       elements.push(DiagramElementType::Comment(pair.as_str().to_string()));
+    }
+    Rule::stdlib_c4_add_element_tag => {
+      elements.push(DiagramElementType::AddElementTag(pair.try_into().unwrap()));
     }
     Rule::stdlib_c4_context => {
       if let Some(parsed_element) = parse_stdlib_c4_context(pair) {
@@ -205,6 +213,10 @@ pub fn serialize_elements_to_plantuml(elements: &Vec<DiagramElementType>, level:
       DiagramElementType::Comment(comment) => elements_ser.push_str(&format!(
         "\n{}",
         format_with_indent(level, comment.to_string())
+      )),
+      DiagramElementType::AddElementTag(add_element_tag) => elements_ser.push_str(&format!(
+        "\n{}\n",
+        add_element_tag.serialize_to_plantuml(level)
       )),
       DiagramElementType::Person(person) => {
         elements_ser.push_str(&format!("\n{}\n", person.serialize_to_plantuml(level)))

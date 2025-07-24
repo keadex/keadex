@@ -6,7 +6,7 @@ use crate::error_handling::errors::{
 };
 use crate::error_handling::mina_error::MinaError;
 use crate::helper::diagram_helper::{
-  diagram_name_type_from_path, diagram_to_link_string, get_all_elements_aliases,
+  diagram_name_type_from_path, diagram_to_link_string, extract_diagram_aggregated_details,
 };
 use crate::helper::library_helper::element_type_from_path;
 use crate::model::c4_element::relationship::RelationshipType;
@@ -72,7 +72,7 @@ Returns an error if the diagram contains duplicated aliases.
 pub fn check_in_diagram_elements_aliases(
   diagram_plantuml_elements: &Vec<DiagramElementType>,
 ) -> Result<(), MinaError> {
-  let aliases = get_all_elements_aliases(&diagram_plantuml_elements);
+  let aliases = extract_diagram_aggregated_details(&diagram_plantuml_elements).aliases;
   let mut map_aliases: HashSet<String> = HashSet::new();
   for alias in aliases {
     let added = map_aliases.insert(alias.clone());
@@ -150,6 +150,7 @@ pub async fn check_cross_diagrams_elements_aliases(
       }
       DiagramElementType::Include(_) => (),
       DiagramElementType::Comment(_) => (),
+      DiagramElementType::AddElementTag(_) => (),
       DiagramElementType::Relationship(_) => (),
     }
     if should_check {
