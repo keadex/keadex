@@ -3,7 +3,7 @@
   "description": "Web porting of the Keadex Mina application.",
   "author": "Keadex <keadex.it@gmail.com>",
   "license": "MIT",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "private": false,
   "homepage": "https://keadex.dev",
   "repository": {
