@@ -17,11 +17,13 @@ use bomboni_wasm::Wasm;
 use pest::error::Error;
 use pest::iterators::{Pair, Pairs};
 use serde::{Deserialize, Serialize};
+use serde_wasm_bindgen::{from_value, Serializer};
 use std::collections::BTreeMap;
 use std::str::FromStr;
 use strum_macros::Display;
 use ts_rs::TS;
 use wasm_bindgen::prelude::wasm_bindgen;
+use wasm_bindgen::JsValue;
 pub trait PlantUMLSerializer {
   fn serialize_to_plantuml(&self, level: usize) -> String;
 }
@@ -60,6 +62,22 @@ pub struct DiagramPlantUML {
   pub aliases: Vec<String>,
   #[wasm_bindgen(skip)]
   pub tags: BTreeMap<String, AddElementTag>,
+}
+
+#[wasm_bindgen]
+impl DiagramPlantUML {
+  #[wasm_bindgen(getter)]
+  pub fn tags(&self) -> JsValue {
+    // Using a custom serializer to serialize the Rust map
+    // into a plain JavaScript object instead of ES2015 map.
+    let serializer = Serializer::new().serialize_maps_as_objects(true);
+    self.tags.serialize(&serializer).unwrap()
+  }
+
+  #[wasm_bindgen(setter)]
+  pub fn set_tags(&mut self, tags: JsValue) {
+    self.tags = from_value(tags).unwrap();
+  }
 }
 
 impl<'i> TryFrom<Pair<'i, Rule>> for DiagramPlantUML {

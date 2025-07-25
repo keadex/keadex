@@ -1240,6 +1240,7 @@ dependencies = [
  "async-openai-wasm",
  "async-std",
  "async-trait",
+ "base64",
  "bomboni_wasm",
  "cfg_aliases",
  "chrono",
