@@ -5081,6 +5081,11 @@
     "@tanstack/react-virtual" "^3.0.0-beta.60"
     client-only "^0.0.1"
 
+"@hpcc-js/wasm-graphviz@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@hpcc-js/wasm-graphviz/-/wasm-graphviz-1.10.0.tgz#69da19e11dce7e97f6fdc31bf0ffe3095ae11d56"
+  integrity sha512-nkwPIujvUuah32c/17J4rKJy+mo1IZQw5QmLmTvXskD5JEn2jH/6XG+T6gy/+U+QrFBXnrTuY7yGEQnl7ehrfQ==
+
 "@hpcc-js/wasm-graphviz@^1.7.0":
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/@hpcc-js/wasm-graphviz/-/wasm-graphviz-1.7.0.tgz#f78c02eb8ea41b36c7e74d112adb8a46e3e11f2b"

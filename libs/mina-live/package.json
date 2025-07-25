@@ -60,7 +60,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@hpcc-js/wasm-graphviz": "^1.7.0",
+    "@hpcc-js/wasm-graphviz": "^1.10.0",
     "@monaco-editor/react": "^4.6.0",
     "@reduxjs/toolkit": "^1.9.7",
     "@tanstack/react-table": "^8.10.7",
