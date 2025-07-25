@@ -126,7 +126,7 @@ export default composePlugins(
             VITE_WEB_MODE: JSON.stringify(true),
             VITE_APP_VERSION: JSON.stringify(
               JSON.parse(
-                readFileSync(join(__dirname, '../../package.json')).toString(),
+                readFileSync(join(__dirname, './package.json')).toString(),
               ).version,
             ),
           },
