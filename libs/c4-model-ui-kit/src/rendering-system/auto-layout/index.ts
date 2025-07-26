@@ -36,11 +36,9 @@ export function generateAutoLayout(
     )
     // console.debug(graphvizDotCode)
 
-    const output = JSON.parse(
-      graphviz.dot(graphvizDotCode, 'json'),
-    ) as GraphvizOutput
+    const dotLayout = graphviz.dot(graphvizDotCode, 'json')
+    const output = JSON.parse(dotLayout) as GraphvizOutput
     const graphHeight = getGraphHeightInPtFromBB(output.bb)
-    // console.debug(output)
 
     // Store the nodes positions
     output.objects?.forEach((object) => {
@@ -100,47 +98,54 @@ export function generateAutoLayout(
       }
 
       // Edge points
-      const edgePoints = edge._draw_.filter((draw) => draw.op === 'b')[0].points
-      edgePoints.forEach((point, index) => {
+      if (edge._draw_) {
+        const edgePoints = edge._draw_.filter((draw) => draw.op === 'b')[0]
+          .points
+        edgePoints.forEach((point, index) => {
+          const pixelCoordinates = graphvizCoordinatesToPx(
+            pad,
+            graphHeight,
+            point,
+          )
+          const x = pixelCoordinates[0]
+          const y = pixelCoordinates[1]
+          if (index === 0) elementData.start = { x, y }
+          else
+            elementData.path?.push({
+              x,
+              y,
+            })
+        })
+      }
+
+      // Edge cap point
+      if (edge._hdraw_) {
+        const edgeCapPoints = edge._hdraw_.filter((draw) => draw.op === 'P')[0]
+          .points
         const pixelCoordinates = graphvizCoordinatesToPx(
           pad,
           graphHeight,
-          point,
+          edgeCapPoints[1],
         )
-        const x = pixelCoordinates[0]
-        const y = pixelCoordinates[1]
-        if (index === 0) elementData.start = { x, y }
-        else
-          elementData.path?.push({
-            x,
-            y,
-          })
-      })
+        elementData.end = { x: pixelCoordinates[0], y: pixelCoordinates[1] }
 
-      // Edge cap point
-      const edgeCapPoints = edge._hdraw_.filter((draw) => draw.op === 'P')[0]
-        .points
-      const pixelCoordinates = graphvizCoordinatesToPx(
-        pad,
-        graphHeight,
-        edgeCapPoints[1],
-      )
-      elementData.end = { x: pixelCoordinates[0], y: pixelCoordinates[1] }
-
-      if (elementData.start && elementData.end)
-        elementData.svg_path = svgPathFromGraphvizPos(
-          edge.pos,
-          elementData.start,
-          elementData.end,
-          pad,
-          graphHeight,
-        )
+        if (elementData.start && elementData.end)
+          elementData.svg_path = svgPathFromGraphvizPos(
+            edge.pos,
+            elementData.start,
+            elementData.end,
+            pad,
+            graphHeight,
+          )
+      }
 
       // Edge label
-      const labelPoint = edge._ldraw_?.filter((draw) => draw.op === 'T')[0].pt
-      if (labelPoint) {
-        const coords = graphvizCoordinatesToPx(pad, graphHeight, labelPoint)
-        elementData.label_position = { x: coords[0], y: coords[1] }
+      if (edge._ldraw_) {
+        const labelPoint = edge._ldraw_?.filter((draw) => draw.op === 'T')[0].pt
+        if (labelPoint) {
+          const coords = graphvizCoordinatesToPx(pad, graphHeight, labelPoint)
+          elementData.label_position = { x: coords[0], y: coords[1] }
+        }
       }
 
       positions[edge.name] = elementData

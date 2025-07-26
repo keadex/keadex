@@ -1,6 +1,6 @@
 [package]
 name = "mina-cli"
-version = "2.2.1"
+version = "2.2.2"
 description = "CLI for interacting with Mina projects."
 authors = ["Keadex"]
 license = "MIT"
