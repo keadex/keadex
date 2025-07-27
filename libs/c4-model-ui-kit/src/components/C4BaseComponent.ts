@@ -14,12 +14,8 @@ import {
   OBJECT_EVENTS,
 } from '../constants/fabric-events'
 import {
-  componentDiagramElement,
-  containerDiagramElement,
-  softwareSystemDiagramElement,
-} from '../helper/diagram-helper'
-import {
   isExternalLink,
+  linkableDiagramElement,
   linkLabelFromExternalLink,
   replaceExternalLinkVariables,
 } from '../helper/diagram-link-helper'
@@ -138,6 +134,7 @@ export interface C4BaseComponentOptions {
 export interface C4BaseComponentRawData {
   rawDiagramElementSpec: DiagramElementSpec | undefined
   rawData?: C4BaseComponentData
+  rawAutoLayout?: Record<string, ElementData>
 }
 
 export interface IC4BaseComponent {
@@ -177,6 +174,7 @@ export class C4BaseComponent extends fabric.Group implements IC4BaseComponent {
       data: {
         rawDiagramElementSpec: elementSpec,
         rawData: data,
+        rawAutoLayout: autoLayout,
       },
       name: defaults.alias ?? 'undefined',
       left:
@@ -292,8 +290,11 @@ export const createBaseContextMenuItems = (
   asSubMenu = true,
 ): DropdownMenuItemProps[] => {
   const baseContextMenuItems = []
-  const elementType = object.data?.rawDiagramElementSpec?.element_type
-  const diagramLinks = object.data?.rawData?.base_data?.link?.split(
+  const diagramElement =
+    object instanceof VirtualGroupSelection ? object.parent : object
+  const diagramElementData = diagramElement?.data
+  const elementType = diagramElementData?.rawDiagramElementSpec?.element_type
+  const diagramLinks = diagramElementData?.rawData?.base_data?.link?.split(
     DIAGRAM_LINKS_SEPARATOR,
   )
   const isCanvasReadOnly = (canvas as KeadexCanvas).isReadOnly()
@@ -302,12 +303,7 @@ export const createBaseContextMenuItems = (
     elementType !== undefined &&
     diagramLinks &&
     diagramLinks.length > 0 &&
-    (componentDiagramElement(elementType) !== undefined ||
-      containerDiagramElement(elementType) !== undefined ||
-      softwareSystemDiagramElement(elementType) !== undefined)
-  const diagramElement =
-    object instanceof VirtualGroupSelection ? object.parent : object
-  const diagramElementData = diagramElement?.data
+    linkableDiagramElement(elementType) !== undefined
 
   let diagramElementLevel = 0
   let parent = diagramElement?.parent

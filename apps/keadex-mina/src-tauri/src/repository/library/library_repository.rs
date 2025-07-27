@@ -129,6 +129,7 @@ pub async fn create_element(
     DiagramElementType::DeploymentNode(_) => return Err(error),
     DiagramElementType::Include(_) => return Err(error),
     DiagramElementType::Comment(_) => return Err(error),
+    DiagramElementType::AddElementTag(_) => return Err(error),
     DiagramElementType::Relationship(_) => return Err(error),
   };
 }
@@ -171,6 +172,7 @@ pub async fn update_element(
     DiagramElementType::DeploymentNode(_) => (),
     DiagramElementType::Include(_) => (),
     DiagramElementType::Comment(_) => (),
+    DiagramElementType::AddElementTag(_) => (),
     DiagramElementType::Relationship(_) => (),
   };
 

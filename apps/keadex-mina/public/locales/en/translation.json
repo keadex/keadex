@@ -1,6 +1,7 @@
 {
   "common": {
     "about": "About",
+    "add_element_tag": "Add Element Tag",
     "ai": "AI",
     "alias": "Alias",
     "allowed_pattern": "Allowed pattern",
@@ -98,6 +99,7 @@
     "software_system_external": "Software System External",
     "status": "Status",
     "system": "System",
+    "tag": "Tag",
     "tags": "Tags",
     "technology": "Technology",
     "themes": "Themes",
@@ -123,7 +125,7 @@
     },
     "error": {
       "internal": "Internal error: {{errorMessage}}",
-      "cannot_add_link": "Cannot add a link to the selected PlantUML element. Move the cursor on a Software System, Container, or Component in the code editor. ",
+      "cannot_add_link": "You can't add a link to the selected PlantUML element. Please select a Software System, Container, Component, or Boundary in the code editor instead.\nTip: In the design view, you can right-click on an element and choose \"Select code\" to highlight its definition in the editor.",
       "cannot_add_to_library": "Cannot add the selected PlantUML element to the library. Move the cursor on a Person, Software System, Container, or Component in the code editor. ",
       "cannot_delete_diagram": "Cannot delete the diagram: {{errorMessage}}",
       "cannot_delete_element": "Cannot delete this element.",
@@ -203,6 +205,14 @@
     "create_project": "Create a new project",
     "open_project": "Open an existing project",
     "remote_diagrams": "Remote diagrams"
+  },
+  "plantuml": {
+    "properties": {
+      "bg_color": "Background Color",
+      "font_color": "Font Color",
+      "border_color": "Border Color",
+      "legend_text": "Legend Text"
+    }
   },
   "project_settings": {
     "title": "Project Settings",

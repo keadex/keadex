@@ -62,6 +62,7 @@
     "releaseTagPattern": "{projectName}@{version}",
     "version": {
       "manifestRootsToUpdate": ["{projectRoot}"],
+      "updateDependents": "never",
       "git": {
         "commitMessage": "[skip actions] chore(release): {version}"
       }

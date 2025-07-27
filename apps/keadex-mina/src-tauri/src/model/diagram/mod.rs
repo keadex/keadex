@@ -1,3 +1,4 @@
+pub mod diagram_aggregated_details;
 pub mod diagram_plantuml;
 pub mod diagram_spec;
 pub mod graphic;
@@ -51,6 +52,9 @@ pub enum C4ElementTypeExtended {
   #[serde(rename = "DeploymentNode")]
   #[strum(serialize = "DeploymentNode")]
   DeploymentNode,
+  #[serde(rename = "AddElementTag")]
+  #[strum(serialize = "AddElementTag")]
+  AddElementTag,
   #[serde(rename = "Relationship")]
   #[strum(serialize = "Relationship")]
   Relationship,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ChromePicker, ColorChangeHandler } from 'react-color'
+import { ColorChangeHandler, ColorResult, SketchPicker } from 'react-color'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { Key } from 'ts-key-enum'
 
@@ -20,6 +20,14 @@ export const ColorPicker = React.memo(
       }
     })
 
+    function addOpacityToHex(colorResult: ColorResult) {
+      const hex = colorResult.hex
+      const opacity = Math.round((colorResult.rgb.a ?? 1) * 255)
+      const opacityHex = opacity.toString(16).padStart(2, '0')
+      colorResult.hex = `${hex}${opacityHex}`
+      return colorResult
+    }
+
     return (
       <div className={`color-picker ${className ?? ''}`}>
         {isOpen && (
@@ -36,11 +44,11 @@ export const ColorPicker = React.memo(
         </div>
         {isOpen ? (
           <div className="absolute z-[2] pr-5 pb-5">
-            <ChromePicker
-              disableAlpha
+            <SketchPicker
+              disableAlpha={false}
               color={color ?? '#000000'}
               onChange={(colorResult, ev) => {
-                if (onChange) onChange(colorResult, ev)
+                if (onChange) onChange(addOpacityToHex(colorResult), ev)
               }}
             />
           </div>

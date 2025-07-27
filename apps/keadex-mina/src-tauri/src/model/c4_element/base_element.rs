@@ -47,7 +47,15 @@ impl<'i> TryFrom<Pair<'i, Rule>> for BaseElement {
           base_element.alias = Some(item.into_inner().next().unwrap().as_str().to_string())
         }
         Rule::stdlib_c4_label => {
-          base_element.label = Some(item.into_inner().next().unwrap().as_str().to_string())
+          // In the Pest grammar, the label can be empty, so we check for that
+          // and force it to be a space if it is empty.
+          // This is to avoid issues with diagram rendering.
+          let label = item.into_inner().next().unwrap().as_str().to_string();
+          if label.is_empty() {
+            base_element.label = Some(String::from(" "));
+          } else {
+            base_element.label = Some(label);
+          }
         }
         Rule::stdlib_c4_descr => {
           base_element.description = Some(item.into_inner().next().unwrap().as_str().to_string())

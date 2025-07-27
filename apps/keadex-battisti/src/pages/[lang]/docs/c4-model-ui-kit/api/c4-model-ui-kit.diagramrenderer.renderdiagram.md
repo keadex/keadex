@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-renderDiagram(canvas: fabric.Canvas, diagramListener: DiagramListener, diagram: Diagram | undefined, diagramsThemeSettings: DiagramsThemeSettings | undefined): C4BaseComponent[] | undefined;
+renderDiagram(canvas: KeadexCanvas, diagramListener: DiagramListener, diagram: Diagram | undefined, diagramsThemeSettings: DiagramsThemeSettings | undefined): C4BaseComponent[] | undefined;
 ```
 
 ## Parameters
@@ -35,7 +35,7 @@ canvas
 
 </td><td>
 
-fabric.Canvas
+KeadexCanvas
 
 
 </td><td>

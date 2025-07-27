@@ -162,3 +162,13 @@ export const BOUNDARY = {
     STROKE_DASH_ARRAY: [5, 5],
   },
 }
+
+export const SUPPORTED_BORDER_STYLES: Record<
+  string,
+  { name: string; value: number[] }
+> = {
+  '"dashed"': {
+    name: '"dashed"',
+    value: [8, 5],
+  },
+}

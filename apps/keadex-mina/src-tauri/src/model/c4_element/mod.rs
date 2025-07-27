@@ -1,3 +1,4 @@
+pub mod add_element_tag;
 pub mod base_element;
 pub mod boundary;
 pub mod component;

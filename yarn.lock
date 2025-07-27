@@ -5081,10 +5081,10 @@
     "@tanstack/react-virtual" "^3.0.0-beta.60"
     client-only "^0.0.1"
 
-"@hpcc-js/wasm-graphviz@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@hpcc-js/wasm-graphviz/-/wasm-graphviz-1.7.0.tgz#f78c02eb8ea41b36c7e74d112adb8a46e3e11f2b"
-  integrity sha512-/1XEmubfDz1UolKiVh6H4BrGX0DZwR39Y2h76LdqR17FZ3gCJoUs4jV7kUywedXerbwx1szhU3dBsNcvkEmjiQ==
+"@hpcc-js/wasm-graphviz@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@hpcc-js/wasm-graphviz/-/wasm-graphviz-1.10.0.tgz#69da19e11dce7e97f6fdc31bf0ffe3095ae11d56"
+  integrity sha512-nkwPIujvUuah32c/17J4rKJy+mo1IZQw5QmLmTvXskD5JEn2jH/6XG+T6gy/+U+QrFBXnrTuY7yGEQnl7ehrfQ==
 
 "@humanwhocodes/config-array@^0.11.13":
   version "0.11.14"
@@ -5651,15 +5651,15 @@
   resolved "https://registry.yarnpkg.com/@jsonjoy.com/util/-/util-1.6.0.tgz#23991b2fe12cb3a006573d9dc97c768d3ed2c9f1"
   integrity sha512-sw/RMbehRhN68WRtcKCpQOPfnH6lLP4GJfqzi3iYej8tnzpZUDr6UkZYJjcjjC0FWEJOJbyM3PTIwxucUmDG2A==
 
-"@keadex/mina-live-npm@npm:@keadex/mina-live@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-live/-/mina-live-2.0.0.tgz#a1c9fbc782deeb307c9c2150837f826cebf27b1f"
-  integrity sha512-1sbmt4l0c0WEMFMTwfn+NySnbNOJMDJXgiuEYXm4nsndJ2WBR6FAz+cDCOl/Pxvz7+PaQcKgUU0lMiXnwQekng==
+"@keadex/mina-live-npm@npm:@keadex/mina-live@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-live/-/mina-live-2.2.2.tgz#7840a708722d69223da81e972410405d92d29255"
+  integrity sha512-t1/YNykTCXgxWUO97EFO5qnCF0QNhLmmzvd2uKiWP7W4s3J+EOFfla8eR3pONR3NeOVa1Qbkhdfrw1NHM530Eg==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
     "@fortawesome/react-fontawesome" "^0.2.2"
-    "@hpcc-js/wasm-graphviz" "^1.7.0"
+    "@hpcc-js/wasm-graphviz" "^1.10.0"
     "@monaco-editor/react" "^4.6.0"
     "@reduxjs/toolkit" "^1.9.7"
     "@tanstack/react-table" "^8.10.7"
@@ -5699,15 +5699,15 @@
     uuid "^9.0.1"
     wasm-pack "^0.12.1"
 
-"@keadex/mina-react-npm@npm:@keadex/mina-react@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-2.0.0.tgz#c87797c7d64cf8fe1c3c795fa316b50393a80be0"
-  integrity sha512-gTqN2idxhHoO7e9H7SjUjw6jNLrPajBtIAD4sof0ZPU1dqEUic83CrtsOPUJ+tR9Ex8p6TA6MF6JJ2q464gYaQ==
+"@keadex/mina-react-npm@npm:@keadex/mina-react@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-2.2.2.tgz#8b350767c3b9d5a0015978193c86b30d44317a61"
+  integrity sha512-dYxiVj0Yv4RH5W63MRqfCYJJqIXA6GKNpzO+GwjShP298e5hht2TvCIp5UgDcsgSHJ/AhyI9MkpL73yphoqb2g==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
     "@fortawesome/react-fontawesome" "^0.2.2"
-    "@hpcc-js/wasm-graphviz" "^1.7.0"
+    "@hpcc-js/wasm-graphviz" "^1.10.0"
     "@tanstack/react-table" "^8.10.7"
     "@tauri-apps/api" "^2.2.0"
     "@yaireo/tagify" "^4.24.0"

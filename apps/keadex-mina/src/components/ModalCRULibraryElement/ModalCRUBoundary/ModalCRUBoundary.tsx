@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { ALIAS_REGEX, NAME_REGEX } from '../../../constants/regex'
 import { ModalCRULibraryElementProps } from '../ModalCRULibraryElements'
+import DiagramLinker from '../../DiagramLinker/DiagramLinker'
 
 const emptyBoundary: Boundary = {
   base_data: {
@@ -109,6 +110,21 @@ export const ModalCRUBoundary = (props: ModalCRULibraryElementProps) => {
               boundary_type: e.target.value as BoundaryType,
             })
           }
+        />
+        <DiagramLinker
+          hideButtons
+          className="p-0"
+          disabled={!props.enableEdit}
+          link={newBoundary?.base_data?.link}
+          onLinkChanged={(link) => {
+            setNewBoundary({
+              ...newBoundary,
+              base_data: {
+                ...newBoundary?.base_data,
+                link,
+              },
+            })
+          }}
         />
         {props.mode !== 'serializer' && (
           <Textarea

@@ -135,18 +135,18 @@ function serializeSubgraph(
 ): string {
   const sizes = fromElasticContainerSizesToGraphvizSizes()
   return `
-    subgraph "${alias}" {
+    subgraph "${generateSubgraphMarginHackId(alias)}" {
         cluster=true
         margin="${sizes.margin}"
         fontsize="0pt"
         label=""
-        "${alias}" [peripheries=0, height=0, width=0, label=""] // invisible node that is used as a workaround to let the connection between nodes and subgraphs
-        subgraph "${generateSubgraphMarginHackId(alias)}" {
+        subgraph "${alias}" {
             cluster=true
             margin=0
             label=" "
             labelloc="b"
             fontsize="${sizes.fakeFontSize}"
+            "${alias}" [peripheries=0, height=0, width=0, label=""] // invisible node that is used as a workaround to let the connection between nodes and subgraphs
             ${serializeGraph(diagramElements)}
         }
     }
