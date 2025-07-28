@@ -15,6 +15,7 @@ export const OBJECT_EVENTS = {
   MODIFIED: 'modified',
   MOVING: 'moving',
   SELECTED: 'selected',
+  DESELECTED: 'deselected',
   SCALING: 'scaling',
   ROTATING: 'rotating',
 }
