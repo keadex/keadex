@@ -685,7 +685,8 @@ const createDot = (
     headArrow.data = {
       rawDiagramElementSpec: point.data?.rawDiagramElementSpec,
       otherData: {
-        selectedRelColor,
+        selectedRelColor:
+          selectedRelColor ?? RELATIONSHIP.COLORS.SELECTED_COLOR,
       },
     }
     headArrow.parent = parent
@@ -710,7 +711,8 @@ const createDot = (
     dot.data = {
       rawDiagramElementSpec: point.data?.rawDiagramElementSpec,
       otherData: {
-        selectedRelColor,
+        selectedRelColor:
+          selectedRelColor ?? RELATIONSHIP.COLORS.SELECTED_COLOR,
       },
     }
     dot.parent = parent
@@ -771,7 +773,7 @@ const createLine = (
   line.data = {
     rawDiagramElementSpec: lineSpecs,
     otherData: {
-      selectedRelColor,
+      selectedRelColor: selectedRelColor ?? RELATIONSHIP.COLORS.SELECTED_COLOR,
     },
   }
   line.parent = parent
