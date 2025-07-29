@@ -116,7 +116,7 @@ export const RELATIONSHIP = {
     BG_COLOR: 'rgba(0,0,0,0)',
     LINE_COLOR: '#828282',
     TEXT_COLOR: '#404040',
-    SELECTED_COLOR: '#6bc9ff',
+    SELECTED_COLOR: '#ff8f26',
   },
   FONT: {
     SIZE_LABEL: 10,
