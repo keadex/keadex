@@ -38,6 +38,7 @@ export const X_PAD = pxToInch(ELEMENT.SIZES.DEFAULT_LEFT)
 export const Y_PAD = pxToInch(ELEMENT.SIZES.DEFAULT_TOP)
 
 export const PERIPHERIES = 2 // hack to add a space between nodes
+export const PERIPHERY_SIZE = (PERIPHERIES - 1) * 4.5 // This value has been hardcoded since there are not ways to retrieve it dynamically from graphviz.
 export const PENWIDTH = 1 // It represents the width of the borders, in points
 
 function fromElasticContainerSizesToGraphvizSizes(): {
@@ -132,6 +133,7 @@ function getNodeSizeFromElementType(elementType: DiagramElementType): Point {
 function serializeSubgraph(
   alias: string,
   diagramElements: DiagramElementType[],
+  subgraphAliases: Set<string>,
 ): string {
   const sizes = fromElasticContainerSizesToGraphvizSizes()
   return `
@@ -147,13 +149,16 @@ function serializeSubgraph(
             labelloc="b"
             fontsize="${sizes.fakeFontSize}"
             "${alias}" [peripheries=0, height=0, width=0, label=""] // invisible node that is used as a workaround to let the connection between nodes and subgraphs
-            ${serializeGraph(diagramElements)}
+            ${serializeGraph(diagramElements, subgraphAliases)}
         }
     }
   `
 }
 
-function serializeGraph(diagramElements: DiagramElementType[]): string {
+function serializeGraph(
+  diagramElements: DiagramElementType[],
+  subgraphAliases: Set<string>,
+): string {
   let graph = ''
   for (const element of diagramElements) {
     const size = getNodeSizeFromElementType(element)
@@ -170,31 +175,47 @@ function serializeGraph(diagramElements: DiagramElementType[]): string {
     } else if (boundaryDiagramElement(element)) {
       const boundary = boundaryDiagramElement(element) as Boundary
       alias = boundary.base_data.alias
-      if (alias)
-        graph = graph.concat(serializeSubgraph(alias, boundary.sub_elements))
+      if (alias) {
+        subgraphAliases.add(alias)
+        graph = graph.concat(
+          serializeSubgraph(alias, boundary.sub_elements, subgraphAliases),
+        )
+      }
       alias = undefined
     } else if (deploymentNodeDiagramElement(element)) {
       const deploymentNode = deploymentNodeDiagramElement(
         element,
       ) as DeploymentNode
       alias = deploymentNode.base_data.alias
-      if (alias)
+      if (alias) {
+        subgraphAliases.add(alias)
         graph = graph.concat(
-          serializeSubgraph(alias, deploymentNode.sub_elements),
+          serializeSubgraph(
+            alias,
+            deploymentNode.sub_elements,
+            subgraphAliases,
+          ),
         )
+      }
       alias = undefined
     } else if (relationshipDiagramElement(element)) {
       const relationship = relationshipDiagramElement(element) as Relationship
-      graph = graph.concat(
-        `\n"${relationship.from}" -> "${relationship.to}" [name="${
-          relationship.base_data.alias
-        }", label="${longerString([
-          relationship.base_data.label ?? '',
-          relationship.technology ?? '',
-        ])}", ltail="${relationship.from}", lhead="${
-          relationship.to
-        }", fontsize="${RELATIONSHIP.FONT.SIZE_LABEL}"]`,
-      )
+      if (relationship.from && relationship.to) {
+        graph = graph.concat(
+          `\n"${relationship.from}" -> "${relationship.to}" [name="${
+            relationship.base_data.alias
+          }", label="${longerString([
+            relationship.base_data.label ?? '',
+            relationship.technology ?? '',
+          ])}", ltail="${relationship.from}", lhead="${
+            relationship.to
+          }", fontsize="${
+            RELATIONSHIP.FONT.SIZE_LABEL
+          }", keadex_fromissubgraph=${subgraphAliases.has(
+            relationship.from,
+          )}, keadex_toissubgraph=${subgraphAliases.has(relationship.to)}]`,
+        )
+      }
       alias = undefined
     }
     if (alias) {
@@ -217,6 +238,7 @@ export function serializeToGraphvizDotCode(
   diagramOrientation: DiagramOrientation,
   pad: Point,
 ): string {
+  const subgraphAliases = new Set<string>()
   return `
     digraph G {
       pad = "${pad.x},${pad.y}"
@@ -227,7 +249,7 @@ export function serializeToGraphvizDotCode(
       compound=true
       bgcolor="red"
       node [shape="rect", fixedsize=true, penwidth="${PENWIDTH}"]
-      ${serializeGraph(diagramElements)}
+      ${serializeGraph(diagramElements, subgraphAliases)}
     }
   `
 }

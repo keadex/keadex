@@ -227,6 +227,7 @@
         "bg_color": "Background Color",
         "border_color": "Border Color",
         "line_color": "Line Color",
+        "selection_color": "Selection Color",
         "text_color": "Text Color",
         "title": "Diagrams Theme"
       }

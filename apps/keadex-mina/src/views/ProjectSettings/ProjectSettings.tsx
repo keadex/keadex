@@ -74,6 +74,7 @@ const defaultProjectSettings: ProjectSettingsType = {
       border_color_software_system_ext:
         BOX.COLORS.BORDER_COLOR_SOFTWARE_SYSTEM_PERSON_EXT,
       line_color_relationship: RELATIONSHIP.COLORS.LINE_COLOR,
+      selected_color_relationship: RELATIONSHIP.COLORS.SELECTED_COLOR,
       text_color_boundary: BOX.COLORS.TEXT_COLOR_BOUNDARY,
       text_color_component: BOX.COLORS.TEXT_COLOR_COMPONENT,
       text_color_component_ext: BOX.COLORS.TEXT_COLOR_COMPONENT_EXT,

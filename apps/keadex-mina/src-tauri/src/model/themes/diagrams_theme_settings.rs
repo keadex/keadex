@@ -84,4 +84,6 @@ pub struct DiagramsThemeSettings {
   pub line_color_relationship: Option<String>,
   #[serde(skip_serializing_if = "Option::is_none")]
   pub text_color_relationship: Option<String>,
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub selected_color_relationship: Option<String>,
 }
