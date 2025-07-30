@@ -657,6 +657,8 @@ const createDot = (
   selectedRelColor: string | undefined,
   autoLayoutEnabled: boolean,
 ): fabric.Object => {
+  lineColor = lineColor ?? RELATIONSHIP.COLORS.LINE_COLOR
+
   const { left, top, angle } = calculateDotPosition(
     canvas,
     point.x,
@@ -674,7 +676,7 @@ const createDot = (
       top: top,
       width: RELATIONSHIP.SIZES.SIZE_TRIANGLE,
       height: RELATIONSHIP.SIZES.SIZE_TRIANGLE,
-      fill: lineColor ?? RELATIONSHIP.COLORS.LINE_COLOR,
+      fill: lineColor,
       scaleX,
       scaleY,
       hasControls: false,
@@ -698,7 +700,7 @@ const createDot = (
       left: left,
       top: top,
       radius: RELATIONSHIP.SIZES.RADIUS_DOT,
-      fill: lineColor ?? RELATIONSHIP.COLORS.LINE_COLOR,
+      fill: lineColor,
       opacity: 0.2,
       scaleX,
       scaleY,
