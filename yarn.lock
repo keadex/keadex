@@ -5651,10 +5651,10 @@
   resolved "https://registry.yarnpkg.com/@jsonjoy.com/util/-/util-1.6.0.tgz#23991b2fe12cb3a006573d9dc97c768d3ed2c9f1"
   integrity sha512-sw/RMbehRhN68WRtcKCpQOPfnH6lLP4GJfqzi3iYej8tnzpZUDr6UkZYJjcjjC0FWEJOJbyM3PTIwxucUmDG2A==
 
-"@keadex/mina-live-npm@npm:@keadex/mina-live@^2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-live/-/mina-live-2.2.2.tgz#7840a708722d69223da81e972410405d92d29255"
-  integrity sha512-t1/YNykTCXgxWUO97EFO5qnCF0QNhLmmzvd2uKiWP7W4s3J+EOFfla8eR3pONR3NeOVa1Qbkhdfrw1NHM530Eg==
+"@keadex/mina-live-npm@npm:@keadex/mina-live@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-live/-/mina-live-2.3.0.tgz#66fbc47027788b24af1bbe9ae7b4fa8d8a109f18"
+  integrity sha512-gkLukfZBD8PIvlRzp7KAnQF9KuKt06rHYmRh2Gw8/s+9rkzngVS9WSsIakortk9MiZX0KJJArJXIM4cUSXyTWg==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
@@ -5699,10 +5699,10 @@
     uuid "^9.0.1"
     wasm-pack "^0.12.1"
 
-"@keadex/mina-react-npm@npm:@keadex/mina-react@^2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-2.2.2.tgz#8b350767c3b9d5a0015978193c86b30d44317a61"
-  integrity sha512-dYxiVj0Yv4RH5W63MRqfCYJJqIXA6GKNpzO+GwjShP298e5hht2TvCIp5UgDcsgSHJ/AhyI9MkpL73yphoqb2g==
+"@keadex/mina-react-npm@npm:@keadex/mina-react@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-2.3.0.tgz#9eeefb5b3f07c81001d3e0fda57e5ae11dfcefae"
+  integrity sha512-dGFXVG3S33FQqsDmFN8gAIxP4Cgg/MlXO/RfJHy/V+h3eKFUOug0vyyAIE8/lhxmqmMy20V4np/lF/NEnbWOkA==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
