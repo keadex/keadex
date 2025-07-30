@@ -38,7 +38,7 @@ export const X_PAD = pxToInch(ELEMENT.SIZES.DEFAULT_LEFT)
 export const Y_PAD = pxToInch(ELEMENT.SIZES.DEFAULT_TOP)
 
 export const PERIPHERIES = 2 // hack to add a space between nodes
-export const PERIPHERY_SIZE = 4.5 // This value has been hardcoded since there are not ways to retrieve it dynamically from graphviz.
+export const PERIPHERY_SIZE = (PERIPHERIES - 1) * 4.5 // This value has been hardcoded since there are not ways to retrieve it dynamically from graphviz.
 export const PENWIDTH = 1 // It represents the width of the borders, in points
 
 function fromElasticContainerSizesToGraphvizSizes(): {
