@@ -80,7 +80,7 @@ impl Default for DiagramSpec {
       shapes: vec![],
       auto_layout_enabled: true,
       auto_layout_orientation: DiagramOrientation::TopToBottom,
-      auto_layout_only_straight_arrows: false,
+      auto_layout_only_straight_arrows: true,
       auto_layout_ranksep: 0.0,
       auto_layout_subgraph_inner_margin: 0.0,
       auto_layout_subgraph_outer_margin: 6.5,

@@ -33,6 +33,8 @@ export function generateAutoLayout(
       diagram.diagram_spec.auto_layout_subgraph_inner_margin
     const subgraphOuterMargin =
       diagram.diagram_spec.auto_layout_subgraph_outer_margin
+    const onlyStraightArrows =
+      diagram.diagram_spec.auto_layout_only_straight_arrows
     const containsSubgraphs = diagramContainsSubDiagrams(elements)
     const pad = getPadInInch(containsSubgraphs)
 
@@ -42,6 +44,7 @@ export function generateAutoLayout(
       ranksep,
       subgraphInnerMargin,
       subgraphOuterMargin,
+      onlyStraightArrows,
       pad,
     )
     // console.debug(graphvizDotCode)
@@ -159,22 +162,36 @@ export function generateAutoLayout(
         // the diagram data, and not the peripheries (excluding subgraphs since they
         // do not have peripheries).
 
+        // The path array must contain at least 3 points because the first and last points
+        // are the start and end points, while the middle points are the ones that form the
+        // edge path. If the path array has less than 3 points, it means that the edge is
+        // a straight line, so the start and end points are the same as the first and
+        // last points of the path.
+        const startCloserPoint =
+          elementData.path && elementData.path.length > 2
+            ? elementData.path[1]
+            : elementData.end
+        const endCloserPoint =
+          elementData.path && elementData.path.length > 2
+            ? elementData.path[elementData.path.length - 2]
+            : elementData.start
+
         // ---- Start
         if (
           edge.keadex_fromissubgraph === 'false' &&
-          elementData.path?.[0]?.x &&
-          elementData.path?.[0]?.y
+          startCloserPoint.x &&
+          startCloserPoint.y
         ) {
           // x adjustment
-          if (elementData.start.x < elementData.path[0].x) {
+          if (elementData.start.x < startCloserPoint.x) {
             elementData.start.x -= PERIPHERY_SIZE
-          } else if (elementData.start.x > elementData.path[0].x) {
+          } else if (elementData.start.x > startCloserPoint.x) {
             elementData.start.x += PERIPHERY_SIZE
           }
           // y adjustment
-          if (elementData.start.y < elementData.path[0].y) {
+          if (elementData.start.y < startCloserPoint.y) {
             elementData.start.y -= PERIPHERY_SIZE
-          } else if (elementData.start.y > elementData.path[0].y) {
+          } else if (elementData.start.y > startCloserPoint.y) {
             elementData.start.y += PERIPHERY_SIZE
           }
         }
@@ -182,27 +199,19 @@ export function generateAutoLayout(
         // ---- End
         if (
           edge.keadex_toissubgraph === 'false' &&
-          elementData.path?.[elementData.path?.length - 1]?.x &&
-          elementData.path?.[elementData.path?.length - 1]?.y
+          endCloserPoint.x &&
+          endCloserPoint.y
         ) {
           // x adjustment
-          if (
-            elementData.end.x < elementData.path[elementData.path.length - 1].x
-          ) {
+          if (elementData.end.x < endCloserPoint.x) {
             elementData.end.x -= PERIPHERY_SIZE
-          } else if (
-            elementData.end.x > elementData.path[elementData.path.length - 1].x
-          ) {
+          } else if (elementData.end.x > endCloserPoint.x) {
             elementData.end.x += PERIPHERY_SIZE
           }
           // y adjustment
-          if (
-            elementData.end.y < elementData.path[elementData.path.length - 1].y
-          ) {
+          if (elementData.end.y < endCloserPoint.y) {
             elementData.end.y -= PERIPHERY_SIZE
-          } else if (
-            elementData.end.y > elementData.path[elementData.path.length - 1].y
-          ) {
+          } else if (elementData.end.y > endCloserPoint.y) {
             elementData.end.y += PERIPHERY_SIZE
           }
         }

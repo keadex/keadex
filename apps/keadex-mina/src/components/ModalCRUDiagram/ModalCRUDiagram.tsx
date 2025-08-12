@@ -48,7 +48,7 @@ const emptyDiagram: Diagram = {
     elements_specs: [],
     auto_layout_enabled: true,
     auto_layout_orientation: 'TopToBottom',
-    auto_layout_only_straight_arrows: false,
+    auto_layout_only_straight_arrows: true,
     auto_layout_ranksep: 0,
     auto_layout_subgraph_inner_margin: DEFAULT_SUBGRAPH_INNER_MARGIN,
     auto_layout_subgraph_outer_margin: DEFAULT_SUBGRAPH_OUTER_MARGIN,

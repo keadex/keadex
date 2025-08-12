@@ -247,6 +247,7 @@ export function serializeToGraphvizDotCode(
   ranksep: number,
   subgraphInnerMargin: number,
   subgraphOuterMargin: number,
+  onlyStraightArrows: boolean,
   pad: Point,
 ): string {
   const subgraphAliases = new Set<string>()
@@ -260,6 +261,7 @@ export function serializeToGraphvizDotCode(
       ranksep=${ranksep}
       compound=true
       bgcolor="red"
+      ${onlyStraightArrows ? 'splines=ortho' : ''}
       node [shape="rect", fixedsize=true, penwidth="${PENWIDTH}"]
       ${serializeGraph(
         diagramElements,

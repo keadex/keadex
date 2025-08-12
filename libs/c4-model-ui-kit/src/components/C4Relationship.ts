@@ -161,11 +161,7 @@ export const C4Relationship = (
     true,
   )
 
-  const dotPoints = createPoints(
-    elementSpec,
-    autoLayout,
-    renderElementsOptions?.autoLayoutOnlyStraightArrows,
-  )
+  const dotPoints = createPoints(elementSpec, autoLayout)
   const dots = createDots(
     elementSpec,
     autoLayout,
@@ -193,7 +189,6 @@ export const C4Relationship = (
       renderElementsOptions?.diagramsThemeSettings?.line_color_relationship,
     renderElementsOptions?.diagramsThemeSettings?.selected_color_relationship,
     autoLayout,
-    renderElementsOptions?.autoLayoutOnlyStraightArrows,
     getSupportedBorderStyle(customTagsStyle?.border_style)?.value,
   )
 
@@ -281,7 +276,6 @@ const updateLinePoints = (line: fabric.Polyline) => {
         scale,
         oldLineColor,
         oldSelectedColor,
-        undefined,
         undefined,
         oldLineDashArray,
       )
@@ -534,7 +528,6 @@ const removeExistingPointFromLine = (dot: fabric.Circle) => {
 const createPoints = (
   elementSpec: DiagramElementSpec | undefined,
   autoLayout: Record<string, ElementData>,
-  autoLayoutOnlyStraightArrows: boolean | undefined,
 ): ExtendedPoint[] => {
   let points: ExtendedPoint[] = []
   if (elementSpec?.shapes) {
@@ -572,10 +565,7 @@ const createPoints = (
           RelObjects.Dot,
         ),
       )
-      if (
-        autoLayoutOnlyStraightArrows === false &&
-        autoLayout[elementSpec.alias].path
-      ) {
+      if (autoLayout[elementSpec.alias].path) {
         autoLayout[elementSpec.alias].path!.forEach((pathPoint) => {
           defaultPoints.push(
             new ExtendedPoint(pathPoint.x, pathPoint.y, RelObjects.Dot),
@@ -734,7 +724,6 @@ const createLine = (
   lineColor: string | undefined,
   selectedRelColor: string | undefined,
   autoLayout: Record<string, ElementData> | undefined,
-  autoLayoutOnlyStraightArrows: boolean | undefined,
   strokeDashArray: number[] | undefined,
 ): fabric.Polyline | fabric.Path => {
   const lineSpecs = elementSpecs?.shapes?.filter(
@@ -743,7 +732,6 @@ const createLine = (
 
   let line
   if (
-    autoLayoutOnlyStraightArrows === false &&
     autoLayout &&
     elementSpecs?.alias &&
     autoLayout[elementSpecs.alias]?.svg_path

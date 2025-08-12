@@ -94,8 +94,6 @@ export class DiagramRenderer {
         diagram.auto_layout ?? {},
         {
           diagramsThemeSettings,
-          autoLayoutOnlyStraightArrows:
-            diagram.diagram_spec?.auto_layout_only_straight_arrows,
           tags: diagram.diagram_plantuml?.tags,
         },
       )
@@ -109,7 +107,6 @@ export interface RenderElementsOptions {
   skipLegendRendering?: boolean
   skipAddToCanvas?: boolean
   diagramsThemeSettings?: DiagramsThemeSettings | undefined
-  autoLayoutOnlyStraightArrows?: boolean
   tags?: Record<string, AddElementTag>
 }
 
