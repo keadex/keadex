@@ -11,7 +11,9 @@ import {
   filterVirtualGroups,
   flatVirtualGroupChildren,
   getCanvasPan,
+  getNewSelectedObjects,
   getZIndexOfObject,
+  selectionsAreEqual,
 } from '../helper/fabric-helper'
 import { getSupportedBorderStyle } from '../helper/style-helper'
 import { getCustomTagsStyle, parseTags } from '../helper/tags-helper'
@@ -951,45 +953,43 @@ const onRelationshipSelected = (
   object: fabric.Object,
 ) => {
   if (event.e && object.parent?.children) {
-    const parent = object.parent as C4RelationshipComponent
-    const filteredVirtualGroups = filterVirtualGroups(
-      object.canvas?.getActiveObjects(),
-    )
-
-    object.canvas?.discardActiveObject()
-
-    let selection: fabric.ActiveSelection | VirtualGroupSelection
+    const newSelectedObjects = getNewSelectedObjects(object)
     if (
-      filteredVirtualGroups.filteredObjects.length > 0 ||
-      filteredVirtualGroups.virtualGroupsRoots.size > 1
-    ) {
-      let selectedObjects = filteredVirtualGroups.filteredObjects
-      filteredVirtualGroups.virtualGroupsRoots.forEach(
-        (virtualGroupRoot) =>
-          (selectedObjects = selectedObjects.concat(
-            flatVirtualGroupChildren(virtualGroupRoot.children ?? [], false),
-          )),
+      !selectionsAreEqual(
+        object.canvas?.getActiveObjects(),
+        newSelectedObjects.objects,
       )
-      selection = new fabric.ActiveSelection(selectedObjects, {
-        canvas: object.canvas,
-      })
-    } else {
-      // Select all the children of the virtual group.
-      selection = new VirtualGroupSelection([...(parent.children ?? [])], {
-        canvas: object.canvas,
-      })
-      selection.parent = object.parent
-      selection.on(OBJECT_EVENTS.MOUSE_UP, (event) => {
-        onRelationshipMouseUp(selection.canvas, event, selection, parent)
-      })
-      selection.on(OBJECT_EVENTS.MODIFIED, (event) => {
-        object.canvas?.discardActiveObject()
-        parent.fire(OBJECT_EVENTS.MODIFIED)
-      })
+    ) {
+      // You need to discard the active objects otherwise the new calculated positions
+      // of the new selection will be wrong.
+      object.canvas?.discardActiveObject()
+
+      const parent = object.parent as C4RelationshipComponent
+      let selection: fabric.ActiveSelection | VirtualGroupSelection
+      if (newSelectedObjects.type === 'multiple') {
+        // Multiple objects or virtual groups are selected.
+        selection = new fabric.ActiveSelection(newSelectedObjects.objects, {
+          canvas: object.canvas,
+        })
+      } else {
+        // Select all the children of the virtual group.
+        selection = new VirtualGroupSelection(newSelectedObjects.objects, {
+          canvas: object.canvas,
+        })
+        selection.parent = object.parent
+        selection.on(OBJECT_EVENTS.MOUSE_UP, (event) => {
+          onRelationshipMouseUp(selection.canvas, event, selection, parent)
+        })
+        selection.on(OBJECT_EVENTS.MODIFIED, (event) => {
+          object.canvas?.discardActiveObject()
+          parent.fire(OBJECT_EVENTS.MODIFIED)
+        })
+      }
+
+      selection.hasBorders = false
+      object.canvas?.setActiveObject(selection)
+      object.canvas?.requestRenderAll()
     }
-    selection.hasBorders = false
-    object.canvas?.setActiveObject(selection)
-    object.canvas?.requestRenderAll()
   }
 }
 

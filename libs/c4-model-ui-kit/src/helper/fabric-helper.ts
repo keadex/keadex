@@ -196,3 +196,64 @@ export function getCanvasPan(canvas?: fabric.Canvas): {
 export function invalidateCanvasCache(canvas: fabric.Canvas) {
   canvas.getObjects().forEach((object) => object.set('dirty', true))
 }
+
+/**
+ * Returns the new selected objects based on the current selection.
+ * If the selected object is a virtual group, it includes all the children of the virtual group
+ * @param selectedObject
+ * @returns
+ */
+export function getNewSelectedObjects(selectedObject: fabric.Object): {
+  objects: fabric.Object[]
+  type: 'single' | 'multiple'
+} {
+  const parent = selectedObject.parent
+  const filteredVirtualGroups = filterVirtualGroups(
+    selectedObject.canvas?.getActiveObjects(),
+  )
+
+  let objects: fabric.Object[]
+  let type: 'single' | 'multiple'
+  if (
+    filteredVirtualGroups.filteredObjects.length > 0 ||
+    filteredVirtualGroups.virtualGroupsRoots.size > 1
+  ) {
+    // Multiple objects or virtual groups are selected.
+    let selectedObjects = filteredVirtualGroups.filteredObjects
+    filteredVirtualGroups.virtualGroupsRoots.forEach(
+      (virtualGroupRoot) =>
+        (selectedObjects = selectedObjects.concat(
+          flatVirtualGroupChildren(virtualGroupRoot.children ?? [], false),
+        )),
+    )
+    objects = selectedObjects
+    type = 'multiple'
+  } else {
+    // Select all the children of the virtual group. Since the base elastic container
+    // can include nested virtual groups, it is needed to flat all the children.
+    objects = flatVirtualGroupChildren(parent?.children ?? [], false)
+    type = 'single'
+  }
+  return {
+    objects,
+    type,
+  }
+}
+
+export function selectionsAreEqual(
+  selectionA: fabric.Object[] | undefined,
+  selectionB: fabric.Object[] | undefined,
+): boolean {
+  if (selectionA?.length !== selectionB?.length) return false
+  const serializedSelectionA = (
+    selectionA?.map((obj) => obj.name ?? 'undefined') ?? []
+  )
+    .sort()
+    .join(',')
+  const serializedSelectionB = (
+    selectionB?.map((obj) => obj.name ?? 'undefined') ?? []
+  )
+    .sort()
+    .join(',')
+  return serializedSelectionA === serializedSelectionB
+}

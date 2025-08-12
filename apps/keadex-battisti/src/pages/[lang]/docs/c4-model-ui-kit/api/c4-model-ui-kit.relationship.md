@@ -12,6 +12,7 @@ RELATIONSHIP: {
         BG_COLOR: string;
         LINE_COLOR: string;
         TEXT_COLOR: string;
+        SELECTED_COLOR: string;
     };
     FONT: {
         SIZE_LABEL: number;
@@ -22,6 +23,7 @@ RELATIONSHIP: {
         RADIUS_DOT: number;
         SIZE_TRIANGLE: number;
         STROKE_WIDTH: number;
+        STROKE_SELECTED_INCREMENT_WIDTH: number;
         DEFAULT_WIDTH: number;
     };
     POSITION: {

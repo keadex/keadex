@@ -3,4 +3,4 @@ import type { DiagramElementSpec } from "./DiagramElementSpec";
 import type { DiagramOrientation } from "./DiagramOrientation";
 import type { Shape } from "./Shape";
 
-export interface DiagramSpec { uuid: string, description?: string, tags?: Array<string>, elements_specs: Array<DiagramElementSpec>, shapes: Array<Shape>, auto_layout_enabled: boolean, auto_layout_orientation: DiagramOrientation, auto_layout_only_straight_arrows: boolean, grid_enabled: boolean, }
+export interface DiagramSpec { uuid: string, description?: string, tags?: Array<string>, elements_specs: Array<DiagramElementSpec>, shapes: Array<Shape>, auto_layout_enabled: boolean, auto_layout_orientation: DiagramOrientation, auto_layout_only_straight_arrows: boolean, auto_layout_ranksep: number, auto_layout_subgraph_inner_margin: number, auto_layout_subgraph_outer_margin: number, grid_enabled: boolean, }

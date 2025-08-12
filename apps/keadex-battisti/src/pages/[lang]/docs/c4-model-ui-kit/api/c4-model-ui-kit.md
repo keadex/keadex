@@ -247,6 +247,15 @@ Description
 </td></tr>
 <tr><td>
 
+[getCustomTagsStyle(tags, elementsTags)](./c4-model-ui-kit.getcustomtagsstyle.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [getElementSpecByAlias(alias, from, to, elementType, diagramSpec)](./c4-model-ui-kit.getelementspecbyalias.md)
 
 
@@ -266,6 +275,15 @@ Description
 <tr><td>
 
 [getSavedZIndex(component)](./c4-model-ui-kit.getsavedzindex.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getSupportedBorderStyle(borderStyle)](./c4-model-ui-kit.getsupportedborderstyle.md)
 
 
 </td><td>
@@ -543,6 +561,15 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[AddElementTag](./c4-model-ui-kit.addelementtag.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [BaseElement](./c4-model-ui-kit.baseelement.md)
 
 
@@ -711,6 +738,15 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[ADD\_ELEMENT\_TAG\_TYPES](./c4-model-ui-kit.add_element_tag_types.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [AUTO\_LAYOUT\_ORIENTATIONS](./c4-model-ui-kit.auto_layout_orientations.md)
 
 
@@ -766,6 +802,42 @@ Description
 <tr><td>
 
 [CONTAINER\_TYPES](./c4-model-ui-kit.container_types.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[DEFAULT\_GRAPHVIZ\_SUBGRAPH\_PAD](./c4-model-ui-kit.default_graphviz_subgraph_pad.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[DEFAULT\_SUBGRAPH\_FAKE\_FONT\_SIZE](./c4-model-ui-kit.default_subgraph_fake_font_size.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[DEFAULT\_SUBGRAPH\_INNER\_MARGIN](./c4-model-ui-kit.default_subgraph_inner_margin.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[DEFAULT\_SUBGRAPH\_OUTER\_MARGIN](./c4-model-ui-kit.default_subgraph_outer_margin.md)
 
 
 </td><td>
@@ -846,6 +918,15 @@ Description
 </td></tr>
 <tr><td>
 
+[GRAPHVIZ\_DPI](./c4-model-ui-kit.graphviz_dpi.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [LEGEND](./c4-model-ui-kit.legend.md)
 
 
@@ -865,6 +946,33 @@ Description
 <tr><td>
 
 [OBJECT\_EVENTS](./c4-model-ui-kit.object_events.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[PENWIDTH](./c4-model-ui-kit.penwidth.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[PERIPHERIES](./c4-model-ui-kit.peripheries.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[PERIPHERY\_SIZE](./c4-model-ui-kit.periphery_size.md)
 
 
 </td><td>
@@ -907,6 +1015,24 @@ Description
 
 
 </td></tr>
+<tr><td>
+
+[X\_PAD](./c4-model-ui-kit.x_pad.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Y\_PAD](./c4-model-ui-kit.y_pad.md)
+
+
+</td><td>
+
+
+</td></tr>
 </tbody></table>
 
 ## Type Aliases
@@ -923,6 +1049,15 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[AddElementTagType](./c4-model-ui-kit.addelementtagtype.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
 
 [BoundaryType](./c4-model-ui-kit.boundarytype.md)
 

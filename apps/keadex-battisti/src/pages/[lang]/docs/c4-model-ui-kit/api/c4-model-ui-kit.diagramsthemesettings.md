@@ -472,6 +472,25 @@ _(Optional)_
 </td></tr>
 <tr><td>
 
+[selected\_color\_relationship?](./c4-model-ui-kit.diagramsthemesettings.selected_color_relationship.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
 [text\_color\_boundary?](./c4-model-ui-kit.diagramsthemesettings.text_color_boundary.md)
 
 

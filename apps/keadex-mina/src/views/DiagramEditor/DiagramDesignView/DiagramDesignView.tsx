@@ -12,6 +12,8 @@ import {
   invalidateCanvasCache,
   DiagramRenderer,
   updateDiagramElementsSpecsFromCanvas,
+  DEFAULT_SUBGRAPH_INNER_MARGIN,
+  DEFAULT_SUBGRAPH_OUTER_MARGIN,
 } from '@keadex/c4-model-ui-kit'
 import {
   KeadexCanvas,
@@ -41,6 +43,8 @@ import { DiagramDesignViewToolbarCommands } from '../../../components/DiagramDes
 import ModalAutoLayout from '../../../components/ModalAutoLayout/ModalAutoLayout'
 import DiagramInfoPanel from '../../../components/DiagramInfoPanel/DiagramInfoPanel'
 import ModalDiagramDesignViewSettings from '../../../components/ModalDiagramDesignViewSettings/ModalDiagramDesignViewSettings'
+import { useHotkeys } from 'react-hotkeys-hook'
+import { Key } from 'ts-key-enum'
 
 const MARGIN_EXPORTED_DIAGRAM = 50
 
@@ -77,10 +81,16 @@ export interface DiagramDesignViewCommands {
   isAutoLayoutEnabled(): boolean
   autoLayoutOrientation(): DiagramOrientation
   isGenerateOnlyStraightArrowsEnabled(): boolean
+  ranksep(): number
+  subgraphInnerMargin(): number
+  subgraphOuterMargin(): number
   updateAutoLayoutOptions(
     enabled: boolean,
     orientation: DiagramOrientation,
     generateOnlyStraightArrows: boolean,
+    ranksep: number,
+    subgraphInnerMargin: number,
+    subgraphOuterMargin: number,
   ): void
   updateDiagramDesignViewSettings: (
     settings?: DiagramDesignViewSettings,
@@ -307,10 +317,33 @@ export const DiagramDesignView = forwardRef(
       else return false
     }
 
+    function ranksep(): number {
+      if (currentRenderedDiagram.current?.diagram_spec)
+        return currentRenderedDiagram.current.diagram_spec.auto_layout_ranksep
+      else return 0
+    }
+
+    function subgraphInnerMargin(): number {
+      if (currentRenderedDiagram.current?.diagram_spec)
+        return currentRenderedDiagram.current.diagram_spec
+          .auto_layout_subgraph_inner_margin
+      else return DEFAULT_SUBGRAPH_INNER_MARGIN
+    }
+
+    function subgraphOuterMargin(): number {
+      if (currentRenderedDiagram.current?.diagram_spec)
+        return currentRenderedDiagram.current.diagram_spec
+          .auto_layout_subgraph_outer_margin
+      else return DEFAULT_SUBGRAPH_OUTER_MARGIN
+    }
+
     function updateAutoLayoutOptions(
       enabled: boolean,
       orientation: DiagramOrientation,
       generateOnlyStraightArrows: boolean,
+      ranksep: number,
+      subgraphInnerMargin: number,
+      subgraphOuterMargin: number,
     ) {
       if (canvas.current && currentRenderedDiagram.current && !readOnly) {
         showModal({
@@ -321,11 +354,17 @@ export const DiagramDesignView = forwardRef(
               enabled={enabled}
               orientation={orientation}
               generateOnlyStraightArrows={generateOnlyStraightArrows}
+              ranksep={ranksep}
+              subgraphInnerMargin={subgraphInnerMargin}
+              subgraphOuterMargin={subgraphOuterMargin}
               hideModal={hideModal}
               onAutoLayoutConfigured={(
                 enabled,
                 orientation,
                 generateOnlyStraightArrows,
+                ranksep,
+                subgraphInnerMargin,
+                subgraphOuterMargin,
               ) => {
                 if (
                   canvas.current &&
@@ -338,9 +377,16 @@ export const DiagramDesignView = forwardRef(
                   // On saving, diagram_spec are retrieved from the DiagramDesignView
                   // (check handleSaveDiagram() in DiagramEditor). So it's ok changing the
                   // "auto_layout_only_straight_arrows" property here.
-                  if (currentRenderedDiagram.current.diagram_spec)
+                  if (currentRenderedDiagram.current.diagram_spec) {
                     currentRenderedDiagram.current.diagram_spec.auto_layout_only_straight_arrows =
                       generateOnlyStraightArrows
+                    currentRenderedDiagram.current.diagram_spec.auto_layout_ranksep =
+                      ranksep
+                    currentRenderedDiagram.current.diagram_spec.auto_layout_subgraph_inner_margin =
+                      subgraphInnerMargin
+                    currentRenderedDiagram.current.diagram_spec.auto_layout_subgraph_outer_margin =
+                      subgraphOuterMargin
+                  }
 
                   isDiagramChanged.current = true
                   if (saveDiagram) saveDiagram()
@@ -533,8 +579,11 @@ export const DiagramDesignView = forwardRef(
       autoLayoutOrientation,
       updateAutoLayoutOptions,
       isGenerateOnlyStraightArrowsEnabled,
+      ranksep,
       updateDiagramDesignViewSettings,
       diagramDesignViewSettings,
+      subgraphInnerMargin,
+      subgraphOuterMargin,
     }))
 
     useLayoutEffect(() => {
@@ -634,6 +683,13 @@ export const DiagramDesignView = forwardRef(
       }
       initDiagramRenderer()
     }, [])
+
+    useHotkeys([Key.Escape], (e) => {
+      if (canvas.current) {
+        e.preventDefault()
+        canvas.current?.discardActiveObject()
+      }
+    })
 
     return (
       <div className="relative h-full w-full" ref={rootDiv}>

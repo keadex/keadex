@@ -1,5 +1,7 @@
 import {
   AUTO_LAYOUT_ORIENTATIONS,
+  DEFAULT_SUBGRAPH_INNER_MARGIN,
+  DEFAULT_SUBGRAPH_OUTER_MARGIN,
   DIAGRAM_TYPES,
   Diagram,
   DiagramOrientation,
@@ -47,6 +49,9 @@ const emptyDiagram: Diagram = {
     auto_layout_enabled: true,
     auto_layout_orientation: 'TopToBottom',
     auto_layout_only_straight_arrows: false,
+    auto_layout_ranksep: 0,
+    auto_layout_subgraph_inner_margin: DEFAULT_SUBGRAPH_INNER_MARGIN,
+    auto_layout_subgraph_outer_margin: DEFAULT_SUBGRAPH_OUTER_MARGIN,
     grid_enabled: false,
   },
 }
@@ -278,6 +283,62 @@ export const ModalCRUDiagram = (props: ModalCRUDiagramProps) => {
               diagram_spec: {
                 ...newDiagram.diagram_spec!,
                 auto_layout_orientation: e.target.value as DiagramOrientation,
+              },
+            })
+          }
+        />
+        <Input
+          id="autolayout-ranksep"
+          type="number"
+          label="ranksep*"
+          min={0}
+          classNameRoot="mt-6"
+          info={`${t('diagrams_settings.ranksep_description')}`}
+          value={newDiagram.diagram_spec?.auto_layout_ranksep}
+          onChange={(e) =>
+            setNewDiagram({
+              ...newDiagram,
+              diagram_spec: {
+                ...newDiagram.diagram_spec!,
+                auto_layout_ranksep: Number.parseFloat(e.target.value),
+              },
+            })
+          }
+        />
+        <Input
+          id="autolayout-subgraph-inner-margin"
+          type="number"
+          label={`${t('diagrams_settings.subgraph_inner_margin')}`}
+          min={0}
+          classNameRoot="mt-6"
+          value={newDiagram.diagram_spec?.auto_layout_subgraph_inner_margin}
+          onChange={(e) =>
+            setNewDiagram({
+              ...newDiagram,
+              diagram_spec: {
+                ...newDiagram.diagram_spec!,
+                auto_layout_subgraph_inner_margin: Number.parseFloat(
+                  e.target.value,
+                ),
+              },
+            })
+          }
+        />
+        <Input
+          id="autolayout-subgraph-outer-margin"
+          type="number"
+          label={`${t('diagrams_settings.subgraph_outer_margin')}`}
+          min={0}
+          classNameRoot="mt-6"
+          value={newDiagram.diagram_spec?.auto_layout_subgraph_outer_margin}
+          onChange={(e) =>
+            setNewDiagram({
+              ...newDiagram,
+              diagram_spec: {
+                ...newDiagram.diagram_spec!,
+                auto_layout_subgraph_outer_margin: Number.parseFloat(
+                  e.target.value,
+                ),
               },
             })
           }

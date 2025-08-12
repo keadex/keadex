@@ -84,10 +84,12 @@
     "project": "Project",
     "redo": "Redo",
     "relationship": "Relationship",
+    "reload": "Reload",
     "render": "Render",
     "rendering": "Rendering",
     "required": "Required",
     "reset": "Reset",
+    "restart": "Restart",
     "result": "Result",
     "results": "Results",
     "save": "Save",
@@ -198,7 +200,14 @@
   },
   "diagrams_settings": {
     "gen_only_straight_arrows": "Generate only straight arrows",
-    "grid_enabled": "Grid enabled"
+    "grid_enabled": "Grid enabled",
+    "ranksep_description": "Specifies separation between ranks.",
+    "subgraph_inner_margin": "Subgraph inner margin",
+    "subgraph_outer_margin": "Subgraph outer margin"
+  },
+  "error_fallback": {
+    "title": "Well, that wasn't supposed to happen...",
+    "description": "Something went wrong and the app needs to restart."
   },
   "home": {
     "chose_parent_dir_project": "Choose the parent directory of the project",

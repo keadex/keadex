@@ -4,7 +4,12 @@ import {
   AUTO_LAYOUT_ORIENTATIONS,
   DiagramOrientation,
 } from '@keadex/c4-model-ui-kit'
-import { Radio, Select, renderButtons } from '@keadex/keadex-ui-kit/cross'
+import {
+  Input,
+  Radio,
+  Select,
+  renderButtons,
+} from '@keadex/keadex-ui-kit/cross'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -12,11 +17,17 @@ export interface ModalAutoLayoutProps {
   enabled: boolean
   orientation: DiagramOrientation
   generateOnlyStraightArrows: boolean
+  ranksep: number
+  subgraphInnerMargin: number
+  subgraphOuterMargin: number
   hideModal: () => void
   onAutoLayoutConfigured: (
     enabled: boolean,
     orientation: DiagramOrientation,
     generateOnlyStraightArrows: boolean,
+    ranksep: number,
+    subgraphInnerMargin: number,
+    subgraphOuterMargin: number,
   ) => void
 }
 
@@ -27,12 +38,22 @@ export const ModalAutoLayout = (props: ModalAutoLayoutProps) => {
   const [generateOnlyStraightArrows, setGenerateOnlyStraightArrows] = useState(
     props.generateOnlyStraightArrows,
   )
+  const [ranksep, setRanksep] = useState(props.ranksep)
+  const [subgraphInnerMargin, setSubgraphInnerMargin] = useState(
+    props.subgraphInnerMargin,
+  )
+  const [subgraphOuterMargin, setSubgraphOuterMargin] = useState(
+    props.subgraphOuterMargin,
+  )
 
   function handleSaveClick() {
     props.onAutoLayoutConfigured(
       enabled,
       orientation,
       generateOnlyStraightArrows,
+      ranksep,
+      subgraphInnerMargin,
+      subgraphOuterMargin,
     )
     props.hideModal()
   }
@@ -96,6 +117,38 @@ export const ModalAutoLayout = (props: ModalAutoLayoutProps) => {
             }
           })}
           onChange={(e) => setOrientation(e.target.value as DiagramOrientation)}
+        />
+        <Input
+          id="autolayout-ranksep"
+          type="number"
+          label="ranksep*"
+          min={0}
+          classNameRoot="mt-6"
+          info={`${t('diagrams_settings.ranksep_description')}`}
+          value={ranksep}
+          onChange={(e) => setRanksep(Number.parseFloat(e.target.value))}
+        />
+        <Input
+          id="autolayout-subgraph-inner-margin"
+          type="number"
+          label={`${t('diagrams_settings.subgraph_inner_margin')}`}
+          min={0}
+          classNameRoot="mt-6"
+          value={subgraphInnerMargin}
+          onChange={(e) =>
+            setSubgraphInnerMargin(Number.parseFloat(e.target.value))
+          }
+        />
+        <Input
+          id="autolayout-subgraph-outer-margin"
+          type="number"
+          label={`${t('diagrams_settings.subgraph_outer_margin')}`}
+          min={0}
+          classNameRoot="mt-6"
+          value={subgraphOuterMargin}
+          onChange={(e) =>
+            setSubgraphOuterMargin(Number.parseFloat(e.target.value))
+          }
         />
       </div>
 

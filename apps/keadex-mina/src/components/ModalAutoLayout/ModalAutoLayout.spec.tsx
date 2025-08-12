@@ -14,12 +14,16 @@ describe('ModalAutoLayout', () => {
           enabled: boolean,
           orientation: DiagramOrientation,
           generateOnlyStraightArrows: boolean,
+          ranksep: number,
         ) => {
           console.log('test')
         }}
         enabled={false}
         orientation={'TopToBottom'}
         generateOnlyStraightArrows={false}
+        ranksep={0}
+        subgraphInnerMargin={0}
+        subgraphOuterMargin={0}
       />,
     )
     expect(baseElement).toBeTruthy()

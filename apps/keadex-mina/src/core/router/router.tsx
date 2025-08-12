@@ -44,10 +44,16 @@ import ROUTES, {
   PROJECT_SETTINGS,
   SOFTWARE_SYSTEMS_LIBRARY,
 } from './routes'
+import { ErrorBoundary } from 'react-error-boundary'
+import ErrorFallback from '../../components/ErrorFallback/ErrorFallback'
 
 export const router = createMemoryRouter([
   {
-    element: <Layout />,
+    element: (
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <Layout />
+      </ErrorBoundary>
+    ),
     children: [
       {
         path: ROUTES[HOME].path,

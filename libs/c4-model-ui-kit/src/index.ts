@@ -33,6 +33,18 @@ export {
   LEGEND,
   RELATIONSHIP,
 } from './styles/style-constants'
+export {
+  GRAPHVIZ_DPI,
+  X_PAD,
+  Y_PAD,
+  PERIPHERIES,
+  PERIPHERY_SIZE,
+  PENWIDTH,
+  DEFAULT_GRAPHVIZ_SUBGRAPH_PAD,
+  DEFAULT_SUBGRAPH_OUTER_MARGIN,
+  DEFAULT_SUBGRAPH_INNER_MARGIN,
+  DEFAULT_SUBGRAPH_FAKE_FONT_SIZE,
+} from './rendering-system/auto-layout/dot-serializer'
 
 // Rendering System
 export { DiagramRenderer } from './rendering-system/diagram-renderer'
