@@ -228,6 +228,10 @@ const diagramsThemeConfigs: DiagramsThemeConfig[] = [
         i18nKey: 'project_settings.themes.diagrams_theme.text_color',
         modelName: 'text_color_relationship',
       },
+      {
+        i18nKey: 'project_settings.themes.diagrams_theme.selection_color',
+        modelName: 'selected_color_relationship',
+      },
     ],
   },
 ]

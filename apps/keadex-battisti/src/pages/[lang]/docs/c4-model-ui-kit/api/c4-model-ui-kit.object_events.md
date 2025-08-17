@@ -13,6 +13,7 @@ OBJECT_EVENTS: {
     MODIFIED: string;
     MOVING: string;
     SELECTED: string;
+    DESELECTED: string;
     SCALING: string;
     ROTATING: string;
 }

@@ -428,6 +428,7 @@ pub fn diagram_from_link_string(link_string: &str) -> Result<Diagram, MinaError>
     raw_plantuml: None,
     last_modified: None,
     auto_layout: None,
+    auto_layout_errors: None,
   })
 }
 

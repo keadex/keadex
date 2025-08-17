@@ -5651,10 +5651,10 @@
   resolved "https://registry.yarnpkg.com/@jsonjoy.com/util/-/util-1.6.0.tgz#23991b2fe12cb3a006573d9dc97c768d3ed2c9f1"
   integrity sha512-sw/RMbehRhN68WRtcKCpQOPfnH6lLP4GJfqzi3iYej8tnzpZUDr6UkZYJjcjjC0FWEJOJbyM3PTIwxucUmDG2A==
 
-"@keadex/mina-live-npm@npm:@keadex/mina-live@^2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-live/-/mina-live-2.2.2.tgz#7840a708722d69223da81e972410405d92d29255"
-  integrity sha512-t1/YNykTCXgxWUO97EFO5qnCF0QNhLmmzvd2uKiWP7W4s3J+EOFfla8eR3pONR3NeOVa1Qbkhdfrw1NHM530Eg==
+"@keadex/mina-live-npm@npm:@keadex/mina-live@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-live/-/mina-live-2.5.0.tgz#7c91f2dfbb189f93081a78adf6660f478fea11c8"
+  integrity sha512-MOPzwP9rARiLa9QVPsPgeNOZY69cAOpAMGLlhBdl6f1g52PiOt5j7LsqtEmAVP08LAVhhjOxMBkc1tPLeai5EQ==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
@@ -5699,10 +5699,10 @@
     uuid "^9.0.1"
     wasm-pack "^0.12.1"
 
-"@keadex/mina-react-npm@npm:@keadex/mina-react@^2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-2.2.2.tgz#8b350767c3b9d5a0015978193c86b30d44317a61"
-  integrity sha512-dYxiVj0Yv4RH5W63MRqfCYJJqIXA6GKNpzO+GwjShP298e5hht2TvCIp5UgDcsgSHJ/AhyI9MkpL73yphoqb2g==
+"@keadex/mina-react-npm@npm:@keadex/mina-react@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-2.5.0.tgz#88abcaf841e25b6fce0b16dd1007cdb84706313d"
+  integrity sha512-Q3pF3UR8luHGJLHHSVOI8UrIQ6AnhcuGrI0+DB7cy68EcULAWLFZLtIQw7EiCQ0NqRTTOocIbv9h1Ts1xPKQjg==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
@@ -19881,6 +19881,13 @@ react-error-boundary@^3.1.3:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/react-error-boundary/-/react-error-boundary-3.1.4.tgz#255db92b23197108757a888b01e5b729919abde0"
   integrity sha512-uM9uPzZJTF6wRQORmSrvOIgt4lJ9MC1sNgEOj2XGsDTRE4kmpWxg7ENK9EWNKJRMAOY9z0MuF4yIfl6gp4sotA==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+
+react-error-boundary@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-error-boundary/-/react-error-boundary-6.0.0.tgz#a9e552146958fa77d873b587aa6a5e97544ee954"
+  integrity sha512-gdlJjD7NWr0IfkPlaREN2d9uUZUlksrfOx7SX62VRerwXbMY6ftGCIZua1VG1aXFNOimhISsTq+Owp725b9SiA==
   dependencies:
     "@babel/runtime" "^7.12.5"
 

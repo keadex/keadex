@@ -135,6 +135,7 @@ export interface C4BaseComponentRawData {
   rawDiagramElementSpec: DiagramElementSpec | undefined
   rawData?: C4BaseComponentData
   rawAutoLayout?: Record<string, ElementData>
+  otherData?: any
 }
 
 export interface IC4BaseComponent {

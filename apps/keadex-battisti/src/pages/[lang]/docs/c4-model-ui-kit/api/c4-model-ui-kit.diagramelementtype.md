@@ -12,6 +12,8 @@ export type DiagramElementType = {
 } | {
     Comment: string;
 } | {
+    AddElementTag: AddElementTag;
+} | {
     Person: Person;
 } | {
     SoftwareSystem: SoftwareSystem;
@@ -27,5 +29,5 @@ export type DiagramElementType = {
     Relationship: Relationship;
 };
 ```
-**References:** [Person](./c4-model-ui-kit.person.md)<!-- -->, [SoftwareSystem](./c4-model-ui-kit.softwaresystem.md)<!-- -->, [Container](./c4-model-ui-kit.container.md)<!-- -->, [Component](./c4-model-ui-kit.component.md)<!-- -->, [Boundary](./c4-model-ui-kit.boundary.md)<!-- -->, [DeploymentNode](./c4-model-ui-kit.deploymentnode.md)<!-- -->, [Relationship](./c4-model-ui-kit.relationship.md)
+**References:** [AddElementTag](./c4-model-ui-kit.addelementtag.md)<!-- -->, [Person](./c4-model-ui-kit.person.md)<!-- -->, [SoftwareSystem](./c4-model-ui-kit.softwaresystem.md)<!-- -->, [Container](./c4-model-ui-kit.container.md)<!-- -->, [Component](./c4-model-ui-kit.component.md)<!-- -->, [Boundary](./c4-model-ui-kit.boundary.md)<!-- -->, [DeploymentNode](./c4-model-ui-kit.deploymentnode.md)<!-- -->, [Relationship](./c4-model-ui-kit.relationship.md)
 

@@ -11,7 +11,8 @@
     "@hpcc-js/wasm-graphviz": "^1.10.0",
     "change-case": "^5.4.3",
     "fabric": "^5.5.2",
-    "pluralize": "^8.0.0"
+    "pluralize": "^8.0.0",
+    "react-toastify": "^11.0.3"
   },
   "devDependencies": {
     "@types/fabric": "^5.3.10",

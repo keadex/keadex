@@ -86,4 +86,21 @@ Array&lt;[DiagramElementType](./c4-model-ui-kit.diagramelementtype.md)<!-- -->&g
 
 
 </td></tr>
+<tr><td>
+
+[tags](./c4-model-ui-kit.diagramplantuml.tags.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Record&lt;string, [AddElementTag](./c4-model-ui-kit.addelementtag.md)<!-- -->&gt;
+
+
+</td><td>
+
+
+</td></tr>
 </tbody></table>

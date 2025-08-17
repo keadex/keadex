@@ -127,6 +127,7 @@ pub async fn open_diagram(
     raw_plantuml: Some(raw_plantuml),
     last_modified: Some(last_modified),
     auto_layout: None,
+    auto_layout_errors: None,
   })
 }
 

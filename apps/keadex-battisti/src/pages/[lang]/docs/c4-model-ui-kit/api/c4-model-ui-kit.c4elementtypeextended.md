@@ -7,5 +7,5 @@
 **Signature:**
 
 ```typescript
-export type C4ElementTypeExtended = "Boundary" | "DeploymentNode" | "Relationship";
+export type C4ElementTypeExtended = "Boundary" | "DeploymentNode" | "AddElementTag" | "Relationship";
 ```

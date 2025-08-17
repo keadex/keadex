@@ -113,6 +113,8 @@ pub struct Diagram {
   #[serde(skip_serializing_if = "Option::is_none")]
   #[wasm_bindgen(skip)]
   pub auto_layout: Option<HashMap<String, ElementData>>,
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub auto_layout_errors: Option<Vec<String>>,
 }
 
 #[wasm_bindgen]

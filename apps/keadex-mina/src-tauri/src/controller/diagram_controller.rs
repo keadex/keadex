@@ -99,6 +99,7 @@ pub async fn open_remote_diagram(
     raw_plantuml: Some(String::from(raw_plantuml)),
     last_modified: None,
     auto_layout: None,
+    auto_layout_errors: None,
   })
 }
 
@@ -310,6 +311,7 @@ pub async fn diagram_name_type_from_path(path: String) -> Result<Diagram, MinaEr
     raw_plantuml: None,
     last_modified: None,
     auto_layout: None,
+    auto_layout_errors: None,
   })
 }
 

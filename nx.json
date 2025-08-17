@@ -77,5 +77,8 @@
         "commitMessage": "[skip actions] chore(release): {version}"
       }
     }
+  },
+  "tui": {
+    "enabled": false
   }
 }
