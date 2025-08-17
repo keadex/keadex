@@ -275,41 +275,6 @@ where
   }
 }
 
-pub fn spawn_web_worker<C, T>(callable: C) -> JoinHandle<T>
-where
-  C: MinaFuture,
-  T: Send + 'static,
-{
-  if !is_main_thread() {
-    JsValue::from_str(concat!(
-      "Calling `spawn_blocking` in a blocking thread is not allowed. ",
-      "While this is possible in real `tokio`, ",
-      "it may cause undefined behavior in the JavaScript environment. ",
-      "Instead, use `tokio::sync::mpsc::channel` ",
-      "to listen for messages from the main thread ",
-      "and spawn a task there."
-    ))
-    .log_error("SPAWN_BLOCKING");
-    panic!();
-  }
-  let (join_sender, join_receiver) = once_channel();
-  let (cancel_sender, cancel_receiver) = once_channel::<()>();
-  WORKER_POOL.with(move |worker_pool| {
-    worker_pool.queue_task(async move {
-      if cancel_receiver.is_done() {
-        join_sender.send(Err(JoinError { cancelled: true }));
-        return;
-      }
-      let returned = callable.await;
-      join_sender.send(Ok(returned));
-    })
-  });
-  JoinHandle {
-    join_receiver,
-    cancel_sender,
-  }
-}
-
 /// Yields execution back to the JavaScript event loop.
 ///
 /// To avoid blocking inside a long-running function,
