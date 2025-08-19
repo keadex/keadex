@@ -49,185 +49,192 @@ export function generateAutoLayout(
     )
     // console.debug(graphvizDotCode)
 
-    const dotLayout = graphviz.dot(graphvizDotCode, 'json')
-    const output = JSON.parse(dotLayout) as GraphvizOutput
-    const graphHeight = getGraphHeightInPtFromBB(output.bb)
+    try {
+      let dotLayout = graphviz.dot(graphvizDotCode, 'json')
+      const output = JSON.parse(dotLayout) as GraphvizOutput
+      const graphHeight = getGraphHeightInPtFromBB(output.bb)
 
-    // Store the nodes positions
-    output.objects?.forEach((object) => {
-      if (
-        !isSubgraphInvisibleNodeHack(object) &&
-        !isSubgraphMarginHack(object)
-      ) {
-        if (object._draw_) {
-          const objPositions = object._draw_.filter(
-            (draw) => draw.op === 'p' || draw.op === 'P',
-          )
+      // Store the nodes positions
+      output.objects?.forEach((object) => {
+        if (
+          !isSubgraphInvisibleNodeHack(object) &&
+          !isSubgraphMarginHack(object)
+        ) {
+          if (object._draw_) {
+            const objPositions = object._draw_.filter(
+              (draw) => draw.op === 'p' || draw.op === 'P',
+            )
 
-          // I'll take the position at "0" index because _draw_ contains the draw data
-          // of each periphery (inner boxes used as an hack to add a space between nodes). The first
-          // draw data are the ones of the innermost box containing the diagram data, that is the
-          // actual diagram box.
-          // But it could be possible that the current object is a subgraph. In this case no peripheries
-          // have been configured, so there will be just one position.
-          const position = objPositions[0]
+            // I'll take the position at "0" index because _draw_ contains the draw data
+            // of each periphery (inner boxes used as an hack to add a space between nodes). The first
+            // draw data are the ones of the innermost box containing the diagram data, that is the
+            // actual diagram box.
+            // But it could be possible that the current object is a subgraph. In this case no peripheries
+            // have been configured, so there will be just one position.
+            const position = objPositions[0]
 
-          const pxCoordsLT = graphvizCoordinatesToPx(
-            pad,
-            graphHeight,
-            position.points[0],
-          )
-          const pxCoordsLB = graphvizCoordinatesToPx(
-            pad,
-            graphHeight,
-            position.points[1],
-          )
-          const pxCoordsRB = graphvizCoordinatesToPx(
-            pad,
-            graphHeight,
-            position.points[2],
-          )
-          const pixelCoordinatesX = pxCoordsLB[0]
-          const pixelCoordinatesY = pxCoordsLB[1]
+            const pxCoordsLT = graphvizCoordinatesToPx(
+              pad,
+              graphHeight,
+              position.points[0],
+            )
+            const pxCoordsLB = graphvizCoordinatesToPx(
+              pad,
+              graphHeight,
+              position.points[1],
+            )
+            const pxCoordsRB = graphvizCoordinatesToPx(
+              pad,
+              graphHeight,
+              position.points[2],
+            )
+            const pixelCoordinatesX = pxCoordsLB[0]
+            const pixelCoordinatesY = pxCoordsLB[1]
 
-          let size
-          if (position.points.length === 4) {
-            const width = pxCoordsRB[0] - pxCoordsLB[0]
-            const height = pxCoordsLT[1] - pxCoordsLB[1]
-            size = { x: width, y: height }
-          }
-          positions[object.name] = {
-            position: { x: pixelCoordinatesX, y: pixelCoordinatesY },
-            size,
+            let size
+            if (position.points.length === 4) {
+              const width = pxCoordsRB[0] - pxCoordsLB[0]
+              const height = pxCoordsLT[1] - pxCoordsLB[1]
+              size = { x: width, y: height }
+            }
+            positions[object.name] = {
+              position: { x: pixelCoordinatesX, y: pixelCoordinatesY },
+              size,
+            }
           }
         }
-      }
-    })
+      })
 
-    // Store the edges positions
-    output.edges?.forEach((edge) => {
-      const elementData: ElementData = {
-        path: [],
-      }
+      // Store the edges positions
+      output.edges?.forEach((edge) => {
+        const elementData: ElementData = {
+          path: [],
+        }
 
-      // Edge points
-      if (edge._draw_) {
-        const edgePoints = edge._draw_.filter((draw) => draw.op === 'b')[0]
-          .points
-        edgePoints.forEach((point, index) => {
+        // Edge points
+        if (edge._draw_) {
+          const edgePoints = edge._draw_.filter((draw) => draw.op === 'b')[0]
+            .points
+          edgePoints.forEach((point, index) => {
+            const pixelCoordinates = graphvizCoordinatesToPx(
+              pad,
+              graphHeight,
+              point,
+            )
+            const x = pixelCoordinates[0]
+            const y = pixelCoordinates[1]
+            if (index === 0) elementData.start = { x, y }
+            else
+              elementData.path?.push({
+                x,
+                y,
+              })
+          })
+        } else {
+          // If the edge has no _draw_ data, it means that an error occurred on Graphviz side,
+          // usually a triangulation error.
+          errors.push(ERROR_TRIANGULATION_FAILED)
+        }
+
+        // Edge cap point
+        if (edge._hdraw_) {
+          const edgeCapPoints = edge._hdraw_.filter(
+            (draw) => draw.op === 'P',
+          )[0].points
           const pixelCoordinates = graphvizCoordinatesToPx(
             pad,
             graphHeight,
-            point,
+            edgeCapPoints[1],
           )
-          const x = pixelCoordinates[0]
-          const y = pixelCoordinates[1]
-          if (index === 0) elementData.start = { x, y }
-          else
-            elementData.path?.push({
-              x,
-              y,
-            })
-        })
-      } else {
-        // If the edge has no _draw_ data, it means that an error occurred on Graphviz side,
-        // usually a triangulation error.
-        errors.push(ERROR_TRIANGULATION_FAILED)
-      }
-
-      // Edge cap point
-      if (edge._hdraw_) {
-        const edgeCapPoints = edge._hdraw_.filter((draw) => draw.op === 'P')[0]
-          .points
-        const pixelCoordinates = graphvizCoordinatesToPx(
-          pad,
-          graphHeight,
-          edgeCapPoints[1],
-        )
-        elementData.end = { x: pixelCoordinates[0], y: pixelCoordinates[1] }
-      }
-
-      // Edge label
-      if (edge._ldraw_) {
-        const labelPoint = edge._ldraw_?.filter((draw) => draw.op === 'T')[0].pt
-        if (labelPoint) {
-          const coords = graphvizCoordinatesToPx(pad, graphHeight, labelPoint)
-          elementData.label_position = { x: coords[0], y: coords[1] }
+          elementData.end = { x: pixelCoordinates[0], y: pixelCoordinates[1] }
         }
-      }
 
-      // Start and end positions adjustments + SVG path generation
-      if (elementData.start && elementData.end) {
-        // Adjust the start and end positions to connect the innermost boxes containing
-        // the diagram data, and not the peripheries (excluding subgraphs since they
-        // do not have peripheries).
-
-        // The path array must contain at least 3 points because the first and last points
-        // are the start and end points, while the middle points are the ones that form the
-        // edge path. If the path array has less than 3 points, it means that the edge is
-        // a straight line, so the start and end points are the same as the first and
-        // last points of the path.
-        const startCloserPoint =
-          elementData.path && elementData.path.length > 2
-            ? elementData.path[1]
-            : elementData.end
-        const endCloserPoint =
-          elementData.path && elementData.path.length > 2
-            ? elementData.path[elementData.path.length - 2]
-            : elementData.start
-
-        // ---- Start
-        if (
-          edge.keadex_fromissubgraph === 'false' &&
-          startCloserPoint.x &&
-          startCloserPoint.y
-        ) {
-          // x adjustment
-          if (elementData.start.x < startCloserPoint.x) {
-            elementData.start.x -= PERIPHERY_SIZE
-          } else if (elementData.start.x > startCloserPoint.x) {
-            elementData.start.x += PERIPHERY_SIZE
-          }
-          // y adjustment
-          if (elementData.start.y < startCloserPoint.y) {
-            elementData.start.y -= PERIPHERY_SIZE
-          } else if (elementData.start.y > startCloserPoint.y) {
-            elementData.start.y += PERIPHERY_SIZE
+        // Edge label
+        if (edge._ldraw_) {
+          const labelPoint = edge._ldraw_?.filter((draw) => draw.op === 'T')[0]
+            .pt
+          if (labelPoint) {
+            const coords = graphvizCoordinatesToPx(pad, graphHeight, labelPoint)
+            elementData.label_position = { x: coords[0], y: coords[1] }
           }
         }
 
-        // ---- End
-        if (
-          edge.keadex_toissubgraph === 'false' &&
-          endCloserPoint.x &&
-          endCloserPoint.y
-        ) {
-          // x adjustment
-          if (elementData.end.x < endCloserPoint.x) {
-            elementData.end.x -= PERIPHERY_SIZE
-          } else if (elementData.end.x > endCloserPoint.x) {
-            elementData.end.x += PERIPHERY_SIZE
+        // Start and end positions adjustments + SVG path generation
+        if (elementData.start && elementData.end) {
+          // Adjust the start and end positions to connect the innermost boxes containing
+          // the diagram data, and not the peripheries (excluding subgraphs since they
+          // do not have peripheries).
+
+          // The path array must contain at least 3 points because the first and last points
+          // are the start and end points, while the middle points are the ones that form the
+          // edge path. If the path array has less than 3 points, it means that the edge is
+          // a straight line, so the start and end points are the same as the first and
+          // last points of the path.
+          const startCloserPoint =
+            elementData.path && elementData.path.length > 2
+              ? elementData.path[1]
+              : elementData.end
+          const endCloserPoint =
+            elementData.path && elementData.path.length > 2
+              ? elementData.path[elementData.path.length - 2]
+              : elementData.start
+
+          // ---- Start
+          if (
+            edge.keadex_fromissubgraph === 'false' &&
+            startCloserPoint.x &&
+            startCloserPoint.y
+          ) {
+            // x adjustment
+            if (elementData.start.x < startCloserPoint.x) {
+              elementData.start.x -= PERIPHERY_SIZE
+            } else if (elementData.start.x > startCloserPoint.x) {
+              elementData.start.x += PERIPHERY_SIZE
+            }
+            // y adjustment
+            if (elementData.start.y < startCloserPoint.y) {
+              elementData.start.y -= PERIPHERY_SIZE
+            } else if (elementData.start.y > startCloserPoint.y) {
+              elementData.start.y += PERIPHERY_SIZE
+            }
           }
-          // y adjustment
-          if (elementData.end.y < endCloserPoint.y) {
-            elementData.end.y -= PERIPHERY_SIZE
-          } else if (elementData.end.y > endCloserPoint.y) {
-            elementData.end.y += PERIPHERY_SIZE
+
+          // ---- End
+          if (
+            edge.keadex_toissubgraph === 'false' &&
+            endCloserPoint.x &&
+            endCloserPoint.y
+          ) {
+            // x adjustment
+            if (elementData.end.x < endCloserPoint.x) {
+              elementData.end.x -= PERIPHERY_SIZE
+            } else if (elementData.end.x > endCloserPoint.x) {
+              elementData.end.x += PERIPHERY_SIZE
+            }
+            // y adjustment
+            if (elementData.end.y < endCloserPoint.y) {
+              elementData.end.y -= PERIPHERY_SIZE
+            } else if (elementData.end.y > endCloserPoint.y) {
+              elementData.end.y += PERIPHERY_SIZE
+            }
           }
+
+          // Store the edge SVG path
+          elementData.svg_path = svgPathFromGraphvizPos(
+            edge.pos,
+            elementData.start,
+            elementData.end,
+            pad,
+            graphHeight,
+          )
         }
 
-        // Store the edge SVG path
-        elementData.svg_path = svgPathFromGraphvizPos(
-          edge.pos,
-          elementData.start,
-          elementData.end,
-          pad,
-          graphHeight,
-        )
-      }
-
-      positions[edge.name] = elementData
-    })
+        positions[edge.name] = elementData
+      })
+    } catch (e) {
+      console.error(e)
+      errors.push(ERROR_TRIANGULATION_FAILED)
+    }
   }
 
   // console.debug(positions)
