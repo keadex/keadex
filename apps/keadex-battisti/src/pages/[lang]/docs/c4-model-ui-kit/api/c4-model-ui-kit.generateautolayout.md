@@ -7,7 +7,10 @@
 **Signature:**
 
 ```typescript
-export declare function generateAutoLayout(graphviz: Graphviz, diagram: Diagram): Record<string, ElementData>;
+export declare function generateAutoLayout(graphviz: Graphviz, diagram: Diagram): {
+    positions: Record<string, ElementData>;
+    errors: string[];
+};
 ```
 
 ## Parameters
@@ -59,5 +62,5 @@ diagram
 </tbody></table>
 **Returns:**
 
-Record&lt;string, ElementData&gt;
+{ positions: Record&lt;string, ElementData&gt;; errors: string\[\]; }
 
