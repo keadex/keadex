@@ -2,6 +2,8 @@ use crate::multithreading::tokio::glue::common::{now, LogError};
 use js_sys::{eval, global, Array, JsString, Object, Reflect};
 use std::cell::RefCell;
 use std::collections::VecDeque;
+use std::future::Future;
+use std::pin::Pin;
 use std::rc::Rc;
 use wasm_bindgen::prelude::{wasm_bindgen, Closure, JsCast, JsValue};
 use wasm_bindgen::{memory, module};
@@ -29,7 +31,7 @@ struct ManagedWorker {
 }
 
 struct Task {
-  callable: Box<dyn FnOnce() + Send>,
+  callable: Pin<Box<dyn Future<Output = ()>>>,
 }
 
 impl Default for WorkerPool {
@@ -248,13 +250,20 @@ impl WorkerPool {
         None => break,
       };
       self.run(queued_task).log_error("FLUSH_QUEUED_TASKS");
+      // let result = self.run(queued_task);
+      // if result.is_err() {
+      //   log::error!("Failed to run queued task: {:?}", result.err());
+      // }
     }
   }
 
-  pub fn queue_task(&self, callable: impl FnOnce() + Send + 'static) {
+  pub fn queue_task<C>(&self, callable: C)
+  where
+    C: Future<Output = ()> + 'static,
+  {
     let mut queued_tasks = self.pool_state.queued_tasks.borrow_mut();
     queued_tasks.push_back(Task {
-      callable: Box::new(callable),
+      callable: Box::pin(callable),
     });
     drop(queued_tasks);
     self.flush_queued_tasks();
@@ -280,10 +289,10 @@ impl PoolState {
 
 /// Entry point invoked by JavaScript in a worker.
 #[wasm_bindgen]
-pub fn task_worker_entry_point(ptr: u32) -> Result<(), JsValue> {
+pub async fn task_worker_entry_point(ptr: u32) -> Result<(), JsValue> {
   let ptr = unsafe { Box::from_raw(ptr as *mut Task) };
   let global = global().unchecked_into::<DedicatedWorkerGlobalScope>();
-  (ptr.callable)();
+  (ptr.callable).await;
   global.post_message(&JsValue::undefined())?;
   Ok(())
 }

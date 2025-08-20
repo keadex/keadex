@@ -4,12 +4,9 @@
 //! this module leverages web workers to execute tasks in parallel,
 //! making it ideal for high-performance web applications.
 
-mod join_set;
 mod pool;
 
-pub use join_set::*;
-use wasm_bindgen::prelude::JsValue;
-
+use crate::error_handling::mina_error::MinaError;
 use crate::multithreading::parallel_executor::MinaFuture;
 use crate::multithreading::tokio::glue::common::{
   is_main_thread, once_channel, set_timeout, LogError, OnceReceiver, OnceSender, SelectFuture,
@@ -21,6 +18,7 @@ use std::fmt::{Debug, Display, Formatter};
 use std::future::Future;
 use std::pin::Pin;
 use std::task::{Context, Poll};
+use wasm_bindgen::prelude::JsValue;
 use wasm_bindgen_futures::{spawn_local, JsFuture};
 
 thread_local! {
@@ -240,10 +238,9 @@ where
 /// assert_eq!(output.as_str(), "Hello, world");
 /// Ok(())
 /// ```
-pub fn spawn_blocking<C, T>(callable: C) -> JoinHandle<T>
+pub fn spawn_blocking<C>(callable: C) -> JoinHandle<Result<bool, MinaError>>
 where
-  C: FnOnce() -> T + Send + 'static,
-  T: Send + 'static,
+  C: MinaFuture + 'static,
 {
   if !is_main_thread() {
     JsValue::from_str(concat!(
@@ -257,15 +254,15 @@ where
     .log_error("SPAWN_BLOCKING");
     panic!();
   }
-  let (join_sender, join_receiver) = once_channel();
+  let (join_sender, join_receiver) = once_channel::<Result<Result<bool, MinaError>, JoinError>>();
   let (cancel_sender, cancel_receiver) = once_channel::<()>();
   WORKER_POOL.with(move |worker_pool| {
-    worker_pool.queue_task(move || {
+    worker_pool.queue_task(async move {
       if cancel_receiver.is_done() {
         join_sender.send(Err(JoinError { cancelled: true }));
         return;
       }
-      let returned = callable();
+      let returned = callable.await;
       join_sender.send(Ok(returned));
     })
   });
