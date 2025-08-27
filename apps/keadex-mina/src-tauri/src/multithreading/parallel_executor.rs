@@ -81,8 +81,7 @@ where
       let mut handles = futures::stream::FuturesOrdered::new();
       for task in self.tasks {
         handles.push_back(spawn_blocking(async {
-          log::info!("jack: Starting Task");
-          return task.await; // Simulate some async work
+          return task.await;
         }))
       }
       let mut results = vec![];
