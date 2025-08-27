@@ -4,7 +4,7 @@
 //! this module leverages web workers to execute tasks in parallel,
 //! making it ideal for high-performance web applications.
 
-mod pool;
+pub mod pool;
 
 use crate::error_handling::mina_error::MinaError;
 use crate::multithreading::parallel_executor::MinaFuture;

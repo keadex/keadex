@@ -14,6 +14,10 @@ use web_sys::{
 
 pub static MAX_WORKERS: usize = 512;
 
+thread_local! {
+    static MINA_LIVE_SCRIPT_PATH: RefCell<Option<String>> = RefCell::new(None);
+}
+
 pub struct WorkerPool {
   pool_state: Rc<PoolState>,
 }
@@ -98,7 +102,7 @@ impl WorkerPool {
         }};
       }};
       ",
-      get_script_path()?
+      get_mina_live_script_path().unwrap()
     );
     let blob_property_bag = BlobPropertyBag::new();
     blob_property_bag.set_type("text/javascript");
@@ -250,10 +254,6 @@ impl WorkerPool {
         None => break,
       };
       self.run(queued_task).log_error("FLUSH_QUEUED_TASKS");
-      // let result = self.run(queued_task);
-      // if result.is_err() {
-      //   log::error!("Failed to run queued task: {:?}", result.err());
-      // }
     }
   }
 
@@ -290,6 +290,7 @@ impl PoolState {
 /// Entry point invoked by JavaScript in a worker.
 #[wasm_bindgen]
 pub async fn task_worker_entry_point(ptr: u32) -> Result<(), JsValue> {
+  console_error_panic_hook::set_once();
   let ptr = unsafe { Box::from_raw(ptr as *mut Task) };
   let global = global().unchecked_into::<DedicatedWorkerGlobalScope>();
   (ptr.callable).await;
@@ -315,4 +316,12 @@ pub fn get_script_path() -> Result<String, JsValue> {
     "Could not convert JS string path to native string",
   ))?;
   Ok(string)
+}
+
+pub fn set_mina_live_script_path(buffer: String) {
+  MINA_LIVE_SCRIPT_PATH.with(|cell| *cell.borrow_mut() = Some(buffer));
+}
+
+pub fn get_mina_live_script_path() -> Option<String> {
+  MINA_LIVE_SCRIPT_PATH.with(|cell| cell.borrow().clone())
 }
