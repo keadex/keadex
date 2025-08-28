@@ -1,23 +1,11 @@
-#![allow(dead_code)]
-
-mod local_channel;
 mod once_channel;
-mod polling;
-mod select_future;
 mod thread_check;
 
-#[allow(unused_imports)]
-pub use local_channel::*;
-#[allow(unused_imports)]
 pub use once_channel::*;
-#[allow(unused_imports)]
-pub use polling::*;
-#[allow(unused_imports)]
-pub use select_future::*;
 pub use thread_check::*;
 
 use js_sys::Function;
-use wasm_bindgen::prelude::{JsValue, wasm_bindgen};
+use wasm_bindgen::prelude::{wasm_bindgen, JsValue};
 
 #[wasm_bindgen]
 extern "C" {

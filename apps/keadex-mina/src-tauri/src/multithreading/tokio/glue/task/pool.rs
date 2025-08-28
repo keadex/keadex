@@ -1,5 +1,5 @@
 use crate::multithreading::tokio::glue::common::{now, LogError};
-use js_sys::{eval, global, Array, JsString, Object, Reflect};
+use js_sys::{global, Array, JsString, Object, Reflect};
 use std::cell::RefCell;
 use std::collections::VecDeque;
 use std::future::Future;
@@ -296,26 +296,6 @@ pub async fn task_worker_entry_point(ptr: u32) -> Result<(), JsValue> {
   (ptr.callable).await;
   global.post_message(&JsValue::undefined())?;
   Ok(())
-}
-
-pub fn get_script_path() -> Result<String, JsValue> {
-  let string = eval(
-    r"
-        (() => {
-            try {
-                throw new Error();
-            } catch (e) {
-                let parts = e.stack.match(/(?:\(|@)(\S+):\d+:\d+/);
-                return parts[1];
-            }
-        })()
-        ",
-  )?
-  .as_string()
-  .ok_or(JsValue::from(
-    "Could not convert JS string path to native string",
-  ))?;
-  Ok(string)
 }
 
 pub fn set_mina_live_script_path(buffer: String) {

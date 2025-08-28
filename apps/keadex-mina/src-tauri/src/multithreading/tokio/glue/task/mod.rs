@@ -9,7 +9,7 @@ pub mod pool;
 use crate::error_handling::mina_error::MinaError;
 use crate::multithreading::parallel_executor::MinaFuture;
 use crate::multithreading::tokio::glue::common::{
-  is_main_thread, once_channel, set_timeout, LogError, OnceReceiver, OnceSender, SelectFuture,
+  is_main_thread, once_channel, set_timeout, LogError, OnceReceiver, OnceSender,
 };
 use js_sys::Promise;
 use pool::WorkerPool;
@@ -41,162 +41,6 @@ async fn manage_pool() {
       set_timeout(&resolve, 100.0);
     });
     JsFuture::from(promise).await.log_error("MANAGE_POOL");
-  }
-}
-
-/// Spawns a new asynchronous task, returning a
-/// [`JoinHandle`] for it.
-///
-/// The provided future will start running in the JavaScript event loop
-/// when `spawn` is called, even if you don't await the returned
-/// `JoinHandle`.
-///
-/// Spawning a task enables the task to execute concurrently to other tasks. The
-/// spawned task will always execute on the current web worker(thread),
-/// as that's how JavaScript's `Promise` basically works.
-///
-/// # Examples
-///
-/// In this example, a server is started and `spawn` is used to start a new task
-/// that processes each received connection.
-///
-/// ```no_run
-/// use std::io;
-/// use tokio_with_wasm as tokio;
-///
-/// async fn process() -> io::Result<()> {
-///     // Some process...
-/// }
-///
-/// async fn work() -> io::Result<()> {
-///     let result = tokio::spawn(async move {
-///         // Process this job concurrently.
-///         process(socket).await
-///     }).await?;;
-/// }
-/// ```
-///
-/// To run multiple tasks in parallel and receive their results, join
-/// handles can be stored in a vector.
-/// ```
-/// use tokio_with_wasm as tokio;
-///
-/// async fn my_background_op(id: i32) -> String {
-///     let s = format!("Starting background task {}.", id);
-///     println!("{}", s);
-///     s
-///
-/// let ops = vec![1, 2, 3];
-/// let mut tasks = Vec::with_capacity(ops.len());
-/// for op in ops {
-///     // This call will make them start running in the background
-///     // immediately.
-///     tasks.push(tokio::spawn(my_background_op(op)));
-/// }
-///
-/// let mut outputs = Vec::with_capacity(tasks.len());
-/// for task in tasks {
-///     match task.await {
-///         Ok(output) => outputs.push(output),
-///         Err(err) => {
-///             println!("An error occurred: {}", err);
-///         }
-///     }
-/// }
-/// println!("{:?}", outputs);
-/// # }
-/// ```
-/// This example pushes the tasks to `outputs` in the order they were
-/// started in.
-///
-/// # Using `!Send` values from a task
-///
-/// The task supplied to `spawn` is not required to implement `Send`.
-/// This is different from multi-threaded native async runtimes,
-/// because JavaScript environment is inherently single-threaded.
-///
-/// For example, this will work:
-///
-/// ```
-/// use std::rc::Rc;
-/// use tokio_with_wasm as tokio;
-///
-/// fn use_rc(rc: Rc<()>) {
-///     // Do stuff w/ rc
-/// # drop(rc);
-/// }
-///
-/// async fn work() {
-///     tokio::spawn(async {
-///         // Force the `Rc` to stay in a scope with no `.await`
-///         {
-///             let rc = Rc::new(());
-///             use_rc(rc.clone());
-///         }
-///
-///         tokio::task::yield_now().await;
-///     }).await;
-/// }
-/// ```
-///
-/// This will work too, unlike multi-threaded native runtimes
-/// where `!Send` values cannot live across `.await`:
-///
-/// ```
-/// use std::rc::Rc;
-/// use tokio_with_wasm as tokio;
-///
-/// fn use_rc(rc: Rc<()>) {
-///     // Do stuff w/ rc
-/// # drop(rc);
-/// }
-///
-/// async fn work() {
-///     tokio::spawn(async {
-///         let rc = Rc::new(());
-///
-///         tokio::task::yield_now().await;
-///
-///         use_rc(rc.clone());
-///     }).await;
-/// }
-/// ```
-pub fn spawn<F, T>(future: F) -> JoinHandle<T>
-where
-  F: std::future::Future<Output = T> + 'static,
-  T: 'static,
-{
-  if !is_main_thread() {
-    JsValue::from_str(concat!(
-      "Calling `spawn` in a blocking thread is not allowed. ",
-      "While this is possible in real `tokio`, ",
-      "it may cause undefined behavior in the JavaScript environment. ",
-      "Instead, use `tokio::sync::mpsc::channel` ",
-      "to listen for messages from the main thread ",
-      "and spawn a task there."
-    ))
-    .log_error("SPAWN");
-    panic!();
-  }
-  let (join_sender, join_receiver) = once_channel();
-  let (cancel_sender, cancel_receiver) = once_channel::<()>();
-  spawn_local(async move {
-    let result = SelectFuture::new(
-      async move {
-        let output = future.await;
-        Ok(output)
-      },
-      async move {
-        cancel_receiver.await;
-        Err(JoinError { cancelled: true })
-      },
-    )
-    .await;
-    join_sender.send(result);
-  });
-  JoinHandle {
-    join_receiver,
-    cancel_sender,
   }
 }
 
@@ -270,21 +114,6 @@ where
     join_receiver,
     cancel_sender,
   }
-}
-
-/// Yields execution back to the JavaScript event loop.
-///
-/// To avoid blocking inside a long-running function,
-/// you have to yield to the async event loop regularly.
-///
-/// The async task may resume when it has its turn back.
-/// Meanwhile, any other pending tasks will be scheduled
-/// by the JavaScript runtime.
-pub async fn yield_now() {
-  let promise = Promise::new(&mut |resolve, _reject| {
-    set_timeout(&resolve, 0.0);
-  });
-  JsFuture::from(promise).await.log_error("YIELD_NOW");
 }
 
 /// An owned permission to join on a task (awaiting its termination).
