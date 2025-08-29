@@ -73,6 +73,9 @@ export class DiagramRenderer {
             if (autoLayout.errors.indexOf(ERROR_TRIANGULATION_FAILED) >= 0) {
               console.warn(WARN_TOO_MANY_ELEMENTS)
               toast.warn(WARN_TOO_MANY_ELEMENTS)
+            } else {
+              console.error(autoLayout.errors.join(', '))
+              toast.error(autoLayout.errors.join(', '))
             }
           }
         } else {
