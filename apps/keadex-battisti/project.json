@@ -29,7 +29,8 @@
       "configurations": {
         "development": {
           "buildTarget": "keadex-battisti:build:development",
-          "dev": true
+          "dev": true,
+          "experimentalHttps": true
         },
         "production": {
           "buildTarget": "keadex-battisti:build:production",

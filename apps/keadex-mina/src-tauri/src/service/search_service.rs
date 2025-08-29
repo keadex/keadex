@@ -95,7 +95,7 @@ where
   F: FnMut(String, usize, String, String, String) -> Fut,
   Fut: MinaFuture,
 {
-  let max_concurrent_predicates: usize = 10000;
+  let max_concurrent_predicates: usize = 5;
 
   let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
@@ -112,12 +112,7 @@ where
 
     let mut count = 0;
     let mut reached_limit = false;
-    // let mut multitask_value = Multitask::<Fut>::new();
     let mut parallel_executor = ParallelExecutor::<Fut>::new();
-    // let multitask_box2 = multitask_box1.clone();
-    // let multitask = multitask_box1.clone();
-    // let multitask: &mut Multitask<Fut> = &mut multitask_value;
-    // let mut concurrent_predicates = vec![];
 
     // Unload the project since we need to unlock all the project's file in order to read them
     unload_project(&project_settings.root).await?;

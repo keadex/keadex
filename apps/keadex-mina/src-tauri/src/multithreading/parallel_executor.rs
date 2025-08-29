@@ -7,9 +7,9 @@ pub trait MinaFuture: Future<Output = Result<bool, MinaError>> + Send + 'static 
 impl<T: Future<Output = Result<bool, MinaError>> + Send + 'static> MinaFuture for T {}
 
 #[cfg(web)]
-pub trait MinaFuture: Future<Output = Result<bool, MinaError>> {}
+pub trait MinaFuture: Future<Output = Result<bool, MinaError>> + 'static {}
 #[cfg(web)]
-impl<T: Future<Output = Result<bool, MinaError>>> MinaFuture for T {}
+impl<T: Future<Output = Result<bool, MinaError>> + 'static> MinaFuture for T {}
 
 pub struct ParallelExecutor<Fut>
 where
@@ -74,7 +74,31 @@ where
     }
     #[cfg(web)]
     {
-      return futures::future::join_all(self.tasks).await;
+      use crate::multithreading::tokio::glue::task::{
+        spawn_blocking, start_managing_pool, stop_managing_pool,
+      };
+
+      // log::debug!("Start joining {} tasks", self.tasks.len());
+      // let join_time = std::time::Instant::now();
+      start_managing_pool();
+      let mut handles = futures::stream::FuturesOrdered::new();
+      for task in self.tasks {
+        handles.push_back(spawn_blocking(async {
+          return task.await;
+        }))
+      }
+      let mut results = vec![];
+      while let Some(finished_task) = handles.next().await {
+        match finished_task {
+          Err(_e) => { /* e is a JoinError - the task has panicked */ }
+          Ok(result) => {
+            results.push(result);
+          }
+        }
+      }
+      stop_managing_pool();
+      // log::debug!("End joining {}ms", join_time.elapsed().as_millis());
+      return results;
     }
   }
 }

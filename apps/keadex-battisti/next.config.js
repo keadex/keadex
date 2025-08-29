@@ -30,6 +30,7 @@ const cspHeader = (source) => {
     default-src 'self';
     connect-src ${connectSrc};
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://vercel.live https://www.googletagmanager.com https://player.vimeo.com;
+    worker-src 'self' blob:;
     frame-src 'self' https://consentcdn.cookiebot.com https://vercel.live https://www.youtube.com https://player.vimeo.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' blob: data: https://imgsct.cookiebot.com https://www.googletagmanager.com;
@@ -86,6 +87,18 @@ const nextConfig = {
           {
             key: 'Content-Security-Policy',
             value: cspHeader(ALL_SOURCES),
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
+          },
+          {
+            key: 'Cross-Origin-Embedder-Policy',
+            value: 'require-corp',
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'cross-origin',
           },
         ],
       },

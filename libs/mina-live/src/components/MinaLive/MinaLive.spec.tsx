@@ -3,7 +3,7 @@ import MinaLive from './MinaLive'
 
 describe('MinaLive', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<MinaLive />)
+    const { baseElement } = render(<MinaLive scriptPath="test" />)
     expect(baseElement).toBeTruthy()
   })
 })

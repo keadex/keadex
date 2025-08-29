@@ -59,6 +59,12 @@ export default composePlugins(
       output: {
         path: path.resolve(__dirname, './dist'),
         filename: '[name].js',
+        assetModuleFilename: (pathData, assetInfo) => {
+          if (pathData.filename?.endsWith('.wasm')) {
+            return 'mina_live_bg.wasm'
+          }
+          return '[hash][ext][query]'
+        },
         libraryTarget: 'commonjs-module',
         library: {
           type: 'module',
@@ -117,6 +123,10 @@ export default composePlugins(
             {
               from: join(__dirname, './src/webpack/webpack.config.js'),
               to: 'webpack.config.js',
+            },
+            {
+              from: join(__dirname, './src-rust/pkg/mina_live.js'),
+              to: 'mina_live_worker_wasm.js',
             },
           ],
         }),

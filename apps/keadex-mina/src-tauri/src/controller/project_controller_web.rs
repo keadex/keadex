@@ -6,14 +6,16 @@ use crate::core::resolver::ResolvableModules::FileSystemAPI;
 use crate::error_handling::mina_error::MinaError;
 use crate::model::project::Project;
 use crate::model::project_settings::ProjectSettings;
+use crate::multithreading::tokio::glue::task::pool::set_mina_live_script_path;
 use crate::resolve_to_write;
 use keadex_mina_macro::web_controller;
 use wasm_bindgen::JsValue;
 use web_sys::console;
 
 #[cfg_attr(web, web_controller)]
-pub fn init_app() -> Result<bool, MinaError> {
+pub fn init_app(mina_live_script_path: String) -> Result<bool, MinaError> {
   App::init();
+  set_mina_live_script_path(mina_live_script_path);
   Ok(true)
 }
 
