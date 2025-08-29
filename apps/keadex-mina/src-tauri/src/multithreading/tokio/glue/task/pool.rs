@@ -27,6 +27,8 @@ struct PoolState {
   idle_workers: RefCell<Vec<ManagedWorker>>,
   queued_tasks: RefCell<VecDeque<Task>>,
   callback: Closure<dyn FnMut(Event)>,
+  managing: RefCell<bool>,
+  stop_requested: RefCell<bool>,
 }
 
 struct ManagedWorker {
@@ -48,6 +50,8 @@ impl Default for WorkerPool {
         callback: Closure::new(|event: Event| {
           JsValue::from_str(&format!("{:?}", event)).log_error("POOL_CALLBACK");
         }),
+        managing: RefCell::new(false),
+        stop_requested: RefCell::new(false),
       }),
     }
   }
@@ -267,6 +271,34 @@ impl WorkerPool {
     });
     drop(queued_tasks);
     self.flush_queued_tasks();
+  }
+
+  pub fn start_managing(&self) {
+    *self.pool_state.managing.borrow_mut() = true;
+  }
+
+  pub fn stop_managing(&self) {
+    *self.pool_state.managing.borrow_mut() = false;
+  }
+
+  pub fn is_managing(&self) -> bool {
+    *self.pool_state.managing.borrow()
+  }
+
+  pub fn require_stop(&self) {
+    *self.pool_state.stop_requested.borrow_mut() = true;
+  }
+
+  pub fn cancel_stop_request(&self) {
+    *self.pool_state.stop_requested.borrow_mut() = false;
+  }
+
+  pub fn stop_requested(&self) -> bool {
+    *self.pool_state.stop_requested.borrow_mut()
+  }
+
+  pub fn get_worker_count(&self) -> usize {
+    *self.pool_state.total_workers_count.borrow()
   }
 }
 

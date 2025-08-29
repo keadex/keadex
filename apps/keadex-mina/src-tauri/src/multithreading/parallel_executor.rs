@@ -74,10 +74,13 @@ where
     }
     #[cfg(web)]
     {
-      use crate::multithreading::tokio::glue::task::spawn_blocking;
+      use crate::multithreading::tokio::glue::task::{
+        spawn_blocking, start_managing_pool, stop_managing_pool,
+      };
 
       // log::debug!("Start joining {} tasks", self.tasks.len());
       // let join_time = std::time::Instant::now();
+      start_managing_pool();
       let mut handles = futures::stream::FuturesOrdered::new();
       for task in self.tasks {
         handles.push_back(spawn_blocking(async {
@@ -93,6 +96,7 @@ where
           }
         }
       }
+      stop_managing_pool();
       // log::debug!("End joining {}ms", join_time.elapsed().as_millis());
       return results;
     }

@@ -22,26 +22,53 @@ use wasm_bindgen::prelude::JsValue;
 use wasm_bindgen_futures::{spawn_local, JsFuture};
 
 thread_local! {
-    static WORKER_POOL: WorkerPool = {
-        let worker_pool = WorkerPool::new();
-        spawn_local(manage_pool());
-        worker_pool
-    }
+    static WORKER_POOL: WorkerPool = WorkerPool::new();
 }
 
 /// Manages the worker pool by periodically checking for
 /// inactive web workers and queued tasks.
-async fn manage_pool() {
-  loop {
-    WORKER_POOL.with(|worker_pool| {
-      worker_pool.remove_inactive_workers();
-      worker_pool.flush_queued_tasks();
+pub fn start_managing_pool() {
+  let was_managing = WORKER_POOL.with(|worker_pool| {
+    worker_pool.cancel_stop_request();
+    let was_managing = worker_pool.is_managing();
+    if !was_managing {
+      log::debug!("Starting managing worker pool...");
+      worker_pool.start_managing();
+    }
+    return was_managing;
+  });
+  if !was_managing {
+    log::debug!("Started managing worker pool...");
+    spawn_local(async {
+      loop {
+        let pool_info = WORKER_POOL.with(|worker_pool| {
+          log::debug!("Managing worker pool...");
+          worker_pool.remove_inactive_workers();
+          worker_pool.flush_queued_tasks();
+          return (worker_pool.stop_requested(), worker_pool.get_worker_count());
+        });
+        if pool_info.0 && pool_info.1 <= 0 {
+          log::debug!("Stopped managing worker pool...");
+          WORKER_POOL.with(|worker_pool| {
+            worker_pool.stop_managing();
+            worker_pool.cancel_stop_request();
+          });
+          break;
+        }
+        let promise = Promise::new(&mut |resolve, _reject| {
+          set_timeout(&resolve, 100.0);
+        });
+        JsFuture::from(promise).await.log_error("MANAGE_POOL");
+      }
     });
-    let promise = Promise::new(&mut |resolve, _reject| {
-      set_timeout(&resolve, 100.0);
-    });
-    JsFuture::from(promise).await.log_error("MANAGE_POOL");
   }
+}
+
+pub fn stop_managing_pool() {
+  log::debug!("Required stopping managing worker pool...");
+  WORKER_POOL.with(|worker_pool| {
+    worker_pool.require_stop();
+  });
 }
 
 /// Runs the provided closure on a web worker(thread) where blocking is acceptable.
