@@ -109,9 +109,10 @@ pub fn stop_managing_pool() {
 /// assert_eq!(output.as_str(), "Hello, world");
 /// Ok(())
 /// ```
-pub fn spawn_blocking<C>(callable: C) -> JoinHandle<Result<bool, MinaError>>
+pub fn spawn_blocking<C, O>(callable: C) -> JoinHandle<O>
 where
-  C: MinaFuture + 'static,
+  C: Future<Output = O> + 'static,
+  O: 'static,
 {
   if !is_main_thread() {
     JsValue::from_str(concat!(
@@ -125,7 +126,7 @@ where
     .log_error("SPAWN_BLOCKING");
     panic!();
   }
-  let (join_sender, join_receiver) = once_channel::<Result<Result<bool, MinaError>, JoinError>>();
+  let (join_sender, join_receiver) = once_channel::<Result<O, JoinError>>();
   let (cancel_sender, cancel_receiver) = once_channel::<()>();
   WORKER_POOL.with(move |worker_pool| {
     worker_pool.queue_task(async move {
