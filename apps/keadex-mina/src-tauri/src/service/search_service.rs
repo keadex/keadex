@@ -28,6 +28,8 @@ use std::io::BufRead;
 use std::path::Path;
 use std::usize;
 
+const SEARCH_TASKS_PER_THREAD: usize = 200;
+
 /**
 Generates the file search category of a file with the given path.
 # Arguments
@@ -95,8 +97,6 @@ where
   F: FnMut(String, usize, String, String, String) -> Fut,
   Fut: MinaFuture,
 {
-  let max_concurrent_predicates: usize = 5;
-
   let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
     .await
@@ -112,7 +112,7 @@ where
 
     let mut count = 0;
     let mut reached_limit = false;
-    let mut parallel_executor = ParallelExecutor::<Fut>::new();
+    let mut parallel_executor = ParallelExecutor::<Fut>::new(SEARCH_TASKS_PER_THREAD);
 
     // Unload the project since we need to unlock all the project's file in order to read them
     unload_project(&project_settings.root).await?;
@@ -152,23 +152,6 @@ where
                 diagrams_directory.clone(),
                 library_directory.clone(),
               ));
-
-              if parallel_executor.len() == max_concurrent_predicates {
-                let results = parallel_executor.join_all().await;
-                for result in results {
-                  if result.is_ok_and(|predicate_result| predicate_result) {
-                    count += 1;
-                    if count > limit {
-                      reached_limit = true;
-                      break;
-                    }
-                  }
-                }
-                parallel_executor = ParallelExecutor::<Fut>::new(); // Reset the multitask for the next batch
-                if reached_limit {
-                  break;
-                }
-              }
             } else {
               // Execute the predicates sequentially
               if predicate(
@@ -198,7 +181,7 @@ where
       }
     }
 
-    if concurrent && !reached_limit && parallel_executor.len() > 0 {
+    if concurrent && !reached_limit && parallel_executor.threads_count() > 0 {
       // There are still some predicates to execute
       let results = parallel_executor.join_all().await;
       for result in results {

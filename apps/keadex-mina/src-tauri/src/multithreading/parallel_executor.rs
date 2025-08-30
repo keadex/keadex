@@ -15,7 +15,8 @@ pub struct ParallelExecutor<Fut>
 where
   Fut: MinaFuture,
 {
-  pub tasks: Vec<Fut>,
+  pub threads: Vec<Vec<Fut>>,
+  pub tasks_per_thread: usize,
 }
 
 impl<Fut> Default for ParallelExecutor<Fut>
@@ -23,7 +24,7 @@ where
   Fut: MinaFuture,
 {
   fn default() -> Self {
-    Self::new()
+    Self::new(1)
   }
 }
 
@@ -31,41 +32,54 @@ impl<Fut> ParallelExecutor<Fut>
 where
   Fut: MinaFuture,
 {
-  pub fn new() -> Self {
-    Self { tasks: vec![] }
+  pub fn new(tasks_per_thread: usize) -> Self {
+    Self {
+      threads: vec![],
+      tasks_per_thread,
+    }
   }
 
   pub fn add(&mut self, task: Fut) {
-    self.tasks.push(task);
+    if self.threads.is_empty() || self.threads.last().unwrap().len() >= self.tasks_per_thread {
+      self.threads.push(vec![]);
+    }
+    self.threads.last_mut().unwrap().push(task);
   }
 
   pub fn is_empty(&self) -> bool {
-    self.tasks.is_empty()
+    self.threads.is_empty()
   }
 
-  pub fn len(&self) -> usize {
-    self.tasks.len()
+  pub fn threads_count(&self) -> usize {
+    self.threads.len()
   }
 
   pub fn clear(&mut self) {
-    self.tasks.clear();
+    self.threads.clear();
   }
 
   pub async fn join_all(self) -> Vec<Result<bool, MinaError>> {
+    log::debug!("Start running {} threads", self.threads_count());
+
     #[cfg(desktop)]
     {
-      // log::debug!("Start joining {} tasks", self.tasks.len());
       // let join_time = std::time::Instant::now();
       let mut handles = futures::stream::FuturesOrdered::new();
-      for task in self.tasks {
-        handles.push_back(tauri::async_runtime::spawn(task));
+      for thread in self.threads {
+        handles.push_back(tauri::async_runtime::spawn(async {
+          let mut results = vec![];
+          for task in thread {
+            results.push(task.await);
+          }
+          return results;
+        }));
       }
       let mut results = vec![];
       while let Some(finished_task) = handles.next().await {
         match finished_task {
           Err(_e) => { /* e is a JoinError - the task has panicked */ }
-          Ok(result) => {
-            results.push(result);
+          Ok(mut thread_results) => {
+            results.append(&mut thread_results);
           }
         }
       }
@@ -78,21 +92,24 @@ where
         spawn_blocking, start_managing_pool, stop_managing_pool,
       };
 
-      // log::debug!("Start joining {} tasks", self.tasks.len());
       // let join_time = std::time::Instant::now();
       start_managing_pool();
       let mut handles = futures::stream::FuturesOrdered::new();
-      for task in self.tasks {
+      for thread in self.threads {
         handles.push_back(spawn_blocking(async {
-          return task.await;
+          let mut results = vec![];
+          for task in thread {
+            results.push(task.await);
+          }
+          return results;
         }))
       }
       let mut results = vec![];
       while let Some(finished_task) = handles.next().await {
         match finished_task {
           Err(_e) => { /* e is a JoinError - the task has panicked */ }
-          Ok(result) => {
-            results.push(result);
+          Ok(mut thread_results) => {
+            results.append(&mut thread_results);
           }
         }
       }
