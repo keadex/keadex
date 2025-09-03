@@ -11,13 +11,19 @@ use crate::error_handling::errors::{
   LIBRARY_ERROR_CODE, PROJECT_NOT_LOADED_ERROR_CODE, PROJECT_NOT_LOADED_ERROR_MSG,
 };
 use crate::error_handling::mina_error::MinaError;
+use crate::helper::project_helper::project_aliases_lib_key;
+use crate::model::c4_element::C4Elements;
 use crate::model::diagram::diagram_plantuml::DiagramElementType;
 use crate::model::diagram::diagram_plantuml::DiagramElementType::{
   Boundary, Component, Container, DeploymentNode, Person, Relationship, SoftwareSystem,
 };
 use crate::model::diagram::C4ElementType;
+use crate::model::file_search_results::FileSearchCategory;
+use crate::model::project_alias::ProjectAlias;
 use crate::resolve_to_write;
+use std::collections::HashMap;
 use std::path::MAIN_SEPARATOR;
+use strum::IntoEnumIterator;
 
 /**
 Utility which deletes all the references of the given UUID, from an array of diagram's elements.
@@ -150,4 +156,98 @@ pub async fn path_from_element_type(
       msg: INVALID_LIB_ELEMENT_ERROR_MSG.to_string(),
     }),
   }
+}
+
+/**
+Utility which extracts from the library the aliases.
+# Arguments
+  * `library` - Library's elements
+  * `only_lib_element_type` - If set, extracts only the aliases of the given type of element (e.g., only Person). If None, extracts all the aliases.
+*/
+pub fn extract_library_aliases(
+  library: &C4Elements,
+  only_lib_element_type: Option<C4ElementType>,
+) -> HashMap<String, Vec<ProjectAlias>> {
+  let mut aliases = HashMap::new();
+  for c4_element_type in C4ElementType::iter() {
+    match c4_element_type {
+      C4ElementType::Person => {
+        if only_lib_element_type
+          .clone()
+          .is_none_or(|lib_element_type| lib_element_type == C4ElementType::Person)
+        {
+          aliases.insert(
+            project_aliases_lib_key(c4_element_type),
+            library
+              .persons
+              .iter()
+              .map(|person| ProjectAlias {
+                alias: person.base_data.alias.clone().unwrap(),
+                category: FileSearchCategory::Library,
+                element: Some(DiagramElementType::Person(person.clone())),
+              })
+              .collect(),
+          );
+        }
+      }
+      C4ElementType::SoftwareSystem => {
+        if only_lib_element_type
+          .clone()
+          .is_none_or(|lib_element_type| lib_element_type == C4ElementType::SoftwareSystem)
+        {
+          aliases.insert(
+            project_aliases_lib_key(c4_element_type),
+            library
+              .software_systems
+              .iter()
+              .map(|ss| ProjectAlias {
+                alias: ss.base_data.alias.clone().unwrap(),
+                category: FileSearchCategory::Library,
+                element: Some(DiagramElementType::SoftwareSystem(ss.clone())),
+              })
+              .collect(),
+          );
+        }
+      }
+      C4ElementType::Container => {
+        if only_lib_element_type
+          .clone()
+          .is_none_or(|lib_element_type| lib_element_type == C4ElementType::Container)
+        {
+          aliases.insert(
+            project_aliases_lib_key(c4_element_type),
+            library
+              .containers
+              .iter()
+              .map(|container| ProjectAlias {
+                alias: container.base_data.alias.clone().unwrap(),
+                category: FileSearchCategory::Library,
+                element: Some(DiagramElementType::Container(container.clone())),
+              })
+              .collect(),
+          );
+        }
+      }
+      C4ElementType::Component => {
+        if only_lib_element_type
+          .clone()
+          .is_none_or(|lib_element_type| lib_element_type == C4ElementType::Component)
+        {
+          aliases.insert(
+            project_aliases_lib_key(c4_element_type),
+            library
+              .components
+              .iter()
+              .map(|component| ProjectAlias {
+                alias: component.base_data.alias.clone().unwrap(),
+                category: FileSearchCategory::Library,
+                element: Some(DiagramElementType::Component(component.clone())),
+              })
+              .collect(),
+          );
+        }
+      }
+    }
+  }
+  return aliases;
 }

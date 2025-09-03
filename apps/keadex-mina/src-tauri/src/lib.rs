@@ -1,4 +1,5 @@
 pub mod api;
+pub mod constants;
 pub mod controller;
 pub mod core;
 pub mod dao;

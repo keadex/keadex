@@ -1,3 +1,4 @@
+pub mod project_aliases_dao;
 pub mod project_library_dao;
 pub mod project_settings_dao;
 

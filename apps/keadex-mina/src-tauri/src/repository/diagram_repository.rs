@@ -6,6 +6,7 @@ Under the hood it uses DAOs.
 
 use crate::api::filesystem::FileSystemAPI as FsApiTrait;
 use crate::core::app::ROOT_RESOLVER;
+use crate::core::project_initializer::load_project_aliases;
 use crate::core::resolver::ResolvableModules::BinaryFsDAO;
 use crate::core::resolver::ResolvableModules::DiagramPlantUMLFsDAO;
 use crate::core::resolver::ResolvableModules::DiagramSpecFsDAO;
@@ -32,6 +33,7 @@ use crate::model::diagram::diagram_spec::DiagramSpec;
 use crate::model::diagram::Diagram;
 use crate::model::diagram::DiagramFormat;
 use crate::model::diagram::DiagramType;
+use crate::model::load_project_aliases_opts::LoadProjectAliasesOpts;
 use crate::model::project_library::ProjectLibrary;
 use crate::repository::library::library_repository;
 use crate::resolve_to_write;
@@ -190,7 +192,19 @@ pub async fn delete_diagram(
     .await?;
 
   // Delete from the library's elements, the references to the deleted element
-  Ok(library_repository::delete_diagram_references(diagram_name, diagram_type).await?)
+  let project_library =
+    library_repository::delete_diagram_references(diagram_name, diagram_type).await?;
+
+  // Update in-memory project's aliases
+  let _ = load_project_aliases(LoadProjectAliasesOpts::new(
+    true,
+    false,
+    Some(diagram_name),
+    Some(diagram_type.clone()),
+  ))
+  .await?;
+
+  Ok(project_library)
 }
 
 /**
@@ -234,6 +248,7 @@ pub async fn create_diagram(new_diagram: Diagram) -> Result<(), MinaError> {
     .await
     .save(&_diagram_plantuml, Path::new(&diagram_plantuml_path), true)
     .await?;
+
   // You need to close diagram after saving it, otherwise it remain locked
   resolve_to_write!(store, DiagramPlantUMLFsDAO)
     .await
@@ -245,10 +260,20 @@ pub async fn create_diagram(new_diagram: Diagram) -> Result<(), MinaError> {
     .await
     .save(&_diagram_spec, Path::new(&diagram_spec_path), true)
     .await?;
+
   // You need to close diagram after saving it, otherwise it remain locked
   resolve_to_write!(store, DiagramSpecFsDAO)
     .await
     .unlock_file(Path::new(&diagram_spec_path), true)?;
+
+  // Update in-memory project's aliases
+  let _ = load_project_aliases(LoadProjectAliasesOpts::new(
+    true,
+    false,
+    Some(diagram_name),
+    Some(diagram_type.clone()),
+  ))
+  .await?;
 
   Ok(())
 }
@@ -288,6 +313,15 @@ pub async fn save_spec_diagram_raw_plantuml(
     .await
     .save(&cleaned_diagram_specs, Path::new(&spec_path), false)
     .await?;
+
+  // Update in-memory project's aliases
+  let _ = load_project_aliases(LoadProjectAliasesOpts::new(
+    true,
+    false,
+    Some(diagram_name),
+    Some(diagram_type.clone()),
+  ))
+  .await?;
 
   Ok(())
 }
