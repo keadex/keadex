@@ -43,14 +43,19 @@ pub fn init() {
 
     Builder::from_env(env)
       .format(|mut buf, record| {
+        let msg = unescape(record.args().to_string().as_str()).unwrap();
+        // if msg.contains("local-debug-filter:") {
         let record = SerializeRecord {
           ts: Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true),
           lvl: record.level(),
           module_path: record.module_path(),
-          msg: unescape(record.args().to_string().as_str()).unwrap(),
+          msg: msg.clone(),
         };
         serde_json::to_writer(&mut buf, &record)?;
         writeln!(buf)
+        // } else {
+        //   Ok(())
+        // }
       })
       .init();
   }
