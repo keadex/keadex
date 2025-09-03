@@ -18,17 +18,15 @@ use crate::model::diagram_element_search_results::DiagramElementSearchResults;
 use crate::model::file_search_results::FileSearchCategory;
 use crate::model::file_search_results::{FileSearchResult, FileSearchResults};
 use crate::multithreading::parallel_executor::MinaFuture;
-use crate::multithreading::parallel_executor::ParallelExecutor;
 use crate::repository::library::library_repository::search_library_element;
 use crate::resolve_to_write;
 use async_std::sync::Arc;
 use async_std::sync::RwLock;
+use futures::future::join_all;
 use std::collections::BTreeMap;
 use std::io::BufRead;
 use std::path::Path;
 use std::usize;
-
-const SEARCH_TASKS_PER_THREAD: usize = 200;
 
 /**
 Generates the file search category of a file with the given path.
@@ -56,7 +54,7 @@ Checks if the given entry (directory or file) is searchable.
   * `diagrams_dir` - Path of the diagrams directory.
   * `library_dir`- Path of the project library directory.
 */
-fn is_searchable_entry(
+pub fn is_searchable_entry(
   entry: &CrossPathBuf,
   root_dir: &str,
   include_diagrams_dir: bool,
@@ -97,6 +95,8 @@ where
   F: FnMut(String, usize, String, String, String) -> Fut,
   Fut: MinaFuture,
 {
+  let max_concurrent_predicates: usize = 10000;
+
   let store = ROOT_RESOLVER.get().read().await;
   let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
     .await
@@ -112,7 +112,7 @@ where
 
     let mut count = 0;
     let mut reached_limit = false;
-    let mut parallel_executor = ParallelExecutor::<Fut>::new(SEARCH_TASKS_PER_THREAD);
+    let mut concurrent_predicates = vec![];
 
     // Unload the project since we need to unlock all the project's file in order to read them
     unload_project(&project_settings.root).await?;
@@ -145,13 +145,30 @@ where
           if let Ok(line) = line {
             if concurrent {
               // Execute the predicates in parallel
-              parallel_executor.add(predicate(
+              concurrent_predicates.push(predicate(
                 line,
                 line_num,
                 path.clone(),
                 diagrams_directory.clone(),
                 library_directory.clone(),
               ));
+
+              if concurrent_predicates.len() == max_concurrent_predicates {
+                let results = join_all(concurrent_predicates).await;
+                for result in results {
+                  if result.is_ok_and(|predicate_result| predicate_result) {
+                    count += 1;
+                    if count > limit {
+                      reached_limit = true;
+                      break;
+                    }
+                  }
+                }
+                concurrent_predicates = vec![];
+                if reached_limit {
+                  break;
+                }
+              }
             } else {
               // Execute the predicates sequentially
               if predicate(
@@ -181,9 +198,9 @@ where
       }
     }
 
-    if concurrent && !reached_limit && parallel_executor.threads_count() > 0 {
+    if concurrent && !reached_limit && concurrent_predicates.len() > 0 {
       // There are still some predicates to execute
-      let results = parallel_executor.join_all().await;
+      let results = join_all(concurrent_predicates).await;
       for result in results {
         if result.is_ok_and(|predicate_result| predicate_result) {
           count += 1;
