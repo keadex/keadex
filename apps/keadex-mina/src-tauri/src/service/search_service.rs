@@ -228,12 +228,14 @@ Searches for the given text in the project's files and replace it with the given
   * `replacement` - Replacement.
   * `include_diagrams` - If you want to include the diagrams directory in the search.
   * `include_library` - If you want to include the library directory in the search.
+  * `clean_plantuml` - If true, the PlantUML will be cleaned before searching and replacing.
 */
 pub async fn search_and_replace_text(
   text_to_search_in: String,
   replacement_in: String,
   include_diagrams: bool,
   include_library: bool,
+  clean_plantuml: bool,
 ) -> Result<FileSearchResults, MinaError> {
   log::debug!(
     "Search {} and replace with {}",
@@ -255,6 +257,12 @@ pub async fn search_and_replace_text(
       let results = Arc::clone(&results_rc);
       let text_to_search = text_to_search_in.clone();
       let replacement = replacement_in.clone();
+      let cleaned_line = if clean_plantuml {
+        clean_plantuml_diagram_element(&line).unwrap()
+      } else {
+        line.clone()
+      };
+
       async move {
         if !current_path.read().await.eq(&path) {
           let store = ROOT_RESOLVER.get().read().await;
@@ -285,8 +293,8 @@ pub async fn search_and_replace_text(
 
         let mut is_found = Ok(false);
         if updated_content_opt.read().await.is_some() {
-          if line.eq(&text_to_search) {
-            *new_line.write().await = replacement.to_string();
+          if cleaned_line.eq(&text_to_search) {
+            *new_line.write().await = line.replace(&cleaned_line, &replacement.to_string());
             is_found = Ok(true);
 
             results
