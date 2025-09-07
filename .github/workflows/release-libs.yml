@@ -41,6 +41,10 @@ jobs:
       - name: install Rust nightly (for Mina Live)
         uses: dtolnay/rust-toolchain@nightly
 
+      - name: setup Rust nightly
+        run: |
+          rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
+
       - name: install dependencies (ubuntu only)
         run: |
           sudo apt-get update
