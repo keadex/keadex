@@ -5,6 +5,7 @@ Module which exposes the function to initialize a project.
 
 use crate::api::filesystem::FileSystemAPI as FsApiTrait;
 use crate::core::app::ROOT_RESOLVER;
+use crate::core::resolver::ResolvableModules::ProjectAliasesIMDAO;
 use crate::core::resolver::ResolvableModules::{
   ComponentFsDAO, ContainerFsDAO, DiagramPlantUMLFsDAO, FileSystemAPI, PersonFsDAO,
   ProjectLibraryIMDAO, ProjectSettingsFsDAO, ProjectSettingsIMDAO, SoftwareSystemFsDAO,
@@ -19,15 +20,23 @@ use crate::dao::filesystem::library::LIBRARY_FILE_NAMES;
 use crate::dao::filesystem::FileSystemDAO;
 use crate::dao::inmemory::InMemoryDAO;
 use crate::error_handling::mina_error::MinaError;
-use crate::helper::diagram_helper::{diagram_folder_name_from_type, diagram_type_path};
+use crate::helper::diagram_helper::{
+  diagram_folder_name_from_type, diagram_type_path, extract_diagrams_aliases,
+};
 use crate::helper::hook_helper::hooks_path;
-use crate::helper::library_helper::{project_library_file_path, project_library_path};
-use crate::helper::project_helper::project_settings_path;
+use crate::helper::library_helper::{
+  extract_library_aliases, project_library_file_path, project_library_path,
+};
+use crate::helper::project_helper::{project_aliases_diagram_key, project_settings_path};
 use crate::model::c4_element::C4Elements;
 use crate::model::diagram::DiagramType;
+use crate::model::load_project_aliases_opts::LoadProjectAliasesOpts;
 use crate::model::project::Project;
+use crate::model::project_alias::ProjectAlias;
 use crate::model::project_library::ProjectLibrary;
 use crate::model::project_settings::ProjectSettings;
+use crate::repository::diagram_repository::list_diagrams;
+use crate::repository::library::library_repository::list_library_elements;
 use crate::resolve_to_write;
 use crate::templates::demo_diagram_puml::generate_demo_diagram_puml;
 use crate::templates::demo_diagram_spec::generate_demo_diagram_spec;
@@ -37,6 +46,7 @@ use crate::validator::project_validator::{
   validate_output_project_directory, validate_project_structure,
 };
 use convert_case::{Case, Casing};
+use std::collections::HashMap;
 use std::path::{Path, MAIN_SEPARATOR};
 use strum::IntoEnumIterator;
 
@@ -48,12 +58,92 @@ Loads a project
 pub async fn load_project(root: &str) -> Result<Project, MinaError> {
   log::debug!("Load project {}", root);
   validate_project_structure(root).await?;
+
   let project_settings = load_project_settings(root).await?;
   let project_library = load_project_library(root).await?;
+  let _ = load_project_aliases(LoadProjectAliasesOpts::default()).await?;
+
   Ok(Project {
     project_settings,
     project_library,
   })
+}
+
+/**
+Loads all the aliases of a project in the in-memory app state.
+ATTENTION: this function must be called after loading the library, because it requires
+library elements to be loaded in the in-memory app state.
+# Arguments
+  * `options` - Options to customize the loading of the aliases
+    * `skip_lib_aliases` - If true, skip the loading of the library aliases
+    * `skip_diagram_aliases` - If true, skip the loading of the diagram aliases
+    * `only_diagram` - If provided, load only the aliases of the given diagram
+*/
+pub async fn load_project_aliases(
+  options: LoadProjectAliasesOpts,
+) -> Result<HashMap<String, Vec<ProjectAlias>>, MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
+
+  let mut aliases = resolve_to_write!(store, ProjectAliasesIMDAO)
+    .await
+    .get()
+    .await
+    .unwrap_or_default();
+
+  if !options.skip_diagram_aliases {
+    // Extract aliases from diagrams
+    if let Some(diagram) = options.only_diagram.clone() {
+      // If a specific diagram is provided, load only its aliases
+      let mut diagrams = HashMap::new();
+      diagrams.insert(
+        diagram.diagram_type.clone().unwrap(),
+        vec![diagram.diagram_name.clone().unwrap()],
+      );
+      let diagram_aliases = extract_diagrams_aliases(&diagrams).await?;
+      if diagram_aliases.is_empty() {
+        // If no aliases are found for the given diagram, it means that the diagram no more exists or
+        // it has no elements (and therefore no aliases). In this case, remove any previously stored aliases
+        // for that diagram.
+        aliases.remove(&project_aliases_diagram_key(
+          &diagram.diagram_name.unwrap(),
+          &diagram.diagram_type.unwrap(),
+        ));
+      } else {
+        // Otherwise, replace the existing aliases for that diagram with the newly extracted ones (the extend()
+        // function overwrites existing keys).
+        aliases.extend(diagram_aliases);
+      }
+    } else {
+      // Otherwise, load all the diagrams. In this case we cannot simply extend the existing aliases
+      // with the newly extracted ones, because some diagrams could have been removed or renamed,
+      // therefore we need to replace all the existing diagram aliases with the newly extracted ones.
+      aliases.clear();
+      aliases.extend(extract_diagrams_aliases(&list_diagrams().await?).await?);
+    };
+  }
+
+  // ATTENTION: the order of extraction is important. The diagram aliases must be extracted
+  // before the library aliases, because during the extraction of the diagram aliases
+  // you could have cleaned all the aliases.
+  if !options.skip_lib_aliases || !options.skip_diagram_aliases && options.only_diagram.is_none() {
+    // Extract aliases from library elements
+    // In the case of the library it's always ok to merge the extracted aliases with the existing ones,
+    // even though you're loading only a specific type of element, because you'll always have
+    // in the in-memory state all the elements of the library, and the new ones will always replace the old ones.
+    aliases.extend(extract_library_aliases(
+      &list_library_elements(None).await?,
+      None,
+    ));
+  }
+
+  let saved_aliases = Some(aliases);
+
+  resolve_to_write!(store, ProjectAliasesIMDAO)
+    .await
+    .save(&saved_aliases)
+    .await;
+
+  return Ok(saved_aliases.unwrap());
 }
 
 /**
@@ -169,6 +259,12 @@ pub async fn unload_project(root: &str) -> Result<(), MinaError> {
     .await
     .unlock_all_files(true)?;
   resolve_to_write!(store, ProjectLibraryIMDAO)
+    .await
+    .save(&None)
+    .await;
+
+  // clean project aliases
+  resolve_to_write!(store, ProjectAliasesIMDAO)
     .await
     .save(&None)
     .await;

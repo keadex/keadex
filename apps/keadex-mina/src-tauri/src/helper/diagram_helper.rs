@@ -2,6 +2,7 @@
 Helper module which exports utilities for diagrams.
 */
 
+use crate::constants::diagram_constants::LEGEND_ALIAS;
 use crate::core::app::ROOT_RESOLVER;
 use crate::core::resolver::ResolvableModules::ProjectSettingsIMDAO;
 use crate::dao::filesystem::diagram::diagram_plantuml_dao::FILE_NAME as DIAGRAM_PLANTUML_FILE_NAME;
@@ -14,15 +15,21 @@ use crate::error_handling::errors::{
 };
 use crate::error_handling::mina_error::MinaError;
 use crate::helper::distribution_helper::dist_path;
+use crate::helper::project_helper::project_aliases_diagram_key;
+use crate::helper::relationship_helper::is_relationship_alias;
 use crate::model::c4_element::base_element::BaseElement;
 use crate::model::diagram::diagram_aggregated_details::DiagramAggregatedDetails;
 use crate::model::diagram::diagram_plantuml::{DiagramElementType, DiagramPlantUML};
 use crate::model::diagram::diagram_spec::DiagramSpec;
 use crate::model::diagram::Diagram;
 use crate::model::diagram::DiagramType;
+use crate::model::file_search_results::FileSearchCategory;
+use crate::model::project_alias::ProjectAlias;
 use crate::resolve_to_write;
+use crate::service::diagram_service::get_diagram;
 use base64::{engine::general_purpose::STANDARD, Engine as _};
 use convert_case::{Case, Casing};
+use std::collections::HashMap;
 use std::path::MAIN_SEPARATOR;
 use std::str::FromStr;
 use wasm_bindgen::prelude::wasm_bindgen;
@@ -242,14 +249,16 @@ pub async fn diagram_spec_path_from_name_type(
 Utility which extracts the aggregated details of a diagram.
 # Arguments
   * `elements` - Elements of the diagram
+  * `include_elements` - If you want to include the diagram elements (of each alias) in the aggregated details
 */
 pub fn extract_diagram_aggregated_details(
   elements: &Vec<DiagramElementType>,
+  include_elements: bool,
 ) -> DiagramAggregatedDetails {
   let mut aggregated_details = DiagramAggregatedDetails::default();
 
   // Explicitly add the legend since it is not coded into the PlantUML file
-  aggregated_details.aliases.push("legend".to_string());
+  aggregated_details.aliases.push(LEGEND_ALIAS.to_string());
 
   for element in elements.clone() {
     match element {
@@ -261,69 +270,124 @@ pub fn extract_diagram_aggregated_details(
         }
       }
       DiagramElementType::Person(person) => {
-        if let Some(alias) = person.base_data.alias {
-          aggregated_details.aliases.push(alias);
+        if let Some(alias) = &person.base_data.alias {
+          aggregated_details.aliases.push(alias.clone());
+
+          if include_elements {
+            aggregated_details
+              .elements
+              .insert(alias.clone(), DiagramElementType::Person(person));
+          }
         }
       }
       DiagramElementType::SoftwareSystem(software_system) => {
-        if let Some(alias) = software_system.base_data.alias {
-          aggregated_details.aliases.push(alias);
+        if let Some(alias) = &software_system.base_data.alias {
+          aggregated_details.aliases.push(alias.clone());
+
+          if include_elements {
+            aggregated_details.elements.insert(
+              alias.clone(),
+              DiagramElementType::SoftwareSystem(software_system),
+            );
+          }
         }
       }
       DiagramElementType::Container(container) => {
-        if let Some(alias) = container.base_data.alias {
-          aggregated_details.aliases.push(alias);
+        if let Some(alias) = &container.base_data.alias {
+          aggregated_details.aliases.push(alias.clone());
+
+          if include_elements {
+            aggregated_details
+              .elements
+              .insert(alias.clone(), DiagramElementType::Container(container));
+          }
         }
       }
       DiagramElementType::Component(component) => {
-        if let Some(alias) = component.base_data.alias {
-          aggregated_details.aliases.push(alias);
+        if let Some(alias) = &component.base_data.alias {
+          aggregated_details.aliases.push(alias.clone());
+
+          if include_elements {
+            aggregated_details
+              .elements
+              .insert(alias.clone(), DiagramElementType::Component(component));
+          }
         }
       }
       DiagramElementType::Boundary(boundary) => {
-        if let Some(alias) = boundary.base_data.alias {
-          aggregated_details.aliases.push(alias);
-        }
+        if let Some(alias) = &boundary.base_data.alias {
+          aggregated_details.aliases.push(alias.clone());
 
-        // remove the legend alias since it will be added again in the recursive call
-        let mut sub_aggregated_details = extract_diagram_aggregated_details(&boundary.sub_elements);
-        let pos_legend_result = sub_aggregated_details
-          .aliases
-          .iter()
-          .position(|r| r == "legend");
-        if let Some(pos_legend) = pos_legend_result {
-          sub_aggregated_details.aliases.remove(pos_legend);
-        }
-
-        aggregated_details
-          .aliases
-          .append(sub_aggregated_details.aliases.as_mut());
-        aggregated_details.tags.extend(sub_aggregated_details.tags);
-      }
-      DiagramElementType::DeploymentNode(deployment_node) => {
-        if let Some(alias) = deployment_node.base_data.alias {
-          aggregated_details.aliases.push(alias)
+          if include_elements {
+            aggregated_details.elements.insert(
+              alias.clone(),
+              DiagramElementType::Boundary(boundary.clone()),
+            );
+          }
         }
 
         // remove the legend alias since it will be added again in the recursive call
         let mut sub_aggregated_details =
-          extract_diagram_aggregated_details(&deployment_node.sub_elements);
+          extract_diagram_aggregated_details(&boundary.sub_elements, include_elements);
         let pos_legend_result = sub_aggregated_details
           .aliases
           .iter()
-          .position(|r| r == "legend");
+          .position(|r| r == LEGEND_ALIAS);
         if let Some(pos_legend) = pos_legend_result {
           sub_aggregated_details.aliases.remove(pos_legend);
         }
 
+        // Merge sub-aggregated details into main
         aggregated_details
           .aliases
           .append(sub_aggregated_details.aliases.as_mut());
+        aggregated_details
+          .elements
+          .extend(sub_aggregated_details.elements);
+        aggregated_details.tags.extend(sub_aggregated_details.tags);
+      }
+      DiagramElementType::DeploymentNode(deployment_node) => {
+        if let Some(alias) = &deployment_node.base_data.alias {
+          aggregated_details.aliases.push(alias.clone());
+
+          if include_elements {
+            aggregated_details.elements.insert(
+              alias.clone(),
+              DiagramElementType::DeploymentNode(deployment_node.clone()),
+            );
+          }
+        }
+
+        // remove the legend alias since it will be added again in the recursive call
+        let mut sub_aggregated_details =
+          extract_diagram_aggregated_details(&deployment_node.sub_elements, include_elements);
+        let pos_legend_result = sub_aggregated_details
+          .aliases
+          .iter()
+          .position(|r| r == LEGEND_ALIAS);
+        if let Some(pos_legend) = pos_legend_result {
+          sub_aggregated_details.aliases.remove(pos_legend);
+        }
+
+        // Merge sub-aggregated details into main
+        aggregated_details
+          .aliases
+          .append(sub_aggregated_details.aliases.as_mut());
+        aggregated_details
+          .elements
+          .extend(sub_aggregated_details.elements);
         aggregated_details.tags.extend(sub_aggregated_details.tags);
       }
       DiagramElementType::Relationship(relationship) => {
-        if let Some(alias) = relationship.base_data.alias {
-          aggregated_details.aliases.push(alias)
+        if let Some(alias) = &relationship.base_data.alias {
+          aggregated_details.aliases.push(alias.clone());
+
+          if include_elements {
+            aggregated_details.elements.insert(
+              alias.clone(),
+              DiagramElementType::Relationship(relationship.clone()),
+            );
+          }
         }
       }
       DiagramElementType::Include(_) => (),
@@ -333,11 +397,52 @@ pub fn extract_diagram_aggregated_details(
   aggregated_details
 }
 
+/**
+Utility which extracts from the diagrams the aliases.
+# Arguments
+  * `diagrams` - Project's diagrams
+*/
+pub async fn extract_diagrams_aliases(
+  diagrams: &HashMap<DiagramType, Vec<String>>,
+) -> Result<HashMap<String, Vec<ProjectAlias>>, MinaError> {
+  let mut aliases = HashMap::new();
+  for (diagram_type, diagram_names) in diagrams.iter() {
+    for diagram_human_name in diagram_names.iter() {
+      let diagram_result = get_diagram(diagram_human_name, diagram_type.clone()).await;
+      if diagram_result.is_ok() {
+        // Diagram successfully opened. So it still exists.
+        let diagram = diagram_result.unwrap();
+        let diagram_aggregated_details = extract_diagram_aggregated_details(
+          &diagram.diagram_plantuml.clone().unwrap().elements,
+          true,
+        );
+        aliases.insert(
+          project_aliases_diagram_key(diagram_human_name, diagram_type),
+          diagram_aggregated_details
+            .aliases
+            .iter()
+            .map(|alias| ProjectAlias {
+              alias: alias.clone(),
+              category: FileSearchCategory::Diagram,
+              element: diagram_aggregated_details.elements.get(alias).cloned(),
+            })
+            .filter(|project_alias| {
+              !is_relationship_alias(&project_alias.alias)
+                && project_alias.alias.to_string() != LEGEND_ALIAS
+            })
+            .collect(),
+        );
+      }
+    }
+  }
+  return Ok(aliases);
+}
+
 pub fn clean_diagram_specs(
   diagram_plantuml: &DiagramPlantUML,
   diagram_spec: &DiagramSpec,
 ) -> DiagramSpec {
-  let aliases = extract_diagram_aggregated_details(&diagram_plantuml.elements).aliases;
+  let aliases = extract_diagram_aggregated_details(&diagram_plantuml.elements, false).aliases;
 
   let cleaned_elements_specs = diagram_spec
     .clone()

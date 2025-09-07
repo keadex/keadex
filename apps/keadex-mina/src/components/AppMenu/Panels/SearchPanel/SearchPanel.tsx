@@ -36,9 +36,11 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
   const [searchValue, setSearchValue] = useState('')
   const [searchedValue, setSearchedValue] = useState('')
   const [searchResults, setSearchResults] = useState<FileSearchResults | null>()
+  const [renderedSearchResults, setRenderedSearchResults] =
+    useState<JSX.Element>(<></>)
   const context = useContext(AppEventContext)
 
-  function highlightResult(results: string): string {
+  function highlightResult(results: string, searchedValue: string): string {
     const regex = new RegExp(escapeStringRegexp(searchedValue), 'gi')
     return escape(results).replace(regex, (match) => {
       return `<span class='search-highlighted'>${escape(match)}</span>`
@@ -62,7 +64,10 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
     }
   }
 
-  function renderResults(): JSX.Element {
+  function renderResults(
+    searchedValue: string,
+    searchResults?: FileSearchResults,
+  ): JSX.Element {
     if (searchedValue.replace(/ /g, '').length > 0) {
       if (searchResults && Object.keys(searchResults.results).length > 0) {
         const result =
@@ -92,6 +97,7 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
               searchResults.results[filePath]
                 .map((result) => result.line_content)
                 .join('\n'),
+              searchedValue,
             ),
             parseHtmlBody: true,
             data: searchResults.results[filePath],
@@ -130,6 +136,7 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
         setIsSearching(false)
         setSearchedValue(searchValue)
         setSearchResults(results)
+        setRenderedSearchResults(renderResults(searchValue, results))
       })
     }
   }
@@ -145,6 +152,7 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
     setSearchValue('')
     setSearchedValue('')
     setSearchResults(null)
+    setRenderedSearchResults(<></>)
     // }
   }, [project])
 
@@ -178,7 +186,7 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
       </div>
 
       {/* ----- Results ----- */}
-      {renderResults()}
+      {renderedSearchResults}
     </div>
   )
 })

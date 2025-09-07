@@ -38,6 +38,9 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
 
+      - name: install Rust nightly (for Mina Live)
+        uses: dtolnay/rust-toolchain@nightly
+
       - name: install dependencies (ubuntu only)
         run: |
           sudo apt-get update

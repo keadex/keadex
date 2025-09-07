@@ -43,7 +43,9 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "libs/mina-live",
-        "commands": ["yarn wasm-pack build ./src-rust --target bundler"],
+        "commands": [
+          "cross-env RUSTFLAGS=\"-C target-feature=+atomics,+bulk-memory,+mutable-globals\" RUSTUP_TOOLCHAIN=\"nightly\" wasm-pack build ./src-rust --target web -- -Z build-std=std,panic_abort"
+        ],
         "parallel": false
       }
     },

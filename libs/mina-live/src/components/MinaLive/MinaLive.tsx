@@ -1,6 +1,12 @@
 'use client'
 
-import '../../tauri/tauri-web-adapter'
+import AppEventContext, {
+  AppEvent,
+} from '@keadex/keadex-mina/src/context/AppEventContext'
+import { router } from '@keadex/keadex-mina/src/core/router/router'
+import store from '@keadex/keadex-mina/src/core/store/store'
+import initi18n from '@keadex/keadex-mina/src/i18n'
+import '@keadex/keadex-mina/src/styles/index.css'
 import useEventEmitter from 'ahooks/lib/useEventEmitter'
 import React, { useEffect, useRef } from 'react'
 import { Provider } from 'react-redux'
@@ -14,16 +20,10 @@ import {
   Select,
   initTE,
 } from 'tw-elements'
-import AppEventContext, {
-  AppEvent,
-} from '@keadex/keadex-mina/src/context/AppEventContext'
-import { router } from '@keadex/keadex-mina/src/core/router/router'
-import store from '@keadex/keadex-mina/src/core/store/store'
-import initi18n from '@keadex/keadex-mina/src/i18n'
-import '@keadex/keadex-mina/src/styles/index.css'
-import { init_app } from '../../../src-rust/pkg'
+import '../../tauri/tauri-web-adapter'
 import { useForceUpdate } from '@keadex/keadex-ui-kit/cross'
 import { initConsole } from '@keadex/keadex-utils'
+import init from '../../../src-rust/pkg'
 
 initConsole()
 
@@ -34,34 +34,47 @@ initi18n({
 })
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export type MinaLiveProps = {}
+export type MinaLiveProps = {
+  scriptPath: string
+}
 
-export const MinaLive = React.memo<MinaLiveProps>((props) => {
+export const MinaLive = React.memo<MinaLiveProps>(({ scriptPath }) => {
   // minaAppInitialized must be a ref since we have to be sure of initializing the Rust Mina app
   // only once. Initializing it multiple times will throw an error due to some Rust dependencies.
   const minaAppInitialized = useRef(false)
   const teInitialized = useRef(false)
+  const wasmInitialized = useRef(false)
   const event$ = useEventEmitter<AppEvent>()
   const { forceUpdate } = useForceUpdate()
 
   useEffect(() => {
-    // setTimeout() needed due to tw-elements@1.0.0-beta2 bug:
-    //  - https://github.com/mdbootstrap/Tailwind-Elements/issues/1615
-    //  - https://github.com/mdbootstrap/Tailwind-Elements/issues/1685
-    setTimeout(() => {
-      if (!teInitialized.current) {
-        console.debug(`Tailwind Elements initialized`)
-        initTE({ Dropdown, Button, Modal, Input, Select, Collapse })
-      }
-      teInitialized.current = true
-    }, 1000)
+    if (!wasmInitialized.current) {
+      wasmInitialized.current = true
+      init()
+        .then((wasmModule) => {
+          console.debug(`Wasm module loaded`)
+          // setTimeout() needed due to tw-elements@1.0.0-beta2 bug:
+          //  - https://github.com/mdbootstrap/Tailwind-Elements/issues/1615
+          //  - https://github.com/mdbootstrap/Tailwind-Elements/issues/1685
+          setTimeout(() => {
+            if (!teInitialized.current) {
+              console.debug(`Tailwind Elements initialized`)
+              initTE({ Dropdown, Button, Modal, Input, Select, Collapse })
+            }
+            teInitialized.current = true
+          }, 1000)
 
-    if (!minaAppInitialized.current) {
-      init_app()
-      console.debug(`Mina app initialized`)
-      forceUpdate()
+          if (!minaAppInitialized.current) {
+            wasmModule?.init_app(scriptPath)
+            console.debug(`Mina app initialized`)
+            forceUpdate()
+          }
+          minaAppInitialized.current = true
+        })
+        .catch((error) => {
+          console.error(`Error loading Wasm module:`, error)
+        })
     }
-    minaAppInitialized.current = true
   }, [])
 
   return (

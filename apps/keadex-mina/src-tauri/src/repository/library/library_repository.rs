@@ -5,6 +5,7 @@ Under the hood it uses DAOs.
 */
 
 use crate::core::app::ROOT_RESOLVER;
+use crate::core::project_initializer::load_project_aliases;
 use crate::core::resolver::ResolvableModules::ProjectLibraryIMDAO;
 use crate::dao::inmemory::InMemoryDAO;
 use crate::error_handling::errors::{
@@ -15,6 +16,7 @@ use crate::helper::diagram_helper::clean_plantuml_diagram_element;
 use crate::model::c4_element::C4Elements;
 use crate::model::diagram::diagram_plantuml::{serialize_elements_to_plantuml, DiagramElementType};
 use crate::model::diagram::{C4ElementType, DiagramType};
+use crate::model::load_project_aliases_opts::LoadProjectAliasesOpts;
 use crate::model::project_library::ProjectLibrary;
 use crate::repository::library::{
   component_repository, container_repository, person_repository, software_system_repository,
@@ -81,6 +83,7 @@ pub async fn create_element(
     msg: EXISTING_LIB_ELEMENT_ERROR_MSG.to_string(),
   };
 
+  let result;
   // Create the element
   match diagram_element {
     DiagramElementType::Person(person) => {
@@ -88,9 +91,9 @@ pub async fn create_element(
         .await
         .is_ok_and(|result| result.is_some())
       {
-        return Err(error_existing_element);
+        result = Err(error_existing_element);
       } else {
-        return Ok(person_repository::create_person(person.clone()).await?);
+        result = Ok(person_repository::create_person(person.clone()).await?);
       }
     }
     DiagramElementType::SoftwareSystem(software_system) => {
@@ -98,11 +101,10 @@ pub async fn create_element(
         .await
         .is_ok_and(|result| result.is_some())
       {
-        return Err(error_existing_element);
+        result = Err(error_existing_element);
       } else {
-        return Ok(
-          software_system_repository::create_software_system(software_system.clone()).await?,
-        );
+        result =
+          Ok(software_system_repository::create_software_system(software_system.clone()).await?);
       }
     }
     DiagramElementType::Container(container) => {
@@ -110,9 +112,9 @@ pub async fn create_element(
         .await
         .is_ok_and(|result| result.is_some())
       {
-        return Err(error_existing_element);
+        result = Err(error_existing_element);
       } else {
-        return Ok(container_repository::create_container(container.clone()).await?);
+        result = Ok(container_repository::create_container(container.clone()).await?);
       }
     }
     DiagramElementType::Component(component) => {
@@ -120,18 +122,24 @@ pub async fn create_element(
         .await
         .is_ok_and(|result| result.is_some())
       {
-        return Err(error_existing_element);
+        result = Err(error_existing_element);
       } else {
-        return Ok(component_repository::create_component(component.clone()).await?);
+        result = Ok(component_repository::create_component(component.clone()).await?);
       }
     }
-    DiagramElementType::Boundary(_) => return Err(error),
-    DiagramElementType::DeploymentNode(_) => return Err(error),
-    DiagramElementType::Include(_) => return Err(error),
-    DiagramElementType::Comment(_) => return Err(error),
-    DiagramElementType::AddElementTag(_) => return Err(error),
-    DiagramElementType::Relationship(_) => return Err(error),
+    DiagramElementType::Boundary(_) => result = Err(error),
+    DiagramElementType::DeploymentNode(_) => result = Err(error),
+    DiagramElementType::Include(_) => result = Err(error),
+    DiagramElementType::Comment(_) => result = Err(error),
+    DiagramElementType::AddElementTag(_) => result = Err(error),
+    DiagramElementType::Relationship(_) => result = Err(error),
   };
+
+  if result.is_ok() {
+    let _ = load_project_aliases(LoadProjectAliasesOpts::new(false, true, None, None)).await?;
+  }
+
+  return result;
 }
 
 /**
@@ -187,8 +195,16 @@ pub async fn update_element(
       &vec![new_diagram_element.clone()],
       0,
     ))?;
-    let _ =
-      search_and_replace_text(&cleaned_old_plantuml, &cleaned_new_plantuml, true, false).await?;
+    let _ = search_and_replace_text(
+      cleaned_old_plantuml,
+      cleaned_new_plantuml,
+      true,
+      false,
+      true,
+    )
+    .await?;
+
+    let _ = load_project_aliases(LoadProjectAliasesOpts::new(false, true, None, None)).await?;
   }
 
   return result;
@@ -216,6 +232,8 @@ pub async fn delete_element_by_uuid(
     C4ElementType::Container => container_repository::delete_element_by_uuid(uuid_element).await?,
     C4ElementType::Component => component_repository::delete_element_by_uuid(uuid_element).await?,
   };
+
+  let _ = load_project_aliases(LoadProjectAliasesOpts::new(false, true, None, None)).await?;
 
   let store = ROOT_RESOLVER.get().read().await;
   let result = resolve_to_write!(store, ProjectLibraryIMDAO)

@@ -1,25 +1,24 @@
-use std::collections::HashSet;
-
+use crate::core::app::ROOT_RESOLVER;
+use crate::core::resolver::ResolvableModules::ProjectAliasesIMDAO;
 use crate::core::serializer::deserialize_plantuml_by_string;
+use crate::dao::inmemory::InMemoryDAO;
 use crate::error_handling::errors::{
   DUPLICATED_ALIASES_IN_DIAGRAM_ERROR_CODE, DUPLICATED_ALIASES_IN_PROJECT_ERROR_CODE,
 };
 use crate::error_handling::mina_error::MinaError;
 use crate::helper::diagram_helper::{
-  diagram_name_type_from_path, diagram_to_link_string, extract_diagram_aggregated_details,
+  clean_plantuml_diagram_element, extract_diagram_aggregated_details,
 };
-use crate::helper::library_helper::element_type_from_path;
+use crate::helper::project_helper::project_aliases_diagram_key;
 use crate::model::c4_element::relationship::RelationshipType;
 use crate::model::diagram::diagram_plantuml::{
   serialize_elements_to_plantuml, DiagramElementType, DiagramPlantUML,
 };
 use crate::model::diagram::Diagram;
 use crate::model::diagram::DiagramType;
-use crate::model::file_search_results::FileSearchCategory;
 use crate::repository::diagram_repository::{close_diagram, open_diagram};
-use crate::service::search_service::search_diagram_element;
-use convert_case::Case::Lower;
-use convert_case::Casing;
+use crate::resolve_to_write;
+use std::collections::HashSet;
 
 /**
 Returns the data of a diagram.
@@ -72,7 +71,7 @@ Returns an error if the diagram contains duplicated aliases.
 pub fn check_in_diagram_elements_aliases(
   diagram_plantuml_elements: &Vec<DiagramElementType>,
 ) -> Result<(), MinaError> {
-  let aliases = extract_diagram_aggregated_details(&diagram_plantuml_elements).aliases;
+  let aliases = extract_diagram_aggregated_details(&diagram_plantuml_elements, false).aliases;
   let mut map_aliases: HashSet<String> = HashSet::new();
   for alias in aliases {
     let added = map_aliases.insert(alias.clone());
@@ -102,8 +101,28 @@ pub async fn check_cross_diagrams_elements_aliases(
   diagram_name: Option<&str>,
   diagram_type: Option<&DiagramType>,
 ) -> Result<(), MinaError> {
-  for element in diagram_plantuml_elements.clone() {
-    let plantuml_diagram_elem_to_check = serialize_elements_to_plantuml(&vec![element.clone()], 0);
+  let diagram_key_to_check =
+    if let (Some(diag_name_to_check), Some(diag_type_to_check)) = (diagram_name, diagram_type) {
+      Some(project_aliases_diagram_key(
+        diag_name_to_check,
+        diag_type_to_check,
+      ))
+    } else {
+      None
+    };
+
+  let store = ROOT_RESOLVER.get().read().await;
+  let aliases = resolve_to_write!(store, ProjectAliasesIMDAO)
+    .await
+    .get()
+    .await
+    .unwrap();
+
+  let mut partial_paths_found = vec![];
+  for element in diagram_plantuml_elements {
+    let plantuml_diagram_element = serialize_elements_to_plantuml(&vec![element.clone()], 0);
+    let cleaned_plantuml_diagram_element =
+      clean_plantuml_diagram_element(&plantuml_diagram_element)?;
 
     // Exclude from the check relationships, boundaries, deployment nodes,
     // includes and comments since those are not architectural elements or elements
@@ -113,23 +132,23 @@ pub async fn check_cross_diagrams_elements_aliases(
     let mut alias_to_check: Option<String> = None;
     match element {
       DiagramElementType::Person(person) => {
-        alias_to_check = person.base_data.alias;
+        alias_to_check = person.base_data.alias.clone();
         should_check = true;
       }
       DiagramElementType::SoftwareSystem(software_system) => {
-        alias_to_check = software_system.base_data.alias;
+        alias_to_check = software_system.base_data.alias.clone();
         should_check = true;
       }
       DiagramElementType::Container(container) => {
-        alias_to_check = container.base_data.alias;
+        alias_to_check = container.base_data.alias.clone();
         should_check = true;
       }
       DiagramElementType::Component(component) => {
-        alias_to_check = component.base_data.alias;
+        alias_to_check = component.base_data.alias.clone();
         should_check = true;
       }
       DiagramElementType::Boundary(boundary) => {
-        alias_to_check = boundary.base_data.alias;
+        alias_to_check = boundary.base_data.alias.clone();
         should_check = true;
         Box::pin(check_cross_diagrams_elements_aliases(
           &boundary.sub_elements,
@@ -139,7 +158,7 @@ pub async fn check_cross_diagrams_elements_aliases(
         .await?;
       }
       DiagramElementType::DeploymentNode(deployment_node) => {
-        alias_to_check = deployment_node.base_data.alias;
+        alias_to_check = deployment_node.base_data.alias.clone();
         should_check = true;
         Box::pin(check_cross_diagrams_elements_aliases(
           &deployment_node.sub_elements,
@@ -155,44 +174,45 @@ pub async fn check_cross_diagrams_elements_aliases(
     }
     if should_check {
       if let Some(alias) = alias_to_check {
-        let search_diagram_elemen_result = search_diagram_element(
-          &alias,
-          &plantuml_diagram_elem_to_check,
-          true,
-          true,
-          usize::MAX,
-        )
-        .await?;
-        let mut partial_paths_found = vec![];
-        for (path, search_results) in search_diagram_elemen_result.results {
-          for seach_result in search_results {
-            if seach_result.partial_match {
-              if seach_result.category == FileSearchCategory::Diagram {
-                let (found_diagram_name, found_diagram_type) =
-                  diagram_name_type_from_path(&path).await?;
-                if diagram_name.is_none()
-                  || diagram_type.is_none()
-                  || diagram_name.is_some_and(|diagram_name_value| {
-                    found_diagram_name != diagram_name_value.to_string()
-                  })
-                  || diagram_type
-                    .is_some_and(|diagram_type_value| found_diagram_type != *diagram_type_value)
-                {
-                  partial_paths_found.push(format!(
-                    "diagrams/{}",
-                    diagram_to_link_string(&found_diagram_name, &found_diagram_type)?
-                  ));
+        for project_aliases in aliases.clone() {
+          // Skip checking the diagram being validated
+          // diagram_key_to_check is None when validating a library element
+          if diagram_key_to_check
+            .clone()
+            .is_none_or(|key| key != project_aliases.0)
+          {
+            for project_alias in project_aliases.1 {
+              if project_alias.alias == alias {
+                if let Some(stored_element) = project_alias.element {
+                  let plantuml_stored_diagram_element =
+                    serialize_elements_to_plantuml(&vec![stored_element.clone()], 0);
+                  let cleaned_plantuml_stored_diagram_element =
+                    clean_plantuml_diagram_element(&plantuml_stored_diagram_element)?;
+
+                  // Check if the stored element (corresponding to the alias to check) matches exactly
+                  // the PlantUML of the element to check.
+                  // If it does not match, this means the alias has been used for another diagram element, which is prohibited.
+                  //
+                  // In theory, you should check if the two strings are equal. But by doing so, elements
+                  // with nested elements will be excluded:
+                  //    - cleaned_plantuml_diagram_element:
+                  //        "System_Boundary(boundary, "boundary") {
+                  //
+                  //         }"
+                  //    - cleaned_plantuml_stored_diagram_element:
+                  //        "System_Boundary(boundary, "boundary") {"
+                  //    - cleaned_plantuml_diagram_element !== cleaned_plantuml_stored_diagram_element
+                  //
+                  // By using the "starts with" condition you cover also this case.
+                  //    - cleaned_plantuml_diagram_element starts with cleaned_plantuml_stored_diagram_element
+                  if !cleaned_plantuml_diagram_element
+                    .starts_with(&cleaned_plantuml_stored_diagram_element)
+                  {
+                    partial_paths_found.push(project_aliases.0.clone());
+                    break;
+                  }
                 }
-              } else if seach_result.category == FileSearchCategory::Library {
-                partial_paths_found.push(format!(
-                  "library/{}s",
-                  element_type_from_path(&path)
-                    .await?
-                    .to_string()
-                    .to_case(Lower)
-                ));
               }
-              break;
             }
           }
         }

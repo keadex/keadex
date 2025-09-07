@@ -17,13 +17,13 @@ use crate::model::diagram_element_search_results::DiagramElementSearchResult;
 use crate::model::diagram_element_search_results::DiagramElementSearchResults;
 use crate::model::file_search_results::FileSearchCategory;
 use crate::model::file_search_results::{FileSearchResult, FileSearchResults};
+use crate::multithreading::parallel_executor::MinaFuture;
 use crate::repository::library::library_repository::search_library_element;
 use crate::resolve_to_write;
 use async_std::sync::Arc;
 use async_std::sync::RwLock;
 use futures::future::join_all;
 use std::collections::BTreeMap;
-use std::future::Future;
 use std::io::BufRead;
 use std::path::Path;
 use std::usize;
@@ -54,7 +54,7 @@ Checks if the given entry (directory or file) is searchable.
   * `diagrams_dir` - Path of the diagrams directory.
   * `library_dir`- Path of the project library directory.
 */
-fn is_searchable_entry(
+pub fn is_searchable_entry(
   entry: &CrossPathBuf,
   root_dir: &str,
   include_diagrams_dir: bool,
@@ -93,7 +93,7 @@ pub async fn search_in_project<F, Fut>(
 ) -> Result<bool, MinaError>
 where
   F: FnMut(String, usize, String, String, String) -> Fut,
-  Fut: Future<Output = Result<bool, MinaError>>,
+  Fut: MinaFuture,
 {
   let max_concurrent_predicates: usize = 10000;
 
@@ -228,14 +228,20 @@ Searches for the given text in the project's files and replace it with the given
   * `replacement` - Replacement.
   * `include_diagrams` - If you want to include the diagrams directory in the search.
   * `include_library` - If you want to include the library directory in the search.
+  * `clean_plantuml` - If true, the PlantUML will be cleaned before searching and replacing.
 */
 pub async fn search_and_replace_text(
-  text_to_search: &str,
-  replacement: &str,
+  text_to_search_in: String,
+  replacement_in: String,
   include_diagrams: bool,
   include_library: bool,
+  clean_plantuml: bool,
 ) -> Result<FileSearchResults, MinaError> {
-  log::debug!("Search {} and replace with {}", text_to_search, replacement);
+  log::debug!(
+    "Search {} and replace with {}",
+    text_to_search_in,
+    replacement_in
+  );
 
   let current_path_rc = Arc::new(RwLock::new(String::from("")));
   let updated_content_opt_rc = Arc::new(RwLock::<Option<String>>::new(None));
@@ -249,6 +255,14 @@ pub async fn search_and_replace_text(
       let updated_content_opt = Arc::clone(&updated_content_opt_rc);
       let new_line = Arc::clone(&new_line_rc);
       let results = Arc::clone(&results_rc);
+      let text_to_search = text_to_search_in.clone();
+      let replacement = replacement_in.clone();
+      let cleaned_line = if clean_plantuml {
+        clean_plantuml_diagram_element(&line).unwrap()
+      } else {
+        line.clone()
+      };
+
       async move {
         if !current_path.read().await.eq(&path) {
           let store = ROOT_RESOLVER.get().read().await;
@@ -279,8 +293,8 @@ pub async fn search_and_replace_text(
 
         let mut is_found = Ok(false);
         if updated_content_opt.read().await.is_some() {
-          if line.eq(&text_to_search) {
-            *new_line.write().await = replacement.to_string();
+          if cleaned_line.eq(&text_to_search) {
+            *new_line.write().await = line.replace(&cleaned_line, &replacement.to_string());
             is_found = Ok(true);
 
             results
@@ -357,7 +371,7 @@ Searches for the given text in the project's files.
   * `limit` - Limit of the returned results.
 */
 pub async fn search_text(
-  text_to_search: &str,
+  text_to_search_in: String,
   include_diagrams: bool,
   include_library: bool,
   limit: usize,
@@ -367,6 +381,7 @@ pub async fn search_text(
     true,
     |line, line_num, path, diagrams_directory, library_directory| {
       let results = Arc::clone(&results_rc);
+      let text_to_search = text_to_search_in.clone();
       async move {
         if line.to_lowercase().contains(&text_to_search.to_lowercase()) {
           if results.read().await.len() <= limit {

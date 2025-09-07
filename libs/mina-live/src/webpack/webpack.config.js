@@ -35,6 +35,12 @@ function withMinaLiveWebpackConfig(options) {
           },
         },
         {
+          from: `${minaLiveRoot}/mina_live_worker_wasm.js`,
+          to({ context, absoluteFilename }) {
+            return 'static/js/[name][ext]'
+          },
+        },
+        {
           from: `${minaLiveRoot}/static/keadex-mina/locales`,
           to({ context, absoluteFilename }) {
             return '_next/static/keadex-mina/locales'
@@ -73,6 +79,12 @@ function withMinaLiveWebpackConfig(options) {
       patterns.push(
         {
           from: `${minaLiveRoot}/*.wasm`,
+          to({ context, absoluteFilename }) {
+            return 'static/chunks/[name][ext]'
+          },
+        },
+        {
+          from: `${minaLiveRoot}/mina_live_worker_wasm.js`,
           to({ context, absoluteFilename }) {
             return 'static/chunks/[name][ext]'
           },

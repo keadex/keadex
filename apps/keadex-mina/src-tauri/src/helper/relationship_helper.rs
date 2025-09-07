@@ -8,3 +8,12 @@ generates an alias also for a relationship. In this way, all C4 model elements h
 pub fn generate_relationship_alias(alias_from: &str, alias_to: &str) -> String {
   format!("{} -> {}", alias_from, alias_to)
 }
+
+/**
+Check if the given alias is a relationship alias.
+# Arguments
+  * `alias` - Alias to check
+*/
+pub fn is_relationship_alias(alias: &str) -> bool {
+  alias.contains(" -> ")
+}

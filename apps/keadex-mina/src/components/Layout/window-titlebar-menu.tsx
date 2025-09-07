@@ -49,7 +49,8 @@ const factory: WindowTitlebarMenuFactory<
   data: WindowTitlebarMenuFactoryData,
 ): DropdownMenuProps => {
   const openProject = (path: string) => {
-    // The Window titlebar is not available on the web version, so it's ok to always not passing the dir handle
+    // The "open project" button is not available in the web version of the window titlebar,
+    // so it's ok to always not pass the dir handle
     openProjectAPI(path, undefined)
       .then((project) => {
         data.dispatch(openProjectEvent(project))

@@ -1,6 +1,6 @@
 [package]
 name = "keadex_mina"
-version = "2.5.1"
+version = "2.7.0"
 description = "Desktop application to draw, manage and share the architectures of software systems."
 authors = ["Keadex"]
 license = "MIT"
@@ -50,6 +50,11 @@ fancy-regex = "0.13.0"
 layout-rs = { version = "0.1.2", features = [] }
 js-sys = "0.3"
 web-sys = { version = "0.3", features = [
+  'Blob',
+  "BlobPropertyBag",
+  "console",
+  'DedicatedWorkerGlobalScope',
+  'ErrorEvent',
   "File",
   "FileReader",
   "FileSystemDirectoryHandle",
@@ -60,7 +65,12 @@ web-sys = { version = "0.3", features = [
   "FileSystemHandleKind",
   "FileSystemRemoveOptions",
   "FileSystemCreateWritableOptions",
-  "console",
+  'MessageEvent',
+  'Url',
+  'Window',
+  'Worker',
+  'WorkerOptions',
+  'WorkerType',
 ], optional = true }
 wasm-bindgen-futures = {version = "0.4", optional = true}
 console_log = {version = "1", optional = true}

@@ -85,7 +85,7 @@ impl WebFile {
     if self.append {
       JsFuture::from(writable_stream.seek_with_f64(file.size())?).await?;
     }
-    JsFuture::from(writable_stream.write_with_u8_array(data)?).await?;
+    JsFuture::from(writable_stream.write_with_js_u8_array(&Uint8Array::from(data))?).await?;
     JsFuture::from(writable_stream.close()).await?;
     Ok(())
   }

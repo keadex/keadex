@@ -87,6 +87,7 @@
     "monaco-editor": "^0.44.0",
     "pluralize": "^8.0.0",
     "react-color": "^2.19.3",
+    "react-error-boundary": "^6.0.0",
     "react-ga4": "^2.1.0",
     "react-hotkeys-hook": "^4.4.1",
     "react-html-parser": "^2.0.2",

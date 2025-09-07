@@ -14,6 +14,7 @@ use crate::dao::filesystem::library::container_dao::ContainerDAO as ContainerFsD
 use crate::dao::filesystem::library::person_dao::PersonDAO as PersonFsDAO;
 use crate::dao::filesystem::library::software_system_dao::SoftwareSystemDAO as SoftwareSystemFsDAO;
 use crate::dao::filesystem::project_settings_dao::ProjectSettingsDAO as ProjectSettingsFsDAO;
+use crate::dao::inmemory::project_aliases_dao::ProjectAliasesDAO as ProjectAliasesIMDAO;
 use crate::dao::inmemory::project_library_dao::ProejctLibraryDAO as ProjectLibraryIMDAO;
 use crate::dao::inmemory::project_settings_dao::ProjectSettingsDAO as ProjectSettingsIMDAO;
 use async_std::sync::RwLock;
@@ -66,6 +67,7 @@ pub enum ResolvableModules {
   PersonFsDAO(Resolver<PersonFsDAO>),
   SoftwareSystemFsDAO(Resolver<SoftwareSystemFsDAO>),
   ProjectLibraryIMDAO(Resolver<ProjectLibraryIMDAO>),
+  ProjectAliasesIMDAO(Resolver<ProjectAliasesIMDAO>),
   #[cfg(desktop)]
   FileSystemAPI(Resolver<NativeFileSystemAPI>),
   #[cfg(web)]
@@ -120,6 +122,10 @@ impl Default for RootResolver {
     resolvers.insert(
       stringify!(ProjectLibraryIMDAO).to_string(),
       ResolvableModules::ProjectLibraryIMDAO(Default::default()),
+    );
+    resolvers.insert(
+      stringify!(ProjectAliasesIMDAO).to_string(),
+      ResolvableModules::ProjectAliasesIMDAO(Default::default()),
     );
     resolvers.insert(
       stringify!(DiagramSpecFsDAO).to_string(),

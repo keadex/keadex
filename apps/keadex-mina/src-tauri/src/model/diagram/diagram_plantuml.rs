@@ -98,12 +98,12 @@ impl<'i> TryFrom<Pair<'i, Rule>> for DiagramPlantUML {
         _ => {}
       }
     }
-    let aggregated_detials = extract_diagram_aggregated_details(&elements);
+    let aggregated_details = extract_diagram_aggregated_details(&elements, false);
     Ok(Self {
       diagram_id,
       elements,
-      aliases: aggregated_detials.aliases,
-      tags: aggregated_detials.tags,
+      aliases: aggregated_details.aliases,
+      tags: aggregated_details.tags,
     })
   }
 }
