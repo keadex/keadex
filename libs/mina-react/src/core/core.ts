@@ -1,9 +1,10 @@
-import { Diagram } from '@keadex/c4-model-ui-kit'
+import { Diagram, DiagramsThemeSettings } from '@keadex/c4-model-ui-kit'
 import {
   diagram_plantuml_url_from_diagram_url,
   diagram_spec_url_from_diagram_url,
   project_settings_url,
   open_remote_diagram,
+  ProjectSettings,
 } from '../../src-rust/pkg'
 
 export async function fetchGhRawFile(url: string, ghToken?: string) {
@@ -90,11 +91,14 @@ export async function downloadDiagramData(
   }
 }
 
-export async function openRemoteDiagram(
+export async function openRemoteProjectDiagram(
   projectRootUrl: string,
   diagramUrl: string,
   ghToken?: string,
-): Promise<Diagram | undefined> {
+): Promise<
+  | { diagram: Diagram; diagramsThemeSettings?: DiagramsThemeSettings }
+  | undefined
+> {
   try {
     const diagramData = await downloadDiagramData(
       projectRootUrl,
@@ -102,12 +106,16 @@ export async function openRemoteDiagram(
       ghToken,
     )
     if (diagramData) {
-      return (await open_remote_diagram(
+      let diagram = (await open_remote_diagram(
         projectRootUrl,
         diagramUrl,
         diagramData.plantuml,
         diagramData.spec,
       )) as Diagram
+      let diagramsThemeSettings = (
+        JSON.parse(diagramData.projectSettingsJson) as ProjectSettings
+      ).themes_settings?.diagrams_theme_settings
+      return { diagram, diagramsThemeSettings }
     }
   } catch (e) {
     console.error(e)
@@ -117,5 +125,5 @@ export async function openRemoteDiagram(
 export default {
   fetchGhRawFile,
   downloadDiagramData,
-  openRemoteDiagram,
+  openRemoteProjectDiagram,
 }

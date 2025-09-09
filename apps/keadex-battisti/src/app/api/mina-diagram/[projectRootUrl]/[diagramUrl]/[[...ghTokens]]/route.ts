@@ -88,20 +88,30 @@ export async function GET(
     return originalReadFile(patchedPath, maybeCallback)
   }
 
-  const openRemoteDiagram = (await import('@keadex/mina-react-npm/core'))
-    .openRemoteDiagram
+  const openRemoteProjectDiagram = (await import('@keadex/mina-react-npm/core'))
+    .openRemoteProjectDiagram
 
   // Restore original readFile function after having successfully loaded the wasm file
   ;(fs as any).readFile = originalReadFile
 
-  const diagram = await openRemoteDiagram(projectRootUrl, diagramUrl, ghToken)
-  if (diagram) {
-    if (diagram.diagram_spec?.grid_enabled) {
-      diagram.diagram_spec.grid_enabled = false
+  const projectDiagram = await openRemoteProjectDiagram(
+    projectRootUrl,
+    diagramUrl,
+    ghToken,
+  )
+  if (projectDiagram) {
+    if (projectDiagram.diagram.diagram_spec?.grid_enabled) {
+      // Always disable grid for SSR rendering
+      projectDiagram.diagram.diagram_spec.grid_enabled = false
     }
     const canvas = new KeadexCanvas(null)
     registerFonts()
-    diagramRenderer.renderDiagram(canvas, listener, diagram, undefined)
+    diagramRenderer.renderDiagram(
+      canvas,
+      listener,
+      projectDiagram.diagram,
+      projectDiagram.diagramsThemeSettings,
+    )
 
     // Set canvas size to fit content
     const objects = canvas.getObjects()
