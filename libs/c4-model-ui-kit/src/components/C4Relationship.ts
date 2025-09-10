@@ -8,8 +8,6 @@ import { fabric } from 'fabric'
 import { IEvent } from 'fabric/fabric-impl'
 import { OBJECT_EVENTS } from '../constants/fabric-events'
 import {
-  filterVirtualGroups,
-  flatVirtualGroupChildren,
   getCanvasPan,
   getNewSelectedObjects,
   getZIndexOfObject,

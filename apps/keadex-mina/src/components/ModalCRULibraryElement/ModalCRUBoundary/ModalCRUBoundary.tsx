@@ -1,7 +1,13 @@
-import { BOUNDARY_TYPES, Boundary, BoundaryType } from '@keadex/c4-model-ui-kit'
+import {
+  BOUNDARY_TYPES,
+  Boundary,
+  BoundaryType,
+  parseTags,
+} from '@keadex/c4-model-ui-kit'
 import {
   Input,
   Select,
+  TagsInput,
   Textarea,
   renderButtons,
 } from '@keadex/keadex-ui-kit/cross'
@@ -10,7 +16,10 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { ALIAS_REGEX, NAME_REGEX } from '../../../constants/regex'
-import { ModalCRULibraryElementProps } from '../ModalCRULibraryElements'
+import {
+  ModalCRULibraryElementProps,
+  onTagsChanged,
+} from '../ModalCRULibraryElements'
 import DiagramLinker from '../../DiagramLinker/DiagramLinker'
 
 const emptyBoundary: Boundary = {
@@ -110,6 +119,21 @@ export const ModalCRUBoundary = (props: ModalCRULibraryElementProps) => {
               boundary_type: e.target.value as BoundaryType,
             })
           }
+        />
+        <TagsInput
+          id="modal-cru-boundary-tags"
+          disabled={!props.enableEdit}
+          className="mt-6 cursor-text"
+          label={t('common.tags')}
+          tags={parseTags(newBoundary.base_data.tags) ?? []}
+          settings={{
+            callbacks: {
+              add: (e) => onTagsChanged(e, setNewBoundary),
+              remove: (e) => onTagsChanged(e, setNewBoundary),
+            },
+            maxTags: 5,
+            editTags: false,
+          }}
         />
         <DiagramLinker
           hideButtons

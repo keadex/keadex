@@ -212,7 +212,7 @@ function serializeGraph(
         graph = graph.concat(
           `\n"${relationship.from}" -> "${relationship.to}" [name="${
             relationship.base_data.alias
-          }", label="${longerString([
+          }", xlabel="${longerString([
             relationship.base_data.label ?? '',
             relationship.technology ?? '',
           ])}", ltail="${relationship.from}", lhead="${

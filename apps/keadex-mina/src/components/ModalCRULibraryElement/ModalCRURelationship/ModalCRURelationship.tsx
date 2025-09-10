@@ -4,12 +4,14 @@ import {
   RelationshipType,
   isLegendAlias,
   isRelationshipAlias,
+  parseTags,
 } from '@keadex/c4-model-ui-kit'
 import {
   Autocomplete,
   AutocompleteOption,
   Input,
   Select,
+  TagsInput,
   Textarea,
   renderButtons,
 } from '@keadex/keadex-ui-kit/cross'
@@ -17,8 +19,16 @@ import { capitalCase, noCase } from 'change-case'
 import { useEffect, useState, SetStateAction, Dispatch } from 'react'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
-import { ModalCRULibraryElementProps } from '../ModalCRULibraryElements'
-import { ALIAS_REGEX, NAME_REGEX } from '../../../constants/regex'
+import {
+  ModalCRULibraryElementProps,
+  normalizeLibraryElement,
+  onTagsChanged,
+} from '../ModalCRULibraryElements'
+import {
+  ALIAS_REGEX,
+  NAME_EXTENDED_REGEX,
+  NAME_REGEX,
+} from '../../../constants/regex'
 
 const emptyRelationship: Relationship = {
   base_data: {
@@ -95,8 +105,7 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
       !newRelationship?.from ||
       !newRelationship?.to ||
       !newRelationship?.base_data?.label ||
-      !newRelationship.relationship_type ||
-      !newRelationship.technology
+      !newRelationship.relationship_type
     )
   }
 
@@ -221,17 +230,32 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
         <Input
           disabled={!props.enableEdit}
           type="text"
-          label={`${t('common.technology')}*`}
+          label={`${t('common.technology')}`}
           className="mt-6"
-          allowedChars={NAME_REGEX}
-          info={`${t('common.allowed_pattern')}: ${NAME_REGEX}`}
-          value={newRelationship?.technology}
+          allowedChars={NAME_EXTENDED_REGEX}
+          info={`${t('common.allowed_pattern')}: ${NAME_EXTENDED_REGEX}`}
+          value={newRelationship?.technology ?? ''}
           onChange={(e) =>
             setNewRelationship({
               ...newRelationship,
               technology: e.target.value,
             })
           }
+        />
+        <TagsInput
+          id="modal-cru-relationship-tags"
+          disabled={!props.enableEdit}
+          className="mt-6 cursor-text"
+          label={t('common.tags')}
+          tags={parseTags(newRelationship.base_data.tags) ?? []}
+          settings={{
+            callbacks: {
+              add: (e) => onTagsChanged(e, setNewRelationship),
+              remove: (e) => onTagsChanged(e, setNewRelationship),
+            },
+            maxTags: 5,
+            editTags: false,
+          }}
         />
         <Textarea
           id="relationship-description"
@@ -291,7 +315,9 @@ export const ModalCRURelationship = (props: ModalCRULibraryElementProps) => {
             onClick: () => {
               if (props.mode === 'serializer') {
                 if (props.onElementCreated) {
-                  props.onElementCreated({ Relationship: newRelationship })
+                  props.onElementCreated({
+                    Relationship: normalizeLibraryElement(newRelationship),
+                  })
                   props.hideModal()
                 }
               }

@@ -2,10 +2,12 @@ import {
   DEPLOYMENT_NODE_TYPES,
   DeploymentNode,
   DeploymentNodeType,
+  parseTags,
 } from '@keadex/c4-model-ui-kit'
 import {
   Input,
   Select,
+  TagsInput,
   Textarea,
   renderButtons,
 } from '@keadex/keadex-ui-kit/cross'
@@ -13,7 +15,10 @@ import { capitalCase, noCase } from 'change-case'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
-import { ModalCRULibraryElementProps } from '../ModalCRULibraryElements'
+import {
+  ModalCRULibraryElementProps,
+  onTagsChanged,
+} from '../ModalCRULibraryElements'
 import { ALIAS_REGEX, NAME_REGEX } from '../../../constants/regex'
 
 const emptyDeploymentNode: DeploymentNode = {
@@ -115,6 +120,21 @@ export const ModalCRUDeploymentNode = (props: ModalCRULibraryElementProps) => {
               deployment_node_type: e.target.value as DeploymentNodeType,
             })
           }
+        />
+        <TagsInput
+          id="modal-cru-deploy-node-tags"
+          disabled={!props.enableEdit}
+          className="mt-6 cursor-text"
+          label={t('common.tags')}
+          tags={parseTags(newDeploymentNode.base_data.tags) ?? []}
+          settings={{
+            callbacks: {
+              add: (e) => onTagsChanged(e, setNewDeploymentNode),
+              remove: (e) => onTagsChanged(e, setNewDeploymentNode),
+            },
+            maxTags: 5,
+            editTags: false,
+          }}
         />
         {props.mode !== 'serializer' && (
           <Textarea
