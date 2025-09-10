@@ -2,10 +2,12 @@ import {
   COMPONENT_TYPES,
   Component,
   ComponentType,
+  parseTags,
 } from '@keadex/c4-model-ui-kit'
 import {
   Input,
   Select,
+  TagsInput,
   Textarea,
   renderButtons,
 } from '@keadex/keadex-ui-kit/cross'
@@ -14,7 +16,11 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { v4 as uuidv4 } from 'uuid'
-import { ALIAS_REGEX, NAME_REGEX } from '../../../constants/regex'
+import {
+  ALIAS_REGEX,
+  NAME_EXTENDED_REGEX,
+  NAME_REGEX,
+} from '../../../constants/regex'
 import { useAppDispatch } from '../../../core/store/hooks'
 import { saveProject } from '../../../core/store/slices/project-slice'
 import {
@@ -27,6 +33,7 @@ import DiagramLinker from '../../DiagramLinker/DiagramLinker'
 import {
   ModalCRULibraryElementProps,
   normalizeLibraryElement,
+  onTagsChanged,
 } from '../ModalCRULibraryElements'
 
 const emptyComponent: Component = {
@@ -99,8 +106,7 @@ export const ModalCRUComponent = (props: ModalCRULibraryElementProps) => {
     return (
       !newComponent?.base_data?.alias ||
       !newComponent?.base_data?.label ||
-      !newComponent.component_type ||
-      !newComponent.technology
+      !newComponent.component_type
     )
   }
 
@@ -181,17 +187,32 @@ export const ModalCRUComponent = (props: ModalCRULibraryElementProps) => {
         <Input
           disabled={!props.enableEdit}
           type="text"
-          label={`${t('common.technology')}*`}
+          label={`${t('common.technology')}`}
           className="mt-6"
-          allowedChars={NAME_REGEX}
-          info={`${t('common.allowed_pattern')}: ${NAME_REGEX}`}
-          value={newComponent?.technology}
+          allowedChars={NAME_EXTENDED_REGEX}
+          info={`${t('common.allowed_pattern')}: ${NAME_EXTENDED_REGEX}`}
+          value={newComponent?.technology ?? ''}
           onChange={(e) =>
             setNewComponent({
               ...newComponent,
               technology: e.target.value,
             })
           }
+        />
+        <TagsInput
+          id="modal-cru-component-tags"
+          disabled={!props.enableEdit}
+          className="mt-6 cursor-text"
+          label={t('common.tags')}
+          tags={parseTags(newComponent.base_data.tags) ?? []}
+          settings={{
+            callbacks: {
+              add: (e) => onTagsChanged(e, setNewComponent),
+              remove: (e) => onTagsChanged(e, setNewComponent),
+            },
+            maxTags: 5,
+            editTags: false,
+          }}
         />
         <Textarea
           id="component-description"

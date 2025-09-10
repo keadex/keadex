@@ -2,10 +2,12 @@ import {
   SYSTEM_TYPES,
   SoftwareSystem,
   SystemType,
+  parseTags,
 } from '@keadex/c4-model-ui-kit'
 import {
   Input,
   Select,
+  TagsInput,
   Textarea,
   renderButtons,
 } from '@keadex/keadex-ui-kit/cross'
@@ -27,6 +29,7 @@ import DiagramLinker from '../../DiagramLinker/DiagramLinker'
 import {
   ModalCRULibraryElementProps,
   normalizeLibraryElement,
+  onTagsChanged,
 } from '../ModalCRULibraryElements'
 
 const emptySoftwareSystem: SoftwareSystem = {
@@ -181,6 +184,21 @@ export const ModalCRUSoftwareSystem = (props: ModalCRULibraryElementProps) => {
               system_type: e.target.value as SystemType,
             })
           }
+        />
+        <TagsInput
+          id="modal-cru-software-system-tags"
+          disabled={!props.enableEdit}
+          className="mt-6 cursor-text"
+          label={t('common.tags')}
+          tags={parseTags(newSoftwareSystem.base_data.tags) ?? []}
+          settings={{
+            callbacks: {
+              add: (e) => onTagsChanged(e, setNewSoftwareSystem),
+              remove: (e) => onTagsChanged(e, setNewSoftwareSystem),
+            },
+            maxTags: 5,
+            editTags: false,
+          }}
         />
         <Textarea
           id="software-system-description"

@@ -2,10 +2,12 @@ import {
   CONTAINER_TYPES,
   Container,
   ContainerType,
+  parseTags,
 } from '@keadex/c4-model-ui-kit'
 import {
   Input,
   Select,
+  TagsInput,
   Textarea,
   renderButtons,
 } from '@keadex/keadex-ui-kit/cross'
@@ -14,7 +16,11 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { v4 as uuidv4 } from 'uuid'
-import { ALIAS_REGEX, NAME_REGEX } from '../../../constants/regex'
+import {
+  ALIAS_REGEX,
+  NAME_EXTENDED_REGEX,
+  NAME_REGEX,
+} from '../../../constants/regex'
 import { useAppDispatch } from '../../../core/store/hooks'
 import { saveProject } from '../../../core/store/slices/project-slice'
 import {
@@ -27,6 +33,7 @@ import DiagramLinker from '../../DiagramLinker/DiagramLinker'
 import {
   ModalCRULibraryElementProps,
   normalizeLibraryElement,
+  onTagsChanged,
 } from '../ModalCRULibraryElements'
 
 const emptyContainer: Container = {
@@ -99,8 +106,7 @@ export const ModalCRUContainer = (props: ModalCRULibraryElementProps) => {
     return (
       !newContainer?.base_data?.alias ||
       !newContainer?.base_data?.label ||
-      !newContainer.container_type ||
-      !newContainer.technology
+      !newContainer.container_type
     )
   }
 
@@ -181,17 +187,32 @@ export const ModalCRUContainer = (props: ModalCRULibraryElementProps) => {
         <Input
           disabled={!props.enableEdit}
           type="text"
-          label={`${t('common.technology')}*`}
+          label={`${t('common.technology')}`}
           className="mt-6"
-          allowedChars={NAME_REGEX}
-          info={`${t('common.allowed_pattern')}: ${NAME_REGEX}`}
-          value={newContainer?.technology}
+          allowedChars={NAME_EXTENDED_REGEX}
+          info={`${t('common.allowed_pattern')}: ${NAME_EXTENDED_REGEX}`}
+          value={newContainer?.technology ?? ''}
           onChange={(e) =>
             setNewContainer({
               ...newContainer,
               technology: e.target.value,
             })
           }
+        />
+        <TagsInput
+          id="modal-cru-container-tags"
+          disabled={!props.enableEdit}
+          className="mt-6 cursor-text"
+          label={t('common.tags')}
+          tags={parseTags(newContainer.base_data.tags) ?? []}
+          settings={{
+            callbacks: {
+              add: (e) => onTagsChanged(e, setNewContainer),
+              remove: (e) => onTagsChanged(e, setNewContainer),
+            },
+            maxTags: 5,
+            editTags: false,
+          }}
         />
         <Textarea
           id="container-description"
