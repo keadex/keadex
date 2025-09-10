@@ -112,7 +112,12 @@ export {
   getGraphHeightInPtFromBB,
   svgPathFromGraphvizPos,
 } from './helper/graphviz-helper'
-export { getCustomTagsStyle } from './helper/tags-helper'
+export {
+  getCustomTagsStyle,
+  parseTags,
+  buildTags,
+  TAGS_SEPARATOR,
+} from './helper/tags-helper'
 export { getSupportedBorderStyle } from './helper/style-helper'
 
 // Models
