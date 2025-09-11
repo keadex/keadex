@@ -92,4 +92,10 @@ export {
   ColorPicker,
   type ColorPickerProps,
 } from './components/cross/ColorPicker/ColorPicker'
+
+export {
+  Checkbox,
+  type CheckboxProps,
+} from './components/cross/Checkbox/Checkbox'
+
 export { useQueryParams } from './hooks/useQueryParams/useQueryParams'
