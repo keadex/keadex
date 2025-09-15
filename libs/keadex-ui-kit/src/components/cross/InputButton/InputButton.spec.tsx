@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react'
-import SearchButton from './SearchButton'
+import InputButton from './InputButton'
 
-describe('SearchButton', () => {
+describe('InputButton', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<SearchButton />)
+    const { baseElement } = render(<InputButton />)
     expect(baseElement).toBeTruthy()
   })
 })

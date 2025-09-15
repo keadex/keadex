@@ -1,0 +1,45 @@
+.input-button__box {
+  @apply h-12 w-full;
+}
+
+.input-button__container {
+  @apply relative w-full whitespace-nowrap align-middle;
+}
+
+.input-button__container input#input-button {
+  @apply w-10 pl-9 pr-0 !important;
+  @apply float-left h-10 transition-[width] duration-500 ease-in-out;
+}
+
+.input-button__container .icon {
+  @apply absolute top-1 z-[1] ml-3 mt-2 cursor-pointer;
+}
+
+.input-button__container input#input-button:focus,
+.input-button__container input#input-button:active {
+  @apply w-full !important;
+}
+
+.input-button__container:hover input#input-button {
+  @apply w-full !important;
+}
+
+.input-button__container.active input#input-button {
+  @apply w-full !important;
+}
+
+.input-button__container input#input-button::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+.input-button__container input#input-button::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.input-button__container input#input-button::-webkit-search-results-button {
+  -webkit-appearance: none;
+}
+
+.input-button__container input#input-button::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}

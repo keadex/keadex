@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { IconDefinition, faSearch } from '@fortawesome/free-solid-svg-icons'
 import Spinner from '../Spinner/Spinner'
 
-export interface SearchButtonProps
+export interface InputButtonProps
   extends React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -11,10 +11,11 @@ export interface SearchButtonProps
   fixedWidth?: boolean
   loading?: boolean
   onIconClick?: () => void
+  icon?: IconDefinition
 }
 
-export const SearchButton = React.memo((props: SearchButtonProps) => {
-  const { fixedWidth, loading, onIconClick, ...otherProps } = props
+export const InputButton = React.memo((props: InputButtonProps) => {
+  const { fixedWidth, loading, onIconClick, icon, ...otherProps } = props
   const [value, setValue] = useState<string>()
 
   function isActive(): boolean {
@@ -30,15 +31,15 @@ export const SearchButton = React.memo((props: SearchButtonProps) => {
   }
 
   return (
-    <div className="search-button__box flex items-center">
+    <div className="input-button__box flex items-center">
       <div
-        className={`search-button__container flex items-center ${
+        className={`input-button__container flex items-center ${
           isActive() ? 'active' : ''
         }`}
       >
         {(loading === undefined || !loading) && (
           <FontAwesomeIcon
-            icon={faSearch}
+            icon={icon ?? faSearch}
             className="icon"
             onClick={handleIconClick}
           />
@@ -49,7 +50,7 @@ export const SearchButton = React.memo((props: SearchButtonProps) => {
         <input
           {...otherProps}
           type="search"
-          id="search"
+          id="input-button"
           onChange={(e) => {
             setValue(e.currentTarget.value)
             if (otherProps.onChange) otherProps.onChange(e)
@@ -60,4 +61,4 @@ export const SearchButton = React.memo((props: SearchButtonProps) => {
   )
 })
 
-export default SearchButton
+export default InputButton
