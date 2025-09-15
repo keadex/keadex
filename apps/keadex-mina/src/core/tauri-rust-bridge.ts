@@ -64,6 +64,7 @@ export async function projectSettingsUrl(
 /*     SEARCH COMMANDS    */
 /*########################*/
 export const SEARCH_CMD = 'search'
+export const SEARCH_AND_REPLACE_CMD = 'search_and_replace'
 export const SEARCH_DIAGRAM_ELEMENT_ALIAS_CMD = 'search_diagram_element_alias'
 
 export async function search(
@@ -77,6 +78,20 @@ export async function search(
     includeDiagramsDir,
     includeLibraryDir,
     limit,
+  })
+}
+
+export async function searchAndReplace(
+  stringToSearch: string,
+  replacement: string,
+  includeDiagramsDir: boolean,
+  includeLibraryDir: boolean,
+): Promise<FileSearchResults> {
+  return invoke(SEARCH_AND_REPLACE_CMD, {
+    stringToSearch,
+    replacement,
+    includeDiagramsDir,
+    includeLibraryDir,
   })
 }
 

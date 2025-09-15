@@ -61,8 +61,10 @@ use {
   keadex_mina::controller::project_controller::open_project,
   keadex_mina::controller::project_controller::project_settings_url,
   keadex_mina::controller::search_controller::__cmd__search,
+  keadex_mina::controller::search_controller::__cmd__search_and_replace,
   keadex_mina::controller::search_controller::__cmd__search_diagram_element_alias,
   keadex_mina::controller::search_controller::search,
+  keadex_mina::controller::search_controller::search_and_replace,
   keadex_mina::controller::search_controller::search_diagram_element_alias,
   keadex_mina::repository::project_repository::save_project_settings,
   keadex_mina::service::hook_service::execute_hook, tauri::Manager, tauri::WebviewWindowBuilder,
@@ -141,6 +143,7 @@ fn main() {
         save_project_settings,
         save_spec_diagram_raw_plantuml,
         search,
+        search_and_replace,
         search_diagram_element_alias,
         update_library_element,
       ])
