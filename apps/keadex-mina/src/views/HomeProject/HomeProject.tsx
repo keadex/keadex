@@ -7,7 +7,7 @@ import {
 } from '@keadex/c4-model-ui-kit'
 import {
   Button,
-  SearchButton,
+  InputButton,
   Table,
   TableColumn,
   TableData,
@@ -166,7 +166,7 @@ export const HomeProject = React.memo((props: HomeProjectProps) => {
           {t('common.diagrams')}
         </div>
         <div className="ml-5 inline-block w-64">
-          <SearchButton onChange={(e) => setGlobalFilter(e.target.value)} />
+          <InputButton onChange={(e) => setGlobalFilter(e.target.value)} />
         </div>
         <div className="flex-grow">
           <Button

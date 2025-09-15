@@ -8,7 +8,7 @@
 @import '@keadex/keadex-ui-kit/src/components/cross/Select/Select.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/Autocomplete/Autocomplete.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/DropdownMenu/DropdownMenu.css';
-@import '@keadex/keadex-ui-kit/src/components/cross/SearchButton/SearchButton.css';
+@import '@keadex/keadex-ui-kit/src/components/cross/InputButton/InputButton.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/Modal/Modal.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/Tags/Tags.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/TagsInput/TagsInput.css';

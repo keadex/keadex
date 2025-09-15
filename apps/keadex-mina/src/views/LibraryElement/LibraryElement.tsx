@@ -12,7 +12,7 @@ import {
 } from '@keadex/c4-model-ui-kit'
 import {
   Button,
-  SearchButton,
+  InputButton,
   Table,
   TableColumn,
   TableData,
@@ -217,7 +217,7 @@ export const LibraryElement = (props: LibraryElementProps) => {
           {pluralize(t(`common.${elementLibraryConfigs.i18nKey}`))}
         </div>
         <div className={`${embedMode ? 'w-full' : 'ml-5 w-64'} inline-block`}>
-          <SearchButton onChange={(e) => setGlobalFilter(e.target.value)} />
+          <InputButton onChange={(e) => setGlobalFilter(e.target.value)} />
         </div>
         <div className={`flex-grow ${embedMode ? 'hidden' : ''}`}>
           <Button
