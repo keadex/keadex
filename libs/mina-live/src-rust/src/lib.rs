@@ -24,5 +24,6 @@ pub use keadex_mina::controller::project_controller_web::create_project;
 pub use keadex_mina::controller::project_controller_web::init_app;
 pub use keadex_mina::controller::project_controller_web::open_project;
 pub use keadex_mina::controller::search_controller::search;
+pub use keadex_mina::controller::search_controller::search_and_replace;
 pub use keadex_mina::controller::search_controller::search_diagram_element_alias;
 pub use keadex_mina::service::hook_service::execute_hook;
