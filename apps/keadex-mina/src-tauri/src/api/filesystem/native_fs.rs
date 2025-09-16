@@ -56,17 +56,29 @@ impl NativeFile {
 #[async_trait]
 impl CrossFile for NativeFile {
   fn unlock(&self) -> Result<(), MinaError> {
-    match self.file.unlock() {
-      Ok(ok) => Ok(ok),
-      Err(err) => Err(MinaError::from(err)),
-    }
+    // Disable file lock/unlock feature also on native. This complicates the business logic
+    // without a good benefit-cost ratio. Moreover, the current lock/unlock logic
+    // contains some bugs.
+    // TODO - For now, I'm just commenting this code. If it will be acceptable without
+    // the file lock/unlock feature, I'll remove the entire logic.
+    // match self.file.unlock() {
+    //   Ok(ok) => Ok(ok),
+    //   Err(err) => Err(MinaError::from(err)),
+    // }
+    return Ok(());
   }
 
   fn lock_exclusive(&self) -> Result<(), MinaError> {
-    match self.file.lock_exclusive() {
-      Ok(ok) => Ok(ok),
-      Err(err) => Err(MinaError::from(err)),
-    }
+    // Disable file lock/unlock feature also on native. This complicates the business logic
+    // without a good benefit-cost ratio. Moreover, the current lock/unlock logic
+    // contains some bugs.
+    // TODO - For now, I'm just commenting this code. If it will be acceptable without
+    // the file lock/unlock feature, I'll remove the entire logic.
+    // match self.file.lock_exclusive() {
+    //   Ok(ok) => Ok(ok),
+    //   Err(err) => Err(MinaError::from(err)),
+    // }
+    return Ok(());
   }
 
   async fn get_buffer(&self) -> Result<Box<dyn BufRead + Send>, MinaError> {
