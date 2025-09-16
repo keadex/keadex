@@ -2,6 +2,7 @@ pub mod commands;
 pub mod constants;
 pub mod model;
 
+use crate::commands::search_and_replace::search_and_replace;
 use crate::list_diagrams::list_diagrams;
 use crate::model::response::Response;
 use clap::Parser;
@@ -67,6 +68,9 @@ async fn main() {
             read_diagram_args.diagram_type,
           )
           .await;
+        }
+        Commands::SearchAndReplace(args) => {
+          result = search_and_replace(args).await;
         }
         Commands::SearchDiagramElement(args) => {
           result = search_diagram_element(&args.alias).await;

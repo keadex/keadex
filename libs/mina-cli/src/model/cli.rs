@@ -2,17 +2,17 @@ use crate::model::commands::create_component::CreateComponent;
 use crate::model::commands::create_container::CreateContainer;
 use crate::model::commands::create_person::CreatePerson;
 use crate::model::commands::create_system::CreateSystem;
+use crate::model::commands::find_dependent_elements::FindDependentElements;
+use crate::model::commands::read_diagram::ReadDiagram;
+use crate::model::commands::search_and_replace::SearchAndReplace;
+use crate::model::commands::search_diagram_element::SearchDiagramElement;
+use crate::model::commands::search_library_element::SearchLibraryElement;
 use crate::model::commands::update_component::UpdateComponent;
 use crate::model::commands::update_container::UpdateContainer;
 use crate::model::commands::update_person::UpdatePerson;
 use crate::model::commands::update_system::UpdateSystem;
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
-
-use super::commands::{
-  find_dependent_elements::FindDependentElements, read_diagram::ReadDiagram,
-  search_diagram_element::SearchDiagramElement, search_library_element::SearchLibraryElement,
-};
 
 /// A CLI for interacting with a Keadex Mina project.
 ///
@@ -44,6 +44,9 @@ pub enum Commands {
 
   /// Read a diagram
   ReadDiagram(ReadDiagram),
+
+  /// Search for the given string in the project's files and replace the found occurrences with the given replacement string.
+  SearchAndReplace(SearchAndReplace),
 
   /// Search for the project's diagrams that include the element with the given alias.
   SearchDiagramElement(SearchDiagramElement),
