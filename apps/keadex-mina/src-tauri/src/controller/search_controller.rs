@@ -82,6 +82,7 @@ pub async fn search_and_replace(
       include_diagrams_dir,
       include_library_dir,
       false,
+      false,
     )
     .await?,
   )
