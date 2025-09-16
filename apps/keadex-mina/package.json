@@ -2,7 +2,7 @@
   "name": "@keadex/keadex-mina",
   "description": "Desktop application to draw, manage and share the architectures of software systems.",
   "author": "Keadex <keadex.it@gmail.com>",
-  "version": "2.7.1",
+  "version": "2.8.0",
   "private": true,
   "license": "MIT",
   "type": "module",
