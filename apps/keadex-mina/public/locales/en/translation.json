@@ -87,6 +87,7 @@
     "reload": "Reload",
     "render": "Render",
     "rendering": "Rendering",
+    "replace": "Replace",
     "required": "Required",
     "reset": "Reset",
     "restart": "Restart",
@@ -157,10 +158,11 @@
       "confirm_close_diagram": "Are you sure you want to close the diagram? Not saved changes will be lost.",
       "confirm_delete_diagram": "Are you sure you want to permanently delete the {{diagramType}} diagram \"{{diagramName}}\"?",
       "confirm_delete_element": "Are you sure you want to permanently delete this element?",
+      "confirm_exit": "Are you sure you want to exit? Not saved changes of the current project will be lost.",
       "confirm_go_to_diagram": "Are you sure you want to open the linked diagram? Not saved changes to the current diagram will be lost.",
       "confirm_not_saved_changed": "Are you sure you want to continue? Not saved changes will be lost.",
       "confirm_not_saved_changed_current_project": "Are you sure you want to continue? Not saved changes of the current project will be lost.",
-      "confirm_exit": "Are you sure you want to exit? Not saved changes of the current project will be lost."
+      "confirm_replace_all": "Replace {{numOccurrences}} occurrences across {{numFiles}} files?"
     }
   },
   "about": {
