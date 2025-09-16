@@ -295,7 +295,7 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
               className="icon w-5 text-left text-[0.9rem] self-start mt-[0.85rem]"
               onClick={() => setIsReplaceActive(!isReplaceActive)}
             />
-            <div>
+            <div className="w-full mr-4 ml-[0.1rem]">
               <InputButton
                 autoComplete="off"
                 value={searchValue}
@@ -327,7 +327,7 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
           </div>
           <Checkbox
             id="search-filters"
-            className="mt-3 mb-5 !justify-start text-sm leading-[1.7]"
+            className="mt-3 mb-5 ml-5 !justify-start text-sm leading-[1.7]"
             options={[
               {
                 id: 'diagrams',
