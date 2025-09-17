@@ -229,6 +229,7 @@ Searches for the given text in the project's files and replace it with the given
   * `include_diagrams` - If you want to include the diagrams directory in the search.
   * `include_library` - If you want to include the library directory in the search.
   * `clean_plantuml` - If true, the PlantUML will be cleaned before searching and replacing.
+  * `exact_match` - If true, the replace will happen only if the line exactly matches the given text
 */
 pub async fn search_and_replace_text(
   text_to_search_in: String,
@@ -236,6 +237,7 @@ pub async fn search_and_replace_text(
   include_diagrams: bool,
   include_library: bool,
   clean_plantuml: bool,
+  exact_match: bool,
 ) -> Result<FileSearchResults, MinaError> {
   log::debug!(
     "Search {} and replace with {}",
@@ -265,26 +267,30 @@ pub async fn search_and_replace_text(
 
       async move {
         if !current_path.read().await.eq(&path) {
-          let store = ROOT_RESOLVER.get().read().await;
           if !current_path.read().await.eq("") {
+            // Remove trailing new line char (at the end of the file)
+            let mut updated_content_str = updated_content_opt
+              .read()
+              .await
+              .as_ref()
+              .unwrap()
+              .to_string();
+            updated_content_str = updated_content_str
+              .strip_suffix("\n")
+              .unwrap_or(&updated_content_str)
+              .to_string();
+            let store = ROOT_RESOLVER.get().read().await;
             resolve_to_write!(store, FileSystemAPI)
               .await
               .open(
                 true,
                 true,
                 false,
-                false,
+                true,
                 Path::new(&(current_path.read().await.as_str())),
               )
               .await?
-              .write_all(
-                updated_content_opt
-                  .read()
-                  .await
-                  .as_ref()
-                  .unwrap()
-                  .as_bytes(),
-              )
+              .write_all(updated_content_str.as_bytes())
               .await?;
           }
           *current_path.write().await = path.to_string();
@@ -293,8 +299,18 @@ pub async fn search_and_replace_text(
 
         let mut is_found = Ok(false);
         if updated_content_opt.read().await.is_some() {
-          if cleaned_line.eq(&text_to_search) {
-            *new_line.write().await = line.replace(&cleaned_line, &replacement.to_string());
+          if (exact_match && cleaned_line.eq(&text_to_search))
+            || (!exact_match
+              && cleaned_line
+                .to_lowercase()
+                .contains(&text_to_search.to_lowercase()))
+          {
+            if exact_match {
+              *new_line.write().await = line.replace(&cleaned_line, &replacement.to_string());
+            } else {
+              *new_line.write().await =
+                cleaned_line.replace(&text_to_search, &replacement.to_string());
+            }
             is_found = Ok(true);
 
             results
@@ -332,6 +348,17 @@ pub async fn search_and_replace_text(
   .await?;
 
   if !current_path_rc.read().await.eq("") {
+    // Remove trailing new line char (at the end of the file)
+    let mut updated_content_str = updated_content_opt_rc
+      .read()
+      .await
+      .as_ref()
+      .unwrap()
+      .to_string();
+    updated_content_str = updated_content_str
+      .strip_suffix("\n")
+      .unwrap_or(&updated_content_str)
+      .to_string();
     let store = ROOT_RESOLVER.get().read().await;
     resolve_to_write!(store, FileSystemAPI)
       .await
@@ -339,18 +366,11 @@ pub async fn search_and_replace_text(
         true,
         true,
         false,
-        false,
+        true,
         Path::new(&(current_path_rc.read().await.as_str())),
       )
       .await?
-      .write_all(
-        updated_content_opt_rc
-          .read()
-          .await
-          .as_ref()
-          .unwrap()
-          .as_bytes(),
-      )
+      .write_all(updated_content_str.as_bytes())
       .await?;
   }
 

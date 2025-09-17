@@ -201,6 +201,7 @@ pub async fn update_element(
       true,
       false,
       true,
+      true,
     )
     .await?;
 

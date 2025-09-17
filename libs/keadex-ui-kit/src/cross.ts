@@ -31,9 +31,9 @@ export {
   TableOptions,
 } from './components/cross/TableOptions/TableOptions'
 export {
-  SearchButton,
-  type SearchButtonProps,
-} from './components/cross/SearchButton/SearchButton'
+  InputButton,
+  type InputButtonProps,
+} from './components/cross/InputButton/InputButton'
 export { Button, type ButtonProps } from './components/cross/Button/Button'
 export { ModalRoot } from './components/cross/Modal/ModalRoot'
 export {
@@ -92,4 +92,10 @@ export {
   ColorPicker,
   type ColorPickerProps,
 } from './components/cross/ColorPicker/ColorPicker'
+
+export {
+  Checkbox,
+  type CheckboxProps,
+} from './components/cross/Checkbox/Checkbox'
+
 export { useQueryParams } from './hooks/useQueryParams/useQueryParams'

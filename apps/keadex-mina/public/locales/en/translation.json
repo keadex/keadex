@@ -87,6 +87,7 @@
     "reload": "Reload",
     "render": "Render",
     "rendering": "Rendering",
+    "replace": "Replace",
     "required": "Required",
     "reset": "Reset",
     "restart": "Restart",
@@ -129,6 +130,8 @@
       "internal": "Internal error: {{errorMessage}}",
       "cannot_add_link": "You can't add a link to the selected PlantUML element. Please select a Software System, Container, Component, or Boundary in the code editor instead.\nTip: In the design view, you can right-click on an element and choose \"Select code\" to highlight its definition in the editor.",
       "cannot_add_to_library": "Cannot add the selected PlantUML element to the library. Move the cursor on a Person, Software System, Container, or Component in the code editor. ",
+      "cannot_change_diagrams": "Before applying changes, make sure no diagrams are open.",
+      "cannot_change_library": "Before applying changes, make sure the library is closed.",
       "cannot_delete_diagram": "Cannot delete the diagram: {{errorMessage}}",
       "cannot_delete_element": "Cannot delete this element.",
       "invalid_diagram_link": "Diagram not found. Check the diagram link.",
@@ -157,10 +160,11 @@
       "confirm_close_diagram": "Are you sure you want to close the diagram? Not saved changes will be lost.",
       "confirm_delete_diagram": "Are you sure you want to permanently delete the {{diagramType}} diagram \"{{diagramName}}\"?",
       "confirm_delete_element": "Are you sure you want to permanently delete this element?",
+      "confirm_exit": "Are you sure you want to exit? Not saved changes of the current project will be lost.",
       "confirm_go_to_diagram": "Are you sure you want to open the linked diagram? Not saved changes to the current diagram will be lost.",
       "confirm_not_saved_changed": "Are you sure you want to continue? Not saved changes will be lost.",
       "confirm_not_saved_changed_current_project": "Are you sure you want to continue? Not saved changes of the current project will be lost.",
-      "confirm_exit": "Are you sure you want to exit? Not saved changes of the current project will be lost."
+      "confirm_replace_all": "Replace {{numOccurrences}} occurrences across {{numFiles}} files?"
     }
   },
   "about": {

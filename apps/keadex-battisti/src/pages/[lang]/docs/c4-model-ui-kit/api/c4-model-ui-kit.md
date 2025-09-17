@@ -85,6 +85,15 @@ Description
 </td></tr>
 <tr><td>
 
+[buildTags(tags)](./c4-model-ui-kit.buildtags.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [C4Component(data, elementSpec, autoLayout, options, renderElementsOptions)](./c4-model-ui-kit.c4component.md)
 
 
@@ -412,6 +421,15 @@ Check if the given GraphvizObject represents a C4 Elastic Container.
 <tr><td>
 
 [parseDiagramTypeHumanName(diagramTypeHumanName)](./c4-model-ui-kit.parsediagramtypehumanname.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[parseTags(tags)](./c4-model-ui-kit.parsetags.md)
 
 
 </td><td>
@@ -1009,6 +1027,15 @@ Description
 <tr><td>
 
 [SYSTEM\_TYPES](./c4-model-ui-kit.system_types.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[TAGS\_SEPARATOR](./c4-model-ui-kit.tags_separator.md)
 
 
 </td><td>
