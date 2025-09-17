@@ -42,6 +42,7 @@ import FontFaceObserver from 'fontfaceobserver'
 import { DiagramDesignViewToolbarCommands } from '../../../components/DiagramDesignViewToolbar/DiagramDesignViewToolbar'
 import ModalAutoLayout from '../../../components/ModalAutoLayout/ModalAutoLayout'
 import DiagramInfoPanel from '../../../components/DiagramInfoPanel/DiagramInfoPanel'
+import DiagramCodePanel from '../../../components/DiagramCodePanel/DiagramCodePanel'
 import ModalDiagramDesignViewSettings from '../../../components/ModalDiagramDesignViewSettings/ModalDiagramDesignViewSettings'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { Key } from 'ts-key-enum'
@@ -122,6 +123,8 @@ export const DiagramDesignView = forwardRef(
     const [historyUndo, setHistoryUndo] = useState<DiagramSpec[]>([])
     const [historyRedo, setHistoryRedo] = useState<DiagramSpec[]>([])
     const [diagramInfoPanelVisible, setDiagramInfoPanelVisible] =
+      useState(false)
+    const [diagramCodePanelVisible, setDiagramCodePanelVisible] =
       useState(false)
     const [diagramRenderer, setDiagramRenderer] = useState<
       DiagramRenderer | undefined
@@ -699,11 +702,18 @@ export const DiagramDesignView = forwardRef(
           readOnly={readOnly}
           diagramInfoPanelVisible={diagramInfoPanelVisible}
           setDiagramInfoPanelVisible={setDiagramInfoPanelVisible}
+          diagramCodePanelVisible={diagramCodePanelVisible}
+          setDiagramCodePanelVisible={setDiagramCodePanelVisible}
         />
         <DiagramInfoPanel
           diagram={diagram}
           hidden={!diagramInfoPanelVisible}
           setDiagramInfoPanelVisible={setDiagramInfoPanelVisible}
+        />
+        <DiagramCodePanel
+          diagram={diagram}
+          hidden={!diagramCodePanelVisible}
+          setDiagramCodePanelVisible={setDiagramCodePanelVisible}
         />
         <div className="h-full w-full flex-row flex-wrap" ref={parentDivEl}>
           <canvas ref={canvasEl} />

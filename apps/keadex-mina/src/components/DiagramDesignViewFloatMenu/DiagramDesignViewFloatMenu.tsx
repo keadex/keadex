@@ -4,6 +4,7 @@ import {
   faCaretRight,
   faCaretUp,
   faCircleInfo,
+  faCode,
   faMagnifyingGlassMinus,
   faMagnifyingGlassPlus,
   faRotateLeft,
@@ -16,6 +17,8 @@ export interface DiagramDesignViewFloatMenuProps {
   readOnly?: boolean
   diagramInfoPanelVisible: boolean
   setDiagramInfoPanelVisible: React.Dispatch<React.SetStateAction<boolean>>
+  diagramCodePanelVisible: boolean
+  setDiagramCodePanelVisible: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const styleButton = `text-5xl text-dark-primary hover:text-third`
@@ -28,15 +31,25 @@ export const DiagramDesignViewFloatMenu = React.memo(
       readOnly,
       diagramInfoPanelVisible,
       setDiagramInfoPanelVisible,
+      diagramCodePanelVisible,
+      setDiagramCodePanelVisible,
     } = props
 
-    function isDiagramInfoActive() {
+    function isReadOnly() {
       return readOnly
     }
 
     function handleToggleDiagramInfoPanelBtnClick() {
-      if (isDiagramInfoActive()) {
+      if (isReadOnly()) {
+        setDiagramCodePanelVisible(false)
         setDiagramInfoPanelVisible(!diagramInfoPanelVisible)
+      }
+    }
+
+    function handleToggleDiagramCodePanelBtnClick() {
+      if (isReadOnly()) {
+        setDiagramInfoPanelVisible(false)
+        setDiagramCodePanelVisible(!diagramCodePanelVisible)
       }
     }
 
@@ -44,10 +57,17 @@ export const DiagramDesignViewFloatMenu = React.memo(
       <div className="absolute bottom-0 left-0 z-[1] scale-[85%] opacity-20 transition hover:scale-[100%] hover:opacity-100 flex flex-row mx-2">
         <IconButton
           className={`${styleCenterButtons} ${
-            isDiagramInfoActive() ? 'absolute' : 'hidden'
+            isReadOnly() ? 'absolute' : 'hidden'
           }`}
           icon={faCircleInfo}
           onClick={handleToggleDiagramInfoPanelBtnClick}
+        />
+        <IconButton
+          className={`${styleCenterButtons} ${
+            isReadOnly() ? 'absolute bottom-1' : 'hidden'
+          }`}
+          icon={faCode}
+          onClick={handleToggleDiagramCodePanelBtnClick}
         />
         <div className="flex flex-col">
           <IconButton
