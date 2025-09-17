@@ -1,8 +1,7 @@
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faCopy, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Diagram } from '@keadex/c4-model-ui-kit'
 import { Button, IconButton } from '@keadex/keadex-ui-kit/cross'
-import React, { useState } from 'react'
-import DiagramHeader from '../DiagramHeader/DiagramHeader'
+import React, { useEffect, useState } from 'react'
 
 export interface DiagramCodePanelProps {
   setDiagramCodePanelVisible: React.Dispatch<React.SetStateAction<boolean>>
@@ -19,6 +18,17 @@ export const DiagramCodePanel = React.memo((props: DiagramCodePanelProps) => {
   const { setDiagramCodePanelVisible, diagram, hidden } = props
 
   const [activeTab, setActiveTab] = useState<CodeTab>(CodeTab.PlantUML)
+  const [code, setCode] = useState(diagram?.raw_plantuml)
+
+  useEffect(() => {
+    if (diagram) {
+      setCode(
+        activeTab === CodeTab.PlantUML
+          ? diagram.raw_plantuml
+          : JSON.stringify(diagram.diagram_spec, null, 2),
+      )
+    }
+  }, [diagram, activeTab])
 
   return (
     <div
@@ -53,10 +63,15 @@ export const DiagramCodePanel = React.memo((props: DiagramCodePanelProps) => {
               JSON
             </Button>
           </div>
-          <div className="mt-5 p-2 bg-primary rounded-md overflow-auto">
-            {activeTab === CodeTab.PlantUML
-              ? diagram.raw_plantuml
-              : JSON.stringify(diagram.diagram_spec)}
+          <div className="mt-5 p-2 bg-primary rounded-md overflow-auto whitespace-pre-wrap text-sm font-mono">
+            <IconButton
+              icon={faCopy}
+              className="absolute right-5 text-xl"
+              onClick={() => {
+                if (code) navigator.clipboard.writeText(code)
+              }}
+            />
+            <div>{code}</div>
           </div>
         </div>
       )}
