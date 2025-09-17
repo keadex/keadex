@@ -1,8 +1,4 @@
-import {
-  faGithub,
-  faLinkedin,
-  faSpotify,
-} from '@fortawesome/free-brands-svg-icons'
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Timeline, TimelineItem } from '@keadex/keadex-ui-kit/cross'
 import { type Metadata, type NextPage } from 'next'
@@ -463,16 +459,9 @@ const AboutMe: NextPage<PageProps> = async ({ params }) => {
             <Link
               href="https://www.linkedin.com/in/giacomosimmi"
               target="_blank"
-              className="!mx-3 lg:!mx-0"
-            >
-              <FontAwesomeIcon icon={faLinkedin} className="text-xl ml-5" />
-            </Link>
-            <Link
-              href="http://open.spotify.com/user/jacksimmi"
-              target="_blank"
               className="mr-auto lg:!mr-8"
             >
-              <FontAwesomeIcon icon={faSpotify} className="text-xl ml-5" />
+              <FontAwesomeIcon icon={faLinkedin} className="text-xl ml-5" />
             </Link>
           </div>
         </div>
