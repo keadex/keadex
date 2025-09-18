@@ -91,12 +91,12 @@ export const MinaReact = (props: MinaReactProps) => {
         setProjectSettings(
           JSON.parse(diagramData.projectSettingsJson) as ProjectSettings,
         )
-        const remote_diagram = (await open_remote_diagram(
+        const remote_diagram = await open_remote_diagram(
           projectRootUrl,
           diagramUrl,
           diagramData.plantuml,
           diagramData.spec,
-        )) as Diagram
+        )
         setDiagram(remote_diagram)
       } catch (e) {
         setErrorState('Invalid diagram or project settings.')
