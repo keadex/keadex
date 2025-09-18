@@ -21,7 +21,6 @@ use crate::service::diagram_service::dependent_elements_in_diagram as dependent_
 use crate::service::diagram_service::get_diagram as get_diagram_service;
 use keadex_mina_macro::web_controller;
 use std::collections::HashMap;
-use wasm_bindgen::prelude::wasm_bindgen;
 
 /**
 Returns the list of the diagrams in the opened project.
@@ -73,16 +72,16 @@ Returns the opened and parsed diagram.
   * `raw_diagram_spec` - Raw (stringified json) specifications of the diagram.
 */
 #[cfg_attr(desktop, tauri::command)]
-#[cfg_attr(web, wasm_bindgen)]
+#[cfg_attr(web, web_controller)]
 pub async fn open_remote_diagram(
-  project_root_url: &str,
-  diagram_url: &str,
-  raw_plantuml: &str,
-  raw_diagram_spec: &str,
+  project_root_url: String,
+  diagram_url: String,
+  raw_plantuml: String,
+  raw_diagram_spec: String,
 ) -> Result<Diagram, MinaError> {
   let diagram_plantuml = deserialize_plantuml_by_string_helper(&raw_plantuml.to_string())?;
-  let diagram_spec = serde_json::from_str::<DiagramSpec>(raw_diagram_spec)?;
-  let (diagram_name, diagram_type) = diagram_name_type_from_url(project_root_url, diagram_url)?;
+  let diagram_spec = serde_json::from_str::<DiagramSpec>(&raw_diagram_spec)?;
+  let (diagram_name, diagram_type) = diagram_name_type_from_url(&project_root_url, &diagram_url)?;
   // let mut auto_layout = None;
   // if diagram_spec.auto_layout_enabled {
   //   auto_layout = Some(generate_positions(

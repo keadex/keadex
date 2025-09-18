@@ -43,7 +43,7 @@
   },
   "productName": "Keadex Mina",
   "mainBinaryName": "Keadex Mina",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "identifier": "dev.keadex.mina",
   "plugins": {
     "updater": {
