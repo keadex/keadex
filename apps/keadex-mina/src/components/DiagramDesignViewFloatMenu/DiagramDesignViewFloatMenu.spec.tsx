@@ -12,6 +12,12 @@ describe('DiagramDesignViewFloatMenu', () => {
         ): void {
           //
         }}
+        diagramCodePanelVisible={false}
+        setDiagramCodePanelVisible={function (
+          value: SetStateAction<boolean>,
+        ): void {
+          //
+        }}
       />,
     )
     expect(baseElement).toBeTruthy()
