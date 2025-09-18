@@ -10,7 +10,6 @@
 [![Website](https://img.shields.io/website?up_message=Keadex&up_color=5662F6&url=https%3A%2F%2Fdiscord.gg%2FutCqK9jzJW&label=Discord)](https://discord.gg/utCqK9jzJW)
 [![Static Badge](https://img.shields.io/badge/Linkedin-0A66C2?logo=linkedin)
 ](https://www.linkedin.com/in/giacomosimmi/)
-[![Static Badge](https://img.shields.io/badge/Spotify-1DD05D?logo=spotify&color=09451F)](http://open.spotify.com/user/jacksimmi)
 
 </div>
 
