@@ -12,6 +12,7 @@ env:
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   NPM_CONFIG_PROVENANCE: true
+  VITE_GITHUB_CLIENT_ID_MINA: ${{ vars.VITE_GITHUB_CLIENT_ID_MINA }}
 
 jobs:
   release-libraries:
