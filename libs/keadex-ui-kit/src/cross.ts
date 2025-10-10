@@ -1,5 +1,7 @@
 export * from './common'
 
+export type Size = 'sm' | 'md' | 'lg' | 'full'
+
 export { ContextMenu } from './components/cross/ContextMenu/ContextMenu'
 export type { KeadexContextMenuEvent } from './components/cross/ContextMenu/useContextMenu'
 export {
@@ -99,3 +101,7 @@ export {
 } from './components/cross/Checkbox/Checkbox'
 
 export { useQueryParams } from './hooks/useQueryParams/useQueryParams'
+export { usePopup, type PopupOptions } from './hooks/usePopup/usePopup'
+export { useForceUpdate } from './hooks/useForceUpdate/useForceUpdate'
+export { useSafeExit } from './hooks/useSafeExit/useSafeExit'
+export { faSearchAndReplace, faRemoteFolderOpen } from './assets/icons'

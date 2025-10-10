@@ -10,6 +10,7 @@
     "autosave_interval_sec": "Autosave Interval (seconds)",
     "auto_layout": "Auto Layout",
     "boundary": "Boundary",
+    "branch": "Branch",
     "cancel": "Cancel",
     "check_dependencies": "Check Dependencies",
     "close": "Close",
@@ -58,6 +59,7 @@
     "github_token": "GitHub Token",
     "global": "Global",
     "help": "Help",
+    "hi": "Hi",
     "internal": "Internal",
     "internal_link": "Internal Link",
     "invalid": "Invalid",
@@ -65,7 +67,9 @@
     "legend": "Legend",
     "library": "Library",
     "label": "Label",
+    "loading": "Loading",
     "location": "Location",
+    "login": "Login",
     "max": "Max",
     "model": "Model",
     "name": "Name",
@@ -123,7 +127,8 @@
       "link_existing_diagram": "Link an existing diagram",
       "link_to_diagram": "Link \"{{alias}}\" to...",
       "new_project": "New Project",
-      "open_project": "Open Project",
+      "open_local_project": "Open Local Project",
+      "open_remote_project": "Open Remote Project",
       "report_issue": "Report Issue"
     },
     "error": {
@@ -134,6 +139,7 @@
       "cannot_change_library": "Before applying changes, make sure the library is closed.",
       "cannot_delete_diagram": "Cannot delete the diagram: {{errorMessage}}",
       "cannot_delete_element": "Cannot delete this element.",
+      "cannot_download_project": "An error occurred while downloading the project: {{errorMessage}}",
       "invalid_diagram_link": "Diagram not found. Check the diagram link.",
       "invalid_path": "Invalid path",
       "missing_project_root": "Missing project root",
@@ -174,6 +180,7 @@
   "deep_link": {
     "invalid_diagram_path": "The deep link '{{deepLink}}' contains an invalid diagram link.",
     "invalid_dependency_table_path": "The deep link '{{deepLink}}' contains an invalid dependency table parameter. It should contain only the alias parameter.",
+    "invalid_gh_authenticated_path": "The deep link '{{deepLink}}' contains an invalid token parameter. It should contain only the token parameter.",
     "invalid_remote_diagram_path": "The deep link '{{deepLink}}' contains an invalid remote diagram parameter. It should contain only the parameter of the diagram to open.",
     "required_open_project": "The deep link '{{deepLink}}' requires an active project to be open.",
     "remote_diagrams_project_opened": "Cannot open the remote diagram. A project is currently opened. Close the project to open the remote diagram.",
@@ -216,7 +223,8 @@
   "home": {
     "chose_parent_dir_project": "Choose the parent directory of the project",
     "create_project": "Create a new project",
-    "open_project": "Open an existing project",
+    "open_local_project": "Open a local project",
+    "open_remote_project": "Open a remote project",
     "remote_diagrams": "Remote diagrams"
   },
   "plantuml": {
@@ -249,11 +257,21 @@
   "remote_diagrams": {
     "description": "Use this feature to share or preview remote architectural diagrams created with Keadex Mina.",
     "diagram_url": "Mina Diagram URL",
+    "downloading_project": "Downloading the project",
+    "gh_no_repos": "No repositories found.",
+    "gh_select_repo": "Select a repository to open:",
     "gh_token_copy_warning": "The link you copied contains the GitHub token, which is SENSITIVE INFORMATION. Please share it only with trusted stakeholders to ensure security.",
     "gh_token_info": "Required only for private repositories. Refer to the GitHub documentation for details on generating a GitHub token. Ensure you keep it secure and do not share it, as it is SENSITIVE INFORMATION!",
     "link_copied": "The link has been copied to your clipboard!",
     "project_root_url": "Mina project root URL",
-    "title": "Remote Diagrams"
+    "title": "Remote Diagrams",
+    "type_url_mina_project": "Type the URL of a Mina project"
+  },
+  "remote_project": {
+    "loading_repos_data": "Loading repositories data",
+    "title": "Open a remote project",
+    "from_github": "From GitHub",
+    "from_url": "From URL"
   },
   "table": {
     "go_to_page": "Go to page",

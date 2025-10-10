@@ -1,4 +1,5 @@
 pub mod ai_controller;
+pub mod app_settings_controller;
 pub mod diagram_controller;
 pub mod hook_controller;
 pub mod library_controller;

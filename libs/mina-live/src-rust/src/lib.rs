@@ -1,4 +1,6 @@
 pub use keadex_mina::controller::ai_controller::generate_plantuml;
+pub use keadex_mina::controller::app_settings_controller::get_user_settings;
+pub use keadex_mina::controller::app_settings_controller::save_user_settings;
 pub use keadex_mina::controller::diagram_controller::close_diagram;
 pub use keadex_mina::controller::diagram_controller::create_diagram;
 pub use keadex_mina::controller::diagram_controller::delete_diagram;

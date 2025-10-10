@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getDataAttributes } from '@keadex/keadex-utils'
 import { Ref, forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { Modal as ModalTE } from 'tw-elements'
-import { Size } from '../../../common'
+import { Size } from '../../../cross'
 import { Button, type ButtonProps } from '../Button/Button'
 
 const MODAL_HIDDEN_EVENT = 'hidden.te.modal'

@@ -16,6 +16,7 @@ import { router } from './core/router/router'
 import store from './core/store/store'
 import initi18n from './i18n'
 import './styles/index.css'
+import { clearOPFSTempDir } from '@keadex/keadex-utils'
 
 initi18n()
 
@@ -24,6 +25,8 @@ export const App = React.memo(() => {
   const event$ = useEventEmitter<AppEvent>()
 
   useEffect(() => {
+    // Clear OPFS temp dir
+    clearOPFSTempDir()
     // setTimeout() needed due to tw-elements@1.0.0-beta2 bug:
     //  - https://github.com/mdbootstrap/Tailwind-Elements/issues/1615
     //  - https://github.com/mdbootstrap/Tailwind-Elements/issues/1685

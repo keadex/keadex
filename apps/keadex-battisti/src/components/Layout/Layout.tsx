@@ -1,6 +1,7 @@
 'use client'
 
 import { NewsBanner, useAppBootstrap } from '@keadex/keadex-ui-kit/cross'
+import { findRoute } from '@keadex/keadex-ui-kit/core'
 import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import { PropsWithChildren } from 'react'
@@ -22,6 +23,7 @@ export default function Layout(props: PropsWithChildren<LayourProps>) {
   const { lang, children } = props
 
   const pathname = usePathname()?.replace(`/${lang}`, '')
+  const foundRoute = pathname ? findRoute(pathname, ROUTES) : undefined
 
   async function initializeTailwindElements() {
     const { initTE, Button, Collapse, Dropdown, Input, Modal, Select, Tab } =
@@ -33,28 +35,28 @@ export default function Layout(props: PropsWithChildren<LayourProps>) {
 
   function isNewsbarVisible() {
     return (
-      !pathname ||
-      (pathname &&
-        (ROUTES[pathname]?.isNewsbarVisible ||
-          ROUTES[pathname]?.isNewsbarVisible === undefined))
+      !foundRoute ||
+      (foundRoute &&
+        (foundRoute.isNewsbarVisible ||
+          foundRoute.isNewsbarVisible === undefined))
     )
   }
 
   function isHeaderVisible() {
     return (
-      !pathname ||
-      (pathname &&
-        (ROUTES[pathname]?.isHeaderVisible ||
-          ROUTES[pathname]?.isHeaderVisible === undefined))
+      !foundRoute ||
+      (foundRoute &&
+        (foundRoute.isHeaderVisible ||
+          foundRoute.isHeaderVisible === undefined))
     )
   }
 
   function isFooterVisible() {
     return (
-      !pathname ||
-      (pathname &&
-        (ROUTES[pathname]?.isFooterVisible ||
-          ROUTES[pathname]?.isFooterVisible === undefined))
+      !foundRoute ||
+      (foundRoute &&
+        (foundRoute.isFooterVisible ||
+          foundRoute.isFooterVisible === undefined))
     )
   }
 

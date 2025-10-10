@@ -9,6 +9,7 @@ use crate::core::state::State;
 use async_std::sync::RwLock;
 use dotenv::dotenv;
 use state::InitCell;
+use std::sync::OnceLock;
 
 pub static ROOT_RESOLVER: InitCell<RwLock<RootResolver>> = InitCell::new();
 pub static APP_STATE: InitCell<RwLock<State>> = InitCell::new();
@@ -28,4 +29,13 @@ impl App {
     logger::init();
     return App::new();
   }
+}
+
+#[cfg(desktop)]
+use tauri::AppHandle;
+#[cfg(desktop)]
+pub static TAURI_APP_HANDLE: OnceLock<AppHandle> = OnceLock::new();
+#[cfg(desktop)]
+pub fn app_handle<'a>() -> &'a AppHandle {
+  TAURI_APP_HANDLE.get().unwrap()
 }

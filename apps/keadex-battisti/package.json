@@ -29,6 +29,7 @@
     "next": "^15.2.0-canary.64",
     "nextra": "^2.13.2",
     "nextra-theme-docs": "^2.13.2",
+    "octokit": "^5.0.3",
     "react": "^18.2.0",
     "react-animation-on-scroll": "^5.1.0",
     "react-cookie": "^6.1.1",

@@ -1,8 +1,13 @@
 import { withReact } from '@nx/react'
 import { composePlugins, withNx } from '@nx/webpack'
-import { join, resolve } from 'path'
-import { Configuration, optimize, DefinePlugin } from 'webpack'
 import { readFileSync } from 'fs'
+import { join, resolve } from 'path'
+import {
+  Configuration,
+  DefinePlugin,
+  WebpackPluginInstance,
+  optimize,
+} from 'webpack'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const CopyPlugin = require('copy-webpack-plugin')
@@ -11,7 +16,7 @@ const nodeExternals = require('webpack-node-externals')
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path')
 
-const withNoNxSensitiveVars = () => (config) => {
+const withNoNxSensitiveVars = () => (config: Configuration) => {
   const NX_VARS = [
     'NX_TASK_HASH',
     'NX_TASK_TARGET_PROJECT',
@@ -20,8 +25,9 @@ const withNoNxSensitiveVars = () => (config) => {
     'NX_WORKSPACE_ROOT',
     'NX_CLOUD_ACCESS_TOKEN',
   ]
-  config.plugins = config.plugins.map((plugin) => {
-    if (!plugin.definitions || !plugin.definitions['process.env']) {
+  config.plugins = config.plugins?.map((pluginSrc) => {
+    const plugin = pluginSrc as WebpackPluginInstance | undefined
+    if (!plugin?.definitions || !plugin.definitions['process.env']) {
       return plugin
     }
 
@@ -138,6 +144,9 @@ export default composePlugins(
               JSON.parse(
                 readFileSync(join(__dirname, './package.json')).toString(),
               ).version,
+            ),
+            VITE_GITHUB_CLIENT_ID_MINA: JSON.stringify(
+              process.env.VITE_GITHUB_CLIENT_ID_MINA,
             ),
           },
         }),

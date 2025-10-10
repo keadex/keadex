@@ -12,7 +12,8 @@
     "./components/": "./src/components/",
     "./cross": "./src/cross.ts",
     "./desktop": "./src/desktop.ts",
-    "./web": "./src/web.ts"
+    "./web": "./src/web.ts",
+    "./core": "./src/core.ts"
   },
   "devDependencies": {
     "@types/react": "^18.2.28",

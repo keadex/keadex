@@ -1,8 +1,9 @@
+import { KEADEX_HEADERS } from '@keadex/keadex-utils/api'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
-  const ghToken = request.headers.get('Keadex-Gh-Authorization')
-  const ghUrl = request.headers.get('Keadex-Gh-Url')
+  const ghToken = request.headers.get(KEADEX_HEADERS.GH_AUTH)
+  const ghUrl = request.headers.get(KEADEX_HEADERS.GH_URL)
   if (!ghUrl)
     return NextResponse.json({ message: 'Invalid GitHub URL' }, { status: 400 })
   else {

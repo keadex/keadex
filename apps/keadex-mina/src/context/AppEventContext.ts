@@ -1,8 +1,9 @@
-import { createEventContext } from '@keadex/keadex-ui-kit/cross'
+import { createEventContext } from '@keadex/keadex-ui-kit/core'
 
 export enum AppEventType {
   OpenDiagram,
   OpenSearch,
+  GitHubTokenChanged,
 }
 
 export type AppEvent = {

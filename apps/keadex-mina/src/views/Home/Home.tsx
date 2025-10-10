@@ -1,9 +1,14 @@
 import {
+  faCloud,
   faFolderOpen,
   faPlus,
-  faCloud,
 } from '@fortawesome/free-solid-svg-icons'
-import { IconButton, useModal, useSafeExit } from '@keadex/keadex-ui-kit/cross'
+import {
+  IconButton,
+  faRemoteFolderOpen,
+  useModal,
+  useSafeExit,
+} from '@keadex/keadex-ui-kit/cross'
 import { isWebFsSupported } from '@keadex/keadex-utils'
 import { path } from '@tauri-apps/api'
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
@@ -15,7 +20,10 @@ import { toast } from 'react-toastify'
 import ModalCreateProject from '../../components/ModalCreateProject/ModalCreateProject'
 import { ENV_SETTINGS } from '../../core/env-settings'
 import { openExternalDiagram } from '../../core/router/router'
-import ROUTES, { HOME_PROJECT } from '../../core/router/routes'
+import ROUTES, {
+  HOME_PROJECT,
+  OPEN_REMOTE_PROJECT,
+} from '../../core/router/routes'
 import { useAppDispatch } from '../../core/store/hooks'
 import { openProject as openProjectEvent } from '../../core/store/slices/project-slice'
 import { openProject as openProjectAPI } from '../../core/tauri-rust-bridge'
@@ -107,6 +115,10 @@ export const Home = React.memo((props: HomeProps) => {
     openExternalDiagram(safeExit, [])
   }
 
+  async function handleOpenRemoteProject() {
+    navigate(OPEN_REMOTE_PROJECT)
+  }
+
   async function isDirectory(filePath: string) {
     try {
       await path.extname(filePath)
@@ -160,25 +172,32 @@ export const Home = React.memo((props: HomeProps) => {
               className="inline-block pointer-events-none"
             />
           </div>
-          <div className="mt-20 text-center text-5xl">
+          <div className="mt-28 text-center text-5xl">
             <IconButton
               icon={faFolderOpen}
-              className="w-60"
+              className="w-60 align-top"
               onClick={handleOpenProject}
             >
-              <span className="text-lg">{t('home.open_project')}</span>
+              <span className="text-lg">{t('home.open_local_project')}</span>
+            </IconButton>
+            <IconButton
+              icon={faRemoteFolderOpen}
+              onClick={handleOpenRemoteProject}
+              className="w-60 align-top"
+            >
+              <span className="text-lg">{t('home.open_remote_project')}</span>
             </IconButton>
             <IconButton
               icon={faPlus}
               onClick={handleCreateProject}
-              className="w-60"
+              className="w-60 align-top"
             >
               <span className="text-lg">{t('home.create_project')}</span>
             </IconButton>
             <IconButton
               icon={faCloud}
               onClick={handleExternalDiagrams}
-              className="w-60"
+              className="w-60 align-top"
             >
               <span className="text-lg">{t('home.remote_diagrams')}</span>
             </IconButton>

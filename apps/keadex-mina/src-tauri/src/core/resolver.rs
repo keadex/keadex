@@ -6,6 +6,7 @@ This module contains the logic to store/resolve modules can be shared across the
 use crate::api::filesystem::native_fs::NativeFileSystemAPI;
 #[cfg(web)]
 use crate::api::filesystem::web_fs::WebFileSystemAPI;
+use crate::dao::filesystem::app_settings_dao::AppSettingsDAO as AppSettingsFsDAO;
 use crate::dao::filesystem::binary_dao::BinaryDAO as BinaryFsDAO;
 use crate::dao::filesystem::diagram::diagram_plantuml_dao::DiagramPlantUMLDAO as DiagramPlantUMLFsDAO;
 use crate::dao::filesystem::diagram::diagram_spec_dao::DiagramSpecDAO as DiagramSpecFsDAO;
@@ -68,6 +69,7 @@ pub enum ResolvableModules {
   SoftwareSystemFsDAO(Resolver<SoftwareSystemFsDAO>),
   ProjectLibraryIMDAO(Resolver<ProjectLibraryIMDAO>),
   ProjectAliasesIMDAO(Resolver<ProjectAliasesIMDAO>),
+  AppSettingsFsDAO(Resolver<AppSettingsFsDAO>),
   #[cfg(desktop)]
   FileSystemAPI(Resolver<NativeFileSystemAPI>),
   #[cfg(web)]
@@ -130,6 +132,10 @@ impl Default for RootResolver {
     resolvers.insert(
       stringify!(DiagramSpecFsDAO).to_string(),
       ResolvableModules::DiagramSpecFsDAO(Default::default()),
+    );
+    resolvers.insert(
+      stringify!(AppSettingsFsDAO).to_string(),
+      ResolvableModules::AppSettingsFsDAO(Default::default()),
     );
 
     #[cfg(desktop)]

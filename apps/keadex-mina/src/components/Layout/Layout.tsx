@@ -1,3 +1,4 @@
+import { findRoute } from '@keadex/keadex-ui-kit/core'
 import {
   ContextMenu,
   DropdownMenuProps,
@@ -5,11 +6,7 @@ import {
   useModal,
 } from '@keadex/keadex-ui-kit/cross'
 import type { WindowTitlebarButtonProps } from '@keadex/keadex-ui-kit/desktop'
-import {
-  Window,
-  WindowTitlebar,
-  findRoute,
-} from '@keadex/keadex-ui-kit/desktop'
+import { Window, WindowTitlebar } from '@keadex/keadex-ui-kit/desktop'
 import { TauriEvent, UnlistenFn } from '@tauri-apps/api/event'
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import { onOpenUrl } from '@tauri-apps/plugin-deep-link'
@@ -19,12 +16,12 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { v4 as uuidv4 } from 'uuid'
 import AppEventContext from '../../context/AppEventContext'
+import { ENV_SETTINGS } from '../../core/env-settings'
 import { useDeepLinkRouter } from '../../core/router/router'
 import ROUTES from '../../core/router/routes'
 import { useAppDispatch, useAppSelector } from '../../core/store/hooks'
 import AppMenu, { AppMenuCommands } from '../AppMenu/AppMenu'
 import { createButtons } from './window-titlebar-buttons'
-import { ENV_SETTINGS } from '../../core/env-settings'
 
 const appWindow = getCurrentWebviewWindow()
 

@@ -1,6 +1,6 @@
 [package]
 name = "keadex_mina"
-version = "2.9.0"
+version = "2.10.0"
 description = "Desktop application to draw, manage and share the architectures of software systems."
 authors = ["Keadex"]
 license = "MIT"
@@ -66,6 +66,7 @@ web-sys = { version = "0.3", features = [
   "FileSystemRemoveOptions",
   "FileSystemCreateWritableOptions",
   'MessageEvent',
+  'Storage',
   'Url',
   'Window',
   'Worker',
@@ -96,6 +97,7 @@ tauri-plugin-global-shortcut = { version = "2", optional = true }
 tauri-plugin-updater = { version = "2", optional = true }
 tauri-plugin-deep-link = { version = "2", optional = true }
 tauri-plugin-single-instance = { version = "2", features = ["deep-link"], optional = true }
+tauri-plugin-store = { version = "2", optional = true }
 
 [features]
 # default = ["web"]
@@ -115,6 +117,7 @@ desktop = [
   "tauri-plugin-updater",
   "tauri-plugin-deep-link",
   "tauri-plugin-single-instance",
+  "tauri-plugin-store",
   "dep:tauri-build",
   "dep:fs2",
   "dep:walkdir"

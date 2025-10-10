@@ -4,4 +4,10 @@ export { objectsAreEqual, cloneDeep } from './helper/object-helper'
 export { unescape, longerString } from './helper/string-helper'
 export { pxToInch, pxToPt, inchToPx, ptToPx } from './helper/units-helper'
 export { initConsole } from './helper/console-helper'
-export { isWebFsSupported } from './helper/web-fs-helper'
+export {
+  isWebFsSupported,
+  ensureDir,
+  printDirectoryStructure,
+  clearOPFSTempDir,
+} from './helper/web-fs-helper'
+export { extractToOPFS } from './helper/archive-helper'

@@ -19,6 +19,10 @@ use {
   keadex_mina::__cmd__open_project, keadex_mina::__cmd__parsed_element_to_plantuml,
   keadex_mina::__cmd__save_project_settings, keadex_mina::__cmd__save_spec_diagram_raw_plantuml,
   keadex_mina::controller::ai_controller::generate_plantuml,
+  keadex_mina::controller::app_settings_controller::__cmd__get_user_settings,
+  keadex_mina::controller::app_settings_controller::__cmd__save_user_settings,
+  keadex_mina::controller::app_settings_controller::get_user_settings,
+  keadex_mina::controller::app_settings_controller::save_user_settings,
   keadex_mina::controller::diagram_controller::__cmd__dependent_elements_in_diagram,
   keadex_mina::controller::diagram_controller::__cmd__deserialize_plantuml_by_string,
   keadex_mina::controller::diagram_controller::__cmd__diagram_from_link_string,
@@ -66,6 +70,7 @@ use {
   keadex_mina::controller::search_controller::search,
   keadex_mina::controller::search_controller::search_and_replace,
   keadex_mina::controller::search_controller::search_diagram_element_alias,
+  keadex_mina::core::app::TAURI_APP_HANDLE,
   keadex_mina::repository::project_repository::save_project_settings,
   keadex_mina::service::hook_service::execute_hook, tauri::Manager, tauri::WebviewWindowBuilder,
 };
@@ -92,7 +97,9 @@ fn main() {
       .plugin(tauri_plugin_clipboard_manager::init())
       .plugin(tauri_plugin_http::init())
       .plugin(tauri_plugin_deep_link::init())
+      .plugin(tauri_plugin_store::Builder::default().build())
       .setup(|app| {
+        TAURI_APP_HANDLE.set(app.app_handle().to_owned()).unwrap();
         #[cfg(any(windows, target_os = "linux"))]
         {
           use tauri_plugin_deep_link::DeepLinkExt;
@@ -132,6 +139,7 @@ fn main() {
         export_diagram_to_file,
         generate_plantuml,
         get_diagram,
+        get_user_settings,
         library_element_type_from_path,
         list_diagrams,
         list_library_elements,
@@ -142,6 +150,7 @@ fn main() {
         project_settings_url,
         save_project_settings,
         save_spec_diagram_raw_plantuml,
+        save_user_settings,
         search,
         search_and_replace,
         search_diagram_element_alias,

@@ -1,4 +1,4 @@
-import { Routes } from '@keadex/keadex-ui-kit/cross'
+import { Routes } from '@keadex/keadex-ui-kit/core'
 
 const ROUTES: Routes<void, void> = {}
 
@@ -62,6 +62,15 @@ ROUTES[PROJECT_C4MODEL_UI_KIT] = {
 }
 ROUTES[PROJECT_KEADEX_UI_KIT] = {
   path: PROJECT_KEADEX_UI_KIT,
+}
+
+// ----- Webhooks Paths
+export const MINA_LIVE_GH_AUTH_WEBHOOK = `${KEADEX_MINA_LIVE_EDITOR}/github-authenticated/:token`
+ROUTES[MINA_LIVE_GH_AUTH_WEBHOOK] = {
+  path: MINA_LIVE_GH_AUTH_WEBHOOK,
+  isNewsbarVisible: false,
+  isHeaderVisible: false,
+  isFooterVisible: false,
 }
 
 // ----- Documentation Paths

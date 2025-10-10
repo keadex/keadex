@@ -1,10 +1,13 @@
-import { findRoute, useSafeExit } from '@keadex/keadex-ui-kit/cross'
+import { findRoute } from '@keadex/keadex-ui-kit/core'
+import { useSafeExit } from '@keadex/keadex-ui-kit/cross'
 import type { EventEmitter } from 'ahooks/lib/useEventEmitter'
 import { useContext } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
 import type { NavigateOptions } from 'react-router-dom'
 import { createMemoryRouter, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import ErrorFallback from '../../components/ErrorFallback/ErrorFallback'
 import Layout from '../../components/Layout/Layout'
 import AppEventContext, {
   AppEvent,
@@ -14,11 +17,12 @@ import DependencyTable from '../../views/DependencyTable/DependencyTable'
 import DiagramEditor, {
   DiagramEditorState,
 } from '../../views/DiagramEditor/DiagramEditor'
-import RemoteDiagrams from '../../views/RemoteDiagrams/RemoteDiagrams'
 import Home from '../../views/Home/Home'
 import HomeProject from '../../views/HomeProject/HomeProject'
 import LibraryElement from '../../views/LibraryElement/LibraryElement'
+import OpenRemoteProject from '../../views/OpenRemoteProject/OpenRemoteProject'
 import ProjectSettings from '../../views/ProjectSettings/ProjectSettings'
+import RemoteDiagrams from '../../views/RemoteDiagrams/RemoteDiagrams'
 import store from '../store/store'
 import {
   diagramNameTypeFromLinkString,
@@ -30,22 +34,22 @@ import ROUTES, {
   DEPENDENCY_TABLE,
   DEPENDENCY_TABLE_ALIAS_URL_PARAM,
   EDIT_DIAGRAM,
-  REMOTE_DIAGRAMS,
-  REMOTE_DIAGRAMS_BASE_URL,
-  REMOTE_DIAGRAMS_DIAGRAM_URL_PARAM,
-  REMOTE_DIAGRAMS_GH_TOKEN_PARAM,
-  REMOTE_DIAGRAMS_PROJECT_ROOT_URL_PARAM,
+  GH_AUTHENTICATED_DEEP_LINK,
   HOME,
   HOME_PROJECT,
   OPEN_DEPENDENCY_TABLE_DEEP_LINK,
   OPEN_DIAGRAM_DEEP_LINK,
   OPEN_REMOTE_DIAGRAM_DEEP_LINK,
+  OPEN_REMOTE_PROJECT,
   PERSONS_LIBRARY,
   PROJECT_SETTINGS,
+  REMOTE_DIAGRAMS,
+  REMOTE_DIAGRAMS_BASE_URL,
+  REMOTE_DIAGRAMS_DIAGRAM_URL_PARAM,
+  REMOTE_DIAGRAMS_GH_TOKEN_PARAM,
+  REMOTE_DIAGRAMS_PROJECT_ROOT_URL_PARAM,
   SOFTWARE_SYSTEMS_LIBRARY,
 } from './routes'
-import { ErrorBoundary } from 'react-error-boundary'
-import ErrorFallback from '../../components/ErrorFallback/ErrorFallback'
 
 export const router = createMemoryRouter([
   {
@@ -94,6 +98,10 @@ export const router = createMemoryRouter([
       {
         path: ROUTES[REMOTE_DIAGRAMS].path,
         element: <RemoteDiagrams />,
+      },
+      {
+        path: ROUTES[OPEN_REMOTE_PROJECT].path,
+        element: <OpenRemoteProject />,
       },
     ],
   },
@@ -171,7 +179,19 @@ export function useDeepLinkRouter() {
                 openExternalDiagram(safeExit, externalDiagramParams)
               }
             }
-
+            break
+          case GH_AUTHENTICATED_DEEP_LINK:
+            const ghAuthenticatedParams = deepLinkParams.split('/')
+            if (ghAuthenticatedParams.length != 1) {
+              toast.error(
+                t('deep_link.invalid_gh_authenticated_path', { deepLink }),
+              )
+            } else {
+              context?.emit({
+                type: AppEventType.GitHubTokenChanged,
+                data: { token: ghAuthenticatedParams[0] },
+              })
+            }
             break
           default:
             toast.error(t('deep_link.unsupported_deep_link'))

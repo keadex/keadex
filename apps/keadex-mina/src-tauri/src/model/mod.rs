@@ -11,3 +11,4 @@ pub mod project_alias;
 pub mod project_library;
 pub mod project_settings;
 pub mod themes;
+pub mod user_settings;

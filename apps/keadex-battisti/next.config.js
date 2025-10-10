@@ -11,6 +11,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 const CopyPlugin = require('copy-webpack-plugin')
 const withMinaLive = require('@keadex/mina-live-npm/nextjs-plugin')
+const {
+  KEADEX_HEADERS,
+} = require('../../libs/keadex-utils/src/api/constants.ts')
 
 const ALL_SOURCES = '/(.*)'
 const MINA_LIVE_EDITOR_SOURCE = '/(.*)/mina-live'
@@ -58,6 +61,7 @@ const nextConfig = {
     optimizePackageImports: [
       '@keadex/keadex-ui-kit/cross',
       '@keadex/keadex-ui-kit/web',
+      '@keadex/keadex-ui-kit/core',
       '@keadex/keadex-utils',
     ],
     webpackBuildWorker: true,
@@ -112,7 +116,7 @@ const nextConfig = {
         ],
       },
       {
-        source: '/api/download-gh-raw-file',
+        source: '/api/(download-gh-raw-file|github/repo/download)',
         headers: [
           { key: 'Access-Control-Allow-Origin', value: '*' },
           {
@@ -121,7 +125,14 @@ const nextConfig = {
           },
           {
             key: 'Access-Control-Allow-Headers',
-            value: 'Keadex-Gh-Url, Keadex-Gh-Authorization',
+            value: [
+              KEADEX_HEADERS.GH_URL,
+              KEADEX_HEADERS.GH_AUTH,
+              KEADEX_HEADERS.GH_TOKEN,
+              KEADEX_HEADERS.GH_REPO,
+              KEADEX_HEADERS.GH_OWNER,
+              KEADEX_HEADERS.GH_BRANCH,
+            ].join(', '),
           },
         ],
       },

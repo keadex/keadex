@@ -1,5 +1,5 @@
 import { c4ElementTypePathName } from '@keadex/c4-model-ui-kit'
-import { Routes } from '@keadex/keadex-ui-kit/cross'
+import { Routes } from '@keadex/keadex-ui-kit/core'
 import titlebarMenuFactory, {
   WindowTitlebarMenuFactoryData,
 } from '../../components/Layout/window-titlebar-menu'
@@ -25,6 +25,7 @@ ROUTES[HOME] = {
 // ----- Project Paths
 export const HOME_PROJECT = '/project/home'
 export const PROJECT_SETTINGS = '/project/settings'
+export const OPEN_REMOTE_PROJECT = '/project/open/remote'
 
 ROUTES[HOME_PROJECT] = {
   path: HOME_PROJECT,
@@ -39,13 +40,18 @@ ROUTES[PROJECT_SETTINGS] = {
   titlebarMenuFactory,
 }
 
+ROUTES[OPEN_REMOTE_PROJECT] = {
+  path: OPEN_REMOTE_PROJECT,
+  isAppMenuVisible: false,
+  titlebarMenuFactory,
+}
+
 // ----- Diagrams Paths
 export const EDIT_DIAGRAM = '/diagram/edit'
 
 ROUTES[EDIT_DIAGRAM] = {
   path: EDIT_DIAGRAM,
   isAppMenuVisible: true,
-  protectExit: true,
   titlebarMenuFactory,
 }
 
@@ -112,6 +118,7 @@ export const DEEP_LINK_SCHEME = 'mina://'
 export const OPEN_DIAGRAM_DEEP_LINK = `${DEEP_LINK_SCHEME}open-diagram/`
 export const OPEN_DEPENDENCY_TABLE_DEEP_LINK = `${DEEP_LINK_SCHEME}dependency-table/`
 export const OPEN_REMOTE_DIAGRAM_DEEP_LINK = `${DEEP_LINK_SCHEME}remote-diagrams/`
+export const GH_AUTHENTICATED_DEEP_LINK = `${DEEP_LINK_SCHEME}github-authenticated/`
 
 ROUTES[OPEN_DIAGRAM_DEEP_LINK] = {
   path: OPEN_DIAGRAM_DEEP_LINK,
@@ -129,6 +136,13 @@ ROUTES[OPEN_DEPENDENCY_TABLE_DEEP_LINK] = {
 
 ROUTES[OPEN_REMOTE_DIAGRAM_DEEP_LINK] = {
   path: OPEN_REMOTE_DIAGRAM_DEEP_LINK,
+  data: {
+    requiresProject: false,
+  },
+}
+
+ROUTES[GH_AUTHENTICATED_DEEP_LINK] = {
+  path: GH_AUTHENTICATED_DEEP_LINK,
   data: {
     requiresProject: false,
   },

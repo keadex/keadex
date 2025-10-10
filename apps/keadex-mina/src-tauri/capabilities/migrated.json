@@ -85,6 +85,10 @@
     "fs:default",
     "global-shortcut:default",
     "updater:default",
-    "deep-link:default"
+    "deep-link:default",
+    {
+      "identifier": "fs:scope",
+      "allow": [{ "path": "$TEMP/**/*" }]
+    }
   ]
 }

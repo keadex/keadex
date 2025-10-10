@@ -22,7 +22,7 @@ import {
 } from 'tw-elements'
 import '../../tauri/tauri-web-adapter'
 import { useForceUpdate } from '@keadex/keadex-ui-kit/cross'
-import { initConsole } from '@keadex/keadex-utils'
+import { clearOPFSTempDir, initConsole } from '@keadex/keadex-utils'
 import init from '../../../src-rust/pkg'
 
 initConsole()
@@ -53,6 +53,8 @@ export const MinaLive = React.memo<MinaLiveProps>(({ scriptPath }) => {
       init()
         .then((wasmModule) => {
           console.debug(`Wasm module loaded`)
+          // Clear OPFS temp dir
+          clearOPFSTempDir()
           // setTimeout() needed due to tw-elements@1.0.0-beta2 bug:
           //  - https://github.com/mdbootstrap/Tailwind-Elements/issues/1615
           //  - https://github.com/mdbootstrap/Tailwind-Elements/issues/1685

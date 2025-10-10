@@ -1,3 +1,4 @@
+pub mod app_settings_dao;
 pub mod binary_dao;
 pub mod diagram;
 pub mod library;

@@ -56,7 +56,7 @@ export const Input = React.memo((props: InputProps) => {
       >
         {props.label}
       </label>
-      {info && <div className="text-sm px-3">{info}</div>}
+      {info && <div className="text-sm px-3 mt-1">{info}</div>}
     </div>
   )
 })

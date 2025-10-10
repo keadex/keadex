@@ -17,6 +17,7 @@ import {
   REMOTE_DIAGRAMS_BASE_URL,
   HOME,
   HOME_PROJECT,
+  OPEN_REMOTE_PROJECT,
 } from '../../core/router/routes'
 import {
   closeProject as closeProjectEvent,
@@ -123,54 +124,64 @@ const factory: WindowTitlebarMenuFactory<
     })
   }
 
-  const handleOpenProject = () => {
+  const confirmOpenProject = (onOpen: () => void) => {
+    data.showModal({
+      id: 'confirmOpenProjectModal',
+      title: `${t('common.confirmation')}`,
+      body: `${t('common.question.confirm_not_saved_changed_current_project')}`,
+      buttons: [
+        {
+          key: 'button-cancel',
+          children: <span>{t('common.cancel')}</span>,
+          'data-te-modal-dismiss': true,
+        },
+        {
+          key: 'button-confirm',
+          children: <span>{t('common.info.i_saved_my_changes')}</span>,
+          className: 'button--safe',
+          onClick: async () => {
+            if (data.currentProjectRoot) {
+              closeProjectAPI(data.currentProjectRoot)
+                .then((result) => {
+                  if (result) {
+                    onOpen()
+                  } else {
+                    toast.error(
+                      t('common.error.project_not_closed', {
+                        errorMessage: 'unknown error',
+                      }),
+                    )
+                  }
+                })
+                .catch((error: MinaError) => {
+                  toast.error(
+                    t('common.error.project_not_closed', {
+                      errorMessage: error.msg,
+                    }),
+                  )
+                })
+              data.hideModal()
+            }
+          },
+        },
+      ],
+    })
+  }
+
+  const handleOpenLocalProject = () => {
     dialog.open({ directory: true }).then(async (path) => {
       if (Array.isArray(path)) toast.error(t('common.error.invalid_path'))
       else if (path) {
-        data.showModal({
-          id: 'confirmOpenProjectModal',
-          title: `${t('common.confirmation')}`,
-          body: `${t(
-            'common.question.confirm_not_saved_changed_current_project',
-          )}`,
-          buttons: [
-            {
-              key: 'button-cancel',
-              children: <span>{t('common.cancel')}</span>,
-              'data-te-modal-dismiss': true,
-            },
-            {
-              key: 'button-confirm',
-              children: <span>{t('common.info.i_saved_my_changes')}</span>,
-              className: 'button--safe',
-              onClick: async () => {
-                if (data.currentProjectRoot) {
-                  closeProjectAPI(data.currentProjectRoot)
-                    .then((result) => {
-                      if (result) {
-                        openProject(path)
-                      } else {
-                        toast.error(
-                          t('common.error.project_not_closed', {
-                            errorMessage: 'unknown error',
-                          }),
-                        )
-                      }
-                    })
-                    .catch((error: MinaError) => {
-                      toast.error(
-                        t('common.error.project_not_closed', {
-                          errorMessage: error.msg,
-                        }),
-                      )
-                    })
-                  data.hideModal()
-                }
-              },
-            },
-          ],
+        confirmOpenProject(() => {
+          openProject(path)
         })
       }
+    })
+  }
+
+  const handleOpenRemoteProject = () => {
+    confirmOpenProject(() => {
+      navigate(OPEN_REMOTE_PROJECT)
     })
   }
 
@@ -237,13 +248,22 @@ const factory: WindowTitlebarMenuFactory<
   //------- File menu item
   const fileSubMenuItems = []
   if (location.pathname !== HOME) {
-    if (!location.pathname.startsWith(REMOTE_DIAGRAMS_BASE_URL)) {
+    if (
+      !location.pathname.startsWith(REMOTE_DIAGRAMS_BASE_URL) &&
+      location.pathname != OPEN_REMOTE_PROJECT
+    ) {
       if (!ENV_SETTINGS.WEB_MODE) {
         fileSubMenuItems.push({
           isHeaderMenuItem: false,
-          id: 'wbar_file_open_project',
-          label: t('common.action.open_project').toString(),
-          onClick: handleOpenProject,
+          id: 'wbar_file_open_local_project',
+          label: t('common.action.open_local_project').toString(),
+          onClick: handleOpenLocalProject,
+        })
+        fileSubMenuItems.push({
+          isHeaderMenuItem: false,
+          id: 'wbar_file_open_remote_project',
+          label: t('common.action.open_remote_project').toString(),
+          onClick: handleOpenRemoteProject,
         })
       }
       fileSubMenuItems.push({
@@ -284,6 +304,7 @@ const factory: WindowTitlebarMenuFactory<
   if (
     location.pathname !== HOME &&
     !location.pathname.startsWith(REMOTE_DIAGRAMS_BASE_URL) &&
+    location.pathname != OPEN_REMOTE_PROJECT &&
     !ENV_SETTINGS.WEB_MODE
   ) {
     menuItemsProps.push({
