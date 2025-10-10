@@ -5656,10 +5656,10 @@
   resolved "https://registry.yarnpkg.com/@jsonjoy.com/util/-/util-1.6.0.tgz#23991b2fe12cb3a006573d9dc97c768d3ed2c9f1"
   integrity sha512-sw/RMbehRhN68WRtcKCpQOPfnH6lLP4GJfqzi3iYej8tnzpZUDr6UkZYJjcjjC0FWEJOJbyM3PTIwxucUmDG2A==
 
-"@keadex/mina-live-npm@npm:@keadex/mina-live@^2.9.0":
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-live/-/mina-live-2.9.0.tgz#f34cda24c2fab872d91106c8cbc2f6274862aaf0"
-  integrity sha512-vDa4LkckjQVfLYRdJ21p+ugfgrBUUxuoUF4jd4scbRWN9AOMho4wBN9HQ49ZXAO+o092Meh7y1Nhn01IcPrYrw==
+"@keadex/mina-live-npm@npm:@keadex/mina-live@^2.10.0":
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-live/-/mina-live-2.10.0.tgz#5354aea0f70068a975bfe14781745daf72f0cdbd"
+  integrity sha512-lufU1vmyFT1zKwny8a4jjt9PIiqkZtWevwLiYkcKmtaJZ5Ll312nzUhgfDz+//XnY47WNYU+cbiJibeg6LhYtg==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
@@ -5672,6 +5672,7 @@
     "@tauri-apps/plugin-clipboard-manager" "^2.2.1"
     "@tauri-apps/plugin-deep-link" "^2.2.0"
     "@tauri-apps/plugin-dialog" "^2.2.0"
+    "@tauri-apps/plugin-fs" "^2.2.0"
     "@tauri-apps/plugin-os" "^2.2.0"
     "@tauri-apps/plugin-process" "^2.2.0"
     "@tauri-apps/plugin-shell" "^2.2.0"
@@ -5687,8 +5688,10 @@
     fontfaceobserver "^2.3.0"
     i18next "^23.5.1"
     i18next-http-backend "^2.2.2"
+    jszip "^3.10.1"
     lodash.clonedeep "^4.5.0"
     monaco-editor "^0.44.0"
+    octokit "^5.0.3"
     pluralize "^8.0.0"
     react-color "^2.19.3"
     react-error-boundary "^6.0.0"
@@ -5705,10 +5708,10 @@
     uuid "^9.0.1"
     wasm-pack "^0.12.1"
 
-"@keadex/mina-react-npm@npm:@keadex/mina-react@^2.9.0":
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-2.9.0.tgz#ac417534cd813e476f5f95e34e93692a842eb1e0"
-  integrity sha512-UTGaH6Xln7C7GpPR/TXVrGwaBXPSnrv7Zfb2KjWVp/PVUeRw+CE7s/QLUrGtUMinw9iUWRPLaapvdMbnmoEfuw==
+"@keadex/mina-react-npm@npm:@keadex/mina-react@^2.10.0":
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-2.10.0.tgz#b4b9abd865f8b3d9b3b5542712ca10e424e8024b"
+  integrity sha512-DS3+6tS+8r2IHm3Qgpj72JcqhRON5UNe/LLFUP8CgKKoJaX4AA7VX8VmFuwXkdHMjseWc/7F5xdbQJHrCJX4wg==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.4.2"
     "@fortawesome/free-solid-svg-icons" "^6.4.2"
