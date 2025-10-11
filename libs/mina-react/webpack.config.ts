@@ -104,7 +104,7 @@ export const withWebConfig = () => (defaultconfig) => {
               readFileSync(join(__dirname, '../../package.json')).toString(),
             ).version,
           ),
-          VITE_GITHUB_CLIENT_ID_MINA: 'N/A', // Not used in this app
+          VITE_GITHUB_CLIENT_ID_MINA: JSON.stringify('N/A'), // Not used in this app
         },
       }),
     ],

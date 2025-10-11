@@ -26,6 +26,8 @@ export default defineConfig({
     assetsInlineLimit: 0,
   },
   define: {
-    'process.env': {},
+    'process.env': {
+      NODE_ENV: !process.env.TAURI_ENV_DEBUG ? 'production' : 'development',
+    },
   },
 })
