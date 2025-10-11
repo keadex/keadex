@@ -63,6 +63,14 @@ const filesToUpdate = [
 
   // Mina Live
   {
+    path: 'libs/mina-live/src-rust/Cargo.toml',
+    pattern: `name = "mina-live"\nversion = "${version}"`,
+  },
+  {
+    path: 'libs/mina-live/src-rust/Cargo.lock',
+    pattern: `name = "mina-live"\nversion = "${version}"`,
+  },
+  {
     path: 'libs/mina-live/src-rust/Cargo.lock',
     pattern: `name = "keadex_mina"\nversion = "${version}"`,
   },

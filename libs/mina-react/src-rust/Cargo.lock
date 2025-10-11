@@ -1235,7 +1235,7 @@ dependencies = [
 
 [[package]]
 name = "keadex_mina"
-version = "2.10.2"
+version = "2.10.3"
 dependencies = [
  "async-openai-wasm",
  "async-std",

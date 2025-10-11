@@ -44,7 +44,7 @@
       "options": {
         "cwd": "libs/mina-live",
         "commands": [
-          "cross-env RUSTFLAGS=\"-C target-feature=+atomics,+bulk-memory,+mutable-globals\" RUSTUP_TOOLCHAIN=\"nightly\" wasm-pack build ./src-rust --target web -- -Z build-std=std,panic_abort"
+          "cross-env RUSTFLAGS=\"-C target-feature=+atomics,+bulk-memory,+mutable-globals\" RUSTUP_TOOLCHAIN=\"nightly-2025-09-24\" wasm-pack build ./src-rust --target web -- -Z build-std=std,panic_abort"
         ],
         "parallel": false
       }
