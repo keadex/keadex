@@ -63,7 +63,7 @@ export const DiagramCodePanel = React.memo((props: DiagramCodePanelProps) => {
               JSON
             </Button>
           </div>
-          <div className="mt-5 p-2 bg-primary rounded-md overflow-auto whitespace-pre-wrap text-sm font-mono">
+          <div className="mt-5 p-2 bg-primary rounded-md overflow-auto whitespace-pre-wrap text-sm font-mono text-gray-300">
             <IconButton
               icon={faCopy}
               className="absolute right-5 text-xl"
