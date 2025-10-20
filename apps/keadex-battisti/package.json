@@ -41,7 +41,7 @@
     "tw-elements": "1.0.0"
   },
   "devDependencies": {
-    "@nx/next": "21.0.3",
+    "@nx/next": "^21.6.5",
     "@testing-library/react": "14.0.0",
     "@types/react": "^18.2.28",
     "@types/react-dom": "^18.2.13",

@@ -2,7 +2,7 @@
   "name": "@keadex/keadex-nx-plugin",
   "version": "0.0.1",
   "dependencies": {
-    "@nx/devkit": "21.0.3",
+    "@nx/devkit": "^21.6.5",
     "@microsoft/api-documenter": "^7.25.2",
     "@microsoft/api-extractor": "^7.46.2",
     "glob": "11.0.2",
