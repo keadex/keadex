@@ -3,7 +3,7 @@ import Image from 'next/image'
 import minaLogo from '../../../../../../public/img/keadex-mina-logo-color.svg'
 import keadexMina from '../../../../../../public/img/keadex-mina-logo.svg'
 import MinaShareDiagramComponent from '../../../../../components/MinaShareDiagram/MinaShareDiagram'
-import { useTranslation } from '../../../../i18n'
+import { getTranslation } from '../../../../i18n'
 import { PageProps } from '../../../layout'
 import ROUTES, { PROJECT_KEADEX_MINA } from '../../../../../core/routes'
 import { Suspense } from 'react'
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 
 const MinaShareDiagram: NextPage<PageProps> = async ({ params }) => {
   const { lang } = await params
-  const { t } = await useTranslation(lang)
+  const { t } = await getTranslation(lang)
   return (
     <div className="page font-light flex flex-col pt-10 pb-10">
       <div className="flex flex-col my-auto">

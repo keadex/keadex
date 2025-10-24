@@ -1,13 +1,13 @@
 import { NextPage } from 'next'
 import '../../styles/index.css'
 import { PageProps } from './layout'
-import { useTranslation } from '../i18n'
+import { getTranslation } from '../i18n'
 import { Button } from '@keadex/keadex-ui-kit/cross'
 import Link from 'next/link'
 import ROUTES, { HOME } from '../../core/routes'
 
 const Custom404: NextPage<PageProps> = async () => {
-  const { t } = await useTranslation('en')
+  const { t } = await getTranslation('en')
 
   return (
     <div className="page h-screen align-middle flex flex-col">

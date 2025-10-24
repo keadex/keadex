@@ -18,7 +18,7 @@ import martialArts from '../../../../public/img/martial-arts.svg'
 import motorbikes from '../../../../public/img/motorbikes.svg'
 import music from '../../../../public/img/music.svg'
 import spearfishing from '../../../../public/img/spearfishing.svg'
-import { useTranslation } from '../../i18n'
+import { getTranslation } from '../../i18n'
 import { PageProps } from '../layout'
 import './page.css'
 
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
 
 const AboutMe: NextPage<PageProps> = async ({ params }) => {
   const { lang } = await params
-  const { t } = await useTranslation(lang)
+  const { t } = await getTranslation(lang)
 
   const timelineItems: TimelineItem[] = [
     {

@@ -13,7 +13,6 @@ import {
   PROJECT_ROOT_URL_PARAM_NAME,
   generateShareLink,
 } from '../../helper/share-link-helper'
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { generateRemoteDiagramSSRLink } from '@keadex/keadex-mina/src/helper/ssr-link-helper'
 
 export const MinaReact = dynamic(() => import('@keadex/mina-react-npm'), {
