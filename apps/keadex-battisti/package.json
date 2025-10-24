@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@nx/next": "^22.0.1",
-    "@testing-library/react": "14.0.0",
+    "@testing-library/react": "16.3.0",
     "@types/react": "^18.2.28",
     "@types/react-dom": "^18.2.13",
     "autoprefixer": "^10.4.16",
