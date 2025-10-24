@@ -9,7 +9,7 @@
   "private": true,
   "dependencies": {
     "@nx/devkit": "^22.0.1",
-    "canvas": "^3.1.0",
+    "canvas": "^3.2.0",
     "core-js": "^3.46.0",
     "regenerator-runtime": "0.14.1",
     "tslib": "^2.8.1"
