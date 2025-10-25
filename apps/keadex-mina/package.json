@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.2.7",
-    "@testing-library/react": "16.3.0",
+    "@testing-library/react": "^16.3.0",
     "@types/escape-html": "^1.0.4",
     "@types/fabric": "^5.3.10",
     "@types/fontfaceobserver": "^2.1.2",
