@@ -2,7 +2,6 @@ import React from 'react'
 import '../../styles/index.css'
 import { useTranslation } from 'react-i18next'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type SplashScreenProps = {
   className?: string
   hideLogo?: boolean

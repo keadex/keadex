@@ -33,7 +33,6 @@ initi18n({
   },
 })
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type MinaLiveProps = {
   scriptPath: string
 }
