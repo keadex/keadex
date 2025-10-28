@@ -69,8 +69,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/mina-react/**/*.{ts,tsx,js,jsx}"],
-        "ignorePath": "libs/mina-react/.eslintignore"
+        "lintFilePatterns": ["libs/mina-react/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "test": {

@@ -23,28 +23,6 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
   const [options, setOptions] = useState([{ label: '', value: '' }])
   const [diagrams, setDiagrams] = useState<string[]>()
 
-  useEffect(() => {
-    listDiagrams().then(async (diagrams) => {
-      let diagramStrings: string[] = []
-      for (const key in diagrams) {
-        const typedKey = key as DiagramType
-        diagramStrings = diagramStrings.concat(
-          await Promise.all(
-            diagrams[typedKey].map(async (diagramName) => {
-              return await diagramToLinkString(diagramName, typedKey)
-            }),
-          ),
-        )
-      }
-      setDiagrams(diagramStrings)
-      handleOnTyping(
-        !props.value || props.value === '',
-        props.value ?? '',
-        diagramStrings,
-      )
-    })
-  }, [])
-
   function handleOnTyping(
     addDefaultOption: boolean,
     value: string,
@@ -85,6 +63,28 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
 
     setOptions(options)
   }
+
+  useEffect(() => {
+    listDiagrams().then(async (diagrams) => {
+      let diagramStrings: string[] = []
+      for (const key in diagrams) {
+        const typedKey = key as DiagramType
+        diagramStrings = diagramStrings.concat(
+          await Promise.all(
+            diagrams[typedKey].map(async (diagramName) => {
+              return await diagramToLinkString(diagramName, typedKey)
+            }),
+          ),
+        )
+      }
+      setDiagrams(diagramStrings)
+      handleOnTyping(
+        !props.value || props.value === '',
+        props.value ?? '',
+        diagramStrings,
+      )
+    })
+  }, [])
 
   function handleOnDiagramSelected(selectedDiagram: string) {
     if (diagrams && diagrams.includes(selectedDiagram)) {

@@ -11,7 +11,7 @@ let release = process.argv[3]
 
 const rootRepo = join(__dirname, '../../..')
 
-let version = JSON.parse(
+const version = JSON.parse(
   fs.readFileSync(join(__dirname, '../package.json'), 'utf8'),
 ).version
 

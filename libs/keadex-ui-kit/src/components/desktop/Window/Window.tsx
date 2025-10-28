@@ -1,9 +1,6 @@
 import React from 'react'
 import { useDisableBrowserShortcuts } from '../../../hooks/useDisableBrowserShortcuts/useDisableBrowserShortcuts'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface WindowProps {}
-
 export const Window = React.memo(
   (props: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     useDisableBrowserShortcuts()

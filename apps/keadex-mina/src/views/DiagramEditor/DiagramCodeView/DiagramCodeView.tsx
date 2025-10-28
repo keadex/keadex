@@ -123,119 +123,10 @@ export const DiagramCodeView = forwardRef(
     const canEditorRedo = useRef(false)
     const diagramAliases = useRef<string[]>([])
 
-    useEffect(() => {
-      function handle(e: KeyboardEvent) {
-        if (e.key.toUpperCase() === 'S' && (e.ctrlKey || e.metaKey)) {
-          e.preventDefault()
-          saveDiagram()
-        }
-      }
-      document.addEventListener('keydown', handle)
-      return () => document.removeEventListener('keydown', handle)
-    }, [diagram, editorPosition, saveDiagram])
-
-    useEffect(() => {
-      if (editorRef.current) {
-        if (editorPosition) {
-          editorRef.current.focus()
-          editorRef.current.setPosition(editorPosition)
-          editorRef.current.updateOptions({ readOnly: isSaving })
-        } else {
-          editorRef.current.setPosition({ lineNumber: 0, column: 0 })
-        }
-      }
-    })
-
-    useEffect(() => {
-      if (diagram) {
-        canEditorUndo.current = true
-        diagramAliases.current = diagram.diagram_plantuml?.aliases ?? []
-        const { raw_plantuml } = diagram
-        setRawPlantuml(raw_plantuml ?? '')
-      }
-    }, [diagram])
-
-    useImperativeHandle(ref, () => ({
-      resetCode: () => {
-        // Setting the editor value, clear the undo/redo stack
-        editorRef.current?.getModel()?.setValue('')
-        setRawPlantuml('')
-
-        // The editorRef.current?.getModel()?.setValue('') resets the EOL configured before ("\n")
-        // in the handleEditorDidMount() function: https://github.com/microsoft/monaco-editor/issues/1886#issuecomment-607478426
-        // For this reason we have to reconfiugre the EOL in order to avoid conflicts beetween the raw plantuml
-        // read from the diagram, and the one in the monaco editor. In fact, without reconfiguring the EOL
-        // the raw plantuml will be different due to the different EOL ("\n" vs "\r\n"),
-        // even though the code is the same.
-        editorRef.current
-          ?.getModel()
-          ?.setEOL(monaco.editor.EndOfLineSequence.LF)
-
-        // In the handleEditorChange() the canEditorUndo is properly set according to the
-        // editor versions ids. The following "reset" the current and initial version ids
-        // according to the current editor version id since in the Monaco editor is not possible
-        // to reset the version ids.
-        setCurrentVersionID(
-          (editorRef.current?.getModel()?.getAlternativeVersionId() ?? -1) + 1,
-        )
-        setInitialVersionID(
-          editorRef.current?.getModel()?.getAlternativeVersionId() ?? -1,
-        )
-      },
-      getUpdatedRawPlantUML: (): string | undefined => {
-        if (
-          diagram &&
-          diagram.diagram_name &&
-          diagram.diagram_type &&
-          editorRef.current
-        ) {
-          return editorRef.current.getValue()
-        }
-      },
-      canUndo: (): boolean => {
-        return canEditorUndo.current
-      },
-      canRedo: (): boolean => {
-        return canEditorRedo.current
-      },
-      undo: () => {
-        editorRef.current?.focus()
-        editorRef.current?.trigger('', 'undo', {})
-      },
-      redo: () => {
-        editorRef.current?.focus()
-        editorRef.current?.trigger('', 'redo', {})
-      },
-      copy: () => {
-        editorRef.current?.focus()
-        editorRef.current?.trigger('', 'editor.action.clipboardCopyAction', {})
-      },
-      cut: () => {
-        editorRef.current?.focus()
-        editorRef.current?.trigger('', 'editor.action.clipboardCutAction', {})
-      },
-      paste: () => {
-        editorRef.current?.focus()
-        editorRef.current?.trigger('', 'editor.action.clipboardPasteAction', {})
-      },
-      find: () => {
-        editorRef.current?.focus()
-        editorRef.current?.trigger('', 'actions.find', {})
-      },
-      commands: () => {
-        editorRef.current?.focus()
-        editorRef.current?.trigger('', 'editor.action.quickCommand', {})
-      },
-      openAI: () => {
-        setAiHidden(false)
-      },
-      addCodeAtCursorPosition: addCodeAtCursorPosition,
-      addToLibrary: addToLibrary,
-      importFromLibrary: importFromLibrary,
-      addDiagramElement: addDiagramElement,
-      addDiagramLink: addDiagramLink,
-      selectText: selectText,
-    }))
+    function addCodeAtCursorPosition(code: string, cursorPosition?: number) {
+      editorRef.current?.focus()
+      editorRef.current?.trigger('keyboard', 'type', { text: code })
+    }
 
     function handleEditorDidMount(editor: monaco.editor.IStandaloneCodeEditor) {
       editor.getModel()?.setEOL(monaco.editor.EndOfLineSequence.LF)
@@ -358,11 +249,6 @@ export const DiagramCodeView = forwardRef(
       setCurrentVersionID(versionId)
 
       props.diagramCodeViewToolbarCommands?.forceUpdate()
-    }
-
-    function addCodeAtCursorPosition(code: string, cursorPosition?: number) {
-      editorRef.current?.focus()
-      editorRef.current?.trigger('keyboard', 'type', { text: code })
     }
 
     function replaceLinesContent(
@@ -694,6 +580,120 @@ export const DiagramCodeView = forwardRef(
         }
       }
     }
+
+    useEffect(() => {
+      function handle(e: KeyboardEvent) {
+        if (e.key.toUpperCase() === 'S' && (e.ctrlKey || e.metaKey)) {
+          e.preventDefault()
+          saveDiagram()
+        }
+      }
+      document.addEventListener('keydown', handle)
+      return () => document.removeEventListener('keydown', handle)
+    }, [diagram, editorPosition, saveDiagram])
+
+    useEffect(() => {
+      if (editorRef.current) {
+        if (editorPosition) {
+          editorRef.current.focus()
+          editorRef.current.setPosition(editorPosition)
+          editorRef.current.updateOptions({ readOnly: isSaving })
+        } else {
+          editorRef.current.setPosition({ lineNumber: 0, column: 0 })
+        }
+      }
+    })
+
+    useEffect(() => {
+      if (diagram) {
+        canEditorUndo.current = true
+        diagramAliases.current = diagram.diagram_plantuml?.aliases ?? []
+        const { raw_plantuml } = diagram
+        setRawPlantuml(raw_plantuml ?? '')
+      }
+    }, [diagram])
+
+    useImperativeHandle(ref, () => ({
+      resetCode: () => {
+        // Setting the editor value, clear the undo/redo stack
+        editorRef.current?.getModel()?.setValue('')
+        setRawPlantuml('')
+
+        // The editorRef.current?.getModel()?.setValue('') resets the EOL configured before ("\n")
+        // in the handleEditorDidMount() function: https://github.com/microsoft/monaco-editor/issues/1886#issuecomment-607478426
+        // For this reason we have to reconfiugre the EOL in order to avoid conflicts beetween the raw plantuml
+        // read from the diagram, and the one in the monaco editor. In fact, without reconfiguring the EOL
+        // the raw plantuml will be different due to the different EOL ("\n" vs "\r\n"),
+        // even though the code is the same.
+        editorRef.current
+          ?.getModel()
+          ?.setEOL(monaco.editor.EndOfLineSequence.LF)
+
+        // In the handleEditorChange() the canEditorUndo is properly set according to the
+        // editor versions ids. The following "reset" the current and initial version ids
+        // according to the current editor version id since in the Monaco editor is not possible
+        // to reset the version ids.
+        setCurrentVersionID(
+          (editorRef.current?.getModel()?.getAlternativeVersionId() ?? -1) + 1,
+        )
+        setInitialVersionID(
+          editorRef.current?.getModel()?.getAlternativeVersionId() ?? -1,
+        )
+      },
+      getUpdatedRawPlantUML: (): string | undefined => {
+        if (
+          diagram &&
+          diagram.diagram_name &&
+          diagram.diagram_type &&
+          editorRef.current
+        ) {
+          return editorRef.current.getValue()
+        }
+      },
+      canUndo: (): boolean => {
+        return canEditorUndo.current
+      },
+      canRedo: (): boolean => {
+        return canEditorRedo.current
+      },
+      undo: () => {
+        editorRef.current?.focus()
+        editorRef.current?.trigger('', 'undo', {})
+      },
+      redo: () => {
+        editorRef.current?.focus()
+        editorRef.current?.trigger('', 'redo', {})
+      },
+      copy: () => {
+        editorRef.current?.focus()
+        editorRef.current?.trigger('', 'editor.action.clipboardCopyAction', {})
+      },
+      cut: () => {
+        editorRef.current?.focus()
+        editorRef.current?.trigger('', 'editor.action.clipboardCutAction', {})
+      },
+      paste: () => {
+        editorRef.current?.focus()
+        editorRef.current?.trigger('', 'editor.action.clipboardPasteAction', {})
+      },
+      find: () => {
+        editorRef.current?.focus()
+        editorRef.current?.trigger('', 'actions.find', {})
+      },
+      commands: () => {
+        editorRef.current?.focus()
+        editorRef.current?.trigger('', 'editor.action.quickCommand', {})
+      },
+      openAI: () => {
+        setAiHidden(false)
+      },
+      addCodeAtCursorPosition: addCodeAtCursorPosition,
+      addToLibrary: addToLibrary,
+      importFromLibrary: importFromLibrary,
+      addDiagramElement: addDiagramElement,
+      addDiagramLink: addDiagramLink,
+      selectText: selectText,
+    }))
 
     return (
       <div className="relative h-full w-full">

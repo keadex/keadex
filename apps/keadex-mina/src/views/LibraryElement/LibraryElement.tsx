@@ -122,47 +122,6 @@ export const LibraryElement = (props: LibraryElementProps) => {
     columnResizeMode: 'onChange',
   }
 
-  useEffect(() => {
-    // Retrieve data
-    listLibraryElements(c4ElementType)
-      .then((element: C4Elements) => {
-        setData(
-          element[elementLibraryConfigs.accessor].map((libraryElement) => {
-            return {
-              ...libraryElement,
-              menu: (
-                <TableOptionsComponent
-                  menuOptions={
-                    menu(
-                      t,
-                      c4ElementType,
-                      libraryElement,
-                      project,
-                      openLibraryElement,
-                      openLibraryElementDependencyTable,
-                      showModal,
-                      hideModal,
-                      forceUpdate,
-                    ).menuItemsProps
-                  }
-                />
-              ),
-            }
-          }),
-        )
-        tableRef.current?.setPageSize(
-          pageSize !== undefined
-            ? pageSize
-            : element[elementLibraryConfigs.accessor].length,
-        )
-      })
-      .catch((error: MinaError) => {
-        toast.error(
-          t('common.error.internal', { errorMessage: error.msg ?? error }),
-        )
-      })
-  }, [t, updatedCounter, c4ElementType, pageSize])
-
   function openLibraryElement(
     mode: 'c' | 'u',
     libraryElement: LibraryElementType | undefined,
@@ -203,6 +162,47 @@ export const LibraryElement = (props: LibraryElementProps) => {
   function openLibraryElementDependencyTable(alias: string) {
     openDependencyTable(safeExit, alias)
   }
+
+  useEffect(() => {
+    // Retrieve data
+    listLibraryElements(c4ElementType)
+      .then((element: C4Elements) => {
+        setData(
+          element[elementLibraryConfigs.accessor].map((libraryElement) => {
+            return {
+              ...libraryElement,
+              menu: (
+                <TableOptionsComponent
+                  menuOptions={
+                    menu(
+                      t,
+                      c4ElementType,
+                      libraryElement,
+                      project,
+                      openLibraryElement,
+                      openLibraryElementDependencyTable,
+                      showModal,
+                      hideModal,
+                      forceUpdate,
+                    ).menuItemsProps
+                  }
+                />
+              ),
+            }
+          }),
+        )
+        tableRef.current?.setPageSize(
+          pageSize !== undefined
+            ? pageSize
+            : element[elementLibraryConfigs.accessor].length,
+        )
+      })
+      .catch((error: MinaError) => {
+        toast.error(
+          t('common.error.internal', { errorMessage: error.msg ?? error }),
+        )
+      })
+  }, [t, updatedCounter, c4ElementType, pageSize])
 
   return (
     <div className="h-full w-full p-3">

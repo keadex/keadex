@@ -64,8 +64,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/mina-live/**/*.{ts,tsx,js,jsx}"],
-        "ignorePath": "libs/mina-live/.eslintignore"
+        "lintFilePatterns": ["libs/mina-live/**/*.{ts,tsx,js,jsx}"]
       }
     }
   }

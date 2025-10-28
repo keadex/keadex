@@ -12,10 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import ROUTES, { BASE_PATH_LIBRARY } from '../../../../core/router/routes'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface LibraryPanelProps {}
-
-export const LibraryPanel = React.memo((props: LibraryPanelProps) => {
+export const LibraryPanel = React.memo(() => {
   const { t } = useTranslation()
   const location = useLocation()
   const { modal: modalSafeExit, safeExit } = useSafeExit(ROUTES)

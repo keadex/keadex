@@ -15,7 +15,7 @@ export async function extractToOPFS(
       // Create directory
       const parts = path.split('/').filter(Boolean) // remove empty parts
       if (parts.length > 0) {
-        let dir = await ensureDir(root, parts)
+        const dir = await ensureDir(root, parts)
         if (!rootZip) {
           rootZip = dir
         }

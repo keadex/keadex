@@ -26,7 +26,9 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
   const [collapseList, setCollapseList] = useState<any[]>([])
   const currentItems = useRef<AccordionItem<T>[] | null>()
 
+  // eslint-disable-next-line react-hooks/refs
   if (!objectsAreEqual(currentItems.current, items)) {
+    // eslint-disable-next-line react-hooks/refs
     currentItems.current = items
   }
 
@@ -62,6 +64,7 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
         tooltip.dispose()
       })
     }
+    // eslint-disable-next-line react-hooks/refs
   }, [currentItems.current])
 
   function handleBodyClick(

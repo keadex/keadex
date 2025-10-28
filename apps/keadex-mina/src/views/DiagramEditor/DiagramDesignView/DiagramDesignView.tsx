@@ -137,6 +137,7 @@ export const DiagramDesignView = forwardRef(
     // change after each rendering even if the user has not changed the diagram.
     // If the user has not changed the diagram, but just the auto layout has been
     // changed, we don't need to rerender the diagram.
+    // eslint-disable-next-line react-hooks/refs
     let currDiagram = currentRenderedDiagram.current
     let newDiagram = diagram
     if (currDiagram) {
@@ -148,6 +149,7 @@ export const DiagramDesignView = forwardRef(
       newDiagram = newDiagramNoAutoLayout
     }
     if (!objectsAreEqual(currDiagram, newDiagram)) {
+      // eslint-disable-next-line react-hooks/refs
       currentRenderedDiagram.current = diagram
     }
 
@@ -670,6 +672,7 @@ export const DiagramDesignView = forwardRef(
         historyProcessing.current = false
         if (!readOnly) initHistory()
       }
+      // eslint-disable-next-line react-hooks/refs
     }, [currentRenderedDiagram.current, diagramRenderer])
 
     useEffect(() => {
@@ -698,6 +701,7 @@ export const DiagramDesignView = forwardRef(
       <div className="relative h-full w-full" ref={rootDiv}>
         {modal}
         <DiagramDesignViewFloatMenu
+          // eslint-disable-next-line react-hooks/refs
           canvas={canvas.current}
           readOnly={readOnly}
           diagramInfoPanelVisible={diagramInfoPanelVisible}

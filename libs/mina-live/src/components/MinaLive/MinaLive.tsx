@@ -80,18 +80,24 @@ export const MinaLive = React.memo<MinaLiveProps>(({ scriptPath }) => {
 
   return (
     <>
-      {minaAppInitialized.current && (
-        <Provider store={store}>
-          <AppEventContext.Provider value={event$}>
-            <RouterProvider router={router} />
-          </AppEventContext.Provider>
-        </Provider>
-      )}
-      {!minaAppInitialized.current && (
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xl">
-          Mina is loading...
-        </div>
-      )}
+      {
+        // eslint-disable-next-line react-hooks/refs
+        minaAppInitialized.current && (
+          <Provider store={store}>
+            <AppEventContext.Provider value={event$}>
+              <RouterProvider router={router} />
+            </AppEventContext.Provider>
+          </Provider>
+        )
+      }
+      {
+        // eslint-disable-next-line react-hooks/refs
+        !minaAppInitialized.current && (
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xl">
+            Mina is loading...
+          </div>
+        )
+      }
     </>
   )
 })

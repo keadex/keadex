@@ -62,8 +62,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/keadex-battisti/**/*.{ts,tsx,js,jsx}"],
-        "eslintConfig": "apps/keadex-battisti/.eslintrc.json"
+        "lintFilePatterns": ["apps/keadex-battisti/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

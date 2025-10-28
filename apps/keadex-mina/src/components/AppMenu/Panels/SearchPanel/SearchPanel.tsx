@@ -52,10 +52,7 @@ const DEFAULT_SEARCH_FILTERS: SearchFilter = {
   library: true,
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface SearchPanelProps {}
-
-export const SearchPanel = React.memo((props: SearchPanelProps) => {
+export const SearchPanel = React.memo(() => {
   const location = useLocation()
   const { t } = useTranslation()
   const { modal: modalSafeExit, safeExit } = useSafeExit(ROUTES)
@@ -182,7 +179,7 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
   async function handleSearch() {
     if (searchValue.replace(/ /g, '').length > 0) {
       setIsSearching(true)
-      let results = await search(
+      const results = await search(
         searchValue,
         searchFilters.diagrams,
         searchFilters.library,
@@ -341,7 +338,7 @@ export const SearchPanel = React.memo((props: SearchPanelProps) => {
               },
             ]}
             onChange={(id: string, value: boolean) => {
-              let newFilters = { ...searchFilters }
+              const newFilters = { ...searchFilters }
               newFilters[id as keyof SearchFilter] = value
               setSearchFilters(newFilters)
             }}

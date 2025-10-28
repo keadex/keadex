@@ -8,7 +8,9 @@ export const ContextMenu = () => {
   const [dropdown, setDropdown] = useState(<></>)
 
   // Following is a way to avoid flickering of the context menu when showed
+  // eslint-disable-next-line react-hooks/refs
   if (currShow.current !== show) {
+    // eslint-disable-next-line react-hooks/refs
     currShow.current = show
   }
 
@@ -22,12 +24,13 @@ export const ContextMenu = () => {
             style={{ top: anchorPoint.y, left: anchorPoint.x }}
           >
             <DropdownMenu menuItemsProps={contextMenuItems} />
-          </div>
+          </div>,
         )
       } else {
         setDropdown(<></>)
       }
     }
+    // eslint-disable-next-line react-hooks/refs
   }, [currShow.current])
 
   return dropdown

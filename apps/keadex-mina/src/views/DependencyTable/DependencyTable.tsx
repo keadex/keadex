@@ -45,7 +45,7 @@ type Dependency = {
 
 type DependencyData = TableData<Partial<Dependency>>
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type DependencyTableProps = {}
 
 export const DependencyTable = (props: DependencyTableProps) => {

@@ -32,7 +32,7 @@ export const ErrorFallback = React.memo(
         </div>
         <Button
           onClick={() => {
-            location.reload()
+            window.location.reload()
           }}
           className="w-52 mt-16 mx-auto"
         >
