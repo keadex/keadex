@@ -27,7 +27,7 @@ export async function extractToOPFS(
       const parentDir = parts.length > 0 ? await ensureDir(root, parts) : root
 
       // Extract file content
-      const content = await entry.async('uint8array')
+      const content = await entry.async('blob')
 
       // Write file
       const handle = await parentDir.getFileHandle(fileName, { create: true })
