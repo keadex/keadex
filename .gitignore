@@ -54,6 +54,7 @@ act-secrets.env
 # Next.js
 .next
 apps/keadex-battisti/certificates/
+apps/keadex-battisti/next-env.d.ts
 
 # Nx
 .nx/workspace-data
