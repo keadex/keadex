@@ -14,7 +14,7 @@ export function checkForUpdates(
       showModal({
         id: 'confirmMinaUpdateModal',
         title: `${t('updater.title', { version: update.version })}`,
-        body: <div className="whitespace-pre-wrap">{update.body}</div> ?? '',
+        body: <div className="whitespace-pre-wrap">{update.body}</div>,
         buttons: [
           {
             key: 'button-cancel',
