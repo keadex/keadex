@@ -1,6 +1,3 @@
-@import 'tailwindcss/base';
-
-@import 'tailwindcss/components';
+@import 'tailwindcss' source('../../src');
+@import './twconfig.css';
 @import './components.css';
-
-@import 'tailwindcss/utilities';

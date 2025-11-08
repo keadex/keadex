@@ -219,7 +219,7 @@ export const LibraryElement = (props: LibraryElementProps) => {
         <div className={`${embedMode ? 'w-full' : 'ml-5 w-64'} inline-block`}>
           <InputButton onChange={(e) => setGlobalFilter(e.target.value)} />
         </div>
-        <div className={`flex-grow ${embedMode ? 'hidden' : ''}`}>
+        <div className={`grow ${embedMode ? 'hidden' : ''}`}>
           <Button
             className="float-right bg-red-400"
             onClick={() => {

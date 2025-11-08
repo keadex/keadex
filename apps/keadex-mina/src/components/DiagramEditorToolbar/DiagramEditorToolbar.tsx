@@ -90,7 +90,7 @@ export const DiagramEditorToolbar = (props: DiagramEditorToolbarProps) => {
     <div id="diagram-editor-toolbar" className="w-full z-[6] flex">
       {modal}
       <div className="py-1 px-3">
-        <div className="h-full flex flex-1 items-center rounded text-sm drop-shadow-md">
+        <div className="h-full flex flex-1 items-center rounded-sm text-sm drop-shadow-md">
           <IconButton
             icon={faFloppyDisk}
             className={`${styleButton}`}

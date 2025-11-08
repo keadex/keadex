@@ -34,6 +34,7 @@
   "devDependencies": {
     "@nx/react": "^22.0.1",
     "@nx/webpack": "^22.0.1",
+    "@tailwindcss/postcss": "^4.1.16",
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "webpack": "^5.98.0",
     "webpack-node-externals": "^3.0.0",
@@ -53,7 +54,7 @@
     "postcss": "^8.5.6",
     "postcss-import": "^16.1.1",
     "semver": "^7.6.2",
-    "tailwindcss": "^3.3.3",
+    "tailwindcss": "^4.1.16",
     "typescript": "^5.9.3"
   },
   "dependencies": {

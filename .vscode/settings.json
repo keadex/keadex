@@ -11,5 +11,8 @@
     { "pattern": "./apps/*/" },
     { "pattern": "./libs/*/" }
   ],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
   "nxConsole.generateAiAgentRules": true
 }

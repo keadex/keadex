@@ -20,7 +20,6 @@ import music from '../../../../public/img/music.svg'
 import spearfishing from '../../../../public/img/spearfishing.svg'
 import { getTranslation } from '../../i18n'
 import { PageProps } from '../layout'
-import './page.css'
 
 const AboutMeItem = dynamic(
   () => import('../../../components/AboutMeItem/AboutMeItem'),

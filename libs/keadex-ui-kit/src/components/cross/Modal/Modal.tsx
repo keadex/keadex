@@ -97,7 +97,7 @@ export const Modal = forwardRef(
     return (
       <div
         data-te-modal-init
-        className="fixed left-0 top-8 bottom-0 z-[1055] hidden h-auto w-full overflow-y-auto overflow-x-hidden outline-none"
+        className="fixed left-0 top-8 bottom-0 z-[1055] hidden h-auto w-full overflow-y-auto overflow-x-hidden outline-hidden"
         id={modalId}
         tabIndex={-1}
         aria-labelledby={`${modalId}Label`}
@@ -109,9 +109,9 @@ export const Modal = forwardRef(
           <div
             className={`pointer-events-auto relative flex ${getSize()} ${
               props.size === 'full' ? 'mx-5' : ''
-            } bg-primary flex-col rounded-md border-none bg-clip-padding text-current shadow-lg outline-none`}
+            } bg-primary flex-col rounded-md border-none bg-clip-padding text-current shadow-lg outline-hidden`}
           >
-            <div className="border-secondary flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-opacity-50 p-4">
+            <div className="border-secondary/50 flex shrink-0 items-center justify-between rounded-t-md border-b-2 p-4">
               {/* Modal title*/}
               <h5
                 className="text-accent-primary text-xl font-medium leading-normal pointer-events-none"
@@ -122,7 +122,7 @@ export const Modal = forwardRef(
               {/* Close button*/}
               <button
                 type="button"
-                className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-hidden"
                 data-te-modal-dismiss
                 aria-label="Close"
               >

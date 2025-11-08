@@ -168,7 +168,7 @@ export const HomeProject = React.memo((props: HomeProjectProps) => {
         <div className="ml-5 inline-block w-64">
           <InputButton onChange={(e) => setGlobalFilter(e.target.value)} />
         </div>
-        <div className="flex-grow">
+        <div className="grow">
           <Button
             className="float-right bg-red-400"
             onClick={() => {

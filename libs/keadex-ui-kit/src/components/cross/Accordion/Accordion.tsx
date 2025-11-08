@@ -97,7 +97,7 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
           <div className={`bg-secondary`} key={`search-result-item-${index}`}>
             <h2 className="mb-0" id={`${id}-heading-${index}`}>
               <button
-                className="accordion-button [&:not([data-te-collapse-collapsed])]:text-accent-primary bg-primary [&:not([data-te-collapse-collapsed])]:bg-primary text-accent-primary group relative flex w-full items-center border-0 px-5 py-4 text-left [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none "
+                className="accordion-button [&:not([data-te-collapse-collapsed])]:text-accent-primary bg-primary [&:not([data-te-collapse-collapsed])]:bg-primary text-accent-primary group relative flex w-full items-center border-0 px-5 py-4 text-left [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-hidden "
                 type="button"
                 data-te-collapse-init
                 data-te-collapse-collapsed

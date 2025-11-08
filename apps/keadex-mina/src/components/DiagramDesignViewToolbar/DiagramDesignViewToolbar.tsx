@@ -70,7 +70,7 @@ export const DiagramDesignViewToolbar = forwardRef(
     return (
       <div id="diagram-design-view-toolbar" className="w-full z-[6]">
         <div className="p-3">
-          <div className="bg-primary flex w-full flex-1 rounded text-sm drop-shadow-md">
+          <div className="bg-primary flex w-full flex-1 rounded-sm text-sm drop-shadow-md">
             <IconButton
               disabled={diagramDesignViewCommands?.current?.canUndo() === false}
               icon={faRotateLeft}

@@ -333,7 +333,7 @@ export const DiagramsThemeTab = React.memo((props: DiagramsThemeTabProps) => {
               />
               <div className="absolute pr-5 pb-5 pointer-events-none">
                 <div
-                  className={`ml-2 flex flex-row bg-secondary p-2 rounded ${
+                  className={`ml-2 flex flex-row bg-secondary p-2 rounded-sm ${
                     openResetModal ===
                     `${diagramsThemeConfig.i18nKey}-${settings.modelName}`
                       ? 'flex'

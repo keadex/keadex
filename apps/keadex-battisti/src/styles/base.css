@@ -2,6 +2,7 @@
 @import '@fortawesome/fontawesome-svg-core/styles.css';
 @import '@keadex/keadex-ui-kit/src/styles/base.css';
 @import './cookiebot.css';
+@import './nextra.css';
 
 div[role='tooltip'] {
   @apply !duration-[0ms];

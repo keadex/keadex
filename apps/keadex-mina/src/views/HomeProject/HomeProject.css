@@ -7,7 +7,7 @@
 }
 
 .home-project .ag-row-hover {
-  @apply bg-secondary !important;
+  @apply bg-secondary!;
 }
 
 .home-project .ag-row-hover:not(.ag-full-width-row)::before {

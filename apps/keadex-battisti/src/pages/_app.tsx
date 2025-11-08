@@ -43,7 +43,6 @@ import {
 import { NewsBanner } from '@keadex/keadex-ui-kit/cross'
 import { NEWS } from '../core/news'
 import '../styles/index.css'
-import '../styles/nextra.css'
 import { initConsole } from '@keadex/keadex-utils'
 
 initConsole()

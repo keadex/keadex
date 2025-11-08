@@ -57,6 +57,8 @@
     "bump-version": "node --experimental-modules scripts/bump-version.js"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.1.16",
+    "@tailwindcss/postcss": "^4.1.16",
     "@tauri-apps/cli": "^2.2.7",
     "@testing-library/react": "^16.3.0",
     "@types/escape-html": "^1.0.4",
@@ -73,7 +75,7 @@
     "postcss": "^8.5.6",
     "postcss-import": "^16.1.1",
     "semver": "^7.6.2",
-    "tailwindcss": "^3.3.3",
+    "tailwindcss": "^4.1.16",
     "typescript": "^5.9.3",
     "vite": "^4.4.11",
     "vite-tsconfig-paths": "^4.2.1"

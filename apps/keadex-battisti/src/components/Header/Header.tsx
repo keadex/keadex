@@ -110,7 +110,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
 
           {/* Hamburger button for mobile view */}
           <button
-            className={`mr-8 block border-0 bg-transparent text-neutral-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden header__menu-button ${
+            className={`mr-8 block border-0 bg-transparent text-neutral-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-hidden focus:ring-0 dark:text-neutral-200 lg:hidden header__menu-button ${
               !menuCollapsed ? 'header__menu-button--open' : ''
             }`}
             type="button"
@@ -126,7 +126,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
 
           {/* Collapsible navbar container */}
           <div
-            className="!visible mt-2 hidden flex-grow basis-[100%] items-center lg:mt-0 lg:!flex lg:basis-auto"
+            className="!visible mt-2 hidden grow basis-[100%] items-center lg:mt-0 lg:!flex lg:basis-auto"
             id="navbarSupportedContent14"
             data-te-collapse-item
           >

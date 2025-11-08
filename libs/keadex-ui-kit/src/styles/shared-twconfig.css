@@ -1,0 +1,16 @@
+@plugin "tw-elements/dist/plugin.cjs";
+
+@theme {
+  --color-primary: var(--color-neutral-800);
+  --color-secondary: var(--color-neutral-700);
+  --color-third: var(--color-neutral-600);
+  --color-accent-primary: var(--color-neutral-300);
+  --color-accent-secondary: var(--color-neutral-400);
+  --color-accent-third: var(--color-neutral-500);
+  --color-link: #3867b1;
+  --color-brand1: #3867b1;
+  --color-brand2: #afb7c3;
+  --color-brand3: #d6e2f4;
+  --color-dark-primary: #181818;
+  --color-dark-brand1: #1b355f;
+}

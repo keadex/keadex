@@ -303,7 +303,7 @@ export const ProjectSettings = (props: ProjectSettingsProps) => {
               ? t('home.create_project')
               : t(`project_settings.title`)}
           </div>
-          <div className={`flex-grow`}>
+          <div className={`grow`}>
             <Button
               className="float-right"
               disabled={
@@ -325,7 +325,7 @@ export const ProjectSettings = (props: ProjectSettingsProps) => {
             tabs={tabs}
             className="project-settings__tabs"
             tabClassName="!my-0 mx-1 data-[te-nav-active]:border-accent-primary data-[te-nav-active]:bg-brand1"
-            bodyClassName="pt-0 flex-grow"
+            bodyClassName="pt-0 grow"
             orientation="top"
           />
         </div>

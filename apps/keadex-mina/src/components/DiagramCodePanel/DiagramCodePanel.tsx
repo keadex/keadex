@@ -35,7 +35,7 @@ export const DiagramCodePanel = React.memo((props: DiagramCodePanelProps) => {
       className={`${
         hidden
           ? 'hidden'
-          : 'absolute z-[1] bg-dark-primary bg-opacity-90 w-full h-full p-2 overflow-auto'
+          : 'absolute z-[1] bg-dark-primary/90 w-full h-full p-2 overflow-auto'
       }`}
     >
       <IconButton

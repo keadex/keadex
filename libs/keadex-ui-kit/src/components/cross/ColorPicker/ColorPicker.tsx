@@ -37,7 +37,7 @@ export const ColorPicker = React.memo(
           />
         )}
         <div
-          className={`py-1 px-1 cursor-pointer bg-white w-fit h-fit rounded-sm`}
+          className={`py-1 px-1 cursor-pointer bg-white w-fit h-fit rounded-xs`}
           onClick={() => setIsOpen(!isOpen)}
         >
           <div className="w-7 h-3" style={{ backgroundColor: color }}></div>

@@ -52,7 +52,7 @@ export const Timeline = (props: TimelineProps) => {
           </div>
         </div>
         {item.description && (
-          <div className="flex-grow items-center flex pl-5 py-5">
+          <div className="grow items-center flex pl-5 py-5">
             {item.description}
           </div>
         )}

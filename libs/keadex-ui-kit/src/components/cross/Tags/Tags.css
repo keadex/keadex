@@ -11,5 +11,5 @@
 }
 
 .tags li:after {
-  @apply content-[''] absolute top-1/2 -translate-y-1/2 left-0 float-left w-1 h-1 rounded-sm bg-accent-secondary;
+  @apply content-[''] absolute top-1/2 -translate-y-1/2 left-0 float-left w-1 h-1 rounded-xs bg-accent-secondary;
 }

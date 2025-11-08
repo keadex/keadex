@@ -200,7 +200,7 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
         py-0.5
         text-sm hover:text-white
         hover:shadow-[0_1px_2px_rgba(0,0,0,0.6)]
-        focus:outline-none
+        focus:outline-hidden
         focus:ring-0
         ${dropdownOpened ? ' bg-primary show text-white' : ''}
         ${props.hidden ? ' h-0 opacity-0' : ''}

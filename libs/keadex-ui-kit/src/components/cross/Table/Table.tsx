@@ -282,7 +282,7 @@ export const Table = forwardRef(
                 if (page >= 0 && page < table.getPageCount())
                   table.setPageIndex(page)
               }}
-              className="w-16 rounded border p-1"
+              className="w-16 rounded-sm border p-1"
             />
           </span>
           {/* <select
