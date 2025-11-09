@@ -1,4 +1,5 @@
 import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export interface SeparatorProps {
   orientation?: 'vertical' | 'horizontal'
@@ -13,9 +14,11 @@ export const Separator = React.memo((props: SeparatorProps) => {
   if (orientation === 'horizontal') style = 'w-full h-px bg-gradient-to-r'
   return (
     <div
-      className={`${style} self-stretch from-transparent via-neutral-50 to-transparent opacity-20 ${
-        className ?? ''
-      }`}
+      className={twMerge(
+        style,
+        `self-stretch from-transparent via-neutral-50 to-transparent opacity-20`,
+        className ?? '',
+      )}
     ></div>
   )
 })

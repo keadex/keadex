@@ -1,6 +1,7 @@
 import React from 'react'
 import '../../styles/index.css'
 import { useTranslation } from 'react-i18next'
+import { twMerge } from 'tailwind-merge'
 
 export type SplashScreenProps = {
   className?: string
@@ -15,9 +16,10 @@ export const SplashScreen = React.memo((props: SplashScreenProps) => {
 
   return (
     <div
-      className={`absolute flex h-full w-full flex-col justify-center bg-primary ${
-        className ?? ''
-      }`}
+      className={twMerge(
+        `absolute flex h-full w-full flex-col justify-center bg-primary`,
+        className ?? '',
+      )}
     >
       <div className="-mt-28 text-center">
         {!hideLogo && (

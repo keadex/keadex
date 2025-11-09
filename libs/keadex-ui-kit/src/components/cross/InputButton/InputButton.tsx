@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { IconDefinition, faSearch } from '@fortawesome/free-solid-svg-icons'
 import Spinner from '../Spinner/Spinner'
+import { twMerge } from 'tailwind-merge'
 
 export interface InputButtonProps
   extends React.DetailedHTMLProps<
@@ -33,9 +34,10 @@ export const InputButton = React.memo((props: InputButtonProps) => {
   return (
     <div className="input-button__box flex items-center">
       <div
-        className={`input-button__container flex items-center ${
-          isActive() ? 'active' : ''
-        }`}
+        className={twMerge(
+          `input-button__container flex items-center`,
+          isActive() ? 'active' : '',
+        )}
       >
         {(loading === undefined || !loading) && (
           <FontAwesomeIcon
@@ -45,7 +47,7 @@ export const InputButton = React.memo((props: InputButtonProps) => {
           />
         )}
         {loading !== undefined && loading && (
-          <Spinner className="icon !h-4 !w-4" />
+          <Spinner className="icon h-4! w-4!" />
         )}
         <input
           {...otherProps}

@@ -1,5 +1,6 @@
 import { getDataAttributes } from '@keadex/keadex-utils'
 import React, { useEffect } from 'react'
+import { twMerge } from 'tailwind-merge'
 import { Select as SelectTE } from 'tw-elements'
 
 export type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
@@ -51,7 +52,7 @@ export const Select = React.memo((props: SelectProps) => {
   })
 
   return (
-    <div className={`relative mb-3 ${className}`}>
+    <div className={twMerge(`relative mb-3`, className)}>
       <select data-te-select-init key={key} {...otherProps} {...dataAttributes}>
         {renderOptions()}
       </select>

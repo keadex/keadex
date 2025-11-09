@@ -21,6 +21,7 @@ import {
   faAnglesLeft,
   faAnglesRight,
 } from '@fortawesome/free-solid-svg-icons'
+import { twMerge } from 'tailwind-merge'
 
 export interface TableColumn<T> {
   accessorKey?: string
@@ -113,7 +114,7 @@ export const Table = forwardRef(
             <Cell
               {...props}
               disableExpandControls={disableExpandControls}
-              className={`${cellClassName ?? ''} ${column.className ?? ''}`}
+              className={twMerge(cellClassName ?? '', column.className ?? '')}
             />
           ),
           footer: (props) => props.column.id,
@@ -148,9 +149,10 @@ export const Table = forwardRef(
             {table.getHeaderGroups().map((headerGroup) => (
               <tr
                 key={headerGroup.id}
-                className={`bg-dark-brand1 text-base ${
-                  hideHeader ? 'opacity-0' : ''
-                }`}
+                className={twMerge(
+                  `bg-dark-brand1 text-base`,
+                  hideHeader ? 'opacity-0' : '',
+                )}
               >
                 {headerGroup.headers.map((header) => {
                   return (
@@ -232,11 +234,12 @@ export const Table = forwardRef(
           </tbody>
         </table>
         <div
-          className={`mt-5 flex items-center gap-2 ${
+          className={twMerge(
+            `mt-5 flex items-center gap-2`,
             hidePaginationControls !== undefined && hidePaginationControls
               ? 'hidden'
-              : ''
-          }`}
+              : '',
+          )}
         >
           <IconButton
             className="p-1"

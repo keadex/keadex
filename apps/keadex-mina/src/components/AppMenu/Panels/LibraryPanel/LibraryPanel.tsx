@@ -11,6 +11,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import ROUTES, { BASE_PATH_LIBRARY } from '../../../../core/router/routes'
+import { twMerge } from 'tailwind-merge'
 
 export const LibraryPanel = React.memo(() => {
   const { t } = useTranslation()
@@ -21,12 +22,13 @@ export const LibraryPanel = React.memo(() => {
     const elements: JSX.Element[] = C4_ELEMENTS_TYPES.map((c4ElementType) => {
       return (
         <li
-          className={`pl-2 ${
+          className={twMerge(
+            `pl-2`,
             location.pathname ===
-            `${BASE_PATH_LIBRARY}${c4ElementTypePathName(c4ElementType)}`
+              `${BASE_PATH_LIBRARY}${c4ElementTypePathName(c4ElementType)}`
               ? 'active'
-              : ''
-          }`}
+              : '',
+          )}
           key={c4ElementType}
           onClick={() =>
             safeExit(

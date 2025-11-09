@@ -1,9 +1,10 @@
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export interface NewsBannerProps {
-  className?: string | JSX.Element
+  className?: string
   content: string | JSX.Element
 }
 
@@ -13,9 +14,11 @@ export const NewsBanner = React.memo(
 
     return (
       <div
-        className={`w-full h-8 flex bg-brand1 text-accent-primary font-normal text-base relative ${
-          hidden ? 'hidden' : ''
-        } ${className ?? ''}`}
+        className={twMerge(
+          `w-full h-8 flex bg-brand1 text-accent-primary font-normal text-base relative`,
+          hidden ? 'hidden' : '',
+          className ?? '',
+        )}
       >
         <div className="w-full text-center my-auto">{content}</div>
         <FontAwesomeIcon

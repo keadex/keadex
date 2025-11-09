@@ -12,6 +12,7 @@ import {
 } from '@keadex/keadex-ui-kit/cross'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { twMerge } from 'tailwind-merge'
 
 export interface ModalAutoLayoutProps {
   enabled: boolean
@@ -79,9 +80,10 @@ export const ModalAutoLayout = (props: ModalAutoLayoutProps) => {
             />
           </div>
           <span
-            className={`text-sm text-orange-500 mt-2 ${
-              !props.enabled && enabled ? 'block' : 'hidden'
-            }`}
+            className={twMerge(
+              `text-sm text-orange-500 mt-2`,
+              !props.enabled && enabled ? 'block' : 'hidden',
+            )}
           >
             <FontAwesomeIcon
               icon={faWarning}

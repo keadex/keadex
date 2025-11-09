@@ -18,7 +18,7 @@ export const DiagramInfoPanel = React.memo((props: DiagramInfoPanelProps) => {
       className={`${
         hidden
           ? 'hidden'
-          : 'absolute z-[1] bg-dark-primary/90 w-full p-2 max-h-96 overflow-auto'
+          : 'absolute z-1 bg-dark-primary/90 w-full p-2 max-h-96 overflow-auto'
       }`}
     >
       <IconButton

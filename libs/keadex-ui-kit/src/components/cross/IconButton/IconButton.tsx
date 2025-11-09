@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { getDataAttributes } from '@keadex/keadex-utils'
+import { twMerge } from 'tailwind-merge'
 
 export interface IconButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -19,7 +20,10 @@ export const IconButton = React.memo((props: IconButtonProps) => {
     <button
       {...otherProps}
       {...dataAttributes}
-      className={`${props.className} text-accent-secondary hover:text-accent-primary [&.active]:text-accent-primary disabled:hover:text-accent-secondary disabled:opacity-50`}
+      className={twMerge(
+        props.className,
+        `text-accent-secondary hover:text-accent-primary [&.active]:text-accent-primary disabled:hover:text-accent-secondary disabled:opacity-50`,
+      )}
     >
       <FontAwesomeIcon icon={icon ?? faXmark} className={classNameIcon ?? ''} />
       <div className={classNameContent}>{props.children}</div>

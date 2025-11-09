@@ -2,6 +2,7 @@ import { objectsAreEqual } from '@keadex/keadex-utils'
 import React, { useEffect, useRef, useState } from 'react'
 import { Collapse, Tooltip } from 'tw-elements'
 import ReactHtmlParser from 'react-html-parser'
+import { twMerge } from 'tailwind-merge'
 
 export type AccordionItem<T> = {
   header: string | JSX.Element
@@ -141,9 +142,10 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
               data-te-parent={`#${id}`}
             >
               <div
-                className={`accordion-body px-5 py-4 text-left ${
-                  props.onBodyClick ? 'cursor-pointer' : ''
-                }`}
+                className={twMerge(
+                  `accordion-body px-5 py-4 text-left`,
+                  props.onBodyClick ? 'cursor-pointer' : '',
+                )}
                 onClick={(e) => handleBodyClick(e, item)}
               >
                 {item.parseHtmlBody !== undefined &&

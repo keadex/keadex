@@ -1,6 +1,7 @@
 import { useForceUpdate } from '../../../cross'
 import { getDataAttributes } from '@keadex/keadex-utils'
 import React, { useEffect, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 import { Select as SelectTE } from 'tw-elements'
 
 export type AutocompleteOption = {
@@ -127,7 +128,7 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
   }, [localInputValue])
 
   return (
-    <div className={`${props.id} autocomplete relative mb-3 ${className}`}>
+    <div className={twMerge(props.id, `autocomplete relative mb-3`, className)}>
       <select
         data-te-select-init
         key={key}

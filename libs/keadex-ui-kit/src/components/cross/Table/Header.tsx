@@ -5,6 +5,7 @@ import {
   faChevronDown,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons'
+import { twMerge } from 'tailwind-merge'
 
 export interface HeaderProps<T extends TableData<T>>
   extends HeaderContext<T, unknown> {
@@ -17,7 +18,7 @@ export const Header = <T extends TableData<T>>(props: HeaderProps<T>) => {
   const { table, label, disableExpandControls, className } = props
 
   return (
-    <div className={`${className ?? ''} p-2`}>
+    <div className={twMerge(className ?? '', `p-2`)}>
       <button
         hidden={disableExpandControls === true}
         {...{

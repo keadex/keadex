@@ -24,6 +24,7 @@ import ROUTES from '../../core/router/routes'
 import LibraryPanel from './Panels/LibraryPanel/LibraryPanel'
 import ProjectPanel from './Panels/ProjectPanel/ProjectPanel'
 import SearchPanel from './Panels/SearchPanel/SearchPanel'
+import { twMerge } from 'tailwind-merge'
 
 enum MenuItem {
   Project,
@@ -117,9 +118,10 @@ export const AppMenu = forwardRef(
         renderedItems.push(
           <li
             key={appMenuItem.menuItem}
-            className={`relative ${
-              isMenuActive(appMenuItem.menuItem) ? 'active' : ''
-            }`}
+            className={twMerge(
+              `relative`,
+              isMenuActive(appMenuItem.menuItem) ? 'active' : '',
+            )}
             onClick={() => handleSlimTogglerClick(appMenuItem)}
             data-te-toggle="tooltip"
             data-te-placement="right"
@@ -160,14 +162,21 @@ export const AppMenu = forwardRef(
     }))
 
     return (
-      <div className={`h-full ${!visible ? 'app-menu__parent--hidden' : ''}`}>
+      <div
+        className={twMerge(
+          `h-full`,
+          !visible ? 'app-menu__parent--hidden' : '',
+        )}
+      >
         {modalSafeExit}
         {/* Sidenav */}
         <nav
           id="app-menu-sidenav"
-          className={`absolute h-full ${
-            !visible ? '!hidden' : ''
-          }  bg-dark-primary group fixed left-0 overflow-hidden shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)]`}
+          className={twMerge(
+            `absolute h-full`,
+            !visible ? 'hidden!' : '',
+            `bg-dark-primary group fixed left-0 overflow-hidden shadow-[0_4px_12px_0_rgba(0,0,0,0.07),0_2px_4px_rgba(0,0,0,0.05)]`,
+          )}
         >
           <div className="flex h-full flex-row">
             <div
@@ -186,9 +195,10 @@ export const AppMenu = forwardRef(
             >
               <div
                 style={{ width: `${sidenavPanelWidth}px`, height: `${100}%` }}
-                className={`window__inner-border box border-b-0 border-l-0 border-t-0 ${
-                  isSlimCollapsed ? `hidden` : ``
-                }`}
+                className={twMerge(
+                  `window__inner-border box border-b-0 border-l-0 border-t-0`,
+                  isSlimCollapsed ? `hidden` : ``,
+                )}
               >
                 <div
                   className="h-full"

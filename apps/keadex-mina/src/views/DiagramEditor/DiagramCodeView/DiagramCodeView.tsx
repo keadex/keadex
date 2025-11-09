@@ -59,6 +59,7 @@ import {
   PLANTUML_LANGUAGE,
   initC4PlantUMLLanguage,
 } from './c4plantuml-monaco-language'
+import { twMerge } from 'tailwind-merge'
 
 initC4PlantUMLLanguage()
 loader.config({ monaco })
@@ -699,7 +700,7 @@ export const DiagramCodeView = forwardRef(
       <div className="relative h-full w-full">
         {modal}
         <Editor
-          className={`h-full ${!diagram ? 'hidden' : ''} no-underline`}
+          className={twMerge(`h-full`, diagram ? 'hidden' : '', `no-underline`)}
           language={PLANTUML_LANGUAGE}
           value={rawPlantuml}
           theme="vs-dark"

@@ -39,6 +39,7 @@ import buildElementLibraryConfigs from './configs'
 import menu from './table-options-menu'
 import { openDependencyTable } from '../../core/router/router'
 import ROUTES from '../../core/router/routes'
+import { twMerge } from 'tailwind-merge'
 
 // This type contains also the Boundary, DeploymentNode and Relationship types
 // because it is used also for serializing those elements in the code editor.
@@ -210,16 +211,22 @@ export const LibraryElement = (props: LibraryElementProps) => {
       {modalSafeExit}
       <div className="flex items-center">
         <div
-          className={`text-accent-primary inline-block text-2xl font-bold pointer-events-none ${
-            embedMode ? 'hidden' : ''
-          }`}
+          className={twMerge(
+            `text-accent-primary inline-block text-2xl font-bold pointer-events-none`,
+            embedMode ? 'hidden' : '',
+          )}
         >
           {pluralize(t(`common.${elementLibraryConfigs.i18nKey}`))}
         </div>
-        <div className={`${embedMode ? 'w-full' : 'ml-5 w-64'} inline-block`}>
+        <div
+          className={twMerge(
+            embedMode ? 'w-full' : 'ml-5 w-64',
+            `inline-block`,
+          )}
+        >
           <InputButton onChange={(e) => setGlobalFilter(e.target.value)} />
         </div>
-        <div className={`grow ${embedMode ? 'hidden' : ''}`}>
+        <div className={twMerge(`grow`, embedMode ? 'hidden' : '')}>
           <Button
             className="float-right bg-red-400"
             onClick={() => {

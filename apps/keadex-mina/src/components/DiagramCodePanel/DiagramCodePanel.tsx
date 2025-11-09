@@ -2,6 +2,7 @@ import { faCopy, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Diagram } from '@keadex/c4-model-ui-kit'
 import { Button, IconButton } from '@keadex/keadex-ui-kit/cross'
 import React, { useEffect, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export interface DiagramCodePanelProps {
   setDiagramCodePanelVisible: React.Dispatch<React.SetStateAction<boolean>>
@@ -35,7 +36,7 @@ export const DiagramCodePanel = React.memo((props: DiagramCodePanelProps) => {
       className={`${
         hidden
           ? 'hidden'
-          : 'absolute z-[1] bg-dark-primary/90 w-full h-full p-2 overflow-auto'
+          : 'absolute z-1 bg-dark-primary/90 w-full h-full p-2 overflow-auto'
       }`}
     >
       <IconButton
@@ -47,17 +48,19 @@ export const DiagramCodePanel = React.memo((props: DiagramCodePanelProps) => {
         <div className="flex flex-col">
           <div>
             <Button
-              className={`mr-3 w-32 normal-case ${
-                activeTab === CodeTab.PlantUML ? '!bg-green-700' : ''
-              }`}
+              className={twMerge(
+                `mr-3 w-32 normal-case`,
+                activeTab === CodeTab.PlantUML ? 'bg-green-700!' : '',
+              )}
               onClick={() => setActiveTab(CodeTab.PlantUML)}
             >
               PlantUML
             </Button>
             <Button
-              className={`w-32 normal-case ${
-                activeTab === CodeTab.JSON ? '!bg-green-700' : ''
-              }`}
+              className={twMerge(
+                `w-32 normal-case`,
+                activeTab === CodeTab.JSON ? 'bg-green-700!' : '',
+              )}
               onClick={() => setActiveTab(CodeTab.JSON)}
             >
               JSON

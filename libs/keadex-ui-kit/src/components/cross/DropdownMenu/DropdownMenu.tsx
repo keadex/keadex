@@ -1,3 +1,4 @@
+import { twMerge } from 'tailwind-merge'
 import { DropdownMenuItemProps } from './DropdownMenuItem'
 import DropdownMenuItem from './DropdownMenuItem'
 import { useState } from 'react'
@@ -37,7 +38,7 @@ export const DropdownMenu = React.memo((props: DropdownMenuProps) => {
             atLeastOneOpenedMenu={atLeastOneOpenedMenu}
             lastOpenedMenu={lastOpenedMenu}
             setLastOpenedMenu={setLastOpenedMenu}
-          />
+          />,
         )
       }
     }
@@ -46,9 +47,11 @@ export const DropdownMenu = React.memo((props: DropdownMenuProps) => {
 
   return (
     <div
-      className={`dropdown-menu group flex ${
-        atLeastOneOpenedMenu() ? 'open' : ''
-      } ${props.className ?? ''}`}
+      className={twMerge(
+        `dropdown-menu group flex`,
+        atLeastOneOpenedMenu() ? 'open' : '',
+        props.className ?? '',
+      )}
     >
       {renderMenuItems()}
     </div>

@@ -44,6 +44,7 @@ import { NewsBanner } from '@keadex/keadex-ui-kit/cross'
 import { NEWS } from '../core/news'
 import '../styles/index.css'
 import { initConsole } from '@keadex/keadex-utils'
+import { twMerge } from 'tailwind-merge'
 
 initConsole()
 
@@ -317,9 +318,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <div
-      className={`bg-primary text-base nextra-container ${
-        selectedMenu && selectedMenu.disableTOC ? 'toc-disabled' : ''
-      }`}
+      className={twMerge(
+        `bg-primary text-base nextra-container`,
+        selectedMenu && selectedMenu.disableTOC ? 'toc-disabled' : '',
+      )}
     >
       <NewsBanner content={NEWS} />
       <Component {...pageProps} />

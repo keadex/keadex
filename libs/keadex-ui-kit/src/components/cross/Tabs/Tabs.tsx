@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export type Tab = {
   id: string
@@ -31,15 +32,19 @@ export const Tabs = React.memo(
     return (
       <div
         id={`${id ?? ''}`}
-        className={`flex ${orientation === 'top' ? 'flex-col' : 'flex-row'} ${
-          className ?? ''
-        }`}
+        className={twMerge(
+          `flex`,
+          orientation === 'top' ? 'flex-col' : 'flex-row',
+          className ?? '',
+        )}
       >
         {/* Tabs navigation */}
         <ul
-          className={`list-none ${
-            orientation === 'top' ? 'flex flex-row flex-wrap' : 'block'
-          } border-b-0 pl-0`}
+          className={twMerge(
+            `list-none`,
+            orientation === 'top' ? 'flex flex-row flex-wrap' : 'block',
+            `border-b-0 pl-0`,
+          )}
           role="tablist"
           data-te-nav-ref
         >
@@ -60,11 +65,12 @@ export const Tabs = React.memo(
                 <a
                   href={`#${tab.id}`}
                   onClick={() => setSelectedTabIndex(index)}
-                  className={`my-2 block border-x-0 ${
-                    orientation === 'top' ? 'border-b-2' : 'border-l-2'
-                  } border-t-0 border-transparent px-7 pb-3.5 pt-4 font-medium leading-tight hover:isolate hover:border-transparent focus:isolate focus:border-transparent data-[te-nav-active]:border-link data-[te-nav-active]:text-white hover:text-white bg-primary hover:bg-link ${
-                    tabClassName ?? ''
-                  }`}
+                  className={twMerge(
+                    `my-2 block border-x-0`,
+                    orientation === 'top' ? 'border-b-2' : 'border-l-2',
+                    `border-t-0 border-transparent px-7 pb-3.5 pt-4 font-medium leading-tight hover:isolate hover:border-transparent focus:isolate focus:border-transparent data-te-nav-active:border-link data-te-nav-active:text-white hover:text-white bg-primary hover:bg-link`,
+                    tabClassName ?? '',
+                  )}
                   data-te-toggle="pill"
                   data-te-target={`#${tab.id}`}
                   {...active}
@@ -79,7 +85,7 @@ export const Tabs = React.memo(
           })}
         </ul>
         {/* Tabs content */}
-        <div className={`p-4 ${bodyClassName ?? ''}`}>
+        <div className={twMerge(`p-4`, bodyClassName ?? '')}>
           {tabs.map((tab, index) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const active: any = {}
@@ -91,7 +97,7 @@ export const Tabs = React.memo(
             return (
               <div
                 key={tab.id}
-                className="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+                className="hidden opacity-100 transition-opacity duration-150 ease-linear data-te-tab-active:block"
                 id={tab.id}
                 role="tabpanel"
                 {...active}

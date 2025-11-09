@@ -14,6 +14,7 @@ import {
   generateShareLink,
 } from '../../helper/share-link-helper'
 import { generateRemoteDiagramSSRLink } from '@keadex/keadex-mina/src/helper/ssr-link-helper'
+import { twMerge } from 'tailwind-merge'
 
 export const MinaReact = dynamic(() => import('@keadex/mina-react-npm'), {
   ssr: false,
@@ -101,7 +102,7 @@ export default function MinaShareDiagram({
   }, [])
 
   return (
-    <div className={`flex flex-col ${className ?? ''}`}>
+    <div className={twMerge(`flex flex-col`, className ?? '')}>
       <Input
         value={projectRootUrl}
         onChange={(e) => setProjectRootUrl(e.target.value)}

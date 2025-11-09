@@ -1,6 +1,7 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export interface WindowTitlebarButtonProps {
   icon: IconProp
@@ -14,7 +15,7 @@ export const WindowTitlebarButton = React.memo(
     return (
       <button
         type="button"
-        className={`h-full w-10 p-1 ${props.className}`}
+        className={twMerge(`h-full w-10 p-1`, props.className)}
         id={props.id}
         onClick={(e) => {
           if (props.onClick) props.onClick(e)
@@ -23,7 +24,7 @@ export const WindowTitlebarButton = React.memo(
         <FontAwesomeIcon icon={props.icon} />
       </button>
     )
-  }
+  },
 )
 
 export default WindowTitlebarButton

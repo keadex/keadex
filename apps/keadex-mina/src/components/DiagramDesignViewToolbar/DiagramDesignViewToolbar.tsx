@@ -19,6 +19,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from 'tw-elements'
 import { DiagramDesignViewCommands } from '../../views/DiagramEditor/DiagramDesignView/DiagramDesignView'
+import { twMerge } from 'tailwind-merge'
 
 export interface DiagramDesignViewToolbarProps {
   diagramDesignViewCommands: RefObject<DiagramDesignViewCommands> | null
@@ -68,7 +69,7 @@ export const DiagramDesignViewToolbar = forwardRef(
     })
 
     return (
-      <div id="diagram-design-view-toolbar" className="w-full z-[6]">
+      <div id="diagram-design-view-toolbar" className="w-full z-6">
         <div className="p-3">
           <div className="bg-primary flex w-full flex-1 rounded-sm text-sm drop-shadow-md">
             <IconButton
@@ -110,7 +111,10 @@ export const DiagramDesignViewToolbar = forwardRef(
               }}
             />
             <div
-              className={`${styleButton} w-fit px-3 cursor-pointer flex truncate`}
+              className={twMerge(
+                styleButton,
+                `w-fit px-3 cursor-pointer flex truncate`,
+              )}
               data-te-toggle="tooltip"
               data-te-placement="bottom"
               title={`${t('diagram_editor.configure_auto_layout').toString()}`}
@@ -127,11 +131,12 @@ export const DiagramDesignViewToolbar = forwardRef(
               }}
             >
               <div
-                className={`my-auto w-3 h-3 mr-2 rounded-full ${
+                className={twMerge(
+                  `my-auto w-3 h-3 mr-2 rounded-full`,
                   diagramDesignViewCommands?.current?.isAutoLayoutEnabled()
                     ? 'bg-green-700'
-                    : 'bg-red-700'
-                }`}
+                    : 'bg-red-700',
+                )}
               />
               <span className="my-auto truncate">
                 {t('common.auto_layout')}

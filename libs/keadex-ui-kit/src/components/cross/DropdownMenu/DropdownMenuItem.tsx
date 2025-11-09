@@ -2,6 +2,7 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { useRef, useEffect, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export interface DropdownMenuItemProps {
   className?: string
@@ -106,7 +107,8 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
       }
       return (
         <ul
-          className={`
+          className={twMerge(
+            `
             bg-secondary
             text-accent-primary
             absolute
@@ -120,13 +122,11 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
             bg-clip-padding
             py-2
             shadow-[0_1px_2px_rgba(0,0,0,0.6)]
-            [&[data-te-dropdown-show]]:block
-            ${
-              parentIsHeaderMenuItem
-                ? ' dropdown-menu float-left hidden origin-top-left'
-                : ' right-px top-0'
-            }
-          `}
+            data-te-dropdown-show:block`,
+            parentIsHeaderMenuItem
+              ? ' dropdown-menu float-left hidden origin-top-left'
+              : ' right-px top-0',
+          )}
           id={`menu-${id}`}
           aria-labelledby={id}
           data-te-dropdown-menu-ref
@@ -184,14 +184,14 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
 
   return (
     <div
-      className={`relative ${props.className ?? ''}`}
+      className={twMerge(`relative`, props.className ?? '')}
       key={props.id}
       data-te-dropdown-ref
     >
       <button
-        className={`
-        ${!dropdownOpened ? ' bg-dark-primary text-accent-primary' : ''}       
-        hover:bg-primary
+        className={twMerge(
+          !dropdownOpened ? ' bg-dark-primary text-accent-primary' : '',
+          `hover:bg-primary
         flex
         items-center
         whitespace-nowrap
@@ -201,11 +201,11 @@ export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
         text-sm hover:text-white
         hover:shadow-[0_1px_2px_rgba(0,0,0,0.6)]
         focus:outline-hidden
-        focus:ring-0
-        ${dropdownOpened ? ' bg-primary show text-white' : ''}
-        ${props.hidden ? ' h-0 opacity-0' : ''}
-        ${props.buttonClassName ? ` ${props.buttonClassName}` : ''}
-      `}
+        focus:ring-0`,
+          dropdownOpened ? ' bg-primary show text-white' : '',
+          props.hidden ? ' h-0 opacity-0' : '',
+          props.buttonClassName ? ` ${props.buttonClassName}` : '',
+        )}
         type="button"
         id={props.id}
         aria-expanded="false"

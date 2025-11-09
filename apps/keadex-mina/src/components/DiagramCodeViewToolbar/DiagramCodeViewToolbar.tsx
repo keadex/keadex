@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next'
 import { Tooltip } from 'tw-elements'
 import { DiagramCodeViewCommands } from '../../views/DiagramEditor/DiagramCodeView/DiagramCodeView'
 import { ENV_SETTINGS } from '../../core/env-settings'
+import { twMerge } from 'tailwind-merge'
 
 export interface DiagramCodeViewToolbarProps {
   diagramCodeViewCommands: DiagramCodeViewCommands | null
@@ -83,7 +84,9 @@ export const DiagramCodeViewToolbar = forwardRef(
         {
           id: 'dropdown-add-diagram-element',
           label: (
-            <div className={`${styleButton} ${styleDropdownButton} text-base`}>
+            <div
+              className={twMerge(styleButton, styleDropdownButton, `text-base`)}
+            >
               <FontAwesomeIcon
                 icon={faPlus}
                 data-te-toggle="tooltip"
@@ -115,7 +118,7 @@ export const DiagramCodeViewToolbar = forwardRef(
         {
           id: 'dropdown-library',
           label: (
-            <div className={`${styleButton} ${styleDropdownButton}`}>
+            <div className={twMerge(styleButton, styleDropdownButton)}>
               <FontAwesomeIcon
                 icon={faBook}
                 data-te-toggle="tooltip"

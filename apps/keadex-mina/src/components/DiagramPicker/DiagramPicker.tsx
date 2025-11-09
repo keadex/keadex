@@ -3,6 +3,7 @@ import { Autocomplete } from '@keadex/keadex-ui-kit/cross'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { diagramToLinkString, listDiagrams } from '../../core/tauri-rust-bridge'
+import { twMerge } from 'tailwind-merge'
 
 export interface DiagramPickerProps {
   value?: string
@@ -99,7 +100,7 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
       disabled={props.disabled}
       id="diagram-picker"
       label={`${t('common.action.link_existing_diagram')}`}
-      className={`${props.className ?? ''} mt-6`}
+      className={twMerge(props.className ?? '', `mt-6`)}
       value={props.value}
       options={options}
       onTyping={(value) => {

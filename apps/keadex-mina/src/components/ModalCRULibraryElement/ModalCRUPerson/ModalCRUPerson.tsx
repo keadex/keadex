@@ -30,6 +30,7 @@ import {
   onTagsChanged,
 } from '../ModalCRULibraryElements'
 import { ALIAS_REGEX, NAME_REGEX } from '../../../constants/regex'
+import { twMerge } from 'tailwind-merge'
 
 const emptyPerson: Person = {
   base_data: {
@@ -224,9 +225,10 @@ export const ModalCRUPerson = (props: ModalCRULibraryElementProps) => {
           />
         )}
         <span
-          className={`text-sm text-orange-500 mt-2 ${
-            missingRequiredFields() ? 'block' : 'hidden'
-          }`}
+          className={twMerge(
+            `text-sm text-orange-500 mt-2`,
+            missingRequiredFields() ? 'block' : 'hidden',
+          )}
         >
           * {t('common.info.fill_required_fields')}
         </span>

@@ -5,6 +5,7 @@ import { Ref, forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { Modal as ModalTE } from 'tw-elements'
 import { Size } from '../../../cross'
 import { Button, type ButtonProps } from '../Button/Button'
+import { twMerge } from 'tailwind-merge'
 
 const MODAL_HIDDEN_EVENT = 'hidden.te.modal'
 
@@ -35,9 +36,10 @@ export function renderButtons(
           key={key}
           {...buttonPropsWithoutKey}
           {...dataAttributes}
-          className={`${index !== 0 && array.length > 1 ? 'ml-3' : ''} ${
-            buttonProps.className
-          }`}
+          className={twMerge(
+            index !== 0 && array.length > 1 ? 'ml-3' : '',
+            buttonProps.className,
+          )}
         />,
       )
     })
@@ -107,9 +109,12 @@ export const Modal = forwardRef(
           className="pointer-events-none relative flex min-h-[calc(100%-1rem)] w-auto translate-y-[-50px] items-center justify-center  opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-5 min-[576px]:my-7 min-[576px]:min-h-[calc(100%-3.5rem)]"
         >
           <div
-            className={`pointer-events-auto relative flex ${getSize()} ${
-              props.size === 'full' ? 'mx-5' : ''
-            } bg-primary flex-col rounded-md border-none bg-clip-padding text-current shadow-lg outline-hidden`}
+            className={twMerge(
+              `pointer-events-auto relative flex`,
+              getSize(),
+              props.size === 'full' ? 'mx-5' : '',
+              `bg-primary flex-col rounded-md border-none bg-clip-padding text-current shadow-lg outline-hidden`,
+            )}
           >
             <div className="border-secondary/50 flex shrink-0 items-center justify-between rounded-t-md border-b-2 p-4">
               {/* Modal title*/}
