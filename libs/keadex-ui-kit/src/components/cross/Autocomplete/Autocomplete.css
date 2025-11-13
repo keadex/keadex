@@ -1,3 +1,5 @@
-.autocomplete .select__input {
-  @apply cursor-text;
+@layer components {
+  .autocomplete .select__input {
+    @apply cursor-text;
+  }
 }

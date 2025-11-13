@@ -1,7 +1,9 @@
-body {
-  @apply bg-transparent;
+@layer components {
+  body {
+    @apply bg-transparent;
 
-  overflow: hidden;
+    overflow: hidden;
+  }
 }
 
 @utility window__border {

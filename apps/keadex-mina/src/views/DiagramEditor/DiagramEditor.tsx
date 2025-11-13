@@ -50,7 +50,6 @@ import DiagramDesignView, {
   DiagramDesignViewCommands,
   KeadexCanvasState,
 } from './DiagramDesignView/DiagramDesignView'
-import './DiagramEditor.css'
 import { twMerge } from 'tailwind-merge'
 
 const TOAST_ERROR_DEFAULT_CONFIGS: ToastOptions = {

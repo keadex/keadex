@@ -175,7 +175,7 @@ export const AppMenu = forwardRef(
           className={twMerge(
             `absolute h-full`,
             !visible ? 'hidden!' : '',
-            `bg-dark-primary group fixed left-0 overflow-hidden shadow-[0_4px_12px_0_rgba(0,0,0,0.07),0_2px_4px_rgba(0,0,0,0.05)]`,
+            `bg-dark-primary group left-0 overflow-hidden shadow-[0_4px_12px_0_rgba(0,0,0,0.07),0_2px_4px_rgba(0,0,0,0.05)]`,
           )}
         >
           <div className="flex h-full flex-row">

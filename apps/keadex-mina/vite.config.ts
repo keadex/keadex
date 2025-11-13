@@ -5,7 +5,13 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tsconfigPaths({ root: './' }), tailwindcss()],
+  plugins: [
+    react(),
+    tsconfigPaths({ root: './' }),
+    tailwindcss({
+      optimize: !!process.env.TAURI_ENV_DEBUG,
+    }),
+  ],
   // prevent vite from obscuring rust errors
   clearScreen: false,
   // Tauri expects a fixed port, fail if that port is not available
@@ -30,5 +36,8 @@ export default defineConfig({
     'process.env': {
       NODE_ENV: !process.env.TAURI_ENV_DEBUG ? 'production' : 'development',
     },
+  },
+  css: {
+    devSourcemap: !!process.env.TAURI_ENV_DEBUG,
   },
 })

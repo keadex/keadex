@@ -700,7 +700,11 @@ export const DiagramCodeView = forwardRef(
       <div className="relative h-full w-full">
         {modal}
         <Editor
-          className={twMerge(`h-full`, diagram ? 'hidden' : '', `no-underline`)}
+          className={twMerge(
+            `h-full`,
+            !diagram ? 'hidden' : '',
+            `no-underline`,
+          )}
           language={PLANTUML_LANGUAGE}
           value={rawPlantuml}
           theme="vs-dark"

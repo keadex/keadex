@@ -228,7 +228,7 @@ export const LibraryElement = (props: LibraryElementProps) => {
         </div>
         <div className={twMerge(`grow`, embedMode ? 'hidden' : '')}>
           <Button
-            className="float-right bg-red-400"
+            className="float-right"
             onClick={() => {
               openLibraryElement('c', undefined, project, true)
             }}

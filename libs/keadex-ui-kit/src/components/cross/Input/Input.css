@@ -1,9 +1,11 @@
-input {
-  @apply input__field;
+@layer components {
+  input {
+    @apply input__field;
+  }
 }
 
 @utility input__field {
-  @apply placeholder:text-accent-secondary! text-accent-primary! p-2! py-1.5!;
+  @apply placeholder:text-accent-secondary text-accent-primary p-2 py-1.5;
   @apply focus:border-brand1 active:border-brand1;
   @apply bg-secondary border-third block w-full rounded-md border border-solid outline-hidden ring-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)];
 }

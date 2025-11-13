@@ -1,3 +1,5 @@
-textarea {
-  @apply input__field;
+@layer components {
+  textarea {
+    @apply input__field;
+  }
 }

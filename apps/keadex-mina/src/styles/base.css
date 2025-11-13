@@ -1,13 +1,15 @@
 @import '@keadex/keadex-ui-kit/src/styles/base.css';
 
-body {
-  @apply select-none;
-}
+@layer base {
+  body {
+    @apply select-none;
+  }
 
-div[role='tooltip'] {
-  @apply !duration-[0ms];
-}
+  div[role='tooltip'] {
+    @apply !duration-[0ms];
+  }
 
-.Toastify__toast-container {
-  white-space: pre-wrap;
+  .Toastify__toast-container {
+    white-space: pre-wrap;
+  }
 }

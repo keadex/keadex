@@ -7,5 +7,5 @@
 }
 
 #app-menu-sidenav .react-resizable-handle-e {
-  @apply bottom-0 top-0 m-0 h-screen w-1 rotate-0;
+  @apply bottom-0 top-0 m-0 h-screen w-1 rotate-x-0;
 }
