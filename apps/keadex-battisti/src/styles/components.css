@@ -6,3 +6,4 @@
 @import '@keadex/keadex-ui-kit/src/components/cross/Input/Input.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/Select/Select.css';
 @import '../app/[lang]/about-me/page.css';
+@import '@keadex/mina-live-npm/index.css';

@@ -1,7 +1,6 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import '@keadex/mina-live-npm/index.css'
 import { useEffect, useState } from 'react'
 
 const MinaLive = dynamic(() => import('@keadex/mina-live-npm'), {
