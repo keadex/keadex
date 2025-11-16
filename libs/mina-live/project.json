@@ -35,7 +35,8 @@
         "namedChunks": false,
         "extractLicenses": true,
         "vendorChunk": false,
-        "externalDependencies": "all"
+        "externalDependencies": "all",
+        "postcssConfig": "libs/mina-live/postcss.config.js"
       },
       "dependsOn": ["build-wasm"]
     },

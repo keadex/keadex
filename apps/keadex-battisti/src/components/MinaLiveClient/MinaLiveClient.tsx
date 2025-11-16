@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
+import './MinaLiveClient.css'
 
 const MinaLive = dynamic(() => import('@keadex/mina-live-npm'), {
   ssr: false,

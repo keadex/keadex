@@ -21,8 +21,8 @@ export const IconButton = React.memo((props: IconButtonProps) => {
       {...otherProps}
       {...dataAttributes}
       className={twMerge(
-        props.className,
         `text-accent-secondary hover:text-accent-primary [&.active]:text-accent-primary disabled:hover:text-accent-secondary disabled:opacity-50`,
+        props.className,
       )}
     >
       <FontAwesomeIcon icon={icon ?? faXmark} className={classNameIcon ?? ''} />

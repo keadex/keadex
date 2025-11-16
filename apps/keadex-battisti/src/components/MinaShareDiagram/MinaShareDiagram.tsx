@@ -15,6 +15,7 @@ import {
 } from '../../helper/share-link-helper'
 import { generateRemoteDiagramSSRLink } from '@keadex/keadex-mina/src/helper/ssr-link-helper'
 import { twMerge } from 'tailwind-merge'
+import './MinaShareDiagram.css'
 
 export const MinaReact = dynamic(() => import('@keadex/mina-react-npm'), {
   ssr: false,
