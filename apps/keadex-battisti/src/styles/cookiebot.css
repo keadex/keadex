@@ -1,5 +1,5 @@
 #CybotCookiebotDialog {
-  @apply top-[inherit]! bottom-0! bg-secondary! text-accent-secondary!;
+  @apply bottom-0! bg-secondary! text-accent-secondary!;
 }
 
 a#CybotCookiebotDialogBodyLevelButtonLevelOptinDeclineAll {
@@ -115,4 +115,59 @@ a#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll {
 
 #CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelectionWrapper a {
   @apply m-0! mr-4! mb-3!;
+}
+
+#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll,
+#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection,
+#CybotCookiebotDialogBodyButtonDecline {
+  @apply bg-brand1! hover:bg-dark-brand1! active:bg-dark-brand1! disabled:hover:bg-brand1! text-white! disabled:opacity-50! border-0!;
+}
+
+#CybotCookiebotDialogPoweredbyCybot {
+  @apply justify-start!;
+}
+
+#CybotCookiebotDialogPoweredbyCybot svg {
+  @apply fill-white!;
+}
+
+.CybotCookiebotDialogActive {
+  background-image: linear-gradient(
+    to top,
+    rgb(34 34 34),
+    rgb(34 34 34 / 80%),
+    rgba(255, 255, 255, 0)
+  ) !important;
+}
+
+#CybotCookiebotDialog button {
+  @apply text-accent-primary!;
+}
+
+#CybotCookiebotDialog button:hover {
+  @apply text-accent-primary!;
+}
+
+#CybotCookiebotDialog button:before {
+  @apply border-accent-secondary!;
+}
+
+#CybotCookiebotDialog button:hover:before {
+  @apply border-accent-secondary!;
+}
+
+#CybotCookiebotDialog a:after {
+  @apply border-accent-secondary!;
+}
+
+#CybotCookiebotDialog a:hover:after {
+  @apply border-accent-secondary!;
+}
+
+.CybotCookiebotDialogDetailBodyContentCookieInfo {
+  @apply bg-secondary! text-accent-secondary!;
+}
+
+.CybotCookiebotDialogDetailBulkConsentCount {
+  @apply text-black!;
 }
