@@ -1,0 +1,73 @@
+import Image from 'next/image'
+import archDiagram from '../../../../public/img/mina/high-level-arch-diagram.png'
+
+# Overview
+
+## High Level Architecture
+
+<p align="center" className="py-14">
+  <Image
+    src={archDiagram}
+    alt="Mina High Level Architectural Diagram"
+    width="100%"
+  />
+</p>
+
+### Keadex Mina & Tauri
+
+Keadex Mina is an application created with a framework that lets you build software for all major platforms using web technologies: [Tauri](https://tauri.app/)
+
+At a very high level, a Tauri application is made up of:
+
+- A **Frontend**: you can use your preferred frontend framework. Keadex Mina uses React.
+- A **Backend**: built with Rust, this layer interacts with the **_operating system_**.
+
+The frontend and the backend talk with each other through a Javascript bridge.
+
+For more details about how Tauri works, please refer to the [Tauri documentation](https://tauri.app/v1/guides/).
+
+### Keadex Mina Frontend
+
+The **Keadex Mina Frontend** is built with React and it mainly uses 3 Keadex libraries:
+
+- **Keadex UI Kit**: it provides the Keadex Design Language System (DLS).
+- **C4 Modules UI Kit**: Keadex-independent, it exports the [rendering system](/en/docs/mina/architecture/rendering-system) and [Fabric.js](https://github.com/fabricjs/fabric.js) components to render C4 Model diagrams. <br/>For more details, please visit the **C4 Model UI Kit** [documentation](/en/docs/c4-model-ui-kit).
+- **Keadex Utils**: it contains a set of general purpose Typescript utilities used by the Keadex applications and libraries.
+
+### Keadex Mina Plugins & Components
+
+Keadex Mina offers a set of packages and plugins that allow you to embed it in your own applications or share diagrams externally, for example on platforms like Confluence or Docusaurus.
+
+#### Mina Confluence App
+
+**Mina Confluence App** is a React application with the configuration required for the integration with an [Atlassian Forge](https://developer.atlassian.com/platform/forge/) project. This application just imports and render the **Mina React** component.
+
+#### Mina Confluence Plugin
+
+**Mina Confluence Plugin** is an [Atlassian Forge](https://developer.atlassian.com/platform/forge/) project that includes the Mina Confluence plugin implementation. This plugins renders the **Mina Confluence App**.
+
+Atlassian Marketplace link: https://marketplace.atlassian.com/apps/1233762?tab=overview&hosting=cloud
+
+#### Mina Docusaurus Plugin
+
+**Mina Docusaurus Plugin** is used in combination with the **Mina React** package and it injects into Docusaurus the Webpack configuration required by the **Mina React** package.
+
+Npm link: https://www.npmjs.com/package/@keadex/docusaurus-plugin-mina
+
+#### Mina CLI
+
+The **Mina Command Line Interface (CLI)** allows you to interact with Keadex Mina projects **without using the graphical user interface**.
+It is a Rust-based application that incorporates a subset of the Keadex Mina backend functionality and is compiled for multiple platforms, including Windows, macOS, and Linux.
+
+#### Mina Live
+
+**Mina Live** is the web-based version of **Keadex Mina**. It provides a React component that allows you to embed Keadex Mina into React or Next.js applications.
+It shares the same architecture as Keadex Mina: the frontend is fully reused, while the Rust-based backend is compiled to [WebAssembly](https://webassembly.org/).
+
+Npm link: https://www.npmjs.com/package/@keadex/mina-live
+
+#### Mina React
+
+**Mina React** exports a React component to render Mina diagrams. This library uses some React components of the **Keadex Mina Frontend** and a some Rust code of the **Keadex Mina Backend**. The Rust code is the compiled to [WebAssembly](https://webassembly.org/).
+
+Npm link: https://www.npmjs.com/package/@keadex/mina-react

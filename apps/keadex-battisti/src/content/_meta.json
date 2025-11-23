@@ -1,0 +1,14 @@
+{
+  "overview": {
+    "type": "page",
+    "display": "Overview"
+  },
+  "mina": {
+    "type": "page",
+    "display": "Mina"
+  },
+  "c4-model-ui-kit": {
+    "type": "page",
+    "display": "C4 Model UI Kit"
+  }
+}

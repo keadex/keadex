@@ -1,3 +1,5 @@
+'use client'
+
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
@@ -24,7 +26,6 @@ export const NewsBanner = React.memo(
         <FontAwesomeIcon
           onClick={() => setHidden(true)}
           icon={faClose}
-          size="sm"
           className="text-base absolute right-5 top-1/2 -translate-y-1/2 opacity-50 hover:opacity-100 cursor-pointer"
         />
       </div>

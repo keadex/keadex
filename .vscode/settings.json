@@ -5,7 +5,7 @@
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "never"
+    "source.fixAll.eslint": "explicit"
   },
   "eslint.workingDirectories": [
     { "pattern": "./apps/*/" },

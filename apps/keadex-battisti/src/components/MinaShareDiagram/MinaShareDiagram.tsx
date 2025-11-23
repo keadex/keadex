@@ -1,21 +1,21 @@
 'use client'
 
+import { generateRemoteDiagramSSRLink } from '@keadex/keadex-mina/src/helper/ssr-link-helper'
 import { Button, Input } from '@keadex/keadex-ui-kit/cross'
+import { MinaReactProps } from '@keadex/mina-react-npm/src/components/MinaReact/MinaReact'
 import dynamic from 'next/dynamic'
 import { useSearchParams } from 'next/navigation'
-import { PropsWithChildren, memo, useEffect, useState } from 'react'
+import { memo, PropsWithChildren, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import { twMerge } from 'tailwind-merge'
+
 import { useTranslation } from '../../app/i18n/client'
-import { MinaReactProps } from '@keadex/mina-react-npm/src/components/MinaReact/MinaReact'
 import {
   DIAGRAM_URL_PARAM_NAME,
+  generateShareLink,
   GH_TOKEN_PARAM_NAME,
   PROJECT_ROOT_URL_PARAM_NAME,
-  generateShareLink,
 } from '../../helper/share-link-helper'
-import { generateRemoteDiagramSSRLink } from '@keadex/keadex-mina/src/helper/ssr-link-helper'
-import { twMerge } from 'tailwind-merge'
-import './MinaShareDiagram.css'
 
 export const MinaReact = dynamic(() => import('@keadex/mina-react-npm'), {
   ssr: false,

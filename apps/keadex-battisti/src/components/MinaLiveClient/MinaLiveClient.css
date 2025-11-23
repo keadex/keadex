@@ -1,2 +1,2 @@
 @reference "../../styles/index.css";
-@import '@keadex/mina-live-npm/index.css';
+@import '@keadex/mina-live-npm/index.css' layer(components);

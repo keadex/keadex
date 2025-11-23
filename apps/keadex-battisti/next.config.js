@@ -2,10 +2,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { composePlugins, withNx } = require('@nx/next')
-const withNextra = require('nextra')({
-  theme: 'nextra-theme-docs',
-  themeConfig: './theme.config.jsx',
-})
+const withNextra = require('nextra').default({})
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })

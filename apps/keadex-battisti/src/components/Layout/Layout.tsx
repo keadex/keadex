@@ -1,14 +1,15 @@
 'use client'
 
-import { NewsBanner, useAppBootstrap } from '@keadex/keadex-ui-kit/cross'
 import { findRoute } from '@keadex/keadex-ui-kit/core'
+import { NewsBanner, useAppBootstrap } from '@keadex/keadex-ui-kit/cross'
+import { initConsole } from '@keadex/keadex-utils'
 import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import { PropsWithChildren } from 'react'
 import { ToastContainer } from 'react-toastify'
+
 import { NEWS } from '../../core/news'
 import ROUTES from '../../core/routes'
-import { initConsole } from '@keadex/keadex-utils'
 
 const Header = dynamic(() => import('../Header/Header'))
 const Footer = dynamic(() => import('../Footer/Footer'))

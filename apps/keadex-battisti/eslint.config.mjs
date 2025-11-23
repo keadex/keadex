@@ -1,8 +1,9 @@
-import { defineConfig, globalIgnores } from 'eslint/config'
 import nx from '@nx/eslint-plugin'
-import baseConfig from '../../eslint.config.mjs'
-import globals from 'globals'
+import { defineConfig, globalIgnores } from 'eslint/config'
 import nextVitals from 'eslint-config-next/core-web-vitals'
+import globals from 'globals'
+
+import baseConfig from '../../eslint.config.mjs'
 
 export default defineConfig([
   globalIgnores([
@@ -25,11 +26,6 @@ export default defineConfig([
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
 
     rules: {
-      '@next/next/no-html-link-for-pages': [
-        'error',
-        'apps/keadex-battisti/src/pages',
-      ],
-
       '@nx/enforce-module-boundaries': [
         'warn',
         {

@@ -1,5 +1,7 @@
-import { defineConfig, globalIgnores } from 'eslint/config'
 import nx from '@nx/eslint-plugin'
+import { defineConfig, globalIgnores } from 'eslint/config'
+import * as mdx from 'eslint-plugin-mdx'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import parser from 'jsonc-eslint-parser'
 
 export default defineConfig([
@@ -7,6 +9,21 @@ export default defineConfig([
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
+  {
+    ...mdx.flat,
+  },
+  {
+    ...mdx.flatCodeBlocks,
+  },
+  {
+    plugins: {
+      'simple-import-sort': simpleImportSort,
+    },
+    rules: {
+      'simple-import-sort/imports': 'warn',
+      'simple-import-sort/exports': 'warn',
+    },
+  },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.?(c|m)js', '**/*.jsx'],
 
