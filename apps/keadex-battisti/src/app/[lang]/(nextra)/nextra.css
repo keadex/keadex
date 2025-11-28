@@ -1,6 +1,30 @@
-@reference '../../../styles/index.css';
+@layer base, nextra, components, utilities;
 
+@reference '../../../styles/index.css';
 @import 'nextra-theme-docs/style.css' layer(nextra);
+
+body {
+  @apply text-accent-secondary;
+  font-family: 'Roboto', sans-serif !important;
+}
+.x\:dark\:text-slate-200 {
+  &:where(.dark *) {
+    @apply text-accent-secondary;
+    font-family: 'Roboto', sans-serif !important;
+  }
+}
+
+.nextra-sidebar-footer {
+  @apply bg-primary;
+}
+
+.nextra-breadcrumb {
+  @apply hidden;
+}
+
+.nextra-container div:has(> div.keadex-hide-timestamp) {
+  @apply hidden;
+}
 
 .nextra-container a {
   @apply text-brand1! underline! underline-offset-[5px]!;
@@ -81,46 +105,50 @@
   @apply bg-secondary! text-accent-primary!;
 }
 
-.nextra-nav-container > div {
+.nextra-navbar > div {
   @apply bg-dark-primary/60! shadow-md! backdrop-blur-md!;
 }
 
-.nextra-nav-container nav {
+.nextra-navbar nav {
   @apply py-4! h-auto!;
 }
 
-.nextra-nav-container nav img {
+.nextra-navbar nav img {
   @apply h-[1.45rem]!;
 }
 
-.nextra-nav-container nav > div:first-child {
+.nextra-navbar nav > div:first-child {
   @apply mr-auto!;
 }
 
-.nextra-nav-container nav > div:first-child > div > a:first-child {
+.nextra-navbar nav > div:first-child > div > a:first-child {
   @apply mr-[5rem]!;
 }
 
-.nextra-nav-container nav > div:first-child > div > a:nth-child(2),
-.nextra-nav-container nav > div:first-child > div > a:nth-child(3) {
+.nextra-navbar nav > div:first-child > div > a:nth-child(2),
+.nextra-navbar nav > div:first-child > div > a:nth-child(3) {
   @apply mr-8! truncate! text-accent-secondary! no-underline! hidden! md:block!;
 }
 
-.nextra-nav-container nav > div:first-child > div > a:nth-child(2):hover,
-.nextra-nav-container nav > div:first-child > div > a:nth-child(3):hover {
+.nextra-navbar nav > div:first-child > div > a:nth-child(2):hover,
+.nextra-navbar nav > div:first-child > div > a:nth-child(3):hover {
   @apply text-accent-primary!;
 }
 
-.nextra-nav-container nav > a {
+.nextra-navbar nav > a {
   @apply text-accent-secondary! text-base! ml-1! mr-auto!;
 }
 
-.nextra-nav-container nav > a:hover {
+.nextra-navbar nav > a:hover {
   @apply text-accent-primary! opacity-100!;
 }
 
 .nextra-sidebar-container {
   @apply max-md:bg-dark-primary/60! max-md:backdrop-blur-md!;
+}
+
+.nextra-search {
+  @apply w-65;
 }
 
 .nextra-search .nextra-scrollbar {

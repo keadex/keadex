@@ -4,5 +4,4 @@ declare module '*.svg' {
   export const ReactComponent: any
   export default content
 }
-declare module 'nextra'
 declare module '@keadex/mina-live-npm/nextjs-plugin'

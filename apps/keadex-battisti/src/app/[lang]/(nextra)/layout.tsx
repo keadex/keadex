@@ -6,12 +6,14 @@ import Image from 'next/image'
 import Script from 'next/script'
 import { Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
-import { Layout, Navbar } from 'nextra-theme-docs'
+import { LastUpdated, Layout, Navbar } from 'nextra-theme-docs'
 import { PropsWithChildren } from 'react'
 
 import keadexLogo from '../../../../public/img/keadex-docs-logo.svg'
 import Footer from '../../../components/Footer/Footer'
 import { NEWS } from '../../../core/news'
+import { PAGE_MAP_OVERRIDES } from '../../../core/nextra'
+import { applyPageMapOverrides } from '../../../helper/nextra-helper'
 
 export const metadata = {
   // Define your metadata here
@@ -40,8 +42,11 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   // of additional tailwindcss CSS but without layers, so the resulting style is broken.
   // All the unlayered css override the layered css.
   // TODO investigate more on this issue and possibly report to Nextra team.
-  const pageMap = (await getPageMap()).filter(
-    (ele) => !('name' in ele && ele.name === '[lang]'),
+  const pageMap = applyPageMapOverrides(
+    (await getPageMap()).filter(
+      (ele) => !('name' in ele && ele.name === '[lang]'),
+    ),
+    PAGE_MAP_OVERRIDES,
   )
 
   return (
@@ -73,6 +78,13 @@ export default async function RootLayout({ children }: PropsWithChildren) {
           footer={<Footer lang="en" key={'keadex-footer-nextra'} />}
           darkMode={false}
           nextThemes={{ defaultTheme: 'dark' }}
+          lastUpdated={
+            <LastUpdated>
+              <div className="keadex-hide-timestamp"></div>
+            </LastUpdated>
+          }
+          navigation={false}
+          copyPageButton={false}
           // ... Your additional layout options
         >
           {children}
