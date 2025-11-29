@@ -12,7 +12,6 @@ import { PropsWithChildren } from 'react'
 import keadexLogo from '../../../../public/img/keadex-docs-logo.svg'
 import Footer from '../../../components/Footer/Footer'
 import { NEWS } from '../../../core/news'
-import { PAGE_MAP_OVERRIDES } from '../../../core/nextra'
 import { fixRoute } from '../../../helper/nextra-helper'
 
 export const metadata = {
@@ -46,7 +45,6 @@ export default async function RootLayout({ children }: PropsWithChildren) {
     (await getPageMap()).filter(
       (ele) => !('name' in ele && ele.name === '[lang]'),
     ),
-    PAGE_MAP_OVERRIDES,
   )
 
   return (
