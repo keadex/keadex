@@ -1,5 +1,7 @@
 import '../../../../components/MinaLiveClient/MinaLiveClient.css'
 
-export default function MinaLiveLayout({ children }) {
+import { PropsWithChildren } from 'react'
+
+export default function MinaLiveLayout({ children }: PropsWithChildren) {
   return <>{children}</>
 }

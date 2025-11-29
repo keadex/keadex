@@ -81,27 +81,27 @@ body {
   @apply hidden;
 }
 
-.nextra-sidebar-container a {
+.nextra-sidebar a {
   @apply text-accent-secondary! no-underline!;
 }
 
-.nextra-sidebar-container a:hover {
+.nextra-sidebar a:hover {
   @apply bg-secondary! text-accent-primary!;
 }
 
-.nextra-sidebar-container li.active a {
+.nextra-sidebar li.active a {
   @apply bg-secondary! text-accent-primary!;
 }
 
-.nextra-sidebar-container button {
+.nextra-sidebar button {
   @apply text-accent-secondary!;
 }
 
-.nextra-sidebar-container button:hover {
+.nextra-sidebar button:hover {
   @apply bg-secondary! text-accent-primary!;
 }
 
-.nextra-sidebar-container li.open.active button {
+.nextra-sidebar li.open.active button {
   @apply bg-secondary! text-accent-primary!;
 }
 
@@ -183,24 +183,21 @@ body {
   @apply border-third! text-accent-primary!;
 }
 
+/* Hide edit and feedback links in toc */
 .nextra-toc > div > div {
   @apply hidden;
 }
 
-.nextra-toc > .nextra-scrollbar > p {
-  @apply font-medium!;
-}
-
-.nextra-toc > .nextra-scrollbar ul li a {
-  @apply no-underline! text-accent-secondary!;
-}
-
-.nextra-toc > .nextra-scrollbar ul li a:hover {
+.nextra-toc > div > p {
   @apply text-accent-primary!;
 }
 
-.nextra-toc > .nextra-scrollbar div:last-child {
-  @apply hidden!;
+.nextra-toc a {
+  @apply text-accent-secondary! no-underline!;
+}
+
+.nextra-toc a:hover {
+  @apply text-accent-primary!;
 }
 
 .nextra-filetree > div {

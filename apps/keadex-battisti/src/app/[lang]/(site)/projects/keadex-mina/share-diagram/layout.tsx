@@ -1,5 +1,9 @@
 import '../../../../../../components/MinaShareDiagram/MinaShareDiagram.css'
 
-export default function MinaShareDiagramLayout({ children }) {
+import { PropsWithChildren } from 'react'
+
+export default function MinaShareDiagramLayout({
+  children,
+}: PropsWithChildren) {
   return <>{children}</>
 }
