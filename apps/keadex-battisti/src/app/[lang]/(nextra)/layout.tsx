@@ -13,7 +13,7 @@ import keadexLogo from '../../../../public/img/keadex-docs-logo.svg'
 import Footer from '../../../components/Footer/Footer'
 import { NEWS } from '../../../core/news'
 import { PAGE_MAP_OVERRIDES } from '../../../core/nextra'
-import { applyPageMapOverrides } from '../../../helper/nextra-helper'
+import { fixRoute } from '../../../helper/nextra-helper'
 
 export const metadata = {
   // Define your metadata here
@@ -42,7 +42,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   // of additional tailwindcss CSS but without layers, so the resulting style is broken.
   // All the unlayered css override the layered css.
   // TODO investigate more on this issue and possibly report to Nextra team.
-  const pageMap = applyPageMapOverrides(
+  const pageMap = fixRoute(
     (await getPageMap()).filter(
       (ele) => !('name' in ele && ele.name === '[lang]'),
     ),
@@ -69,7 +69,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
           async
         />
       </Head>
-      <body className="bg-primary text-base nextra-container toc-disabled">
+      <body className="bg-primary text-base nextra-container">
         <Layout
           banner={<NewsBanner content={NEWS} />}
           navbar={navbar}

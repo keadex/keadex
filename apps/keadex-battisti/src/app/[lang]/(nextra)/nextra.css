@@ -183,7 +183,7 @@ body {
   @apply border-third! text-accent-primary!;
 }
 
-.toc-disabled .nextra-toc {
+.nextra-toc > div > div {
   @apply hidden;
 }
 
