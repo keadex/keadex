@@ -43,6 +43,7 @@
     "check-dependency-version-consistency": "^5.0.1",
     "cross-env": "^10.1.0",
     "cypress": "^15.5.0",
+    "del-cli": "^7.0.0",
     "eslint": "^9.38.0",
     "eslint-config-next": "^16.0.0",
     "eslint-plugin-cypress": "^5.2.0",

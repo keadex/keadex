@@ -4,7 +4,13 @@
   "sourceRoot": "apps/keadex-battisti",
   "projectType": "application",
   "targets": {
-    "build": {
+    "clear": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn del apps/keadex-battisti/public/_pagefind"
+      }
+    },
+    "build-code": {
       "executor": "@nx/next:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
@@ -19,21 +25,28 @@
       },
       "dependsOn": ["lint"]
     },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn pagefind --site dist/apps/keadex-battisti/.next/server/app/en/docs --output-path apps/keadex-battisti/public/_pagefind"
+      },
+      "dependsOn": ["clear", "build-code"]
+    },
     "serve": {
       "executor": "@nx/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "keadex-battisti:build",
+        "buildTarget": "keadex-battisti:build-code",
         "dev": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "keadex-battisti:build:development",
+          "buildTarget": "keadex-battisti:build-code:development",
           "dev": true,
           "experimentalHttps": true
         },
         "production": {
-          "buildTarget": "keadex-battisti:build:production",
+          "buildTarget": "keadex-battisti:build-code:production",
           "dev": false
         }
       }
@@ -41,7 +54,7 @@
     "export": {
       "executor": "@nx/next:export",
       "options": {
-        "buildTarget": "keadex-battisti:build:production"
+        "buildTarget": "keadex-battisti:build-code:production"
       }
     },
     "test": {

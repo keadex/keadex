@@ -11,7 +11,16 @@ type PageProps = {
   params: Promise<PageParams>
 }
 
-export const generateStaticParams = generateStaticParamsFor('mdxPath')
+export const generateStaticParams = async () => {
+  let result = await generateStaticParamsFor('mdxPath')()
+  result = result.map((staticParams) => {
+    return {
+      ...staticParams,
+      lang: 'en',
+    }
+  })
+  return result
+}
 
 export async function generateMetadata(props: PageProps) {
   const params = await props.params

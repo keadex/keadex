@@ -1,13 +1,16 @@
-import { NextResponse, NextRequest } from 'next/server'
-import acceptLanguage from 'accept-language'
-import { fallbackLng, languages, cookieName } from './app/i18n/settings'
 import { minaMiddleware } from '@keadex/mina-live-npm/nextjs-middleware'
+import acceptLanguage from 'accept-language'
+import { NextRequest, NextResponse } from 'next/server'
+
+import { cookieName, fallbackLng, languages } from './app/i18n/settings'
 
 acceptLanguage.languages(languages)
 
 export const config = {
   // matcher: '/:lng*'
-  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js).*)'],
+  matcher: [
+    '/((?!api|_pagefind|_next/static|_next/image|assets|favicon.ico|sw.js).*)',
+  ],
 }
 
 export function middleware(req: NextRequest) {
