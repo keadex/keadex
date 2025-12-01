@@ -74,11 +74,11 @@ ROUTES[MINA_LIVE_GH_AUTH_WEBHOOK] = {
 }
 
 // ----- Documentation Paths
-export const DOCS = '/docs'
-export const DOCS_OVERVIEW = '/docs/overview'
+export const DOCS = '/en/docs'
+export const DOCS_OVERVIEW = `${DOCS}/overview`
 
 // > Keadex Mina
-export const MINA_DOCS = `/en${DOCS}/mina`
+export const MINA_DOCS = `${DOCS}/mina`
 // --> Mina Introduction
 export const MINA_INTRODUCTION = `${MINA_DOCS}/introduction`
 // --> Mina Architecture
@@ -121,7 +121,7 @@ export const MINA_PLUGINS_OVERVIEW = `${MINA_PLUGINS}/overview`
 export const MINA_CONFLUENCE_PLUGIN = `${MINA_PLUGINS}/confluence`
 
 // > C4 Model UI Kit
-export const C4_MODEL_UI_KIT_DOCS = `/en${DOCS}/c4-model-ui-kit`
+export const C4_MODEL_UI_KIT_DOCS = `${DOCS}/c4-model-ui-kit`
 export const C4_MODEL_UI_KIT_ARCH = `${C4_MODEL_UI_KIT_DOCS}/architecture`
 export const C4_MODEL_UI_KIT_API_PATTERN = `${C4_MODEL_UI_KIT_DOCS}/api/*`
 export const C4_MODEL_UI_KIT_API = `${C4_MODEL_UI_KIT_DOCS}/api/api`

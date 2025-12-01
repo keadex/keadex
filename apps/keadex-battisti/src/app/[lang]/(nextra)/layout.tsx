@@ -11,6 +11,7 @@ import { PropsWithChildren } from 'react'
 
 import keadexLogo from '../../../../public/img/keadex-docs-logo.svg'
 import Footer from '../../../components/Footer/Footer'
+import { SearchNextra } from '../../../components/SearchNextra/SearchNextra'
 import { NEWS } from '../../../core/news'
 import { fixRoute } from '../../../helper/nextra-helper'
 
@@ -83,6 +84,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
           }
           navigation={false}
           copyPageButton={false}
+          search={<SearchNextra />}
           // ... Your additional layout options
         >
           {children}
