@@ -81,7 +81,8 @@ body {
   @apply hidden;
 }
 
-.nextra-sidebar a {
+.nextra-sidebar a,
+.nextra-mobile-nav a {
   @apply text-accent-secondary! no-underline!;
 }
 
@@ -89,11 +90,13 @@ body {
   @apply bg-secondary! text-accent-primary!;
 }
 
-.nextra-sidebar li.active a {
+.nextra-sidebar li.active a,
+.nextra-mobile-nav li.active a {
   @apply bg-secondary! text-accent-primary!;
 }
 
-.nextra-sidebar button {
+.nextra-sidebar button,
+.nextra-mobile-nav button {
   @apply text-accent-secondary!;
 }
 
@@ -101,7 +104,8 @@ body {
   @apply bg-secondary! text-accent-primary!;
 }
 
-.nextra-sidebar li.open.active button {
+.nextra-sidebar li.open.active button,
+.nextra-mobile-nav li.open.active button {
   @apply bg-secondary! text-accent-primary!;
 }
 
@@ -151,35 +155,36 @@ body {
   @apply w-65;
 }
 
-.nextra-search .nextra-scrollbar {
+.nextra-search-results.nextra-scrollbar {
   @apply bg-secondary! border-third!;
 }
 
-.nextra-search .nextra-scrollbar span {
+.nextra-search-results.nextra-scrollbar span {
   @apply text-accent-secondary!;
 }
 
-.nextra-search .nextra-scrollbar a {
-  @apply no-underline!;
+.nextra-search-results.nextra-scrollbar a {
+  @apply no-underline! bg-transparent!;
 }
 
-.nextra-search .nextra-scrollbar li.nx-bg-primary-500\/10 {
+.nextra-search-results.nextra-scrollbar a:hover {
   @apply bg-link!;
+  filter: none;
 }
 
-.nextra-search .nextra-scrollbar a > div {
+.nextra-search-results.nextra-scrollbar a > div {
   @apply text-accent-primary!;
 }
 
-.nextra-search .nextra-scrollbar a > div:nth-child(2) {
+.nextra-search-results.nextra-scrollbar a > div:nth-child(2) {
   @apply text-accent-secondary!;
 }
 
-.nextra-search .nextra-scrollbar a .nx-text-primary-600 {
+.nextra-search-results.nextra-scrollbar a .nx-text-primary-600 {
   @apply text-accent-primary!;
 }
 
-.nextra-search .nextra-scrollbar .nx-border-b {
+.nextra-search-results.nextra-scrollbar .nx-border-b {
   @apply border-third! text-accent-primary!;
 }
 
@@ -202,4 +207,16 @@ body {
 
 .nextra-filetree > div {
   @apply border-none;
+}
+
+.nextra-banner {
+  @apply p-0;
+}
+
+.nextra-banner > div {
+  @apply p-0;
+}
+
+.nextra-banner > button {
+  @apply hidden;
 }

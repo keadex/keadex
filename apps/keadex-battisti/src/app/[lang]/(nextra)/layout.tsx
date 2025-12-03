@@ -4,7 +4,7 @@ import './nextra.css'
 import { NewsBanner } from '@keadex/keadex-ui-kit/cross'
 import Image from 'next/image'
 import Script from 'next/script'
-import { Head } from 'nextra/components'
+import { Banner, Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
 import { LastUpdated, Layout, Navbar } from 'nextra-theme-docs'
 import { PropsWithChildren } from 'react'
@@ -70,7 +70,11 @@ export default async function RootLayout({ children }: PropsWithChildren) {
       </Head>
       <body className="bg-primary text-base nextra-container">
         <Layout
-          banner={<NewsBanner content={NEWS} />}
+          banner={
+            <Banner>
+              <NewsBanner content={NEWS} />
+            </Banner>
+          }
           navbar={navbar}
           pageMap={pageMap}
           docsRepositoryBase="https://github.com/keadex/keadex/tree/main/apps/keadex-battisti"
