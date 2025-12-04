@@ -26,7 +26,7 @@
     "i18next-browser-languagedetector": "^7.2.0",
     "i18next-resources-to-backend": "^1.1.4",
     "js-cookie": "^3.0.5",
-    "next": "^15.2.0-canary.64",
+    "next": "^15.2.6",
     "nextra": "^2.13.2",
     "nextra-theme-docs": "^2.13.2",
     "octokit": "^5.0.3",
