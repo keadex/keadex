@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-isLegendAlias: (alias: string) => boolean
+isLegendAlias: (alias: string) => alias is "legend"
 ```
 
 ## Parameters
@@ -45,5 +45,5 @@ string
 </tbody></table>
 **Returns:**
 
-boolean
+alias is "legend"
 

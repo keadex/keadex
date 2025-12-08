@@ -18,7 +18,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "libs/mina-cli",
-        "command": "cargo run -- --project-path test --markdown-help search-library-element --alias test > ../../apps/keadex-battisti/src/pages/[lang]/docs/mina/features/cli/commands.mdx"
+        "command": "cargo run -- --project-path test --markdown-help search-library-element --alias test > ../../apps/keadex-battisti/src/content/mina/features/cli/commands.mdx"
       },
       "dependsOn": []
     }
