@@ -74,5 +74,10 @@
   },
   "nx": {
     "includedScripts": []
+  },
+  "resolutions": {
+    "**/@forge/react/**/@types/react": "^19.2.7",
+    "**/@forge/react/**/react": "^19.2.1",
+    "**/@forge/react/**/react-test-renderer": "^19.2.1"
   }
 }

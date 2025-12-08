@@ -44,13 +44,14 @@
     "@types/fabric": "^5.3.10",
     "@types/fontfaceobserver": "^2.1.2",
     "@types/pluralize": "^0.0.31",
-    "@types/react": "^18.2.28",
-    "@types/react-dom": "^18.2.13",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "@types/react-resizable": "^3.0.5",
     "@types/uuid": "^9.0.5",
     "@types/wicg-file-system-access": "^2023.10.5",
     "@vitejs/plugin-react": "^4.1.0",
     "autoprefixer": "^10.4.16",
+    "next": "^15.5.7",
     "postcss": "^8.5.6",
     "postcss-import": "^16.1.1",
     "semver": "^7.6.2",
@@ -76,7 +77,7 @@
     "@tauri-apps/plugin-shell": "^2.2.0",
     "@tauri-apps/plugin-updater": "^2.5.0",
     "@yaireo/tagify": "^4.24.0",
-    "ahooks": "^3.7.8",
+    "ahooks": "^3.9.6",
     "buffer": "^6.0.3",
     "change-case": "^5.4.3",
     "copy-webpack-plugin": "^12.0.2",
@@ -109,7 +110,7 @@
   "peerDependencies": {
     "react-router": "^6.28.0",
     "react-router-dom": "^6.28.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
   }
 }
