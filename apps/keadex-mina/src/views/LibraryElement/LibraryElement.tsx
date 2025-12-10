@@ -27,7 +27,9 @@ import {
   TableOptions,
 } from '@tanstack/react-table'
 import pluralize from 'pluralize'
-import React, { type JSX, useEffect, useRef, useState } from 'react'
+import { type JSX } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import * as React from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { twMerge } from 'tailwind-merge'

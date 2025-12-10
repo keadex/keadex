@@ -1,28 +1,30 @@
 'use client'
 
+import '../../styles/index.css'
+import '../../tauri/tauri-web-adapter'
+
 import AppEventContext, {
   AppEvent,
 } from '@keadex/keadex-mina/src/context/AppEventContext'
 import { router } from '@keadex/keadex-mina/src/core/router/router'
 import store from '@keadex/keadex-mina/src/core/store/store'
 import initi18n from '@keadex/keadex-mina/src/i18n'
-import '../../styles/index.css'
+import { useForceUpdate } from '@keadex/keadex-ui-kit/cross'
+import { clearOPFSTempDir, initConsole } from '@keadex/keadex-utils'
 import useEventEmitter from 'ahooks/lib/useEventEmitter'
-import React, { useEffect, useRef } from 'react'
+import { memo, useEffect, useRef } from 'react'
 import { Provider } from 'react-redux'
 import { RouterProvider } from 'react-router-dom'
 import {
   Button,
   Collapse,
   Dropdown,
+  initTE,
   Input,
   Modal,
   Select,
-  initTE,
 } from 'tw-elements'
-import '../../tauri/tauri-web-adapter'
-import { useForceUpdate } from '@keadex/keadex-ui-kit/cross'
-import { clearOPFSTempDir, initConsole } from '@keadex/keadex-utils'
+
 import init from '../../../src-rust/pkg'
 
 initConsole()
@@ -37,7 +39,7 @@ export type MinaLiveProps = {
   scriptPath: string
 }
 
-export const MinaLive = React.memo<MinaLiveProps>(({ scriptPath }) => {
+export const MinaLive = memo<MinaLiveProps>(({ scriptPath }) => {
   // minaAppInitialized must be a ref since we have to be sure of initializing the Rust Mina app
   // only once. Initializing it multiple times will throw an error due to some Rust dependencies.
   const minaAppInitialized = useRef(false)

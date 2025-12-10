@@ -1,11 +1,12 @@
 import { faCopy, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Diagram } from '@keadex/c4-model-ui-kit'
 import { Button, IconButton } from '@keadex/keadex-ui-kit/cross'
-import React, { useEffect, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export interface DiagramCodePanelProps {
-  setDiagramCodePanelVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setDiagramCodePanelVisible: Dispatch<SetStateAction<boolean>>
   hidden?: boolean
   diagram?: Diagram
 }
@@ -15,7 +16,7 @@ enum CodeTab {
   JSON,
 }
 
-export const DiagramCodePanel = React.memo((props: DiagramCodePanelProps) => {
+export const DiagramCodePanel = memo((props: DiagramCodePanelProps) => {
   const { setDiagramCodePanelVisible, diagram, hidden } = props
 
   const [activeTab, setActiveTab] = useState<CodeTab>(CodeTab.PlantUML)

@@ -1,6 +1,6 @@
 import { Diagram, diagramTypeHumanName } from '@keadex/c4-model-ui-kit'
 import { Tags } from '@keadex/keadex-ui-kit/cross'
-import React from 'react'
+import { memo } from 'react';
 import { twMerge } from 'tailwind-merge'
 
 export interface DiagramHeaderProps {
@@ -10,7 +10,7 @@ export interface DiagramHeaderProps {
   handleDiagramHeaderClick?: () => void
 }
 
-export const DiagramHeader = React.memo((props: DiagramHeaderProps) => {
+export const DiagramHeader = memo((props: DiagramHeaderProps) => {
   const { tagsDirection, scrollable, diagram, handleDiagramHeaderClick } = props
 
   function handleClick() {

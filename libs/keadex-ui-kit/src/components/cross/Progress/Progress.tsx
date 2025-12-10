@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react';
 import { twMerge } from 'tailwind-merge'
 
 export interface ProgressProps {
@@ -7,7 +7,7 @@ export interface ProgressProps {
   className?: string
 }
 
-export const Progress = React.memo(
+export const Progress = memo(
   ({ width, label, className }: ProgressProps) => {
     return (
       <div

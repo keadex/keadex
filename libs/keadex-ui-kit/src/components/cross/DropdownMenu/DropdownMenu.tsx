@@ -1,5 +1,5 @@
-import { type JSX, useState } from 'react'
-import React from 'react'
+import type { JSX } from 'react';
+import { memo, useState } from 'react';
 import { twMerge } from 'tailwind-merge'
 
 import { DropdownMenuItemProps } from './DropdownMenuItem'
@@ -10,7 +10,7 @@ export interface DropdownMenuProps {
   menuItemsProps: DropdownMenuItemProps[]
 }
 
-export const DropdownMenu = React.memo((props: DropdownMenuProps) => {
+export const DropdownMenu = memo((props: DropdownMenuProps) => {
   const [openedMenu, setOpenedMenu] = useState(0)
   const [lastOpenedMenu, setLastOpenedMenu] = useState('')
 

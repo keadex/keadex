@@ -1,5 +1,6 @@
 import { objectsAreEqual } from '@keadex/keadex-utils'
-import React, { type JSX, useEffect, useRef, useState } from 'react'
+import type { JSX, MouseEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ReactHtmlParser from 'react-html-parser'
 import { twMerge } from 'tailwind-merge'
 import { Collapse, Tooltip } from 'tw-elements'
@@ -69,7 +70,7 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
   }, [currentItems.current])
 
   function handleBodyClick(
-    e: React.MouseEvent<HTMLDivElement>,
+    e: MouseEvent<HTMLDivElement>,
     item: AccordionItem<T>,
   ) {
     if (props.onBodyClick) {

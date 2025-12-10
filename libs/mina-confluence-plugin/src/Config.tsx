@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { view } from '@forge/bridge'
 import ForgeReconciler, {
   Button,
   Label,
@@ -7,7 +7,8 @@ import ForgeReconciler, {
   Textfield,
   useConfig,
 } from '@forge/react'
-import { view } from '@forge/bridge'
+import React, { useEffect, useState } from 'react'
+
 import { useSubmit } from './useSubmit'
 
 export type MinaMacroConfig = {

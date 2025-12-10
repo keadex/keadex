@@ -1,10 +1,11 @@
-import React from 'react'
 import { getDataAttributes } from '@keadex/keadex-utils'
-import { PropsWithChildren } from 'react'
-import Spinner from '../Spinner/Spinner'
+import type { ButtonHTMLAttributes } from 'react'
+import { memo, PropsWithChildren } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+import Spinner from '../Spinner/Spinner'
+
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   [key: `data-${string}`]: unknown
   key?: string
   value?: string | number | string[] | undefined
@@ -12,7 +13,7 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   isLoading?: boolean
 }
 
-export const Button = React.memo((props: PropsWithChildren<ButtonProps>) => {
+export const Button = memo((props: PropsWithChildren<ButtonProps>) => {
   const dataAttributes = getDataAttributes(props)
   const { children, isLoading, disabled, ...otherProps } = props
   return (

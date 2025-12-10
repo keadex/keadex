@@ -1,9 +1,10 @@
 import { DiagramType } from '@keadex/c4-model-ui-kit'
 import { Autocomplete } from '@keadex/keadex-ui-kit/cross'
-import React, { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { diagramToLinkString, listDiagrams } from '../../core/tauri-rust-bridge'
 import { twMerge } from 'tailwind-merge'
+
+import { diagramToLinkString, listDiagrams } from '../../core/tauri-rust-bridge'
 
 export interface DiagramPickerProps {
   value?: string
@@ -13,7 +14,7 @@ export interface DiagramPickerProps {
   className?: string
 }
 
-export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
+export const DiagramPicker = memo((props: DiagramPickerProps) => {
   let { limit } = props
 
   if (limit === undefined) {

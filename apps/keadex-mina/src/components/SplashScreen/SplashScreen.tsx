@@ -1,5 +1,6 @@
-import React from 'react'
 import '../../styles/index.css'
+
+import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { twMerge } from 'tailwind-merge'
 
@@ -10,7 +11,7 @@ export type SplashScreenProps = {
   label?: string
 }
 
-export const SplashScreen = React.memo((props: SplashScreenProps) => {
+export const SplashScreen = memo((props: SplashScreenProps) => {
   const { className, showLoading, label, hideLogo } = props
   const { t } = useTranslation()
 

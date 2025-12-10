@@ -1,7 +1,7 @@
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { type JSX } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import type { Dispatch, JSX, MouseEventHandler, SetStateAction } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export interface DropdownMenuItemProps {
@@ -12,21 +12,21 @@ export interface DropdownMenuItemProps {
   isSepator?: boolean
   label?: string | JSX.Element
   hidden?: boolean
-  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  onClick?: MouseEventHandler<HTMLButtonElement>
   alwaysOpen?: boolean
   subMenuItems?: DropdownMenuItemProps[]
   increaseOpenedMenu?: () => void
   decreaseOpenedMenu?: () => void
   atLeastOneOpenedMenu?: () => boolean
   lastOpenedMenu?: string
-  setLastOpenedMenu?: React.Dispatch<React.SetStateAction<string>>
+  setLastOpenedMenu?: Dispatch<SetStateAction<string>>
   disabled?: boolean
 }
 
 const DROPDOWN_HIDE_EVENT = 'hide.te.dropdown'
 const DROPDOWN_SHOW_EVENT = 'show.te.dropdown'
 
-export const DropdownMenuItem = React.memo((props: DropdownMenuItemProps) => {
+export const DropdownMenuItem = memo((props: DropdownMenuItemProps) => {
   const dropdownEl = useRef<HTMLButtonElement>(null)
   const [dropdownOpened, setDropdownOpened] = useState(false)
 

@@ -1,16 +1,16 @@
 import { getDataAttributes } from '@keadex/keadex-utils'
-import React, { useEffect, useState } from 'react'
+import type { TextareaHTMLAttributes } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-export type TextareaProps =
-  React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
-    [key: `data-${string}`]: unknown
-    key?: string
-    label: string
-    classNameRoot?: string
-  }
+export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  [key: `data-${string}`]: unknown
+  key?: string
+  label: string
+  classNameRoot?: string
+}
 
-export const Textarea = React.memo((props: TextareaProps) => {
+export const Textarea = memo((props: TextareaProps) => {
   const [value, setValue] = useState<
     string | number | readonly string[] | undefined
   >(props.value)

@@ -1,27 +1,28 @@
-import React, { Ref, forwardRef, useImperativeHandle } from 'react'
-import {
-  ColumnDef,
-  ExpandedState,
-  TableOptions,
-  flexRender,
-  getExpandedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable,
-  Table as TanStackTable,
-  AccessorFn,
-} from '@tanstack/react-table'
-import Header from './Header'
-import Cell from './Cell'
-import { useTranslation } from 'react-i18next'
-import IconButton from '../IconButton/IconButton'
 import {
   faAngleLeft,
   faAngleRight,
   faAnglesLeft,
   faAnglesRight,
 } from '@fortawesome/free-solid-svg-icons'
+import {
+  AccessorFn,
+  ColumnDef,
+  ExpandedState,
+  flexRender,
+  getExpandedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  Table as TanStackTable,
+  TableOptions,
+  useReactTable,
+} from '@tanstack/react-table'
+import { forwardRef, Ref, useImperativeHandle, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { twMerge } from 'tailwind-merge'
+
+import IconButton from '../IconButton/IconButton'
+import Cell from './Cell'
+import Header from './Header'
 
 export interface TableColumn<T> {
   accessorKey?: string
@@ -80,7 +81,7 @@ export const Table = forwardRef(
 
     if (expandable === undefined) expandable = true
 
-    const [expanded, setExpanded] = React.useState<ExpandedState>(
+    const [expanded, setExpanded] = useState<ExpandedState>(
       defaultExpanded !== undefined ? defaultExpanded : {},
     )
 

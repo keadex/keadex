@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { memo, useState } from 'react';
 import { ColorChangeHandler, ColorResult, SketchPicker } from 'react-color'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { twMerge } from 'tailwind-merge'
@@ -10,7 +10,7 @@ export type ColorPickerProps = {
   onChange?: ColorChangeHandler
 }
 
-export const ColorPicker = React.memo(
+export const ColorPicker = memo(
   ({ color, className, onChange }: ColorPickerProps) => {
     const [isOpen, setIsOpen] = useState(false)
 

@@ -10,22 +10,23 @@ import {
   faRotateLeft,
 } from '@fortawesome/free-solid-svg-icons'
 import { IconButton, KeadexCanvas } from '@keadex/keadex-ui-kit/cross'
-import React from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export interface DiagramDesignViewFloatMenuProps {
   canvas?: KeadexCanvas
   readOnly?: boolean
   diagramInfoPanelVisible: boolean
-  setDiagramInfoPanelVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setDiagramInfoPanelVisible: Dispatch<SetStateAction<boolean>>
   diagramCodePanelVisible: boolean
-  setDiagramCodePanelVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setDiagramCodePanelVisible: Dispatch<SetStateAction<boolean>>
 }
 
 const styleButton = `text-5xl text-dark-primary hover:text-third`
 const styleCenterButtons = `text-2xl text-dark-primary hover:text-third`
 
-export const DiagramDesignViewFloatMenu = React.memo(
+export const DiagramDesignViewFloatMenu = memo(
   (props: DiagramDesignViewFloatMenuProps) => {
     const {
       canvas,

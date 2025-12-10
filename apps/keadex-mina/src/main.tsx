@@ -1,5 +1,6 @@
-import React, { Suspense } from 'react'
+import { StrictMode, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
+
 import App from './App'
 import SplashScreen from './components/SplashScreen/SplashScreen'
 
@@ -20,11 +21,11 @@ import SplashScreen from './components/SplashScreen/SplashScreen'
 // }
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  <StrictMode>
     <Suspense fallback={<SplashScreen />}>
       <App />
       {/* <TestSuspense /> */}
     </Suspense>
-  </React.StrictMode>,
+  </StrictMode>,
 )
 //

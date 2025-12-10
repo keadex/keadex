@@ -1,4 +1,5 @@
-import React, { type JSX } from 'react';
+import type { JSX } from 'react'
+import { memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export interface TagsProps {
@@ -6,7 +7,7 @@ export interface TagsProps {
   className?: string
 }
 
-export const Tags = React.memo(({ tags, className }: TagsProps) => {
+export const Tags = memo(({ tags, className }: TagsProps) => {
   return (
     <ul className={twMerge(`tags`, className ?? '')}>
       {tags.map((tag, index) => (

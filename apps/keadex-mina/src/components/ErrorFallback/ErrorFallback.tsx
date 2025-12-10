@@ -1,10 +1,10 @@
 import { faFaceFrownOpen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button } from '@keadex/keadex-ui-kit/cross'
-import React from 'react'
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next'
 
-export const ErrorFallback = React.memo(
+export const ErrorFallback = memo(
   ({
     error,
     resetErrorBoundary,

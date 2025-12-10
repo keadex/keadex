@@ -1,4 +1,3 @@
-import React from 'react'
 import { capitalCase } from 'change-case'
 import { twMerge } from 'tailwind-merge'
 

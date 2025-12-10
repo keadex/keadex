@@ -1,6 +1,6 @@
 import { objectsAreEqual } from '@keadex/keadex-utils'
 import Tagify from '@yaireo/tagify'
-import React, { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export interface TagsInputProps {
@@ -12,7 +12,7 @@ export interface TagsInputProps {
   settings?: Tagify.TagifySettings<Tagify.TagData>
 }
 
-export const TagsInput = React.memo(
+export const TagsInput = memo(
   ({ id, tags, label, className, disabled, settings }: TagsInputProps) => {
     const [tagifiedInput, setTagifiedInput] = useState<Tagify | undefined>()
 

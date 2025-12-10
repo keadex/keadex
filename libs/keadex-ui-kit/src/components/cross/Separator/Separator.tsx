@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react';
 import { twMerge } from 'tailwind-merge'
 
 export interface SeparatorProps {
@@ -6,7 +6,7 @@ export interface SeparatorProps {
   className?: string
 }
 
-export const Separator = React.memo((props: SeparatorProps) => {
+export const Separator = memo((props: SeparatorProps) => {
   const { className } = props
   let { orientation } = props
   orientation = orientation ?? 'vertical'

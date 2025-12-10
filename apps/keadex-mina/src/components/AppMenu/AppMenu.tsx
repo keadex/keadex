@@ -5,9 +5,9 @@ import {
   faSitemap,
 } from '@fortawesome/free-solid-svg-icons'
 import { IconButton, useSafeExit } from '@keadex/keadex-ui-kit/cross'
-import React, {
+import type { JSX, SyntheticEvent } from 'react'
+import {
   forwardRef,
-  type JSX,
   PropsWithChildren,
   Ref,
   useContext,
@@ -104,7 +104,7 @@ export const AppMenu = forwardRef(
     }
 
     const onSidenavPanelResize = (
-      e: React.SyntheticEvent,
+      e: SyntheticEvent,
       data: ResizeCallbackData,
     ) => {
       setSidenavPanelWidth(data.size.width)

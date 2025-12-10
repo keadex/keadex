@@ -2,7 +2,8 @@
 
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { type JSX, useState } from 'react'
+import type { JSX } from 'react';
+import { memo, useState } from 'react';
 import { twMerge } from 'tailwind-merge'
 
 export interface NewsBannerProps {
@@ -10,7 +11,7 @@ export interface NewsBannerProps {
   content: string | JSX.Element
 }
 
-export const NewsBanner = React.memo(
+export const NewsBanner = memo(
   ({ className, content }: NewsBannerProps) => {
     const [hidden, setHidden] = useState(false)
 

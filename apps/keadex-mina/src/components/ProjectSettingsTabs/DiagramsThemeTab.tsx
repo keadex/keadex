@@ -1,7 +1,8 @@
 import { faUndo } from '@fortawesome/free-solid-svg-icons'
 import { DiagramsThemeSettings } from '@keadex/c4-model-ui-kit'
 import { Button, ColorPicker, IconButton } from '@keadex/keadex-ui-kit/cross'
-import React, { Dispatch, type JSX, SetStateAction } from 'react'
+import type { JSX } from 'react'
+import { Dispatch, memo, SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { twMerge } from 'tailwind-merge'
 
@@ -238,7 +239,7 @@ const diagramsThemeConfigs: DiagramsThemeConfig[] = [
   },
 ]
 
-export const DiagramsThemeTab = React.memo((props: DiagramsThemeTabProps) => {
+export const DiagramsThemeTab = memo((props: DiagramsThemeTabProps) => {
   const { t } = useTranslation()
 
   const {

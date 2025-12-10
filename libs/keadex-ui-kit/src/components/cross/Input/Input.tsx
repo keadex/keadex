@@ -1,8 +1,9 @@
 import { getDataAttributes } from '@keadex/keadex-utils'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import type { InputHTMLAttributes } from 'react'
+import { ChangeEvent, memo, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   [key: `data-${string}`]: unknown
   key?: string
   label: string
@@ -11,7 +12,7 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   classNameRoot?: string
 }
 
-export const Input = React.memo((props: InputProps) => {
+export const Input = memo((props: InputProps) => {
   const [value, setValue] = useState<
     string | number | readonly string[] | undefined
   >(props.value)

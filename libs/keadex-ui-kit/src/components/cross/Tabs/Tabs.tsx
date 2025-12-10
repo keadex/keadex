@@ -1,4 +1,5 @@
-import React, { type JSX, useState } from 'react'
+import type { JSX } from 'react'
+import { memo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export type Tab = {
@@ -16,7 +17,7 @@ export interface TabsProps {
   tabs: Tab[]
 }
 
-export const Tabs = React.memo(
+export const Tabs = memo(
   ({
     id,
     tabs,

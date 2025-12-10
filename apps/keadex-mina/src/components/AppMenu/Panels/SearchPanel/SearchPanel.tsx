@@ -18,7 +18,8 @@ import {
 import { sep } from '@tauri-apps/api/path'
 import escape from 'escape-html'
 import escapeStringRegexp from 'escape-string-regexp'
-import React, { type JSX, useContext, useEffect, useState } from 'react'
+import type { JSX, KeyboardEvent } from 'react'
+import { memo, useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -53,7 +54,7 @@ const DEFAULT_SEARCH_FILTERS: SearchFilter = {
   library: true,
 }
 
-export const SearchPanel = React.memo(() => {
+export const SearchPanel = memo(() => {
   const location = useLocation()
   const { t } = useTranslation()
   const { modal: modalSafeExit, safeExit } = useSafeExit(ROUTES)
@@ -241,7 +242,7 @@ export const SearchPanel = React.memo(() => {
   }
 
   async function handleKeyDown(
-    e: React.KeyboardEvent<HTMLInputElement>,
+    e: KeyboardEvent<HTMLInputElement>,
     action: SearchAction,
   ) {
     if (e.key === 'Enter') {

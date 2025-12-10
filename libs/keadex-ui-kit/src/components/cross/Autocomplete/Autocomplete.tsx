@@ -1,5 +1,6 @@
 import { getDataAttributes } from '@keadex/keadex-utils'
-import React, { type JSX, useEffect, useState } from 'react'
+import type { JSX, SelectHTMLAttributes } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Select as SelectTE } from 'tw-elements'
 
@@ -10,20 +11,19 @@ export type AutocompleteOption = {
   label: string
 }
 
-export type AutocompleteProps =
-  React.SelectHTMLAttributes<HTMLSelectElement> & {
-    [key: `data-${string}`]: unknown
-    key?: string
-    label: string
-    options: AutocompleteOption[]
-    initialValue?: string
-    allowedChars?: RegExp
-    info?: string
-    onTyping: (value: string) => void
-    onDefaultOptionSelected?: (value: string) => void
-  }
+export type AutocompleteProps = SelectHTMLAttributes<HTMLSelectElement> & {
+  [key: `data-${string}`]: unknown
+  key?: string
+  label: string
+  options: AutocompleteOption[]
+  initialValue?: string
+  allowedChars?: RegExp
+  info?: string
+  onTyping: (value: string) => void
+  onDefaultOptionSelected?: (value: string) => void
+}
 
-export const Autocomplete = React.memo((props: AutocompleteProps) => {
+export const Autocomplete = memo((props: AutocompleteProps) => {
   const {
     label,
     className,

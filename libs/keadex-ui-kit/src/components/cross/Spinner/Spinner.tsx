@@ -1,11 +1,11 @@
-import React from 'react'
+import { memo } from 'react';
 import { twMerge } from 'tailwind-merge'
 
 export interface SpinnerProps {
   className?: string
 }
 
-export const Spinner = React.memo((props: SpinnerProps) => {
+export const Spinner = memo((props: SpinnerProps) => {
   const { className } = props
 
   return (
