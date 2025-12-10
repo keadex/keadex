@@ -7,11 +7,12 @@ import {
 } from '@keadex/c4-model-ui-kit'
 import { useSafeExit } from '@keadex/keadex-ui-kit/cross'
 import pluralize from 'pluralize'
-import React from 'react'
+import React, { type JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
-import ROUTES, { BASE_PATH_LIBRARY } from '../../../../core/router/routes'
 import { twMerge } from 'tailwind-merge'
+
+import ROUTES, { BASE_PATH_LIBRARY } from '../../../../core/router/routes'
 
 export const LibraryPanel = React.memo(() => {
   const { t } = useTranslation()

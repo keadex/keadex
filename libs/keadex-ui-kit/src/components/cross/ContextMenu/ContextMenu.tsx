@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
+
 import DropdownMenu from '../DropdownMenu/DropdownMenu'
 import useContextMenu from './useContextMenu'
 
 export const ContextMenu = () => {
   const { anchorPoint, show, contextMenuItems } = useContextMenu()
-  const currShow = useRef<boolean | null>()
+  const currShow = useRef<boolean | null>(undefined)
   const [dropdown, setDropdown] = useState(<></>)
 
   // Following is a way to avoid flickering of the context menu when showed

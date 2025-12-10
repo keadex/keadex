@@ -1,8 +1,9 @@
-import { useForceUpdate } from '../../../cross'
 import { getDataAttributes } from '@keadex/keadex-utils'
-import React, { useEffect, useState } from 'react'
+import React, { type JSX, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Select as SelectTE } from 'tw-elements'
+
+import { useForceUpdate } from '../../../cross'
 
 export type AutocompleteOption = {
   value: string | number | readonly string[] | undefined

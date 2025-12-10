@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 export type TimelineItem = {
   id: string
   year?: string

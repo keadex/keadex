@@ -3,6 +3,7 @@
 import { Progress, Tags } from '@keadex/keadex-ui-kit/cross'
 import { Trans } from 'react-i18next'
 import { useTranslation } from '../../app/i18n/client'
+import type { JSX } from 'react'
 
 export type AboutMeSkill = {
   percentage: string

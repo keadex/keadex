@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { type JSX, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export type Tab = {

@@ -1,12 +1,13 @@
+import { EventEmitter } from 'ahooks/lib/useEventEmitter'
+import { type TFunction } from 'i18next'
+import React, { type JSX } from 'react'
+import { Location, NavigateFunction } from 'react-router-dom'
+
 import DropdownMenu, {
   DropdownMenuProps,
 } from '../../cross/DropdownMenu/DropdownMenu'
-import WindowTitlebarButton from './WindowTitlebarButton'
 import type { WindowTitlebarButtonProps } from './WindowTitlebarButton'
-import React from 'react'
-import { type TFunction } from 'i18next'
-import { EventEmitter } from 'ahooks/lib/useEventEmitter'
-import { Location, NavigateFunction } from 'react-router-dom'
+import WindowTitlebarButton from './WindowTitlebarButton'
 
 export type WindowTitlebarMenuFactory<T, K> = (
   t: TFunction<'translation', undefined>,

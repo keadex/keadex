@@ -10,19 +10,20 @@ import {
   useForceUpdate,
 } from '@keadex/keadex-ui-kit/cross'
 import {
+  forwardRef,
   Ref,
   RefObject,
-  forwardRef,
   useEffect,
   useImperativeHandle,
 } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Tooltip } from 'tw-elements'
-import { DiagramDesignViewCommands } from '../../views/DiagramEditor/DiagramDesignView/DiagramDesignView'
 import { twMerge } from 'tailwind-merge'
+import { Tooltip } from 'tw-elements'
+
+import { DiagramDesignViewCommands } from '../../views/DiagramEditor/DiagramDesignView/DiagramDesignView'
 
 export interface DiagramDesignViewToolbarProps {
-  diagramDesignViewCommands: RefObject<DiagramDesignViewCommands> | null
+  diagramDesignViewCommands: RefObject<DiagramDesignViewCommands | null> | null
 }
 
 export interface DiagramDesignViewToolbarCommands {

@@ -1,8 +1,9 @@
+import { type JSX, useState } from 'react'
+import React from 'react'
 import { twMerge } from 'tailwind-merge'
+
 import { DropdownMenuItemProps } from './DropdownMenuItem'
 import DropdownMenuItem from './DropdownMenuItem'
-import { useState } from 'react'
-import React from 'react'
 
 export interface DropdownMenuProps {
   className?: string

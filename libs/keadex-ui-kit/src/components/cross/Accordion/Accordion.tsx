@@ -1,8 +1,8 @@
 import { objectsAreEqual } from '@keadex/keadex-utils'
-import React, { useEffect, useRef, useState } from 'react'
-import { Collapse, Tooltip } from 'tw-elements'
+import React, { type JSX, useEffect, useRef, useState } from 'react'
 import ReactHtmlParser from 'react-html-parser'
 import { twMerge } from 'tailwind-merge'
+import { Collapse, Tooltip } from 'tw-elements'
 
 export type AccordionItem<T> = {
   header: string | JSX.Element
@@ -25,7 +25,7 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [collapseList, setCollapseList] = useState<any[]>([])
-  const currentItems = useRef<AccordionItem<T>[] | null>()
+  const currentItems = useRef<AccordionItem<T>[] | null>(undefined)
 
   // eslint-disable-next-line react-hooks/refs
   if (!objectsAreEqual(currentItems.current, items)) {

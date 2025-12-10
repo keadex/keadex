@@ -1,5 +1,5 @@
 import { getDataAttributes } from '@keadex/keadex-utils'
-import React, { useEffect } from 'react'
+import React, { type JSX, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Select as SelectTE } from 'tw-elements'
 

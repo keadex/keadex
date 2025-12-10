@@ -1,11 +1,19 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getDataAttributes } from '@keadex/keadex-utils'
-import { Ref, forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
+import {
+  forwardRef,
+  type JSX,
+  Ref,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react'
+import { twMerge } from 'tailwind-merge'
 import { Modal as ModalTE } from 'tw-elements'
+
 import { Size } from '../../../cross'
 import { Button, type ButtonProps } from '../Button/Button'
-import { twMerge } from 'tailwind-merge'
 
 const MODAL_HIDDEN_EVENT = 'hidden.te.modal'
 
@@ -51,7 +59,7 @@ export const Modal = forwardRef(
   (props: ModalProps, ref: Ref<ModalCommands>) => {
     const { id: modalId, onHiddenModal } = props
     const size = props.size ?? 'md'
-    const modalInstance = useRef<typeof ModalTE>()
+    const modalInstance = useRef<typeof ModalTE>(undefined)
 
     const getSize = () => {
       switch (size) {

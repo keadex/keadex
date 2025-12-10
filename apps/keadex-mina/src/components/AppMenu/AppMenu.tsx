@@ -6,9 +6,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { IconButton, useSafeExit } from '@keadex/keadex-ui-kit/cross'
 import React, {
+  forwardRef,
+  type JSX,
   PropsWithChildren,
   Ref,
-  forwardRef,
   useContext,
   useEffect,
   useImperativeHandle,
@@ -16,7 +17,9 @@ import React, {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Resizable, ResizeCallbackData } from 'react-resizable'
+import { twMerge } from 'tailwind-merge'
 import { Tooltip } from 'tw-elements'
+
 import { faKeadexMina } from '../../assets/icons'
 import AppEventContext, { AppEventType } from '../../context/AppEventContext'
 import { openDependencyTable } from '../../core/router/router'
@@ -24,7 +27,6 @@ import ROUTES from '../../core/router/routes'
 import LibraryPanel from './Panels/LibraryPanel/LibraryPanel'
 import ProjectPanel from './Panels/ProjectPanel/ProjectPanel'
 import SearchPanel from './Panels/SearchPanel/SearchPanel'
-import { twMerge } from 'tailwind-merge'
 
 enum MenuItem {
   Project,

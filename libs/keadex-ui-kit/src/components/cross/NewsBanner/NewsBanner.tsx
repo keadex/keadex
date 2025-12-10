@@ -2,7 +2,7 @@
 
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React, { type JSX, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export interface NewsBannerProps {
