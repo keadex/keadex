@@ -62,7 +62,7 @@
     "react-ga4": "^2.1.0",
     "react-hotkeys-hook": "^4.4.1",
     "react-html-parser": "^2.0.2",
-    "react-i18next": "^15.4.0",
+    "react-i18next": "^16.4.1",
     "react-resize-detector": "^9.1.0",
     "react-toastify": "^11.0.3",
     "tailwindcss": "^4.1.16",
