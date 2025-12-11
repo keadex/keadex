@@ -21,7 +21,7 @@
     "accept-language": "^3.0.20",
     "animate.css": "^4.1.1",
     "change-case": "^5.4.4",
-    "glob": "11.0.2",
+    "glob": "^13.0.0",
     "i18next": "^23.5.1",
     "i18next-browser-languagedetector": "^7.2.0",
     "i18next-resources-to-backend": "^1.1.4",
