@@ -32,7 +32,7 @@
     "i18next-http-backend": "^3.0.2",
     "jszip": "^3.10.1",
     "monaco-editor": "^0.44.0",
-    "octokit": "^5.0.3",
+    "octokit": "^5.0.5",
     "pluralize": "^8.0.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
