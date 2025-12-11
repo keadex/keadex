@@ -9,7 +9,7 @@
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@hpcc-js/wasm-graphviz": "^1.10.0",
-    "change-case": "^5.4.3",
+    "change-case": "^5.4.4",
     "fabric": "^5.5.2",
     "pluralize": "^8.0.0",
     "react-toastify": "^11.0.3"

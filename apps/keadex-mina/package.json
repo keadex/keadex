@@ -23,7 +23,7 @@
     "@tauri-apps/plugin-shell": "^2.2.0",
     "@tauri-apps/plugin-updater": "^2.5.0",
     "ahooks": "^3.9.6",
-    "change-case": "^5.4.3",
+    "change-case": "^5.4.4",
     "escape-html": "^1.0.3",
     "escape-string-regexp": "^5.0.0",
     "fabric": "^5.5.2",
