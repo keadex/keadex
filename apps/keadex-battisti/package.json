@@ -11,13 +11,13 @@
     "start": "next start"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.4.2",
-    "@fortawesome/free-brands-svg-icons": "^6.4.2",
-    "@fortawesome/free-solid-svg-icons": "^6.4.2",
-    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-brands-svg-icons": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.1",
     "@keadex/mina-react-npm": "npm:@keadex/mina-react@^2.10.3",
     "@keadex/mina-live-npm": "npm:@keadex/mina-live@^2.10.3",
-    "@next/bundle-analyzer": "^15.5.6",
+    "@next/bundle-analyzer": "^16.0.9",
     "accept-language": "^3.0.18",
     "animate.css": "^4.1.1",
     "change-case": "^5.4.3",
