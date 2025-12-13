@@ -1,4 +1,4 @@
-import '../../../styles/index.css'
+import '../../../styles/index.nextra.css'
 import './nextra.css'
 
 import { NewsBanner } from '@keadex/keadex-ui-kit/cross'
@@ -11,6 +11,7 @@ import { PropsWithChildren } from 'react'
 
 import keadexLogo from '../../../../public/img/keadex-docs-logo.svg'
 import Footer from '../../../components/Footer/Footer'
+import NextraLayout from '../../../components/NextraLayout/NextraLayout'
 import { SearchNextra } from '../../../components/SearchNextra/SearchNextra'
 import { NEWS } from '../../../core/news'
 import { fixRoute } from '../../../helper/nextra-helper'
@@ -69,31 +70,32 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         />
       </Head>
       <body className="bg-primary text-base nextra-container">
-        <Layout
-          banner={
-            <Banner>
-              <NewsBanner content={NEWS} />
-            </Banner>
-          }
-          navbar={navbar}
-          pageMap={pageMap}
-          docsRepositoryBase="https://github.com/keadex/keadex/tree/main/apps/keadex-battisti"
-          footer={<Footer lang="en" key={'keadex-footer-nextra'} />}
-          darkMode={false}
-          nextThemes={{ defaultTheme: 'dark' }}
-          lastUpdated={
-            <LastUpdated>
-              <div className="keadex-hide-timestamp"></div>
-            </LastUpdated>
-          }
-          navigation={false}
-          copyPageButton={false}
-          search={<SearchNextra />}
-          // ... Your additional layout options
-        >
-          {children}
-          {/* <div>prova</div> */}
-        </Layout>
+        <NextraLayout>
+          <Layout
+            banner={
+              <Banner>
+                <NewsBanner content={NEWS} />
+              </Banner>
+            }
+            navbar={navbar}
+            pageMap={pageMap}
+            docsRepositoryBase="https://github.com/keadex/keadex/tree/main/apps/keadex-battisti"
+            footer={<Footer lang="en" key={'keadex-footer-nextra'} />}
+            darkMode={false}
+            nextThemes={{ defaultTheme: 'dark' }}
+            lastUpdated={
+              <LastUpdated>
+                <div className="keadex-hide-timestamp"></div>
+              </LastUpdated>
+            }
+            navigation={false}
+            copyPageButton={false}
+            search={<SearchNextra />}
+            // ... Your additional layout options
+          >
+            {children}
+          </Layout>
+        </NextraLayout>
       </body>
     </html>
   )

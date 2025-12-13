@@ -1,6 +1,4 @@
-@layer base, nextra, components, utilities;
-
-@reference '../../../styles/index.css';
+@reference '../../../styles/index.nextra.css';
 @import 'nextra-theme-docs/style.css' layer(nextra);
 
 body {

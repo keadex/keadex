@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify'
 
 import { NEWS } from '../../core/news'
 import ROUTES from '../../core/routes'
+import { CookiesProvider } from 'react-cookie'
 
 const Header = dynamic(() => import('../Header/Header'))
 const Footer = dynamic(() => import('../Footer/Footer'))
@@ -62,7 +63,7 @@ export default function Layout(props: PropsWithChildren<LayourProps>) {
   }
 
   return (
-    <>
+    <CookiesProvider>
       {/* <TWElementsInit /> */}
       <ToastContainer
         autoClose={4000}
@@ -77,6 +78,6 @@ export default function Layout(props: PropsWithChildren<LayourProps>) {
       {isHeaderVisible() && <Header lang={lang} />}
       <main>{children}</main>
       {isFooterVisible() && <Footer lang={lang} />}
-    </>
+    </CookiesProvider>
   )
 }
