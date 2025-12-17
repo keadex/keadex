@@ -39,7 +39,7 @@
     "webpack": "^5.98.0",
     "webpack-node-externals": "^3.0.0",
     "@tauri-apps/cli": "^2.2.7",
-    "@testing-library/react": "^16.3.0",
+    "@testing-library/react": "^16.3.1",
     "@types/escape-html": "^1.0.4",
     "@types/fabric": "^5.3.10",
     "@types/fontfaceobserver": "^2.1.2",
@@ -51,7 +51,7 @@
     "@types/wicg-file-system-access": "^2023.10.5",
     "@vitejs/plugin-react": "^4.1.0",
     "autoprefixer": "^10.4.16",
-    "next": "^15.5.7",
+    "next": "^15.5.9",
     "postcss": "^8.5.6",
     "postcss-import": "^16.1.1",
     "semver": "^7.6.2",
@@ -110,7 +110,7 @@
   "peerDependencies": {
     "react-router": "^6.28.0",
     "react-router-dom": "^6.28.0",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1"
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   }
 }
