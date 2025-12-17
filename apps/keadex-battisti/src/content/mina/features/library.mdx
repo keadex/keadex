@@ -1,8 +1,9 @@
 import { faBook } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Callout } from 'nextra/components'
 import dynamic from 'next/dynamic'
-import { ReactPlayerClient } from '../../../components/client-wrappers'
+import { Callout } from 'nextra/components'
+
+import { PlayerClient } from '../../../components/client-wrappers'
 
 # Library
 
@@ -28,17 +29,15 @@ And this is where the **Mina Library** comes in with the following features:
 ## Usage
 
 <div className="w-full h-[30rem] my-14 border-0">
-  <ReactPlayerClient
-    url="https://vimeo.com/1072238199/60f8162def"
+  <PlayerClient
+    src="https://vimeo.com/1072238199/60f8162def"
     muted
     width="100%"
     height="100%"
     controls
     config={{
       vimeo: {
-        playerOptions: {
-          transparent: false,
-        },
+        transparent: false,
       },
     }}
   />

@@ -1,7 +1,8 @@
 import { faLink } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import dynamic from 'next/dynamic'
-import { ReactPlayerClient } from '../../../components/client-wrappers'
+
+import { PlayerClient } from '../../../components/client-wrappers'
 
 # Links
 
@@ -14,17 +15,15 @@ Mina also supports **dynamic external links**, allowing you to connect your diag
 ## Usage
 
 <div className="w-full h-[30rem] my-14 border-0">
-  <ReactPlayerClient
-    url="https://vimeo.com/1072363635/d7f6af5d9f"
+  <PlayerClient
+    src="https://vimeo.com/1072363635/d7f6af5d9f"
     muted
     width="100%"
     height="100%"
     controls
     config={{
       vimeo: {
-        playerOptions: {
-          transparent: false,
-        },
+        transparent: false,
       },
     }}
   />

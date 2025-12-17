@@ -10,6 +10,8 @@
     "./src/styles/twconfig.css": "./src/styles/shared-twconfig.css",
     "./src/components/": "./src/components/",
     "./components/": "./src/components/",
+    "./components/cross/Player/Player": "./src/components/cross/Player/Player.tsx",
+    "./components/cross/Accordion/Accordion": "./src/components/cross/Accordion/Accordion.tsx",
     "./cross": "./src/cross.ts",
     "./desktop": "./src/desktop.ts",
     "./web": "./src/web.ts",
@@ -44,6 +46,7 @@
     "react-hotkeys-hook": "^4.4.1",
     "react-html-parser": "^2.0.2",
     "react-i18next": "^16.4.1",
+    "react-player": "^3.4.0",
     "react-toastify": "^11.0.3",
     "ts-key-enum": "^2.0.12",
     "tw-elements": "1.0.0"

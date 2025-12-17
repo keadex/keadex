@@ -1,17 +1,17 @@
-import { Callout } from 'nextra/components'
 import { faRobot } from '@fortawesome/free-solid-svg-icons'
-import { faKeadexMina } from '../../../../../keadex-mina/src/assets/icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import dynamic from 'next/dynamic'
-import { ReactPlayerClient } from '../../../components/client-wrappers'
+import { Callout } from 'nextra/components'
+
+import { faKeadexMina } from '../../../../../keadex-mina/src/assets/icons'
+import { PlayerClient } from '../../../components/client-wrappers'
 
 # Diagram Generation w/ AI
 
 Mina integrates AI to **generate diagram code** based on a natural language description of your architecture.
 
 <div className="relative h-auto w-[40rem] max-w-full mx-auto mt-8">
-  <ReactPlayerClient
-    url="https://vimeo.com/1071229228/e734c07b7a"
+  <PlayerClient
+    src="https://player.vimeo.com/video/1071229228"
     playing
     muted
     loop
@@ -19,9 +19,7 @@ Mina integrates AI to **generate diagram code** based on a natural language desc
     height="100%"
     config={{
       vimeo: {
-        playerOptions: {
-          responsive: true,
-        },
+        responsive: true,
       },
     }}
   />

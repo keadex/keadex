@@ -1,6 +1,7 @@
-import { Callout } from 'nextra/components'
 import dynamic from 'next/dynamic'
-import { ReactPlayerClient } from '../../../components/client-wrappers'
+import { Callout } from 'nextra/components'
+
+import { PlayerClient } from '../../../components/client-wrappers'
 
 # IntelliSense
 
@@ -12,17 +13,15 @@ Keadex Mina is one of the few tools with a code editor that provides an IntelliS
 With IntelliSense integrated into the Mina code editor, you and your team can code diagrams faster and with fewer errors. The parameter info and member lists will also assist you if you're not experienced with the C4 PlantUML syntax.
 
 <div className="w-full h-[30rem] my-14 border-0">
-  <ReactPlayerClient
-    url="https://vimeo.com/1072231318/1e86f9b6bd"
+  <PlayerClient
+    src="https://vimeo.com/1072231318/1e86f9b6bd"
     muted
     width="100%"
     height="100%"
     controls
     config={{
       vimeo: {
-        playerOptions: {
-          transparent: false,
-        },
+        transparent: false,
       },
     }}
   />

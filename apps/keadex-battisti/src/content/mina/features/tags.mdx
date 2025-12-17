@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic'
-import { ReactPlayerClient } from '../../../components/client-wrappers'
+
+import { PlayerClient } from '../../../components/client-wrappers'
 
 # Tags
 
@@ -10,17 +11,15 @@ Tagging your diagrams can be useful to:
 - Group diagrams with common characteristics
 
 <div className="w-full h-[30rem] my-14 border-0">
-  <ReactPlayerClient
-    url="https://vimeo.com/1072873604/e30dfd9f6e"
+  <PlayerClient
+    src="https://vimeo.com/1072873604/e30dfd9f6e"
     muted
     width="100%"
     height="100%"
     controls
     config={{
       vimeo: {
-        playerOptions: {
-          transparent: false,
-        },
+        transparent: false,
       },
     }}
   />

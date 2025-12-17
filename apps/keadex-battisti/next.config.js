@@ -104,6 +104,10 @@ const nextConfig = {
             key: 'Cross-Origin-Resource-Policy',
             value: 'cross-origin',
           },
+          {
+            key: 'Permissions-Policy',
+            value: 'compute-pressure=(self)',
+          },
         ],
       },
       {

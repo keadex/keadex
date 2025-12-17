@@ -6,4 +6,6 @@ export const MinaReactClient = clientOnly(
   () => import('@keadex/mina-react-npm'),
 )
 
-export const ReactPlayerClient = clientOnly(() => import('react-player'))
+export const PlayerClient = clientOnly(
+  () => import('@keadex/keadex-ui-kit/components/cross/Player/Player'),
+)
