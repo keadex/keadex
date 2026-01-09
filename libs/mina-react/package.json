@@ -39,7 +39,7 @@
     "@types/react-dom": "^19.2.3",
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "copy-webpack-plugin": "^13.0.1",
-    "webpack": "^5.98.0",
+    "webpack": "^5.104.1",
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {

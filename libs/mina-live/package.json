@@ -36,7 +36,7 @@
     "@nx/webpack": "^22.0.1",
     "@tailwindcss/postcss": "^4.1.16",
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
-    "webpack": "^5.98.0",
+    "webpack": "^5.104.1",
     "webpack-node-externals": "^3.0.0",
     "@tauri-apps/cli": "^2.2.7",
     "@testing-library/react": "^16.3.1",
