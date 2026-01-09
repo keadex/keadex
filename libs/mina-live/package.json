@@ -65,7 +65,7 @@
     "@fortawesome/react-fontawesome": "^3.1.1",
     "@hpcc-js/wasm-graphviz": "^1.10.0",
     "@monaco-editor/react": "^4.7.0",
-    "@reduxjs/toolkit": "^1.9.7",
+    "@reduxjs/toolkit": "^2.11.2",
     "@tanstack/react-table": "^8.10.7",
     "@tauri-apps/api": "^2.2.0",
     "@tauri-apps/plugin-clipboard-manager": "^2.2.1",
