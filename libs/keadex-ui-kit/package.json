@@ -47,7 +47,7 @@
     "react-html-parser": "^2.0.2",
     "react-i18next": "^16.4.1",
     "react-player": "^3.4.0",
-    "react-toastify": "^11.0.3",
+    "react-toastify": "^11.0.5",
     "ts-key-enum": "^2.0.12",
     "tw-elements": "1.0.0"
   },

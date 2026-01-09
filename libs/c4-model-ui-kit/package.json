@@ -12,7 +12,7 @@
     "change-case": "^5.4.4",
     "fabric": "^5.5.2",
     "pluralize": "^8.0.0",
-    "react-toastify": "^11.0.3"
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.16",
