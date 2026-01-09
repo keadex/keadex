@@ -37,7 +37,7 @@
     "react-i18next": "^16.4.1",
     "react-player": "^3.4.0",
     "react-toastify": "^11.0.5",
-    "sharp": "^0.33.2",
+    "sharp": "^0.34.5",
     "tw-elements": "1.0.0"
   },
   "devDependencies": {
@@ -46,7 +46,7 @@
     "@testing-library/react": "^16.3.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "autoprefixer": "^10.4.16",
+    "autoprefixer": "^10.4.23",
     "copy-webpack-plugin": "^12.0.2",
     "pagefind": "^1.4.0",
     "postcss": "^8.5.6",
