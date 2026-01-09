@@ -48,7 +48,7 @@
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
     "@hpcc-js/wasm-graphviz": "^1.10.0",
     "@tailwindcss/postcss": "^4.1.16",
-    "@tanstack/react-table": "^8.10.7",
+    "@tanstack/react-table": "^8.21.3",
     "@tauri-apps/api": "^2.2.0",
     "@yaireo/tagify": "^4.24.0",
     "buffer": "^6.0.3",

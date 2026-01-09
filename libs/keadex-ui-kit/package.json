@@ -33,7 +33,7 @@
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.1",
-    "@tanstack/react-table": "^8.10.7",
+    "@tanstack/react-table": "^8.21.3",
     "@types/react-html-parser": "^2.0.3",
     "@yaireo/tagify": "^4.24.0",
     "ahooks": "^3.9.6",
