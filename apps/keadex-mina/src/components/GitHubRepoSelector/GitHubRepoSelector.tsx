@@ -18,6 +18,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import AppEventContext, { AppEventType } from '../../context/AppEventContext'
 import { ENV_SETTINGS } from '../../core/env-settings'
+import { twMerge } from 'tailwind-merge'
 
 type ReposResponse =
   RestEndpointMethodTypes['repos']['listForAuthenticatedUser']['response']
@@ -151,14 +152,15 @@ export const GitHubRepoSelector = (props: GitHubRepoSelectorProps) => {
   }, [ghToken])
 
   return (
-    <div className={`w-full h-full relative ${className ?? ''}`}>
+    <div className={twMerge(`w-full h-full relative`, className ?? '')}>
       {/* Login/Logout buttons */}
       <div className="text-center w-full">
         <Button
           onClick={handleLoginClick}
-          className={`!bg-black hover:!bg-dark-primary disabled:hover:!bg-black !text-lg normal-case ${
-            isLogged() ? 'rounded-se-none rounded-ee-none' : ''
-          }`}
+          className={twMerge(
+            `bg-black! hover:bg-dark-primary! disabled:hover:bg-black! text-lg! normal-case`,
+            isLogged() ? 'rounded-se-none rounded-ee-none' : '',
+          )}
           disabled={isLogged()}
         >
           {isLogged() ? `${t('common.hi')}, ${username}!` : t('common.login')}
@@ -166,7 +168,7 @@ export const GitHubRepoSelector = (props: GitHubRepoSelectorProps) => {
         {isLogged() && (
           <Button
             onClick={handleLogoutClick}
-            className={`!text-lg button--dangerous !min-w-0 !px-0 w-10 rounded-ss-none rounded-es-none`}
+            className={`text-lg! button--dangerous min-w-0! px-0! w-10 rounded-ss-none rounded-es-none`}
           >
             <FontAwesomeIcon icon={faRightFromBracket} />
           </Button>

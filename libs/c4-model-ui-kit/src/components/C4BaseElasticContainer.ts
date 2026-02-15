@@ -89,7 +89,7 @@ export class C4BaseElastiContainerComponent extends C4BaseComponent {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface, @typescript-eslint/no-empty-object-type
 export interface C4BaseElasticContainerOptions extends C4BaseComponentOptions {}
 
 export const C4BaseElasticContainer = (

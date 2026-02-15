@@ -16,8 +16,8 @@ import {
   SYSTEM_TYPES,
   SystemType,
 } from '@keadex/c4-model-ui-kit'
-import * as monaco from 'monaco-editor'
-import { IMarkdownString, IRange } from 'monaco-editor'
+import type { IMarkdownString, IRange } from 'monaco-editor'
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.main.js'
 
 type AggregatedParameterInformation = monaco.languages.ParameterInformation & {
   numAggregatedParameters?: number

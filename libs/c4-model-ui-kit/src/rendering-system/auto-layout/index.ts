@@ -50,7 +50,7 @@ export function generateAutoLayout(
     // console.debug(graphvizDotCode)
 
     try {
-      let dotLayout = graphviz.dot(graphvizDotCode, 'json')
+      const dotLayout = graphviz.dot(graphvizDotCode, 'json')
       const output = JSON.parse(dotLayout) as GraphvizOutput
       const graphHeight = getGraphHeightInPtFromBB(output.bb)
 

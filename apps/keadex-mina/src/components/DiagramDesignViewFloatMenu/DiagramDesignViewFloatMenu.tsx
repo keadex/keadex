@@ -10,21 +10,23 @@ import {
   faRotateLeft,
 } from '@fortawesome/free-solid-svg-icons'
 import { IconButton, KeadexCanvas } from '@keadex/keadex-ui-kit/cross'
-import React from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { memo } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export interface DiagramDesignViewFloatMenuProps {
   canvas?: KeadexCanvas
   readOnly?: boolean
   diagramInfoPanelVisible: boolean
-  setDiagramInfoPanelVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setDiagramInfoPanelVisible: Dispatch<SetStateAction<boolean>>
   diagramCodePanelVisible: boolean
-  setDiagramCodePanelVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setDiagramCodePanelVisible: Dispatch<SetStateAction<boolean>>
 }
 
 const styleButton = `text-5xl text-dark-primary hover:text-third`
 const styleCenterButtons = `text-2xl text-dark-primary hover:text-third`
 
-export const DiagramDesignViewFloatMenu = React.memo(
+export const DiagramDesignViewFloatMenu = memo(
   (props: DiagramDesignViewFloatMenuProps) => {
     const {
       canvas,
@@ -54,24 +56,26 @@ export const DiagramDesignViewFloatMenu = React.memo(
     }
 
     return (
-      <div className="absolute bottom-0 left-0 z-[1] scale-[85%] opacity-20 transition hover:scale-[100%] hover:opacity-100 flex flex-row mx-2">
+      <div className="absolute bottom-0 left-0 z-1 scale-[85%] opacity-20 transition hover:scale-[100%] hover:opacity-100 flex flex-row mx-2">
         <IconButton
-          className={`${styleCenterButtons} ${
-            isReadOnly() ? 'absolute' : 'hidden'
-          }`}
+          className={twMerge(
+            styleCenterButtons,
+            isReadOnly() ? 'absolute' : 'hidden',
+          )}
           icon={faCircleInfo}
           onClick={handleToggleDiagramInfoPanelBtnClick}
         />
         <IconButton
-          className={`${styleCenterButtons} ${
-            isReadOnly() ? 'absolute bottom-1' : 'hidden'
-          }`}
+          className={twMerge(
+            styleCenterButtons,
+            isReadOnly() ? 'absolute bottom-1' : 'hidden',
+          )}
           icon={faCode}
           onClick={handleToggleDiagramCodePanelBtnClick}
         />
         <div className="flex flex-col">
           <IconButton
-            className={`${styleButton} !my-auto`}
+            className={twMerge(styleButton, `my-auto!`)}
             icon={faCaretLeft}
             onClick={() => canvas?.panLeft()}
           />
@@ -84,12 +88,12 @@ export const DiagramDesignViewFloatMenu = React.memo(
           />
           <div>
             <IconButton
-              className={`${styleCenterButtons} ml-1`}
+              className={twMerge(styleCenterButtons, `ml-1`)}
               icon={faMagnifyingGlassPlus}
               onClick={() => canvas?.zoomIn()}
             />
             <IconButton
-              className={`${styleCenterButtons} mx-2 !text-xl`}
+              className={twMerge(styleCenterButtons, `mx-2 text-xl!`)}
               icon={faRotateLeft}
               onClick={() => {
                 canvas?.resetZoom()
@@ -97,7 +101,7 @@ export const DiagramDesignViewFloatMenu = React.memo(
               }}
             />
             <IconButton
-              className={`${styleCenterButtons} mr-1`}
+              className={twMerge(styleCenterButtons, `mr-1`)}
               icon={faMagnifyingGlassMinus}
               onClick={() => canvas?.zoomOut()}
             />
@@ -110,7 +114,7 @@ export const DiagramDesignViewFloatMenu = React.memo(
         </div>
         <div className="flex flex-col">
           <IconButton
-            className={`${styleButton} !my-auto`}
+            className={twMerge(styleButton, `my-auto!`)}
             icon={faCaretRight}
             onClick={() => canvas?.panRight()}
           />

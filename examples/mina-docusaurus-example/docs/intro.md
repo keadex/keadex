@@ -11,8 +11,8 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
     {() => {
       const MinaReact = require('@keadex/mina-react').default;
       return <MinaReact
-          projectRootUrl="https://raw.githubusercontent.com/keadex/keadex/main/examples/mina-react-example/demo_mina_project/Mina%20Demo"
-          diagramUrl="https://raw.githubusercontent.com/keadex/keadex/main/examples/mina-react-example/demo_mina_project/Mina%20Demo/diagrams/system-context/demo-diagram"
+          projectRootUrl="https://raw.githubusercontent.com/keadex/keadex/main/examples/mina-react-example/demo_mina_project/mina-demo"
+          diagramUrl="https://raw.githubusercontent.com/keadex/keadex/main/examples/mina-react-example/demo_mina_project/mina-demo/diagrams/system-context/demo-diagram"
         />;
     }}
   </BrowserOnly>

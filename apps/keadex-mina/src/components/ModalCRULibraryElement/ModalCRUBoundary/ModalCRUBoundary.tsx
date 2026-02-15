@@ -21,6 +21,7 @@ import {
   onTagsChanged,
 } from '../ModalCRULibraryElements'
 import DiagramLinker from '../../DiagramLinker/DiagramLinker'
+import { twMerge } from 'tailwind-merge'
 
 const emptyBoundary: Boundary = {
   base_data: {
@@ -169,9 +170,10 @@ export const ModalCRUBoundary = (props: ModalCRULibraryElementProps) => {
           />
         )}
         <span
-          className={`text-sm text-orange-500 mt-2 ${
-            missingRequiredFields() ? 'block' : 'hidden'
-          }`}
+          className={twMerge(
+            `text-sm text-orange-500 mt-2`,
+            missingRequiredFields() ? 'block' : 'hidden',
+          )}
         >
           * {t('common.info.fill_required_fields')}
         </span>

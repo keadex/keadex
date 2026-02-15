@@ -1,8 +1,9 @@
-import React from 'react'
 import '../../styles/index.css'
-import { useTranslation } from 'react-i18next'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+import { memo } from 'react'
+import { useTranslation } from 'react-i18next'
+import { twMerge } from 'tailwind-merge'
+
 export type SplashScreenProps = {
   className?: string
   hideLogo?: boolean
@@ -10,15 +11,16 @@ export type SplashScreenProps = {
   label?: string
 }
 
-export const SplashScreen = React.memo((props: SplashScreenProps) => {
+export const SplashScreen = memo((props: SplashScreenProps) => {
   const { className, showLoading, label, hideLogo } = props
   const { t } = useTranslation()
 
   return (
     <div
-      className={`absolute flex h-full w-full flex-col justify-center bg-primary ${
-        className ?? ''
-      }`}
+      className={twMerge(
+        `absolute flex h-full w-full flex-col justify-center bg-primary`,
+        className ?? '',
+      )}
     >
       <div className="-mt-28 text-center">
         {!hideLogo && (

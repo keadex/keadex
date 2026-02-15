@@ -1,20 +1,26 @@
-@import '@yaireo/tagify/dist/tagify.css';
+@import '@yaireo/tagify/dist/tagify.css' layer(components);
 
-.tagify {
-  @apply input__field;
-}
+@layer components {
+  .tagify {
+    @apply input__field;
+  }
 
-.tagify[disabled] {
-  @apply input__field opacity-100;
-}
+  .tagify[disabled] {
+    @apply input__field opacity-100;
+  }
 
-.tagify__tag > div::before {
-  /* box-shadow: 0 0 0 var(--tag-inset-shadow-size) red inset; */
-  @apply shadow-[0_0_0_1em_inset] shadow-accent-secondary;
-}
+  .tagify__input {
+    @apply align-bottom;
+  }
 
-.tagify__tag:focus div::before,
-.tagify__tag:hover:not([readonly]) div::before {
-  --tag-bg-inset: inherit;
-  --tag-bg: inherit;
+  .tagify__tag > div::before {
+    /* box-shadow: 0 0 0 var(--tag-inset-shadow-size) red inset; */
+    @apply shadow-[0_0_0_1em_inset] shadow-accent-secondary;
+  }
+
+  .tagify__tag:focus div::before,
+  .tagify__tag:hover:not([readonly]) div::before {
+    --tag-bg-inset: inherit;
+    --tag-bg: inherit;
+  }
 }

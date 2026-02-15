@@ -7,11 +7,11 @@
   "main": "index.ts",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^8.56.0",
-    "eslint-plugin-react-hooks": "^4.6.0"
+    "eslint": "^9.39.2",
+    "eslint-plugin-react-hooks": "^7.0.1"
   },
   "dependencies": {
-    "@forge/react": "^11.1.0",
-    "@forge/bridge": "^4.5.0"
+    "@forge/react": "^11.10.0",
+    "@forge/bridge": "^5.11.0"
   }
 }

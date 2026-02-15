@@ -1,26 +1,28 @@
+import './styles/index.css'
+
+import { clearOPFSTempDir } from '@keadex/keadex-utils'
 import useEventEmitter from 'ahooks/lib/useEventEmitter'
-import React, { useEffect, useRef } from 'react'
+import { memo, useEffect, useRef } from 'react'
 import { Provider } from 'react-redux'
 import { RouterProvider } from 'react-router-dom'
 import {
   Button,
   Collapse,
   Dropdown,
+  initTE,
   Input,
   Modal,
   Select,
-  initTE,
 } from 'tw-elements'
+
 import AppEventContext, { AppEvent } from './context/AppEventContext'
 import { router } from './core/router/router'
 import store from './core/store/store'
 import initi18n from './i18n'
-import './styles/index.css'
-import { clearOPFSTempDir } from '@keadex/keadex-utils'
 
 initi18n()
 
-export const App = React.memo(() => {
+export const App = memo(() => {
   const teInitialized = useRef(false)
   const event$ = useEventEmitter<AppEvent>()
 

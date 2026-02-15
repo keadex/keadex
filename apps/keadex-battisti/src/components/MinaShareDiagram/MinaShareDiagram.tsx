@@ -1,20 +1,22 @@
 'use client'
 
-import { Button, Input } from '@keadex/keadex-ui-kit/cross'
+import { generateRemoteDiagramSSRLink } from '@keadex/keadex-mina/src/helper/ssr-link-helper'
+import { Button } from '@keadex/keadex-ui-kit/components/cross/Button/Button'
+import { Input } from '@keadex/keadex-ui-kit/components/cross/Input/Input'
+import { MinaReactProps } from '@keadex/mina-react-npm/src/components/MinaReact/MinaReact'
 import dynamic from 'next/dynamic'
 import { useSearchParams } from 'next/navigation'
-import { PropsWithChildren, memo, useEffect, useState } from 'react'
+import { memo, PropsWithChildren, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import { twMerge } from 'tailwind-merge'
+
 import { useTranslation } from '../../app/i18n/client'
-import { MinaReactProps } from '@keadex/mina-react-npm/src/components/MinaReact/MinaReact'
 import {
   DIAGRAM_URL_PARAM_NAME,
+  generateShareLink,
   GH_TOKEN_PARAM_NAME,
   PROJECT_ROOT_URL_PARAM_NAME,
-  generateShareLink,
 } from '../../helper/share-link-helper'
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { generateRemoteDiagramSSRLink } from '@keadex/keadex-mina/src/helper/ssr-link-helper'
 
 export const MinaReact = dynamic(() => import('@keadex/mina-react-npm'), {
   ssr: false,
@@ -102,7 +104,7 @@ export default function MinaShareDiagram({
   }, [])
 
   return (
-    <div className={`flex flex-col ${className ?? ''}`}>
+    <div className={twMerge(`flex flex-col`, className ?? '')}>
       <Input
         value={projectRootUrl}
         onChange={(e) => setProjectRootUrl(e.target.value)}

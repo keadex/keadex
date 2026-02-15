@@ -50,7 +50,7 @@ import DiagramDesignView, {
   DiagramDesignViewCommands,
   KeadexCanvasState,
 } from './DiagramDesignView/DiagramDesignView'
-import './DiagramEditor.css'
+import { twMerge } from 'tailwind-merge'
 
 const TOAST_ERROR_DEFAULT_CONFIGS: ToastOptions = {
   className: 'diagram-editor_toast--error',
@@ -408,9 +408,10 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
         </div>
       </div>
       <div
-        className={`${
-          isSaving ? 'opacity-90' : 'opacity-0'
-        } bg-dark-brand1 z-[6] absolute bottom-5 left-1/2 -translate-x-1/2 text-center transition duration-200 ease-in-out px-10 py-1 rounded-md pointer-events-none flex`}
+        className={twMerge(
+          isSaving ? 'opacity-90' : 'opacity-0',
+          `bg-dark-brand1 z-6 absolute bottom-5 left-1/2 -translate-x-1/2 text-center transition duration-200 ease-in-out px-10 py-1 rounded-md pointer-events-none flex`,
+        )}
       >
         <svg
           className="animate-spin my-auto mr-3 h-5 w-5"

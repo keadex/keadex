@@ -9,7 +9,7 @@ import {
   faTerminal,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button } from '@keadex/keadex-ui-kit/cross'
+import { Button } from '@keadex/keadex-ui-kit/components/cross/Button/Button'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { PropsWithChildren, useEffect, useState } from 'react'

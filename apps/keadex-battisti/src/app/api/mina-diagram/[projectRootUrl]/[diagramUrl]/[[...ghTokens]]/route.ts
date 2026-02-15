@@ -1,5 +1,5 @@
 import { DiagramListener, DiagramRenderer } from '@keadex/c4-model-ui-kit'
-import { KeadexCanvas } from '@keadex/keadex-ui-kit/cross'
+import { KeadexCanvas } from '@keadex/keadex-ui-kit/components/cross/Canvas/KeadexCanvas'
 import { fabric } from 'fabric'
 import { NextRequest } from 'next/server'
 import * as fs from 'fs'

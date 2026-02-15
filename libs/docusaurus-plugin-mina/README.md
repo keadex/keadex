@@ -46,7 +46,28 @@ export default config
 
 ```CSS
 /* Other CSS rules */
-@import "@keadex/mina-react/main.css";
+@import "@keadex/mina-react/main.css" layer(docusaurus.infima);
+```
+
+#### Docusaurus v4 CSS Cascade Layers
+
+Due to the introduction of CSS cascade layers in v4, you may need to override some Mina React styles:
+
+`src\css\custom.css`
+
+```CSS
+#menu-baseComponentContextMenu {
+  padding-left: inherit;
+}
+
+div button .svg-inline--fa {
+  width: inherit;
+}
+
+.tags {
+  margin: inherit;
+  padding-left: inherit;
+}
 ```
 
 ### Include the diagram into MDX files
@@ -70,8 +91,8 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
     {() => {
       const MinaReact = require('@keadex/mina-react').default;
       return <MinaReact
-          projectRootUrl="https://raw.githubusercontent.com/keadex/keadex/main/examples/mina-react-example/demo_mina_project/Mina%20Demo"
-          diagramUrl="https://raw.githubusercontent.com/keadex/keadex/main/examples/mina-react-example/demo_mina_project/Mina%20Demo/diagrams/system-context/demo-diagram"
+          projectRootUrl="https://raw.githubusercontent.com/keadex/keadex/main/examples/mina-react-example/demo_mina_project/mina-demo"
+          diagramUrl="https://raw.githubusercontent.com/keadex/keadex/main/examples/mina-react-example/demo_mina_project/mina-demo/diagrams/system-context/demo-diagram"
         />;
     }}
   </BrowserOnly>

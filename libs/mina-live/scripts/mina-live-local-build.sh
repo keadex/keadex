@@ -1,6 +1,6 @@
 SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../" && pwd)"
 
-yarn nx build mina-live --skip-nx-cache
+VITE_GITHUB_CLIENT_ID_MINA=Ov23liWDD8Y8CNobzRzS yarn nx build mina-live --skip-nx-cache
 
 rm -rf $SCRIPT_PATH/apps/keadex-battisti/.next
 

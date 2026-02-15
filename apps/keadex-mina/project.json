@@ -26,9 +26,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/keadex-mina/**/*.{ts,tsx,js,jsx}"],
-        "eslintConfig": "apps/keadex-mina/.eslintrc.json",
-        "ignorePath": "apps/keadex-mina/.eslintignore"
+        "lintFilePatterns": ["apps/keadex-mina/**/*.{ts,tsx,js,jsx}"]
       }
     }
   }

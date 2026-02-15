@@ -1,7 +1,8 @@
 @import '../components/Header/Header.css';
-@import '../components/MinaDetails/MinaDetails.css';
+@import '../components/MinaFAQ/MinaFAQ.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/Tags/Tags.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/Button/Button.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/DropdownMenu/DropdownMenu.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/Input/Input.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/Select/Select.css';
+@import '../app/[lang]/(site)/about-me/page.css';

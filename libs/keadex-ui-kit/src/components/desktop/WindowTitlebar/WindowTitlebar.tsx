@@ -1,12 +1,14 @@
+import { EventEmitter } from 'ahooks/lib/useEventEmitter'
+import { type TFunction } from 'i18next'
+import type { JSX } from 'react'
+import { memo } from 'react'
+import { Location, NavigateFunction } from 'react-router-dom'
+
 import DropdownMenu, {
   DropdownMenuProps,
 } from '../../cross/DropdownMenu/DropdownMenu'
-import WindowTitlebarButton from './WindowTitlebarButton'
 import type { WindowTitlebarButtonProps } from './WindowTitlebarButton'
-import React from 'react'
-import { type TFunction } from 'i18next'
-import { EventEmitter } from 'ahooks/lib/useEventEmitter'
-import { Location, NavigateFunction } from 'react-router-dom'
+import WindowTitlebarButton from './WindowTitlebarButton'
 
 export type WindowTitlebarMenuFactory<T, K> = (
   t: TFunction<'translation', undefined>,
@@ -23,7 +25,7 @@ export interface WindowTitlebarProps {
   title?: string | JSX.Element
 }
 
-export const WindowTitlebar = React.memo((props: WindowTitlebarProps) => {
+export const WindowTitlebar = memo((props: WindowTitlebarProps) => {
   function renderRightButtons() {
     const renderedRightButtons: JSX.Element[] = []
     if (props.rightButtonsProps && props.rightButtonsProps.length > 0) {

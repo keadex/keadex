@@ -1,11 +1,13 @@
-.button--primary {
-  @apply bg-brand1 hover:bg-dark-brand1 active:bg-dark-brand1 disabled:hover:bg-brand1 text-white disabled:opacity-50 !important;
-}
+@layer components {
+  .button--primary {
+    @apply bg-brand1 hover:bg-dark-brand1 active:bg-dark-brand1 disabled:hover:bg-brand1 text-white disabled:opacity-50;
+  }
 
-.button--dangerous {
-  @apply bg-red-700 hover:bg-red-900 active:bg-red-900 disabled:opacity-50 disabled:hover:bg-red-700 !important;
-}
+  .button--dangerous {
+    @apply bg-red-700 hover:bg-red-900 active:bg-red-900 disabled:opacity-50 disabled:hover:bg-red-700;
+  }
 
-.button--safe {
-  @apply bg-green-700 hover:bg-green-900 active:bg-green-900 disabled:opacity-50 disabled:hover:bg-green-700 !important;
+  .button--safe {
+    @apply bg-green-700 hover:bg-green-900 active:bg-green-900 disabled:opacity-50 disabled:hover:bg-green-700;
+  }
 }

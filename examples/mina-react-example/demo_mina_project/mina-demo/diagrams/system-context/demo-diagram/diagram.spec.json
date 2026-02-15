@@ -1,0 +1,13 @@
+{
+      "uuid": "b13b00b6-01b7-41d4-ab8e-700c2f42fc53",
+      "tags": [],
+      "elements_specs": [],
+      "shapes": [],
+      "auto_layout_enabled": true,
+      "auto_layout_orientation": "TopToBottom",
+      "auto_layout_only_straight_arrows": true,
+      "auto_layout_ranksep": 1.0,
+      "auto_layout_subgraph_inner_margin": 0.0,
+      "auto_layout_subgraph_outer_margin": 6.5,
+      "grid_enabled": false
+  }

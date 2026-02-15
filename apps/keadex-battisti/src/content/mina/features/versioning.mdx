@@ -1,0 +1,33 @@
+import dynamic from 'next/dynamic'
+
+import { PlayerClient } from '../../../components/client-wrappers'
+
+# Versioning
+
+A Mina project primarily consists of the following files:
+
+- `.puml` files: contain the code of the diagrams.
+- `.json` files: contain specifications of the diagrams, including position, size, and metadata of the elements within a diagram.
+
+For further details about the Mina project structure, please visit [this documentation](/en/docs/mina/getting-started/project-structure).
+
+<div className="relative h-auto w-[30rem] max-w-full mx-auto mt-8">
+  <PlayerClient
+    src="https://vimeo.com/1070152500/8b11627a96"
+    playing
+    muted
+    loop
+    width="100%"
+    height="100%"
+    config={{
+      vimeo: {
+        responsive: true,
+      },
+    }}
+  />
+</div>
+
+Thus, the project only contains **human-readable code** without any binary data
+or incomprehensible metadata files.
+
+This feature makes a Mina project **easily versionable** with tools such as GitHub, facilitating the adoption of common **software development best practices** like code reviews, pull request approval processes, continuous integration, and more.

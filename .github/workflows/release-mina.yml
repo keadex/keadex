@@ -23,13 +23,13 @@ jobs:
       # -------------- START TO REMOVE
       # - uses: actions/setup-node@v4
       #   with:
-      #     node-version: 20
+      #     node-version: 24
       # - run: npm install --global yarn
       # -------------- END TO REMOVE
       - name: setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: 'yarn'
       - uses: nrwl/nx-set-shas@v4
       - run: yarn --frozen-lockfile
@@ -78,7 +78,7 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: 'yarn'
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable

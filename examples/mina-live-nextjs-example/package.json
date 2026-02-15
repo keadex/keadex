@@ -3,26 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start --webpack",
+    "lint": "eslint"
   },
   "dependencies": {
-    "@keadex/mina-live": "^2.10.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router": "^6.28.0",
-    "react-router-dom": "^6.28.0",
-    "next": "15.3.8"
+    "@keadex/mina-live": "^3.0.0",
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-router-dom": "^7.13.0",
+    "react-dom": "19.2.3"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.3.1",
-    "@eslint/eslintrc": "^3"
+    "eslint-config-next": "16.1.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

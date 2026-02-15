@@ -7,19 +7,21 @@
   "license": "MIT",
   "version": "1.0.0",
   "dependencies": {
-    "@fortawesome/free-solid-svg-icons": "^6.4.2",
-    "@hpcc-js/wasm-graphviz": "^1.10.0",
-    "change-case": "^5.4.3",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@hpcc-js/wasm-graphviz": "^1.21.0",
+    "change-case": "^5.4.4",
     "fabric": "^5.5.2",
     "pluralize": "^8.0.0",
-    "react-toastify": "^11.0.3"
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
-    "@types/fabric": "^5.3.10",
-    "@types/pluralize": "^0.0.31",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.33",
-    "postcss-import": "^15.1.0",
-    "tailwindcss": "^3.3.3"
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/fabric": "^5.3.11",
+    "@types/pluralize": "^0.0.33",
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
+    "postcss-import": "^16.1.1",
+    "tailwindcss": "^4.1.18",
+    "tailwind-merge": "^3.4.0"
   }
 }

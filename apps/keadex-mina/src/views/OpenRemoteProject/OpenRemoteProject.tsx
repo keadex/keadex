@@ -102,7 +102,7 @@ export const OpenRemoteProject = (props: OpenRemoteProjectProps) => {
       {/* Splash Screen */}
       {isDownloading && (
         <SplashScreen
-          className="!fixed top-0 bottom-0 z-[1] bg-opacity-90"
+          className="!fixed top-0 bottom-0 z-[1] bg-primary/90"
           label={t('remote_diagrams.downloading_project')}
           showLoading
           hideLogo

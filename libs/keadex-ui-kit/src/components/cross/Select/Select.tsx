@@ -1,8 +1,12 @@
+'use client'
+
 import { getDataAttributes } from '@keadex/keadex-utils'
-import React, { useEffect } from 'react'
+import type { JSX, SelectHTMLAttributes } from 'react'
+import { memo, useEffect } from 'react'
+import { twMerge } from 'tailwind-merge'
 import { Select as SelectTE } from 'tw-elements'
 
-export type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
+export type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
   [key: `data-${string}`]: unknown
   key?: string
   label: string
@@ -12,7 +16,7 @@ export type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   }[]
 }
 
-export const Select = React.memo((props: SelectProps) => {
+export const Select = memo((props: SelectProps) => {
   const { label, className, key, ...otherProps } = props
 
   const dataAttributes = getDataAttributes(props)
@@ -51,7 +55,7 @@ export const Select = React.memo((props: SelectProps) => {
   })
 
   return (
-    <div className={`relative mb-3 ${className}`}>
+    <div className={twMerge(`relative mb-3`, className)}>
       <select data-te-select-init key={key} {...otherProps} {...dataAttributes}>
         {renderOptions()}
       </select>

@@ -1,27 +1,31 @@
-import { useForceUpdate } from '../../../cross'
+'use client'
+
 import { getDataAttributes } from '@keadex/keadex-utils'
-import React, { useEffect, useState } from 'react'
+import type { JSX, SelectHTMLAttributes } from 'react'
+import { memo, useEffect, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 import { Select as SelectTE } from 'tw-elements'
+
+import { useForceUpdate } from '../../../cross'
 
 export type AutocompleteOption = {
   value: string | number | readonly string[] | undefined
   label: string
 }
 
-export type AutocompleteProps =
-  React.SelectHTMLAttributes<HTMLSelectElement> & {
-    [key: `data-${string}`]: unknown
-    key?: string
-    label: string
-    options: AutocompleteOption[]
-    initialValue?: string
-    allowedChars?: RegExp
-    info?: string
-    onTyping: (value: string) => void
-    onDefaultOptionSelected?: (value: string) => void
-  }
+export type AutocompleteProps = SelectHTMLAttributes<HTMLSelectElement> & {
+  [key: `data-${string}`]: unknown
+  key?: string
+  label: string
+  options: AutocompleteOption[]
+  initialValue?: string
+  allowedChars?: RegExp
+  info?: string
+  onTyping: (value: string) => void
+  onDefaultOptionSelected?: (value: string) => void
+}
 
-export const Autocomplete = React.memo((props: AutocompleteProps) => {
+export const Autocomplete = memo((props: AutocompleteProps) => {
   const {
     label,
     className,
@@ -127,7 +131,7 @@ export const Autocomplete = React.memo((props: AutocompleteProps) => {
   }, [localInputValue])
 
   return (
-    <div className={`${props.id} autocomplete relative mb-3 ${className}`}>
+    <div className={twMerge(props.id, `autocomplete relative mb-3`, className)}>
       <select
         data-te-select-init
         key={key}

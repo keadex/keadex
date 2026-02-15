@@ -3,6 +3,23 @@
   "targets": {
     "release-keadex-projects": {
       "executor": "@keadex/keadex-nx-plugin:release-keadex-projects"
+    },
+    "test-all-builds": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "yarn nx build keadex-battisti --skip-nx-cache",
+          "yarn nx build keadex-mina --skip-nx-cache",
+          "yarn nx build docusaurus-plugin-mina --skip-nx-cache",
+          "yarn nx build mina-cli --skip-nx-cache",
+          "yarn nx build mina-confluence-plugin --skip-nx-cache",
+          "yarn nx build mina-live --skip-nx-cache",
+          "yarn nx build mina-react --skip-nx-cache",
+          "yarn nx generate-api-docs c4-model-ui-kit",
+          "yarn nx generate-api-docs mina-cli"
+        ],
+        "parallel": false
+      }
     }
   }
 }

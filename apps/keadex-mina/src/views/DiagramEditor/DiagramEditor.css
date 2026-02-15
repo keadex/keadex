@@ -8,7 +8,7 @@
 }
 
 #diagram-code-editor-box .react-resizable-handle-e {
-  @apply -right-0.5 bottom-0 top-0 z-[1] m-0 h-screen w-1 rotate-0;
+  @apply -right-0.5 bottom-0 top-0 z-[1] m-0 h-screen w-1 rotate-x-0;
 }
 
 #diagram-code-editor-box .react-resizable {

@@ -1,16 +1,17 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Diagram } from '@keadex/c4-model-ui-kit'
 import { IconButton } from '@keadex/keadex-ui-kit/cross'
-import React from 'react'
+import { Dispatch, memo, SetStateAction } from 'react'
+
 import DiagramHeader from '../DiagramHeader/DiagramHeader'
 
 export interface DiagramInfoPanelProps {
-  setDiagramInfoPanelVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setDiagramInfoPanelVisible: Dispatch<SetStateAction<boolean>>
   hidden?: boolean
   diagram?: Diagram
 }
 
-export const DiagramInfoPanel = React.memo((props: DiagramInfoPanelProps) => {
+export const DiagramInfoPanel = memo((props: DiagramInfoPanelProps) => {
   const { setDiagramInfoPanelVisible, diagram, hidden } = props
 
   return (
@@ -18,7 +19,7 @@ export const DiagramInfoPanel = React.memo((props: DiagramInfoPanelProps) => {
       className={`${
         hidden
           ? 'hidden'
-          : 'absolute z-[1] bg-dark-primary bg-opacity-90 w-full p-2 max-h-96 overflow-auto'
+          : 'absolute z-1 bg-dark-primary/90 w-full p-2 max-h-96 overflow-auto'
       }`}
     >
       <IconButton

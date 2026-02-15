@@ -1,12 +1,13 @@
 import type {
+  invoke,
   InvokeArgs,
   InvokeOptions,
-  invoke,
   transformCallback,
 } from '@tauri-apps/api/core'
 import type { WebviewWindow } from '@tauri-apps/api/webviewWindow'
-import { invokeWasmFunction } from './wasm-bridge'
+
 import { invokeTauriPlugin } from './tauri-plugin-adapter'
+import { invokeWasmFunction } from './wasm-bridge'
 
 declare global {
   interface Window {
@@ -14,6 +15,9 @@ declare global {
     __TAURI_INTERNALS__: {
       invoke: typeof invoke
       transformCallback: typeof transformCallback
+    }
+    __TAURI_EVENT_PLUGIN_INTERNALS__: {
+      unregisterListener: (event: string, eventId: number) => void
     }
   }
 }
@@ -68,4 +72,13 @@ export function getCurrentWebviewWindow(): Partial<WebviewWindow> {
       })
     },
   }
+}
+
+window.__TAURI_EVENT_PLUGIN_INTERNALS__ = {
+  unregisterListener(event, eventId) {
+    console.debug(
+      `Web-Adapted Tauri Event Plugin Internal "unregisterListener": ${event} - ${eventId}`,
+    )
+    // do nothing
+  },
 }

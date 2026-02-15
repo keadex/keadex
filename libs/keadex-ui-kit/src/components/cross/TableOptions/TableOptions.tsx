@@ -1,12 +1,13 @@
+import { memo } from 'react'
+
 import { DropdownMenu } from '../DropdownMenu/DropdownMenu'
 import { DropdownMenuItemProps } from '../DropdownMenu/DropdownMenuItem'
-import React from 'react'
 
 export interface TableOptionsProps {
   menuOptions: DropdownMenuItemProps[]
 }
 
-export const TableOptions = React.memo((props: TableOptionsProps) => {
+export const TableOptions = memo((props: TableOptionsProps) => {
   const { menuOptions } = props
 
   return (

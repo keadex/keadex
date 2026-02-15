@@ -1,6 +1,0 @@
-@startuml
-
-System(internetBanking, "Internet Banking System", "Allows customers to view information about their bank accounts, and make payments.", $link="system-context/demo-diagram-2")
-
-
-@enduml

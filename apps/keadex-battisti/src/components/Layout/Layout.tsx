@@ -1,14 +1,18 @@
 'use client'
 
-import { NewsBanner, useAppBootstrap } from '@keadex/keadex-ui-kit/cross'
+import '@keadex/keadex-ui-kit/common'
 import { findRoute } from '@keadex/keadex-ui-kit/core'
+import { NewsBanner } from '@keadex/keadex-ui-kit/components/cross/NewsBanner/NewsBanner'
+import { useAppBootstrap } from '@keadex/keadex-ui-kit/hooks/useAppBootstrap/useAppBootstrap'
+import { initConsole } from '@keadex/keadex-utils'
 import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import { PropsWithChildren } from 'react'
 import { ToastContainer } from 'react-toastify'
+
 import { NEWS } from '../../core/news'
 import ROUTES from '../../core/routes'
-import { initConsole } from '@keadex/keadex-utils'
+import { CookiesProvider } from 'react-cookie'
 
 const Header = dynamic(() => import('../Header/Header'))
 const Footer = dynamic(() => import('../Footer/Footer'))
@@ -61,7 +65,7 @@ export default function Layout(props: PropsWithChildren<LayourProps>) {
   }
 
   return (
-    <>
+    <CookiesProvider>
       {/* <TWElementsInit /> */}
       <ToastContainer
         autoClose={4000}
@@ -76,6 +80,6 @@ export default function Layout(props: PropsWithChildren<LayourProps>) {
       {isHeaderVisible() && <Header lang={lang} />}
       <main>{children}</main>
       {isFooterVisible() && <Footer lang={lang} />}
-    </>
+    </CookiesProvider>
   )
 }

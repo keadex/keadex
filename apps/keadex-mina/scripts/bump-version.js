@@ -11,7 +11,7 @@ let release = process.argv[3]
 
 const rootRepo = join(__dirname, '../../..')
 
-let version = JSON.parse(
+const version = JSON.parse(
   fs.readFileSync(join(__dirname, '../package.json'), 'utf8'),
 ).version
 
@@ -77,15 +77,15 @@ const filesToUpdate = [
 
   // Keadex Battisti
   {
-    path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/continuous-integration.mdx',
+    path: 'apps/keadex-battisti/src/content/mina/features/continuous-integration.mdx',
     pattern: `/mina-cli%40${version}/`,
   },
   {
-    path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/cli/overview.mdx',
+    path: 'apps/keadex-battisti/src/content/mina/features/cli/overview.mdx',
     pattern: `/mina-cli%40${version}/`,
   },
   {
-    path: 'apps/keadex-battisti/src/pages/[lang]/docs/mina/features/cli/overview.mdx',
+    path: 'apps/keadex-battisti/src/content/mina/features/cli/overview.mdx',
     pattern: `Download Mina CLI v${version}`,
   },
 ]

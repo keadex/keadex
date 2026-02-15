@@ -6,10 +6,8 @@ import {
   faLinkedin,
 } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  DropdownMenu,
-  DropdownMenuItemProps,
-} from '@keadex/keadex-ui-kit/cross'
+import { DropdownMenu } from '@keadex/keadex-ui-kit/components/cross/DropdownMenu/DropdownMenu'
+import { DropdownMenuItemProps } from '@keadex/keadex-ui-kit/components/cross/DropdownMenu/DropdownMenuItem'
 import { kebabCase } from 'change-case'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -24,6 +22,7 @@ import ROUTES, {
   PROJECTS,
   PROJECTS_ROUTES,
 } from '../../core/routes'
+import { twMerge } from 'tailwind-merge'
 
 export type HeaderProps = {
   lang: string
@@ -87,11 +86,12 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
   return (
     // <!-- Main navigation container -->
     <header
-      className={`fixed w-full z-30 transition-all duration-500 ${
+      className={twMerge(
+        `fixed w-full z-30 transition-all duration-500`,
         scrollActive || !menuCollapsed
           ? ' top-0 shadow-md backdrop-blur-md bg-dark-primary/60'
-          : ' bg-transparent'
-      }`}
+          : ' bg-transparent',
+      )}
     >
       <nav
         className="header__nav relative flex w-full flex-nowrap items-center justify-between lg:flex-wrap lg:justify-start py-4"
@@ -110,9 +110,10 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
 
           {/* Hamburger button for mobile view */}
           <button
-            className={`mr-8 block border-0 bg-transparent text-neutral-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden header__menu-button ${
-              !menuCollapsed ? 'header__menu-button--open' : ''
-            }`}
+            className={twMerge(
+              `mr-8 block border-0 bg-transparent text-neutral-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-hidden focus:ring-0 dark:text-neutral-200 lg:hidden header__menu-button`,
+              !menuCollapsed ? 'header__menu-button--open' : '',
+            )}
             type="button"
             data-te-collapse-init
             data-te-target="#navbarSupportedContent14"
@@ -126,7 +127,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
 
           {/* Collapsible navbar container */}
           <div
-            className="!visible mt-2 hidden flex-grow basis-[100%] items-center lg:mt-0 lg:!flex lg:basis-auto"
+            className="!visible mt-2 hidden grow basis-[100%] items-center lg:mt-0 lg:!flex lg:basis-auto"
             id="navbarSupportedContent14"
             data-te-collapse-item
           >

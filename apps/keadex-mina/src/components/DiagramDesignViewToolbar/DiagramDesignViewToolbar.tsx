@@ -10,18 +10,20 @@ import {
   useForceUpdate,
 } from '@keadex/keadex-ui-kit/cross'
 import {
+  forwardRef,
   Ref,
   RefObject,
-  forwardRef,
   useEffect,
   useImperativeHandle,
 } from 'react'
 import { useTranslation } from 'react-i18next'
+import { twMerge } from 'tailwind-merge'
 import { Tooltip } from 'tw-elements'
+
 import { DiagramDesignViewCommands } from '../../views/DiagramEditor/DiagramDesignView/DiagramDesignView'
 
 export interface DiagramDesignViewToolbarProps {
-  diagramDesignViewCommands: RefObject<DiagramDesignViewCommands> | null
+  diagramDesignViewCommands: RefObject<DiagramDesignViewCommands | null> | null
 }
 
 export interface DiagramDesignViewToolbarCommands {
@@ -68,9 +70,9 @@ export const DiagramDesignViewToolbar = forwardRef(
     })
 
     return (
-      <div id="diagram-design-view-toolbar" className="w-full z-[6]">
+      <div id="diagram-design-view-toolbar" className="w-full z-6">
         <div className="p-3">
-          <div className="bg-primary flex w-full flex-1 rounded text-sm drop-shadow-md">
+          <div className="bg-primary flex w-full flex-1 rounded-sm text-sm drop-shadow-md">
             <IconButton
               disabled={diagramDesignViewCommands?.current?.canUndo() === false}
               icon={faRotateLeft}
@@ -110,7 +112,10 @@ export const DiagramDesignViewToolbar = forwardRef(
               }}
             />
             <div
-              className={`${styleButton} w-fit px-3 cursor-pointer flex truncate`}
+              className={twMerge(
+                styleButton,
+                `w-fit px-3 cursor-pointer flex truncate`,
+              )}
               data-te-toggle="tooltip"
               data-te-placement="bottom"
               title={`${t('diagram_editor.configure_auto_layout').toString()}`}
@@ -127,11 +132,12 @@ export const DiagramDesignViewToolbar = forwardRef(
               }}
             >
               <div
-                className={`my-auto w-3 h-3 mr-2 rounded-full ${
+                className={twMerge(
+                  `my-auto w-3 h-3 mr-2 rounded-full`,
                   diagramDesignViewCommands?.current?.isAutoLayoutEnabled()
                     ? 'bg-green-700'
-                    : 'bg-red-700'
-                }`}
+                    : 'bg-red-700',
+                )}
               />
               <span className="my-auto truncate">
                 {t('common.auto_layout')}

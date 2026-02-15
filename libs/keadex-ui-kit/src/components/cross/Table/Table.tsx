@@ -1,26 +1,30 @@
-import React, { Ref, forwardRef, useImperativeHandle } from 'react'
-import {
-  ColumnDef,
-  ExpandedState,
-  TableOptions,
-  flexRender,
-  getExpandedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable,
-  Table as TanStackTable,
-  AccessorFn,
-} from '@tanstack/react-table'
-import Header from './Header'
-import Cell from './Cell'
-import { useTranslation } from 'react-i18next'
-import IconButton from '../IconButton/IconButton'
+'use client'
+
 import {
   faAngleLeft,
   faAngleRight,
   faAnglesLeft,
   faAnglesRight,
 } from '@fortawesome/free-solid-svg-icons'
+import {
+  AccessorFn,
+  ColumnDef,
+  ExpandedState,
+  flexRender,
+  getExpandedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  Table as TanStackTable,
+  TableOptions,
+  useReactTable,
+} from '@tanstack/react-table'
+import { forwardRef, Ref, useImperativeHandle, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { twMerge } from 'tailwind-merge'
+
+import IconButton from '../IconButton/IconButton'
+import Cell from './Cell'
+import Header from './Header'
 
 export interface TableColumn<T> {
   accessorKey?: string
@@ -79,7 +83,7 @@ export const Table = forwardRef(
 
     if (expandable === undefined) expandable = true
 
-    const [expanded, setExpanded] = React.useState<ExpandedState>(
+    const [expanded, setExpanded] = useState<ExpandedState>(
       defaultExpanded !== undefined ? defaultExpanded : {},
     )
 
@@ -113,7 +117,7 @@ export const Table = forwardRef(
             <Cell
               {...props}
               disableExpandControls={disableExpandControls}
-              className={`${cellClassName ?? ''} ${column.className ?? ''}`}
+              className={twMerge(cellClassName ?? '', column.className ?? '')}
             />
           ),
           footer: (props) => props.column.id,
@@ -148,9 +152,10 @@ export const Table = forwardRef(
             {table.getHeaderGroups().map((headerGroup) => (
               <tr
                 key={headerGroup.id}
-                className={`bg-dark-brand1 text-base ${
-                  hideHeader ? 'opacity-0' : ''
-                }`}
+                className={twMerge(
+                  `bg-dark-brand1 text-base`,
+                  hideHeader ? 'opacity-0' : '',
+                )}
               >
                 {headerGroup.headers.map((header) => {
                   return (
@@ -232,11 +237,12 @@ export const Table = forwardRef(
           </tbody>
         </table>
         <div
-          className={`mt-5 flex items-center gap-2 ${
+          className={twMerge(
+            `mt-5 flex items-center gap-2`,
             hidePaginationControls !== undefined && hidePaginationControls
               ? 'hidden'
-              : ''
-          }`}
+              : '',
+          )}
         >
           <IconButton
             className="p-1"
@@ -282,7 +288,7 @@ export const Table = forwardRef(
                 if (page >= 0 && page < table.getPageCount())
                   table.setPageIndex(page)
               }}
-              className="w-16 rounded border p-1"
+              className="w-16 rounded-sm border p-1"
             />
           </span>
           {/* <select

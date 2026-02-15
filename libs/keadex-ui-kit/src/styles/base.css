@@ -1,46 +1,92 @@
 @import '../fonts/roboto/roboto.css';
 
-body {
-  @apply text-accent-secondary;
-  font-family: 'Roboto', sans-serif !important;
+/* To preserve the tailwindcss v3 behavior: https://tailwindcss.com/docs/upgrade-guide#container-configuration */
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
 }
 
-:root {
-  --toastify-toast-width: 520px !important;
+/* Base styles to preserve the tailwindcss v3 behavior */
+@layer base {
+  /* Default placeholder color: https://tailwindcss.com/docs/upgrade-guide#new-default-placeholder-color */
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-gray-400);
+  }
+
+  /* Default border color: https://tailwindcss.com/docs/upgrade-guide#default-border-color */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+
+  /* Dialog margins removed: https://tailwindcss.com/docs/upgrade-guide#dialog-margins-removed */
+  dialog {
+    margin: auto;
+  }
+
+  /* Buttons use the default cursor: https://tailwindcss.com/docs/upgrade-guide#buttons-use-the-default-cursor */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  body {
+    @apply text-accent-secondary;
+    font-family: 'Roboto', sans-serif !important;
+  }
+
+  :root {
+    --toastify-toast-width: 520px !important;
+  }
+
+  p {
+    @apply my-5;
+  }
+
+  a {
+    @apply text-brand1 underline underline-offset-[5px];
+  }
+
+  a:hover {
+    @apply brightness-150;
+  }
+
+  h1 {
+    @apply text-4xl;
+  }
+
+  h2 {
+    @apply text-3xl;
+  }
+
+  h3 {
+    @apply text-2xl;
+  }
+
+  h4 {
+    @apply text-xl;
+  }
 }
 
-p {
-  @apply my-5;
+/* To preserve the tailwindcss v3 behavior: https://tailwindcss.com/docs/upgrade-guide#default-ring-width-and-color */
+@theme {
+  --default-ring-width: 3px;
+  --default-ring-color: var(--color-blue-500);
 }
 
-a {
-  @apply text-brand1 underline underline-offset-[5px];
-}
-
-a:hover {
-  @apply brightness-150;
-}
-
-h1 {
-  @apply text-4xl;
-}
-
-h2 {
-  @apply text-3xl;
-}
-
-h3 {
-  @apply text-2xl;
-}
-
-h4 {
-  @apply text-xl;
-}
-
-.container-link-bg {
+@utility container-link-bg {
   @apply hover:bg-primary [&.active]:bg-primary py-2;
 }
 
-.container-link {
+@utility container-link {
   @apply hover:border-l-link cursor-pointer border-l-4 border-r-4 border-transparent;
+}
+
+/* To preserve the @fortawesome v6 behavior  */
+.svg-inline--fa {
+  width: auto;
 }

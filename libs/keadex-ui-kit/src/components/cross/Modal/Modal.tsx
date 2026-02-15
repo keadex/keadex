@@ -1,8 +1,19 @@
+'use client'
+
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getDataAttributes } from '@keadex/keadex-utils'
-import { Ref, forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
+import {
+  forwardRef,
+  type JSX,
+  Ref,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react'
+import { twMerge } from 'tailwind-merge'
 import { Modal as ModalTE } from 'tw-elements'
+
 import { Size } from '../../../cross'
 import { Button, type ButtonProps } from '../Button/Button'
 
@@ -35,9 +46,10 @@ export function renderButtons(
           key={key}
           {...buttonPropsWithoutKey}
           {...dataAttributes}
-          className={`${index !== 0 && array.length > 1 ? 'ml-3' : ''} ${
-            buttonProps.className
-          }`}
+          className={twMerge(
+            index !== 0 && array.length > 1 ? 'ml-3' : '',
+            buttonProps.className,
+          )}
         />,
       )
     })
@@ -49,7 +61,7 @@ export const Modal = forwardRef(
   (props: ModalProps, ref: Ref<ModalCommands>) => {
     const { id: modalId, onHiddenModal } = props
     const size = props.size ?? 'md'
-    const modalInstance = useRef<typeof ModalTE>()
+    const modalInstance = useRef<typeof ModalTE>(undefined)
 
     const getSize = () => {
       switch (size) {
@@ -97,21 +109,24 @@ export const Modal = forwardRef(
     return (
       <div
         data-te-modal-init
-        className="fixed left-0 top-8 bottom-0 z-[1055] hidden h-auto w-full overflow-y-auto overflow-x-hidden outline-none"
+        className="fixed left-0 top-8 bottom-0 z-[1055] hidden h-auto w-full overflow-y-auto overflow-x-hidden outline-hidden"
         id={modalId}
         tabIndex={-1}
         aria-labelledby={`${modalId}Label`}
       >
         <div
           data-te-modal-dialog-ref
-          className="pointer-events-none relative flex min-h-[calc(100%-1rem)] w-auto translate-y-[-50px] items-center justify-center  opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-5 min-[576px]:my-7 min-[576px]:min-h-[calc(100%-3.5rem)]"
+          className="pointer-events-none relative flex min-h-[calc(100%-1rem)] w-auto items-center justify-center opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-5 min-[576px]:my-7 min-[576px]:min-h-[calc(100%-3.5rem)]"
         >
           <div
-            className={`pointer-events-auto relative flex ${getSize()} ${
-              props.size === 'full' ? 'mx-5' : ''
-            } bg-primary flex-col rounded-md border-none bg-clip-padding text-current shadow-lg outline-none`}
+            className={twMerge(
+              `pointer-events-auto relative flex`,
+              getSize(),
+              props.size === 'full' ? 'mx-5' : '',
+              `bg-primary flex-col rounded-md border-none bg-clip-padding text-current shadow-lg outline-hidden`,
+            )}
           >
-            <div className="border-secondary flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-opacity-50 p-4">
+            <div className="border-secondary/50 flex shrink-0 items-center justify-between rounded-t-md border-b-2 p-4">
               {/* Modal title*/}
               <h5
                 className="text-accent-primary text-xl font-medium leading-normal pointer-events-none"
@@ -122,7 +137,7 @@ export const Modal = forwardRef(
               {/* Close button*/}
               <button
                 type="button"
-                className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-hidden"
                 data-te-modal-dismiss
                 aria-label="Close"
               >

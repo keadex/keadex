@@ -1,11 +1,16 @@
+'use client'
+
+import { faSearch, IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
-import { IconDefinition, faSearch } from '@fortawesome/free-solid-svg-icons'
+import type { DetailedHTMLProps, InputHTMLAttributes, MouseEvent } from 'react'
+import { memo, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
+
 import Spinner from '../Spinner/Spinner'
 
 export interface InputButtonProps
-  extends React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
+  extends DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
   fixedWidth?: boolean
@@ -14,7 +19,7 @@ export interface InputButtonProps
   icon?: IconDefinition
 }
 
-export const InputButton = React.memo((props: InputButtonProps) => {
+export const InputButton = memo((props: InputButtonProps) => {
   const { fixedWidth, loading, onIconClick, icon, ...otherProps } = props
   const [value, setValue] = useState<string>()
 
@@ -26,16 +31,17 @@ export const InputButton = React.memo((props: InputButtonProps) => {
     }
   }
 
-  function handleIconClick(event: React.MouseEvent<SVGSVGElement>) {
+  function handleIconClick(event: MouseEvent<SVGSVGElement>) {
     if (onIconClick) onIconClick()
   }
 
   return (
     <div className="input-button__box flex items-center">
       <div
-        className={`input-button__container flex items-center ${
-          isActive() ? 'active' : ''
-        }`}
+        className={twMerge(
+          `input-button__container flex items-center`,
+          isActive() ? 'active' : '',
+        )}
       >
         {(loading === undefined || !loading) && (
           <FontAwesomeIcon
@@ -45,7 +51,7 @@ export const InputButton = React.memo((props: InputButtonProps) => {
           />
         )}
         {loading !== undefined && loading && (
-          <Spinner className="icon !h-4 !w-4" />
+          <Spinner className="icon h-4! w-4!" />
         )}
         <input
           {...otherProps}

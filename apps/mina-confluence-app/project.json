@@ -20,7 +20,8 @@
           "apps/mina-confluence-app/src/assets"
         ],
         "scripts": [],
-        "webpackConfig": "apps/mina-confluence-app/webpack.config.js"
+        "webpackConfig": "apps/mina-confluence-app/webpack.config.js",
+        "postcssConfig": "apps/mina-confluence-app/postcss.config.js"
       },
       "configurations": {
         "development": {

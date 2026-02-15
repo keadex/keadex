@@ -17,6 +17,7 @@ import { Tooltip } from 'tw-elements'
 import { generateDiagramDeepLink } from '../../helper/deep-link-helper'
 import DiagramHeader from '../DiagramHeader/DiagramHeader'
 import ModalCRUDiagram from '../ModalCRUDiagram/ModalCRUDiagram'
+import { twMerge } from 'tailwind-merge'
 export interface DiagramEditorToolbarProps {
   diagram?: Diagram
   saveDiagram: () => void
@@ -90,7 +91,7 @@ export const DiagramEditorToolbar = (props: DiagramEditorToolbarProps) => {
     <div id="diagram-editor-toolbar" className="w-full z-[6] flex">
       {modal}
       <div className="py-1 px-3">
-        <div className="h-full flex flex-1 items-center rounded text-sm drop-shadow-md">
+        <div className="h-full flex flex-1 items-center rounded-sm text-sm drop-shadow-md">
           <IconButton
             icon={faFloppyDisk}
             className={`${styleButton}`}
@@ -113,7 +114,7 @@ export const DiagramEditorToolbar = (props: DiagramEditorToolbarProps) => {
           />
           <IconButton
             icon={faXmark}
-            className={`${styleButton} hover:!bg-red-600`}
+            className={twMerge(styleButton, `hover:bg-red-600!`)}
             data-te-toggle="tooltip"
             data-te-placement="bottom"
             title={`${t('common.close').toString()} ${t('common.diagram')

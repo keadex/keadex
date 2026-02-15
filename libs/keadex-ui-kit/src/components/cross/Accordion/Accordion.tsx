@@ -1,7 +1,11 @@
+'use client'
+
 import { objectsAreEqual } from '@keadex/keadex-utils'
-import React, { useEffect, useRef, useState } from 'react'
-import { Collapse, Tooltip } from 'tw-elements'
+import type { JSX, MouseEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ReactHtmlParser from 'react-html-parser'
+import { twMerge } from 'tailwind-merge'
+import { Collapse, Tooltip } from 'tw-elements'
 
 export type AccordionItem<T> = {
   header: string | JSX.Element
@@ -24,9 +28,11 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [collapseList, setCollapseList] = useState<any[]>([])
-  const currentItems = useRef<AccordionItem<T>[] | null>()
+  const currentItems = useRef<AccordionItem<T>[] | null>(undefined)
 
+  // eslint-disable-next-line react-hooks/refs
   if (!objectsAreEqual(currentItems.current, items)) {
+    // eslint-disable-next-line react-hooks/refs
     currentItems.current = items
   }
 
@@ -62,10 +68,11 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
         tooltip.dispose()
       })
     }
+    // eslint-disable-next-line react-hooks/refs
   }, [currentItems.current])
 
   function handleBodyClick(
-    e: React.MouseEvent<HTMLDivElement>,
+    e: MouseEvent<HTMLDivElement>,
     item: AccordionItem<T>,
   ) {
     if (props.onBodyClick) {
@@ -94,7 +101,7 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
           <div className={`bg-secondary`} key={`search-result-item-${index}`}>
             <h2 className="mb-0" id={`${id}-heading-${index}`}>
               <button
-                className="accordion-button [&:not([data-te-collapse-collapsed])]:text-accent-primary bg-primary [&:not([data-te-collapse-collapsed])]:bg-primary text-accent-primary group relative flex w-full items-center border-0 px-5 py-4 text-left [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none "
+                className="accordion-button [&:not([data-te-collapse-collapsed])]:text-accent-primary bg-primary [&:not([data-te-collapse-collapsed])]:bg-primary text-accent-primary group relative flex w-full items-center border-0 px-5 py-4 text-left [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-hidden "
                 type="button"
                 data-te-collapse-init
                 data-te-collapse-collapsed
@@ -138,9 +145,10 @@ export const Accordion = <T,>(props: AccordionProps<T>) => {
               data-te-parent={`#${id}`}
             >
               <div
-                className={`accordion-body px-5 py-4 text-left ${
-                  props.onBodyClick ? 'cursor-pointer' : ''
-                }`}
+                className={twMerge(
+                  `accordion-body px-5 py-4 text-left`,
+                  props.onBodyClick ? 'cursor-pointer' : '',
+                )}
                 onClick={(e) => handleBodyClick(e, item)}
               >
                 {item.parseHtmlBody !== undefined &&

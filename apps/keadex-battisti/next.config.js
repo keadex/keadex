@@ -2,10 +2,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { composePlugins, withNx } = require('@nx/next')
-const withNextra = require('nextra')({
-  theme: 'nextra-theme-docs',
-  themeConfig: './theme.config.jsx',
-})
+const withNextra = require('nextra').default({})
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -54,11 +51,15 @@ const nextConfig = {
   nx: {
     // Set this to true if you would like to use SVGR
     // See: https://github.com/gregberge/svgr
+    // TODO: remove this comment when @nx/webpack will expose the `withSvgr` composable function
+    // as stated in https://github.com/nrwl/nx/blob/2f3b7d09b5274cf654157f5d44c6441dd83272a0/docs/blog/2025-10-10-nx-october-2025-highlights.md?plain=1#L66
+    // @ts-expect-error(no types)
     svgr: false,
   },
   reactStrictMode: true,
   experimental: {
     optimizePackageImports: [
+      '@keadex/keadex-ui-kit/components',
       '@keadex/keadex-ui-kit/cross',
       '@keadex/keadex-ui-kit/web',
       '@keadex/keadex-ui-kit/core',
@@ -103,6 +104,10 @@ const nextConfig = {
           {
             key: 'Cross-Origin-Resource-Policy',
             value: 'cross-origin',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'compute-pressure=(self)',
           },
         ],
       },

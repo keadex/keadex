@@ -1,3 +1,5 @@
-.color-picker input {
-  @apply bg-white !text-gray-800 !shadow-none;
+@layer components {
+  .color-picker input {
+    @apply bg-white text-gray-800! shadow-none!;
+  }
 }

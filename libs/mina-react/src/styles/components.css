@@ -1,1 +1,9 @@
-@import '@keadex/keadex-ui-kit/src/components/cross/DropdownMenu/DropdownMenu.css';
+@import '@keadex/keadex-mina/src/styles/components.css';
+
+@layer components {
+  body {
+    @apply bg-inherit;
+
+    overflow: inherit;
+  }
+}

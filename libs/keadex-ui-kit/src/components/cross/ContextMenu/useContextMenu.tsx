@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useCallback, useState } from 'react'
 import { IEvent } from 'fabric/fabric-impl'
 import { DropdownMenuItemProps } from '@keadex/keadex-ui-kit/cross'
@@ -10,7 +12,7 @@ export interface KeadexContextMenuEvent {
 }
 
 function isKeadexContextMenuCustomEvent(
-  obj: any
+  obj: any,
 ): obj is CustomEvent<KeadexContextMenuEvent> {
   if (obj instanceof CustomEvent) {
     return (
@@ -39,7 +41,7 @@ const useContextMenu = () => {
         setShow(true)
       }
     },
-    [setShow, setAnchorPoint]
+    [setShow, setAnchorPoint],
   )
 
   const handleClick = useCallback(() => (show ? setShow(false) : null), [show])

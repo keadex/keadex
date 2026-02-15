@@ -1,14 +1,15 @@
-body {
-  @apply bg-transparent;
+@layer components {
+  body {
+    @apply bg-transparent;
 
-  overflow: hidden;
+    overflow: hidden;
+  }
 }
 
-.window__border {
+@utility window__border {
   @apply border-third border-[0.5px] border-b-[1px] border-solid;
 }
 
 .window__inner-border {
-  @apply window__border;
-  @apply border-opacity-50;
+  @apply window__border border-third/50;
 }

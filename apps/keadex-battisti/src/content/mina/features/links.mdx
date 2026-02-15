@@ -1,0 +1,73 @@
+import { faLink } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import dynamic from 'next/dynamic'
+
+import { PlayerClient } from '../../../components/client-wrappers'
+
+# Links
+
+The **layering** of the C4 model enables the creation of clear and understandable diagrams. Moreover, you will often create diagrams focusing on specific systems, which, in turn, **integrate** with other systems.
+
+By **linking** diagrams of different levels or systems together, you will enable **interactive navigation** that allows users to have a clear and detailed view of your architectures.
+
+Mina also supports **dynamic external links**, allowing you to connect your diagrams to external URLs while dynamically passing architectural component variables, such as their aliases.
+
+## Usage
+
+<div className="w-full h-[30rem] my-14 border-0">
+  <PlayerClient
+    src="https://vimeo.com/1072363635/d7f6af5d9f"
+    muted
+    width="100%"
+    height="100%"
+    controls
+    config={{
+      vimeo: {
+        transparent: false,
+      },
+    }}
+  />
+</div>
+
+Keadex Mina leverages the `$link` property supported by the [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML/) syntax to define links between a diagram element and a diagram or external services.
+
+The `$link` property consists of one or more links separated by a semicolon (`;`).
+
+### Types of links
+
+Each link can be one of the following:
+
+- **Internal**: Internal links follow the format `DIAGRAM_TYPE/DIAGRAM_NAME`, where `DIAGRAM_TYPE` and `DIAGRAM_NAME` represent the type and name of the linked diagram, both in lower and dash-case. **Only one internal link is allowed**.
+- **External**: Only `http` and `https` links are permitted. You can also create **dynamic external links** by including variables that Mina substitutes at runtime. For instance, in the link `https://keadex.dev/<ALIAS>`, the `<ALIAS>` variable is replaced at runtime with the alias of the diagram element. To see the full list of available variables, refer to [this document](../../c4-model-ui-kit/api/c4-model-ui-kit.diagramexternallinkvariables.md). **Multiple external links are allowed**.
+
+### Allowed links
+
+It is possible to add links only to the following C4 element types:
+
+- Software Systems
+- Containers
+- Components
+
+### Creating links
+
+1. Place the cursor at the line of the code editor containing the element to link
+2. You have two options:
+   1. Right mouse click -> _"Link to..."_
+   2. Click on the icon <FontAwesomeIcon icon={faLink} className="inline w-4 mx-2" />
+3. Fill in the link fields
+4. Click on the _"Confirm"_ button
+5. Mina will add for you the `$link` property with the auto-generated value
+6. Save the diagram
+
+### Updating/Deleting links
+
+1. Place the cursor at the line of the code editor containing the element to link
+2. You have two options:
+   1. Right mouse click -> _"Link to..."_
+   2. Click on the icon <FontAwesomeIcon icon={faLink} className="inline w-4 mx-2" />
+3. Update or remove the links:
+   1. Clear the diagram link field and select _"Unlink..."_ to remove the diagram link.
+   2. Delete any external links you wish to remove.
+4. Click on the _"Confirm"_ button
+5. Mina will remove for you the `$link` property
+6. Save the diagram

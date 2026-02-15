@@ -22,8 +22,6 @@ Specifically, this library provides a React component that allows you to embed K
 
 ## Usage with React
 
-For a working example, please visit [this folder](https://github.com/keadex/keadex/tree/main/examples/mina-live-cra-example).
-
 ### Install
 
 ```shell
@@ -139,11 +137,11 @@ const nextConfig: NextConfig = {
 export default withMinaLive()(nextConfig);
 ```
 
-### Configure the Next.js Middleware
+### Configure the Next.js Proxy
 
-To enable Mina Live to load all required assets, you need to configure the Next.js middleware by including the middleware provided by the Mina Live package.
+To enable Mina Live to load all required assets, you need to configure the Next.js proxy by including the proxy provided by the Mina Live package.
 
-`src\middleware.ts`
+`src\proxy.ts`
 
 ```TS
 import { NextResponse, NextRequest } from "next/server";
@@ -153,7 +151,7 @@ export const config = {
   matcher: ["/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js).*)"],
 };
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const minaMiddlewareResponse = minaMiddleware(req);
   if (minaMiddlewareResponse) {
     return minaMiddlewareResponse;

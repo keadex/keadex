@@ -35,7 +35,8 @@
         "namedChunks": false,
         "extractLicenses": true,
         "vendorChunk": false,
-        "externalDependencies": "all"
+        "externalDependencies": "all",
+        "postcssConfig": "libs/mina-live/postcss.config.js"
       },
       "dependsOn": ["build-wasm"]
     },
@@ -64,8 +65,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/mina-live/**/*.{ts,tsx,js,jsx}"],
-        "ignorePath": "libs/mina-live/.eslintignore"
+        "lintFilePatterns": ["libs/mina-live/**/*.{ts,tsx,js,jsx}"]
       }
     }
   }

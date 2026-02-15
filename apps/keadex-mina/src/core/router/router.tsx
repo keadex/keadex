@@ -181,16 +181,18 @@ export function useDeepLinkRouter() {
             }
             break
           case GH_AUTHENTICATED_DEEP_LINK:
-            const ghAuthenticatedParams = deepLinkParams.split('/')
-            if (ghAuthenticatedParams.length != 1) {
-              toast.error(
-                t('deep_link.invalid_gh_authenticated_path', { deepLink }),
-              )
-            } else {
-              context?.emit({
-                type: AppEventType.GitHubTokenChanged,
-                data: { token: ghAuthenticatedParams[0] },
-              })
+            {
+              const ghAuthenticatedParams = deepLinkParams.split('/')
+              if (ghAuthenticatedParams.length != 1) {
+                toast.error(
+                  t('deep_link.invalid_gh_authenticated_path', { deepLink }),
+                )
+              } else {
+                context?.emit({
+                  type: AppEventType.GitHubTokenChanged,
+                  data: { token: ghAuthenticatedParams[0] },
+                })
+              }
             }
             break
           default:

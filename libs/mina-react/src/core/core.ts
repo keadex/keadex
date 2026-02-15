@@ -106,13 +106,13 @@ export async function openRemoteProjectDiagram(
       ghToken,
     )
     if (diagramData) {
-      let diagram = (await open_remote_diagram(
+      const diagram = (await open_remote_diagram(
         projectRootUrl,
         diagramUrl,
         diagramData.plantuml,
         diagramData.spec,
       )) as Diagram
-      let diagramsThemeSettings = (
+      const diagramsThemeSettings = (
         JSON.parse(diagramData.projectSettingsJson) as ProjectSettings
       ).themes_settings?.diagrams_theme_settings
       return { diagram, diagramsThemeSettings }

@@ -1,0 +1,40 @@
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import dynamic from 'next/dynamic'
+
+import { PlayerClient } from '../../../components/client-wrappers'
+
+# Low-Coding
+
+_Diagrams-as-code_ is great, but your team might not be familiar with the [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML/) syntax and may not be **productive** right away.
+
+Or your team might not be composed entirely of people with **coding skills**. Nevertheless, you may want to enable the **entire team** to contribute to describing the architectures with C4 model diagrams, without sacrificing the advantages of _diagrams-as-code_.
+
+To overcome this hurdle, Keadex Mina provides a low-code features: you can create C4 diagram elements using just the UI, and Mina will **generate the PlantUML code** for you.
+
+## Usage
+
+<div className="w-full h-[30rem] my-14 border-0">
+  <PlayerClient
+    src="https://vimeo.com/1072366975/357ae9df0a"
+    muted
+    width="100%"
+    height="100%"
+    controls
+    config={{
+      vimeo: {
+        transparent: false,
+      },
+    }}
+  />
+</div>
+
+1. Open a diagram
+2. Place the cursor at the line of the code editor where you want to add the element
+3. You have two options:
+   1. Right mouse click -> _"Add a diagram element"_
+   2. Click on the icon <FontAwesomeIcon icon={faPlus} className="inline w-4 mx-2" /> in the toolbar of the editor
+4. Select the C4 type of the element you want to create from the opened menu
+5. Fill the form with the required data
+6. Click on the _save_ button
+7. The dialog will close, and the generated PlantUML code will be added in the code editor

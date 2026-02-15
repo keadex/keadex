@@ -1,7 +1,9 @@
 import { DiagramType } from '@keadex/c4-model-ui-kit'
 import { Autocomplete } from '@keadex/keadex-ui-kit/cross'
-import React, { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { twMerge } from 'tailwind-merge'
+
 import { diagramToLinkString, listDiagrams } from '../../core/tauri-rust-bridge'
 
 export interface DiagramPickerProps {
@@ -12,7 +14,7 @@ export interface DiagramPickerProps {
   className?: string
 }
 
-export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
+export const DiagramPicker = memo((props: DiagramPickerProps) => {
   let { limit } = props
 
   if (limit === undefined) {
@@ -22,28 +24,6 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
   const { t } = useTranslation()
   const [options, setOptions] = useState([{ label: '', value: '' }])
   const [diagrams, setDiagrams] = useState<string[]>()
-
-  useEffect(() => {
-    listDiagrams().then(async (diagrams) => {
-      let diagramStrings: string[] = []
-      for (const key in diagrams) {
-        const typedKey = key as DiagramType
-        diagramStrings = diagramStrings.concat(
-          await Promise.all(
-            diagrams[typedKey].map(async (diagramName) => {
-              return await diagramToLinkString(diagramName, typedKey)
-            }),
-          ),
-        )
-      }
-      setDiagrams(diagramStrings)
-      handleOnTyping(
-        !props.value || props.value === '',
-        props.value ?? '',
-        diagramStrings,
-      )
-    })
-  }, [])
 
   function handleOnTyping(
     addDefaultOption: boolean,
@@ -86,6 +66,28 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
     setOptions(options)
   }
 
+  useEffect(() => {
+    listDiagrams().then(async (diagrams) => {
+      let diagramStrings: string[] = []
+      for (const key in diagrams) {
+        const typedKey = key as DiagramType
+        diagramStrings = diagramStrings.concat(
+          await Promise.all(
+            diagrams[typedKey].map(async (diagramName) => {
+              return await diagramToLinkString(diagramName, typedKey)
+            }),
+          ),
+        )
+      }
+      setDiagrams(diagramStrings)
+      handleOnTyping(
+        !props.value || props.value === '',
+        props.value ?? '',
+        diagramStrings,
+      )
+    })
+  }, [])
+
   function handleOnDiagramSelected(selectedDiagram: string) {
     if (diagrams && diagrams.includes(selectedDiagram)) {
       props.onDiagramSelected(selectedDiagram)
@@ -99,7 +101,7 @@ export const DiagramPicker = React.memo((props: DiagramPickerProps) => {
       disabled={props.disabled}
       id="diagram-picker"
       label={`${t('common.action.link_existing_diagram')}`}
-      className={`${props.className ?? ''} mt-6`}
+      className={twMerge(props.className ?? '', `mt-6`)}
       value={props.value}
       options={options}
       onTyping={(value) => {

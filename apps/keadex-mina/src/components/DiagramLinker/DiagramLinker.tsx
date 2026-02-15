@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DiagramPicker from '../DiagramPicker/DiagramPicker'
+import { twMerge } from 'tailwind-merge'
 
 export type DiagramLinkerProps = {
   className?: string
@@ -91,11 +92,14 @@ export const DiagramLinker = (props: DiagramLinkerProps) => {
   return (
     <div>
       {/* Modal Body */}
-      <div className={`modal__body ${className ?? ''}`}>
+      <div className={twMerge(`modal__body`, className ?? '')}>
         <div className={`flex flex-col`}>
           <DiagramPicker
             disabled={disabled}
-            className={`!mb-0 !mt-4 !p-0 ${diagramPickerClassName ?? ''}`}
+            className={twMerge(
+              `mb-0! mt-4! p-0!`,
+              diagramPickerClassName ?? '',
+            )}
             value={internalLink}
             onDiagramSelected={onInternalLinkChanged}
           />

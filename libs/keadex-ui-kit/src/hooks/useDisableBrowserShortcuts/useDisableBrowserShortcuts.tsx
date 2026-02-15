@@ -1,3 +1,5 @@
+'use client'
+
 import { Keys, useHotkeys } from 'react-hotkeys-hook'
 import { Key } from 'ts-key-enum'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@keadex/keadex-ui-kit/cross'
+import { Button } from '@keadex/keadex-ui-kit/components/cross/Button/Button'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { PropsWithChildren } from 'react'

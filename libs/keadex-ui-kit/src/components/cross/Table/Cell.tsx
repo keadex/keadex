@@ -5,6 +5,7 @@ import {
   faChevronDown,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons'
+import { twMerge } from 'tailwind-merge'
 
 export interface CellProps<T> extends CellContext<T, unknown> {
   disableExpandControls?: boolean
@@ -26,7 +27,10 @@ export const Cell = <T extends TableData<T>>(props: CellProps<T>) => {
 
   return (
     <div
-      className={`p-2 ${!row.getCanExpand() ? `${className ?? ''}` : 'pt-5'}`}
+      className={twMerge(
+        `p-2`,
+        !row.getCanExpand() ? `${className ?? ''}` : 'pt-5',
+      )}
       style={style}
     >
       {/* {`${row.depth} ${row.getCanExpand()}`} */}

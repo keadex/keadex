@@ -7,46 +7,66 @@
   "version": "1.0.0",
   "exports": {
     "./src/styles/base.css": "./src/styles/base.css",
-    "./src/components/": "./src/components/",
-    "./tailwind.config": "./tailwind.config.js",
-    "./components/": "./src/components/",
+    "./src/styles/twconfig.css": "./src/styles/shared-twconfig.css",
+    "./src/components/*": {
+      "types": "./src/components/*.ts",
+      "import": "./src/components/*.tsx",
+      "default": "./src/components/*",
+      "style": "./src/components/*.css"
+    },
+    "./components/*": {
+      "types": "./src/components/*.ts",
+      "import": "./src/components/*.tsx",
+      "default": "./src/components/*",
+      "style": "./src/components/*.css"
+    },
+    "./hooks/*": {
+      "types": "./src/hooks/*.ts",
+      "import": "./src/hooks/*.tsx",
+      "default": "./src/hooks/*"
+    },
+    "./components/cross/Canvas/KeadexCanvas": "./src/components/cross/Canvas/KeadexCanvas.ts",
     "./cross": "./src/cross.ts",
     "./desktop": "./src/desktop.ts",
     "./web": "./src/web.ts",
-    "./core": "./src/core.ts"
+    "./core": "./src/core.ts",
+    "./common": "./src/common.ts"
   },
   "devDependencies": {
-    "@types/react": "^18.2.28",
-    "@types/react-color": "^3.0.12",
-    "@types/react-dom": "^18.2.13",
-    "@types/yaireo__tagify": "^4.18.0",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.33",
-    "postcss-import": "^15.1.0",
-    "tailwindcss": "^3.3.3"
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/react": "^19.2.9",
+    "@types/react-color": "^3.0.13",
+    "@types/react-dom": "^19.2.3",
+    "@types/yaireo__tagify": "^4.27.0",
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
+    "postcss-import": "^16.1.1",
+    "tailwindcss": "^4.1.18",
+    "tailwind-merge": "^3.4.0"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.4.2",
-    "@fortawesome/free-solid-svg-icons": "^6.4.2",
-    "@fortawesome/react-fontawesome": "^0.2.2",
-    "@tanstack/react-table": "^8.10.7",
-    "@types/react-html-parser": "^2.0.3",
-    "@yaireo/tagify": "^4.24.0",
-    "ahooks": "^3.7.8",
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.1",
+    "@tanstack/react-table": "^8.21.3",
+    "@types/react-html-parser": "^2.0.7",
+    "@yaireo/tagify": "^4.36.0",
+    "ahooks": "^3.9.6",
     "fabric": "^5.5.2",
-    "i18next": "^23.5.1",
-    "react": "^18.2.0",
+    "i18next": "^25.8.0",
+    "react": "^19.2.3",
     "react-color": "^2.19.3",
-    "react-dom": "^18.2.0",
+    "react-dom": "^19.2.3",
     "react-ga4": "^2.1.0",
-    "react-hotkeys-hook": "^4.4.1",
+    "react-hotkeys-hook": "^5.2.3",
     "react-html-parser": "^2.0.2",
-    "react-i18next": "^15.4.0",
-    "react-toastify": "^11.0.3",
+    "react-i18next": "^16.5.3",
+    "react-player": "^3.4.0",
+    "react-toastify": "^11.0.5",
     "ts-key-enum": "^2.0.12",
     "tw-elements": "1.0.0"
   },
   "peerDependencies": {
-    "react-router-dom": "^6.28.0"
+    "react-router-dom": "^7.13.0"
   }
 }

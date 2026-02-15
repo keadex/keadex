@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next'
 import { Tooltip } from 'tw-elements'
 import { DiagramCodeViewCommands } from '../../views/DiagramEditor/DiagramCodeView/DiagramCodeView'
 import { ENV_SETTINGS } from '../../core/env-settings'
+import { twMerge } from 'tailwind-merge'
 
 export interface DiagramCodeViewToolbarProps {
   diagramCodeViewCommands: DiagramCodeViewCommands | null
@@ -83,7 +84,9 @@ export const DiagramCodeViewToolbar = forwardRef(
         {
           id: 'dropdown-add-diagram-element',
           label: (
-            <div className={`${styleButton} ${styleDropdownButton} text-base`}>
+            <div
+              className={twMerge(styleButton, styleDropdownButton, `text-base`)}
+            >
               <FontAwesomeIcon
                 icon={faPlus}
                 data-te-toggle="tooltip"
@@ -115,7 +118,7 @@ export const DiagramCodeViewToolbar = forwardRef(
         {
           id: 'dropdown-library',
           label: (
-            <div className={`${styleButton} ${styleDropdownButton}`}>
+            <div className={twMerge(styleButton, styleDropdownButton)}>
               <FontAwesomeIcon
                 icon={faBook}
                 data-te-toggle="tooltip"
@@ -146,7 +149,7 @@ export const DiagramCodeViewToolbar = forwardRef(
     return (
       <div id="diagram-code-view-toolbar" className="w-full z-[6]">
         <div className="p-3">
-          <div className="bg-primary flex w-full flex-1 rounded text-sm drop-shadow-md">
+          <div className="bg-primary flex w-full flex-1 rounded-sm text-sm drop-shadow-md">
             <IconButton
               disabled={diagramCodeViewCommands?.canUndo() === false}
               icon={faRotateLeft}

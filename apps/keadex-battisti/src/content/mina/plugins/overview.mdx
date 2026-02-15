@@ -1,0 +1,29 @@
+import dynamic from 'next/dynamic'
+
+import { PlayerClient } from '../../../components/client-wrappers'
+
+# Overview
+
+Keadex provides various **libraries and extensions** to include diagrams created with Mina within the most common documentation platforms.
+
+<div className="relative h-auto w-[30rem] max-w-full mx-auto mt-8">
+  <PlayerClient
+    src="https://vimeo.com/1070865333/a5d92e513f"
+    playing
+    muted
+    loop
+    width="100%"
+    height="100%"
+    config={{
+      vimeo: {
+        responsive: true,
+      },
+    }}
+  />
+</div>
+
+By using these packages:
+
+- You can include the diagrams using their **URL**, without the need to export them.
+- As a result your documentation will always render the **most updated diagram** based on your versioning system, without the need for constant manual updates.
+- The diagrams will be **interactive**, allowing navigation across various connected architectural diagrams.

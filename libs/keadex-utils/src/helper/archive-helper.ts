@@ -15,7 +15,7 @@ export async function extractToOPFS(
       // Create directory
       const parts = path.split('/').filter(Boolean) // remove empty parts
       if (parts.length > 0) {
-        let dir = await ensureDir(root, parts)
+        const dir = await ensureDir(root, parts)
         if (!rootZip) {
           rootZip = dir
         }
@@ -27,7 +27,7 @@ export async function extractToOPFS(
       const parentDir = parts.length > 0 ? await ensureDir(root, parts) : root
 
       // Extract file content
-      const content = await entry.async('uint8array')
+      const content = await entry.async('blob')
 
       // Write file
       const handle = await parentDir.getFileHandle(fileName, { create: true })

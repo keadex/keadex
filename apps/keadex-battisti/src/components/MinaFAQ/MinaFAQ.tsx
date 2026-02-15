@@ -1,7 +1,9 @@
 'use client'
 
-import './MinaFAQ.css'
-import { AccordionProps, type AccordionItem } from '@keadex/keadex-ui-kit/cross'
+import {
+  AccordionProps,
+  type AccordionItem,
+} from '@keadex/keadex-ui-kit/components/cross/Accordion/Accordion'
 import dynamic from 'next/dynamic'
 import { PropsWithChildren } from 'react'
 import { Trans } from 'react-i18next'

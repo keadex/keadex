@@ -1,17 +1,12 @@
 import { faFaceFrownOpen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button } from '@keadex/keadex-ui-kit/cross'
-import React from 'react'
+import { memo } from 'react'
+import { FallbackProps } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
 
-export const ErrorFallback = React.memo(
-  ({
-    error,
-    resetErrorBoundary,
-  }: {
-    error: Error
-    resetErrorBoundary: () => void
-  }) => {
+export const ErrorFallback = memo(
+  ({ error, resetErrorBoundary }: FallbackProps) => {
     const { t } = useTranslation()
     return (
       <div
@@ -32,7 +27,7 @@ export const ErrorFallback = React.memo(
         </div>
         <Button
           onClick={() => {
-            location.reload()
+            window.location.reload()
           }}
           className="w-52 mt-16 mx-auto"
         >

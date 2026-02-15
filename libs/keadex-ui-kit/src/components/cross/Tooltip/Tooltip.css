@@ -1,3 +1,5 @@
-.tooltip-inner {
-  @apply !max-w-2xl;
+@layer components {
+  .tooltip-inner {
+    @apply !max-w-2xl;
+  }
 }

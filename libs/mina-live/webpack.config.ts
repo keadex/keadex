@@ -5,15 +5,12 @@ import { join, resolve } from 'path'
 import {
   Configuration,
   DefinePlugin,
-  WebpackPluginInstance,
   optimize,
+  WebpackPluginInstance,
 } from 'webpack'
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const CopyPlugin = require('copy-webpack-plugin')
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const nodeExternals = require('webpack-node-externals')
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path')
 
 const withNoNxSensitiveVars = () => (config: Configuration) => {
@@ -29,6 +26,12 @@ const withNoNxSensitiveVars = () => (config: Configuration) => {
     const plugin = pluginSrc as WebpackPluginInstance | undefined
     if (!plugin?.definitions || !plugin.definitions['process.env']) {
       return plugin
+    }
+
+    if (typeof plugin.definitions['process.env'] === 'string') {
+      plugin.definitions['process.env'] = JSON.parse(
+        plugin.definitions['process.env'],
+      )
     }
 
     NX_VARS.forEach((nxVar) => {

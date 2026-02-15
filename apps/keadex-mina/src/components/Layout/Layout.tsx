@@ -10,11 +10,12 @@ import { Window, WindowTitlebar } from '@keadex/keadex-ui-kit/desktop'
 import { TauriEvent, UnlistenFn } from '@tauri-apps/api/event'
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import { onOpenUrl } from '@tauri-apps/plugin-deep-link'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import { memo, useContext, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { v4 as uuidv4 } from 'uuid'
+
 import AppEventContext from '../../context/AppEventContext'
 import { ENV_SETTINGS } from '../../core/env-settings'
 import { useDeepLinkRouter } from '../../core/router/router'
@@ -32,7 +33,7 @@ const emptyWindowTitlebarMenu: DropdownMenuProps = {
   menuItemsProps: [],
 }
 
-export const Layout = React.memo((props: LayoutProps) => {
+export const Layout = memo((props: LayoutProps) => {
   const location = useLocation()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -169,8 +170,8 @@ export const Layout = React.memo((props: LayoutProps) => {
           title={
             <div>
               <div className="inline opacity-20">Keadex Mina</div>
-              <div className="inline ml-1 px-1 py-[0.10rem] bg-primary text-brand1 rounded text-sm">
-                v2
+              <div className="inline ml-1 px-1 py-[0.10rem] bg-primary text-brand1 rounded-sm text-sm">
+                v3
               </div>
             </div>
           }

@@ -4,8 +4,8 @@ import {
   faPlus,
 } from '@fortawesome/free-solid-svg-icons'
 import {
-  IconButton,
   faRemoteFolderOpen,
+  IconButton,
   useModal,
   useSafeExit,
 } from '@keadex/keadex-ui-kit/cross'
@@ -13,10 +13,12 @@ import { isWebFsSupported } from '@keadex/keadex-utils'
 import { path } from '@tauri-apps/api'
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import * as dialog from '@tauri-apps/plugin-dialog'
-import React, { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { twMerge } from 'tailwind-merge'
+
 import ModalCreateProject from '../../components/ModalCreateProject/ModalCreateProject'
 import { ENV_SETTINGS } from '../../core/env-settings'
 import { openExternalDiagram } from '../../core/router/router'
@@ -35,7 +37,7 @@ const appWindow = getCurrentWebviewWindow()
 /* eslint-disable-next-line */
 export interface HomeProps {}
 
-export const Home = React.memo((props: HomeProps) => {
+export const Home = memo((props: HomeProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -155,9 +157,10 @@ export const Home = React.memo((props: HomeProps) => {
 
   return (
     <div
-      className={`relative flex h-full w-full flex-col justify-center ${
-        isHovering ? 'border-brand1 border-solid border-4' : ''
-      }`}
+      className={twMerge(
+        `relative flex h-full w-full flex-col justify-center`,
+        isHovering ? 'border-brand1 border-solid border-4' : '',
+      )}
     >
       {modal}
       {modalSafeExit}

@@ -1,17 +1,19 @@
-.resizer {
-  @apply bg-accent-primary absolute right-0 top-0 h-full w-[2px] cursor-col-resize touch-none select-none;
-}
-
-.resizer.isResizing {
-  @apply bg-accent-third opacity-100;
-}
-
-@media (hover: hover) {
+@layer components {
   .resizer {
-    @apply opacity-0;
+    @apply bg-accent-primary absolute right-0 top-0 h-full w-[2px] cursor-col-resize touch-none select-none;
   }
 
-  *:hover > .resizer {
-    @apply opacity-100;
+  .resizer.isResizing {
+    @apply bg-accent-third opacity-100;
+  }
+
+  @media (hover: hover) {
+    .resizer {
+      @apply opacity-0;
+    }
+
+    *:hover > .resizer {
+      @apply opacity-100;
+    }
   }
 }

@@ -1,8 +1,10 @@
 'use client'
 
-import { Progress, Tags } from '@keadex/keadex-ui-kit/cross'
+import { Progress } from '@keadex/keadex-ui-kit/components/cross/Progress/Progress'
+import { Tags } from '@keadex/keadex-ui-kit/components/cross/Tags/Tags'
 import { Trans } from 'react-i18next'
 import { useTranslation } from '../../app/i18n/client'
+import type { JSX } from 'react'
 
 export type AboutMeSkill = {
   percentage: string
@@ -32,7 +34,7 @@ export const AboutMeItem = ({
     <div className="w-full">
       <div className="flex flex-col md:flex-row">
         <h3 className="text-brand1">{role}</h3>
-        <div className="flex-grow my-2 md:mt-0">
+        <div className="grow my-2 md:mt-0">
           <Tags
             tags={areas}
             className="float-none top-0 translate-y-0 md:float-right md:top-1/2 md:-translate-y-1/2"

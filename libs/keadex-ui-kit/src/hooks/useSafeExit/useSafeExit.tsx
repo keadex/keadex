@@ -1,3 +1,5 @@
+'use client'
+
 import { Routes } from '@keadex/keadex-ui-kit/core'
 import { useModal } from '@keadex/keadex-ui-kit/cross'
 import { useTranslation } from 'react-i18next'

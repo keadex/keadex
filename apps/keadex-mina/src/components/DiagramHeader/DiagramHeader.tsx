@@ -1,6 +1,7 @@
 import { Diagram, diagramTypeHumanName } from '@keadex/c4-model-ui-kit'
 import { Tags } from '@keadex/keadex-ui-kit/cross'
-import React from 'react'
+import { memo } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export interface DiagramHeaderProps {
   tagsDirection: 'right' | 'bottom'
@@ -9,7 +10,7 @@ export interface DiagramHeaderProps {
   handleDiagramHeaderClick?: () => void
 }
 
-export const DiagramHeader = React.memo((props: DiagramHeaderProps) => {
+export const DiagramHeader = memo((props: DiagramHeaderProps) => {
   const { tagsDirection, scrollable, diagram, handleDiagramHeaderClick } = props
 
   function handleClick() {
@@ -19,15 +20,17 @@ export const DiagramHeader = React.memo((props: DiagramHeaderProps) => {
   return (
     diagram?.diagram_type && (
       <div
-        className={`w-full flex flex-col items-center py-1 pr-3 ${
-          handleDiagramHeaderClick ? 'cursor-pointer' : ''
-        }`}
+        className={twMerge(
+          `w-full text-left flex flex-col items-center py-1 pr-3`,
+          handleDiagramHeaderClick ? 'cursor-pointer' : '',
+        )}
         onClick={handleClick}
       >
         <div
-          className={`flex w-full my-auto ${
-            tagsDirection === 'bottom' ? 'flex-col' : ''
-          }`}
+          className={twMerge(
+            `flex w-full my-auto`,
+            tagsDirection === 'bottom' ? 'flex-col' : '',
+          )}
         >
           <div className="text-lg text-accent-primary grow truncate">
             {/* Cannot use i18next translation here, since this component will be available 
@@ -50,9 +53,10 @@ export const DiagramHeader = React.memo((props: DiagramHeaderProps) => {
         </div>
         {diagram.diagram_spec?.description && (
           <div
-            className={`w-full text-sm whitespace-break-spaces ${
-              scrollable ? '' : 'line-clamp-3'
-            }`}
+            className={twMerge(
+              `w-full text-sm text-accent-secondary whitespace-break-spaces`,
+              scrollable ? '' : 'line-clamp-3',
+            )}
           >
             {diagram.diagram_spec?.description}
           </div>

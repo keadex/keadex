@@ -1,33 +1,35 @@
 import {
-  C4ElementType,
   C4_ELEMENTS_TYPES,
+  C4ElementType,
+  c4ElementTypeHumanName,
   Component,
   Container,
   DiagramElementType,
   Person,
   SoftwareSystem,
-  c4ElementTypeHumanName,
 } from '@keadex/c4-model-ui-kit'
-import React, { useState } from 'react'
+import { renderButtons, Select, TableData } from '@keadex/keadex-ui-kit/cross'
+import pluralize from 'pluralize'
+import type { MouseEvent } from 'react'
+import { memo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import LibraryElement, {
   ElementData,
 } from '../../views/LibraryElement/LibraryElement'
-import { Select, TableData, renderButtons } from '@keadex/keadex-ui-kit/cross'
-import { useTranslation } from 'react-i18next'
-import pluralize from 'pluralize'
 
 export interface ModalImportLibraryElementProps {
   onLibraryElementSelected: (libraryElement: DiagramElementType) => void
   hideModal: () => void
 }
 
-export const ModalImportLibraryElement = React.memo(
+export const ModalImportLibraryElement = memo(
   (props: ModalImportLibraryElementProps) => {
     const { t } = useTranslation()
     const [c4ElementType, setC4ElementType] = useState<C4ElementType>('Person')
 
     function handleRowClick(
-      e: React.MouseEvent<HTMLTableCellElement>,
+      e: MouseEvent<HTMLTableCellElement>,
       data: TableData<ElementData>,
     ) {
       const { menu, ...libraryElementData } = data

@@ -21,10 +21,7 @@ type AppDetails = {
   kernelVersion?: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ModalAboutProps {}
-
-export const ModalAbout = (props: ModalAboutProps) => {
+export const ModalAbout = () => {
   const { t } = useTranslation()
   const [appDetails, setAppDetails] = useState<AppDetails | undefined>()
 

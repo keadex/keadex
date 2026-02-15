@@ -1,11 +1,12 @@
 'use client'
 
-import { PropsWithChildren } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { PropsWithChildren } from 'react'
+import { Trans } from 'react-i18next'
+
 import keadexLogo from '../../../public/img/keadex-logo.png'
 import { useTranslation } from '../../app/i18n/client'
-import { Trans } from 'react-i18next'
-import Link from 'next/link'
 import ROUTES, { PRIVACY_POLICY, TERMS_AND_CONDITIONS } from '../../core/routes'
 
 export type FooterProps = {

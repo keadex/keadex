@@ -1,11 +1,16 @@
 'use client'
 
+import { PlayerProps } from '@keadex/keadex-ui-kit/components/cross/Player/Player'
+import dynamic from 'next/dynamic'
 import { PropsWithChildren } from 'react'
 import { Trans } from 'react-i18next'
-import { useTranslation } from '../../app/i18n/client'
-import dynamic from 'next/dynamic'
 
-const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
+import { useTranslation } from '../../app/i18n/client'
+
+const Player = dynamic<PlayerProps>(
+  () => import('@keadex/keadex-ui-kit/components/cross/Player/Player'),
+  { ssr: false },
+)
 
 export type MinaProjectStructureProps = {
   lang: string
@@ -43,8 +48,8 @@ export default function MinaProjectStructure({
         </div>
         <div className="flex flex-col w-full md:w-1/2 pl-0 md:pl-10 mt-10 md:mt-0">
           <div className="my-auto">
-            <ReactPlayer
-              url="https://vimeo.com/1070152500/8b11627a96"
+            <Player
+              src="https://player.vimeo.com/video/1070152500?h=8b11627a96"
               playing
               muted
               loop
@@ -52,9 +57,7 @@ export default function MinaProjectStructure({
               height="100%"
               config={{
                 vimeo: {
-                  playerOptions: {
-                    responsive: true,
-                  },
+                  responsive: true,
                 },
               }}
             />

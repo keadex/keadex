@@ -9,8 +9,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/keadex-utils/**/*.{ts,tsx,js,jsx}"],
-        "ignorePath": "libs/keadex-utils/.eslintignore"
+        "lintFilePatterns": ["libs/keadex-utils/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "test": {

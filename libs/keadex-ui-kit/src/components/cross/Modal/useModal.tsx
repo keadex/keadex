@@ -1,3 +1,5 @@
+'use client'
+
 import { ReactPortal, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Modal, { ModalCommands, ModalProps } from './Modal'
@@ -26,8 +28,8 @@ export function useModal(): ModalAPI {
               setModal(undefined)
             }}
           />,
-          modalRoot
-        )
+          modalRoot,
+        ),
       )
       setVisible(true)
     }

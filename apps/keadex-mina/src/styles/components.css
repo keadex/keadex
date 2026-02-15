@@ -1,5 +1,8 @@
 @import '../components/AppMenu/AppMenu.css';
 @import '../components/AppMenu/Panels/SearchPanel/SearchPanel.css';
+@import '../views/DiagramEditor/DiagramEditor.css';
+@import '../views/HomeProject/HomeProject.css';
+@import '../views/ProjectSettings/ProjectSettings.css';
 @import 'react-resizable/css/styles.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/Table/Table.css';
 @import '@keadex/keadex-ui-kit/src/components/cross/Button/Button.css';

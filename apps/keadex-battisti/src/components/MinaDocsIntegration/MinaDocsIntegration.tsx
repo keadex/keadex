@@ -2,13 +2,18 @@
 
 import { faConfluence, faNpm } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button } from '@keadex/keadex-ui-kit/cross'
+import { Button } from '@keadex/keadex-ui-kit/components/cross/Button/Button'
+import { PlayerProps } from '@keadex/keadex-ui-kit/components/cross/Player/Player'
+import dynamic from 'next/dynamic'
 import { PropsWithChildren } from 'react'
 import { Trans } from 'react-i18next'
-import { useTranslation } from '../../app/i18n/client'
-import dynamic from 'next/dynamic'
 
-const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
+import { useTranslation } from '../../app/i18n/client'
+
+const Player = dynamic<PlayerProps>(
+  () => import('@keadex/keadex-ui-kit/components/cross/Player/Player'),
+  { ssr: false },
+)
 
 export type MinaDocsIntegrationProps = {
   lang: string
@@ -25,8 +30,8 @@ export default function MinaDocsIntegration({
       <div className="flex flex-col md:flex-row my-auto">
         <div className="w-full md:w-1/2 flex flex-col">
           <div className="my-auto">
-            <ReactPlayer
-              url="https://vimeo.com/1070865346/3f55044e95"
+            <Player
+              src="https://player.vimeo.com/video/1070865346?h=3f55044e95"
               playing
               muted
               loop
@@ -34,9 +39,7 @@ export default function MinaDocsIntegration({
               height="100%"
               config={{
                 vimeo: {
-                  playerOptions: {
-                    responsive: true,
-                  },
+                  responsive: true,
                 },
               }}
             />

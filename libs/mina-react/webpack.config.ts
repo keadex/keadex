@@ -2,16 +2,18 @@ import { withReact } from '@nx/react'
 import { composePlugins, withNx } from '@nx/webpack'
 import { readFileSync } from 'fs'
 import { join } from 'path'
-import { Configuration, optimize, DefinePlugin } from 'webpack'
+import {
+  Configuration,
+  DefinePlugin,
+  optimize,
+  WebpackPluginInstance,
+} from 'webpack'
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const CopyPlugin = require('copy-webpack-plugin')
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const nodeExternals = require('webpack-node-externals')
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path')
 
-export const withNoNxSensitiveVars = () => (config) => {
+export const withNoNxSensitiveVars = () => (config: Configuration) => {
   const NX_VARS = [
     'NX_TASK_HASH',
     'NX_TASK_TARGET_PROJECT',
@@ -20,9 +22,16 @@ export const withNoNxSensitiveVars = () => (config) => {
     'NX_WORKSPACE_ROOT',
     'NX_CLOUD_ACCESS_TOKEN',
   ]
-  config.plugins = config.plugins.map((plugin) => {
-    if (!plugin.definitions || !plugin.definitions['process.env']) {
+  config.plugins = config.plugins?.map((pluginSrc) => {
+    const plugin = pluginSrc as WebpackPluginInstance | undefined
+    if (!plugin?.definitions || !plugin.definitions['process.env']) {
       return plugin
+    }
+
+    if (typeof plugin.definitions['process.env'] === 'string') {
+      plugin.definitions['process.env'] = JSON.parse(
+        plugin.definitions['process.env'],
+      )
     }
 
     NX_VARS.forEach((nxVar) => {
@@ -39,7 +48,7 @@ export const withNoNxSensitiveVars = () => (config) => {
   return config
 }
 
-export const withWebConfig = () => (defaultconfig) => {
+export const withWebConfig = () => (defaultconfig: Configuration) => {
   const config: Configuration = {
     entry: path.resolve(__dirname, 'index.ts'),
     output: {

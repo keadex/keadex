@@ -17,8 +17,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/c4-model-ui-kit/**/*.{ts,tsx,js,jsx}"],
-        "ignorePath": "libs/c4-model-ui-kit/.eslintignore"
+        "lintFilePatterns": ["libs/c4-model-ui-kit/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "test": {
@@ -32,7 +31,7 @@
     "generate-api-docs": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "nx generate @keadex/keadex-nx-plugin:api-docs-generator --project=libs/c4-model-ui-kit --outputPath=apps/keadex-battisti/src/pages/[lang]/docs/c4-model-ui-kit/api --entryMdFile=api.md"
+        "command": "nx generate @keadex/keadex-nx-plugin:api-docs-generator --project=libs/c4-model-ui-kit --outputPath=apps/keadex-battisti/src/content/c4-model-ui-kit/api --entryMdFile=api.md"
       },
       "dependsOn": ["build"]
     }

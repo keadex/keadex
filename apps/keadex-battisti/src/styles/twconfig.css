@@ -1,0 +1,7 @@
+@import '@keadex/keadex-ui-kit/src/styles/twconfig.css';
+
+@source '../../src/**/*.{js,ts,jsx,tsx,md,mdx,json}';
+@source '../../../../apps/keadex-mina/src/**/*.{ts,tsx,html}';
+@source '../../../../libs/keadex-ui-kit/src/**/*.{ts,tsx,html}';
+@source '../../../../libs/mina-react/src/**/*.{ts,tsx,html}';
+@source '../../../../node_modules/tw-elements/dist/js/**/*.js';

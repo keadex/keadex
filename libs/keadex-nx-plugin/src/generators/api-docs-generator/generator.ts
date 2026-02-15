@@ -8,7 +8,7 @@ import { execSync } from 'child_process'
 import { renameSync } from 'fs'
 import * as path from 'path'
 import { ApiDocsGeneratorSchema } from './schema'
-const replace = require('replace-in-file')
+import { replaceInFile } from 'replace-in-file'
 
 export async function apiDocsGenerator(
   tree: Tree,
@@ -98,7 +98,7 @@ async function replaceEntryMdFile(
     },
   }
   try {
-    const results = await replace.sync(replaceOptions)
+    const results = await replaceInFile(replaceOptions)
     console.log('Entry .md file replaced')
     return true
   } catch (error) {

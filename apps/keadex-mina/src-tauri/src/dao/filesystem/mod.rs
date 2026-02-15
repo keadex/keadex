@@ -91,7 +91,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + Sync>: DAO {
       }
       Entry::Vacant(_) => {
         let error = MinaError::new(IO_ERROR_CODE, NO_CACHED_FILE_ERROR_MSG);
-        log::error!("{}", error);
+        log::warn!("{}", error);
         // Commented the following line since it is not really required to trigger an error
         // Err(error)
         Ok(true)
@@ -142,7 +142,7 @@ pub trait FileSystemDAO<T: serde::Serialize + std::fmt::Debug + Sync>: DAO {
       }
       Entry::Vacant(_) => {
         let error = MinaError::new(IO_ERROR_CODE, NO_CACHED_FILE_ERROR_MSG);
-        log::error!("{}", error);
+        log::warn!("{}", error);
         // Commented the following line since it is not really required to trigger an error
         // Err(error)
         Ok(true)

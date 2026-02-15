@@ -13,6 +13,13 @@
       },
       "dependsOn": [{ "projects": ["mina-confluence-app"], "target": "build" }]
     },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/mina-confluence-plugin/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
     "nx-release-publish": {
       "executor": "nx:run-commands",
       "options": {

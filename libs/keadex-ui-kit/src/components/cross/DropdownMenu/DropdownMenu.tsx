@@ -1,14 +1,18 @@
+'use client'
+
+import type { JSX } from 'react'
+import { memo, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
+
 import { DropdownMenuItemProps } from './DropdownMenuItem'
 import DropdownMenuItem from './DropdownMenuItem'
-import { useState } from 'react'
-import React from 'react'
 
 export interface DropdownMenuProps {
   className?: string
   menuItemsProps: DropdownMenuItemProps[]
 }
 
-export const DropdownMenu = React.memo((props: DropdownMenuProps) => {
+export const DropdownMenu = memo((props: DropdownMenuProps) => {
   const [openedMenu, setOpenedMenu] = useState(0)
   const [lastOpenedMenu, setLastOpenedMenu] = useState('')
 
@@ -37,7 +41,7 @@ export const DropdownMenu = React.memo((props: DropdownMenuProps) => {
             atLeastOneOpenedMenu={atLeastOneOpenedMenu}
             lastOpenedMenu={lastOpenedMenu}
             setLastOpenedMenu={setLastOpenedMenu}
-          />
+          />,
         )
       }
     }
@@ -46,9 +50,11 @@ export const DropdownMenu = React.memo((props: DropdownMenuProps) => {
 
   return (
     <div
-      className={`dropdown-menu group flex ${
-        atLeastOneOpenedMenu() ? 'open' : ''
-      } ${props.className ?? ''}`}
+      className={twMerge(
+        `dropdown-menu group flex`,
+        atLeastOneOpenedMenu() ? 'open' : '',
+        props.className ?? '',
+      )}
     >
       {renderMenuItems()}
     </div>

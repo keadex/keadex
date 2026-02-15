@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+'use client'
+
+import { memo, useState } from 'react'
 import { ColorChangeHandler, ColorResult, SketchPicker } from 'react-color'
 import { useHotkeys } from 'react-hotkeys-hook'
+import { twMerge } from 'tailwind-merge'
 import { Key } from 'ts-key-enum'
 
 export type ColorPickerProps = {
@@ -9,7 +12,7 @@ export type ColorPickerProps = {
   onChange?: ColorChangeHandler
 }
 
-export const ColorPicker = React.memo(
+export const ColorPicker = memo(
   ({ color, className, onChange }: ColorPickerProps) => {
     const [isOpen, setIsOpen] = useState(false)
 
@@ -29,7 +32,7 @@ export const ColorPicker = React.memo(
     }
 
     return (
-      <div className={`color-picker ${className ?? ''}`}>
+      <div className={twMerge(`color-picker`, className ?? '')}>
         {isOpen && (
           <div
             className="absolute top-0 bottom-0 left-0 right-0"
@@ -37,7 +40,7 @@ export const ColorPicker = React.memo(
           />
         )}
         <div
-          className={`py-1 px-1 cursor-pointer bg-white w-fit h-fit rounded-sm`}
+          className={`py-1 px-1 cursor-pointer bg-white w-fit h-fit rounded-xs`}
           onClick={() => setIsOpen(!isOpen)}
         >
           <div className="w-7 h-3" style={{ backgroundColor: color }}></div>

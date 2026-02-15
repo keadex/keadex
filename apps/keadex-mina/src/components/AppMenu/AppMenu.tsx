@@ -5,10 +5,11 @@ import {
   faSitemap,
 } from '@fortawesome/free-solid-svg-icons'
 import { IconButton, useSafeExit } from '@keadex/keadex-ui-kit/cross'
-import React, {
+import type { JSX, SyntheticEvent } from 'react'
+import {
+  forwardRef,
   PropsWithChildren,
   Ref,
-  forwardRef,
   useContext,
   useEffect,
   useImperativeHandle,
@@ -16,7 +17,9 @@ import React, {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Resizable, ResizeCallbackData } from 'react-resizable'
+import { twMerge } from 'tailwind-merge'
 import { Tooltip } from 'tw-elements'
+
 import { faKeadexMina } from '../../assets/icons'
 import AppEventContext, { AppEventType } from '../../context/AppEventContext'
 import { openDependencyTable } from '../../core/router/router'
@@ -101,7 +104,7 @@ export const AppMenu = forwardRef(
     }
 
     const onSidenavPanelResize = (
-      e: React.SyntheticEvent,
+      e: SyntheticEvent,
       data: ResizeCallbackData,
     ) => {
       setSidenavPanelWidth(data.size.width)
@@ -117,9 +120,10 @@ export const AppMenu = forwardRef(
         renderedItems.push(
           <li
             key={appMenuItem.menuItem}
-            className={`relative ${
-              isMenuActive(appMenuItem.menuItem) ? 'active' : ''
-            }`}
+            className={twMerge(
+              `relative`,
+              isMenuActive(appMenuItem.menuItem) ? 'active' : '',
+            )}
             onClick={() => handleSlimTogglerClick(appMenuItem)}
             data-te-toggle="tooltip"
             data-te-placement="right"
@@ -160,14 +164,21 @@ export const AppMenu = forwardRef(
     }))
 
     return (
-      <div className={`h-full ${!visible ? 'app-menu__parent--hidden' : ''}`}>
+      <div
+        className={twMerge(
+          `h-full`,
+          !visible ? 'app-menu__parent--hidden' : '',
+        )}
+      >
         {modalSafeExit}
         {/* Sidenav */}
         <nav
           id="app-menu-sidenav"
-          className={`absolute h-full ${
-            !visible ? '!hidden' : ''
-          }  bg-dark-primary group fixed left-0 overflow-hidden shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)]`}
+          className={twMerge(
+            `absolute h-full`,
+            !visible ? 'hidden!' : '',
+            `bg-dark-primary group left-0 overflow-hidden shadow-[0_4px_12px_0_rgba(0,0,0,0.07),0_2px_4px_rgba(0,0,0,0.05)]`,
+          )}
         >
           <div className="flex h-full flex-row">
             <div
@@ -186,9 +197,10 @@ export const AppMenu = forwardRef(
             >
               <div
                 style={{ width: `${sidenavPanelWidth}px`, height: `${100}%` }}
-                className={`window__inner-border box border-b-0 border-l-0 border-t-0 ${
-                  isSlimCollapsed ? `hidden` : ``
-                }`}
+                className={twMerge(
+                  `window__inner-border box border-b-0 border-l-0 border-t-0`,
+                  isSlimCollapsed ? `hidden` : ``,
+                )}
               >
                 <div
                   className="h-full"

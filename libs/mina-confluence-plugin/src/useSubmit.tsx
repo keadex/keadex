@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
 import { view } from '@forge/bridge'
+import { useState } from 'react'
+
 import { MinaMacroConfig } from './Config'
 
 export const useSubmit = () => {

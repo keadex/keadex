@@ -48,7 +48,7 @@ export async function printDirectoryStructure(
     if (entry.kind === 'directory') {
       console.log(`${indent}📂 ${entry.name}`)
       // Recurse into subdirectory
-      await printDirectoryStructure(entry, indent + '  ')
+      await printDirectoryStructure(entry, `${indent}  `)
     } else if (entry.kind === 'file') {
       console.log(`${indent}📄 ${entry.name}`)
     }

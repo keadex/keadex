@@ -3,6 +3,7 @@ import { Input, renderButtons } from '@keadex/keadex-ui-kit/cross'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ModalCRULibraryElementProps } from '../ModalCRULibraryElements'
+import { twMerge } from 'tailwind-merge'
 
 const emptyAddElementTag: AddElementTag = {
   tag: '',
@@ -94,9 +95,10 @@ export const ModalCRUAddElementTag = (props: ModalCRULibraryElementProps) => {
           }
         />
         <span
-          className={`text-sm text-orange-500 mt-2 ${
-            missingRequiredFields() ? 'block' : 'hidden'
-          }`}
+          className={twMerge(
+            `text-sm text-orange-500 mt-2`,
+            missingRequiredFields() ? 'block' : 'hidden',
+          )}
         >
           * {t('common.info.fill_required_fields')}
         </span>

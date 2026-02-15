@@ -1,6 +1,9 @@
+'use client'
+
 import { objectsAreEqual } from '@keadex/keadex-utils'
 import Tagify from '@yaireo/tagify'
-import React, { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export interface TagsInputProps {
   id: string
@@ -11,7 +14,7 @@ export interface TagsInputProps {
   settings?: Tagify.TagifySettings<Tagify.TagData>
 }
 
-export const TagsInput = React.memo(
+export const TagsInput = memo(
   ({ id, tags, label, className, disabled, settings }: TagsInputProps) => {
     const [tagifiedInput, setTagifiedInput] = useState<Tagify | undefined>()
 
@@ -40,9 +43,9 @@ export const TagsInput = React.memo(
     }, [tagifiedInput, tags])
 
     return (
-      <div className={`relative ${className ?? ''}`}>
+      <div className={twMerge(`relative`, className ?? '')}>
         {label && (
-          <span className="input__label absolute left-3 top-0 mb-0 -translate-y-[1.1rem] scale-[0.9] pt-[0.37rem] leading-[1.6] drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] z-[1]">
+          <span className="input__label absolute left-3 top-0 mb-0 -translate-y-[1.1rem] scale-[0.9] pt-[0.37rem] leading-[1.6] drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] z-1">
             {label}
           </span>
         )}

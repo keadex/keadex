@@ -53,6 +53,7 @@ ROUTES[EDIT_DIAGRAM] = {
   path: EDIT_DIAGRAM,
   isAppMenuVisible: true,
   titlebarMenuFactory,
+  protectExit: true,
 }
 
 // ----- Library Paths

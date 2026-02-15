@@ -17,12 +17,10 @@ use crate::model::c4_element::software_system::{SoftwareSystem, SystemType};
 use crate::model::diagram::diagram_plantuml::{serialize_elements_to_plantuml, DiagramElementType};
 use crate::{core::app::ROOT_RESOLVER, error_handling::mina_error::MinaError, resolve_to_write};
 use async_openai_wasm::config::OpenAIConfig;
-use async_openai_wasm::types::{
+use async_openai_wasm::types::chat::{
   ChatCompletionRequestMessage, ChatCompletionRequestSystemMessage,
-  ChatCompletionRequestSystemMessageContent, CreateChatCompletionRequestArgs,
-};
-use async_openai_wasm::types::{
-  ChatCompletionRequestUserMessage, ChatCompletionRequestUserMessageContent,
+  ChatCompletionRequestSystemMessageContent, ChatCompletionRequestUserMessage,
+  ChatCompletionRequestUserMessageContent, CreateChatCompletionRequestArgs,
 };
 use async_openai_wasm::Client;
 use fancy_regex::Regex;
