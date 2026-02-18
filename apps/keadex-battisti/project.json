@@ -29,7 +29,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "yarn pagefind --site dist/apps/keadex-battisti/.next/server/app/en/docs --output-path apps/keadex-battisti/public/_pagefind"
+        "command": "yarn pagefind --site dist/apps/keadex-battisti/.next/server/app/en/docs --output-path dist/apps/keadex-battisti/public/_pagefind"
       },
       "dependsOn": ["clear", "build-code"]
     },

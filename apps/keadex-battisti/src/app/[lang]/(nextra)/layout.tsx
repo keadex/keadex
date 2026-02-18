@@ -1,5 +1,4 @@
 import '../../../styles/index.nextra.css'
-import './nextra.css'
 
 import { NewsBanner } from '@keadex/keadex-ui-kit/components/cross/NewsBanner/NewsBanner'
 import Image from 'next/image'
