@@ -31,6 +31,17 @@
           }
         ]
       }
+    },
+    "install-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "libs/mina-confluence-plugin",
+        "commands": [
+          {
+            "command": "forge install -e development -s keadex.atlassian.net --product confluence"
+          }
+        ]
+      }
     }
   }
 }

@@ -13,6 +13,7 @@
     "jsx": "react",
     "jsxFactory": "React.createElement",
     "jsxFragmentFactory": "React.Fragment",
-    "strict": true
+    "strict": true,
+    "types": []
   }
 }
