@@ -6,7 +6,7 @@ const { join } = require('path')
 
 module.exports = composePlugins(withNx(), withReact(), (config) => {
   config.experiments.asyncWebAssembly = true
-
+  config.output.clean = true
   config.plugins = [
     ...(config.plugins ?? []),
     new DefinePlugin({
@@ -21,6 +21,9 @@ module.exports = composePlugins(withNx(), withReact(), (config) => {
       },
     }),
   ]
-
+  config.optimization.minimizer[2].options.exclude = (resource) => {
+    // Following is required because Atlassian Forge is not compatible with Tailwind v4 and the optimization process strips out the CSS classes.
+    return /main/.test(resource)
+  }
   return config
 })
