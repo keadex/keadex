@@ -2,7 +2,7 @@
   "name": "@keadex/mina-confluence-plugin",
   "description": "Keadex Mina Confluence plugin.",
   "author": "Keadex <keadex.it@gmail.com>",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "main": "index.ts",
   "license": "MIT",
