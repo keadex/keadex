@@ -2618,7 +2618,7 @@ dependencies = [
 
 [[package]]
 name = "keadex_mina"
-version = "3.0.0"
+version = "3.0.1"
 dependencies = [
  "async-openai-wasm",
  "async-std",
@@ -2930,7 +2930,7 @@ dependencies = [
 
 [[package]]
 name = "mina-cli"
-version = "3.0.0"
+version = "3.0.1"
 dependencies = [
  "clap",
  "clap-markdown",
