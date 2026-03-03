@@ -1,5 +1,6 @@
 pub mod commands;
 pub mod constants;
+pub mod helpers;
 pub mod model;
 
 use crate::commands::search_and_replace::search_and_replace;
@@ -24,21 +25,9 @@ use commands::upsert_component::upsert_component;
 use commands::upsert_container::upsert_container;
 use commands::upsert_person::upsert_person;
 use commands::upsert_system::upsert_system;
-use keadex_mina::core::project_initializer::{load_project, unload_project};
+use helpers::mina_lifecycle_helper::{clear_keadex_mina, init_keadex_mina};
 use keadex_mina::core::serializer::serialize_obj_to_json_string;
-use keadex_mina::error_handling::mina_error::MinaError;
 use model::cli::{Cli, Commands};
-use std::path::PathBuf;
-
-async fn init_keadex_mina(project_path: &PathBuf) -> Result<(), MinaError> {
-  let _app = keadex_mina::core::app::App::new();
-  let _project = load_project(project_path.to_str().unwrap()).await?;
-  return Ok(());
-}
-
-async fn clear_keadex_mina(project_path: &PathBuf) {
-  let _ = unload_project(project_path.to_str().unwrap()).await;
-}
 
 #[tokio::main]
 async fn main() {
