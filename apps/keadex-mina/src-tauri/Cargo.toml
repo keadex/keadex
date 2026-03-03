@@ -83,6 +83,7 @@ async-trait = "0.1"
 futures = "0.3"
 chrono = "0.4"
 base64 = "0.22"
+schemars = "1"
 keadex_mina_macro = { path = "../src-macro" }
 tauri-plugin-http = { version = "2", optional = true }
 tauri-plugin-clipboard-manager = { version = "2", optional = true }
