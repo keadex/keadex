@@ -1,7 +1,12 @@
 [package]
 name = "mina-mcp-server"
-version = "0.1.0"
+description = "MCP Server for interacting with Mina projects."
+version = "3.0.1"
 edition = "2024"
+authors = ["Keadex"]
+license = "MIT"
+repository = "https://github.com/keadex/keadex"
+
 
 [dependencies]
 rmcp = { version = "0.3", features = ["server", "macros", "transport-io"] }

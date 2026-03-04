@@ -2975,7 +2975,7 @@ dependencies = [
 
 [[package]]
 name = "mina-mcp-server"
-version = "0.1.0"
+version = "3.0.1"
 dependencies = [
  "anyhow",
  "keadex_mina",
