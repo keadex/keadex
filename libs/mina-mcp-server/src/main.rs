@@ -1,10 +1,10 @@
 pub mod models;
+pub mod tools;
 
+use crate::tools::diagrams_tools::read_local_diagram_tool;
 use anyhow::Result;
 use keadex_mina::error_handling::mina_error::MinaError;
 use keadex_mina::model::diagram::Diagram;
-use keadex_mina::service::diagram_service::get_diagram;
-use mina_cli::helpers::mina_lifecycle_helper::{clear_keadex_mina, init_keadex_mina};
 use models::requests::read_local_diagram_request::ReadLocalDiagramRequest;
 use rmcp::{
   ServerHandler, ServiceExt,
@@ -12,7 +12,6 @@ use rmcp::{
   model::*,
   tool, tool_handler, tool_router,
 };
-use std::path::PathBuf;
 
 pub struct KeadexMina {
   tool_router: ToolRouter<KeadexMina>,
@@ -31,20 +30,9 @@ impl KeadexMina {
   )]
   async fn read_local_diagram(
     &self,
-    Parameters(ReadLocalDiagramRequest {
-      mina_project_path,
-      diagram_name,
-      diagram_type,
-    }): Parameters<ReadLocalDiagramRequest>,
+    Parameters(request): Parameters<ReadLocalDiagramRequest>,
   ) -> Result<Json<Diagram>, Json<MinaError>> {
-    init_keadex_mina(&PathBuf::from(&mina_project_path))
-      .await
-      .map_err(|e| Json(e))?;
-    let diagram = get_diagram(&diagram_name, diagram_type)
-      .await
-      .map_err(|e| Json(e))?;
-    clear_keadex_mina(&PathBuf::from(&mina_project_path)).await;
-    Ok(Json(diagram))
+    read_local_diagram_tool(self, request).await
   }
 }
 
