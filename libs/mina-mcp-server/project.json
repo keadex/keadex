@@ -18,7 +18,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "target/release",
-        "command": "npx --yes @modelcontextprotocol/inspector C:\\Users\\Jack\\Documents\\Progetti\\Keadex\\SourceCode\\keadex\\libs\\mina-mcp-server\\target\\release\\mina-mcp-server.exe"
+        "command": "npx --yes @modelcontextprotocol/inspector mina-mcp-server.exe"
       },
       "dependsOn": []
     }
