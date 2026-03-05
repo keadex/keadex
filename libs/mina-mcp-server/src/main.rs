@@ -1,7 +1,7 @@
 pub mod models;
 pub mod tools;
 
-use crate::tools::diagrams_tools::read_local_diagram_tool;
+use crate::tools::local_diagrams_tools::read_diagram_tool;
 use anyhow::Result;
 use keadex_mina::error_handling::mina_error::MinaError;
 use keadex_mina::model::diagram::Diagram;
@@ -32,7 +32,7 @@ impl KeadexMina {
     &self,
     Parameters(request): Parameters<ReadLocalDiagramRequest>,
   ) -> Result<Json<Diagram>, Json<MinaError>> {
-    read_local_diagram_tool(self, request).await
+    read_diagram_tool(self, request).await
   }
 }
 

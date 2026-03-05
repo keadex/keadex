@@ -1,1 +1,1 @@
-pub mod diagrams_tools;
+pub mod local_diagrams_tools;

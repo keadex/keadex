@@ -8,7 +8,7 @@ use mina_cli::helpers::mina_lifecycle_helper::{clear_keadex_mina, init_keadex_mi
 use rmcp::handler::server::wrapper::Json;
 use std::path::PathBuf;
 
-pub async fn read_local_diagram_tool(
+pub async fn read_diagram_tool(
   _router: &KeadexMina,
   request: ReadLocalDiagramRequest,
 ) -> Result<Json<Diagram>, Json<MinaError>> {
