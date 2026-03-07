@@ -32,7 +32,12 @@ impl KeadexMinaServer {
   }
 
   #[tool(
-    description = "Retrieve the detailed data of a Keadex Mina architectural diagram for a specified diagram type and name within a local Keadex Mina project. This may include the raw PlantUML code, a JSON representation of the PlantUML code, metadata, and rendering data. Use this tool when you need to access the content of a Keadex Mina architectural diagram that describes a system or software architecture using the C4 Model. The diagram includes architectural components and their associated data (such as the GitHub repository, technology stack, and description), the relationships between these components, and links to other diagrams. Links to other diagrams are identified using the PlantUML syntax: `$link=\"<DIAGRAM_TYPE>/<DIAGRAM_NAME>\"`. Links may also include external URLs, for example: `$link=\"<DIAGRAM_TYPE>/<DIAGRAM_NAME>;http://host1.domain;https://host2.domain\"`. Do not use this tool for remote Keadex Mina projects that have not been cloned locally."
+    description = "Retrieve the detailed data of a Keadex Mina architectural diagram for a specified diagram type and name within a local Keadex Mina project. This may include the raw PlantUML code, a JSON representation of the PlantUML code, metadata, and rendering data. Use this tool when you need to access the content of a Keadex Mina architectural diagram that describes a system or software architecture using the C4 Model. The diagram includes architectural components and their associated data (such as the GitHub repository, technology stack, and description), the relationships between these components, and links to other diagrams. Links to other diagrams are identified using the PlantUML syntax: `$link=\"<DIAGRAM_TYPE>/<DIAGRAM_NAME>\"`. Links may also include external URLs, for example: `$link=\"<DIAGRAM_TYPE>/<DIAGRAM_NAME>;http://host1.domain;https://host2.domain\"`. Do not use this tool for remote Keadex Mina projects that have not been cloned locally.",
+    annotations(
+      read_only_hint = true,
+      destructive_hint = false,
+      idempotent_hint = true
+    )
   )]
   async fn read_local_diagram(
     &self,
@@ -42,7 +47,12 @@ impl KeadexMinaServer {
   }
 
   #[tool(
-    description = "Retrieve the list of diagrams in a local Keadex Mina project. Use this tool when you need to list all the architectural diagrams present in a Keadex Mina project. More specifically, this tool returns a map where the keys are the C4 Model diagram types and the values are vectors of strings representing the names of the diagrams. Do not use this tool for remote Keadex Mina projects that have not been cloned locally."
+    description = "Retrieve the list of diagrams in a local Keadex Mina project. Use this tool when you need to list all the architectural diagrams present in a Keadex Mina project. More specifically, this tool returns a map where the keys are the C4 Model diagram types and the values are vectors of strings representing the names of the diagrams. Do not use this tool for remote Keadex Mina projects that have not been cloned locally.",
+    annotations(
+      read_only_hint = true,
+      destructive_hint = false,
+      idempotent_hint = true
+    )
   )]
   async fn list_local_diagrams(
     &self,
@@ -52,7 +62,12 @@ impl KeadexMinaServer {
   }
 
   #[tool(
-    description = "Read all architectural diagrams in a local Keadex Mina project. Use this tool when you need to access all the architectural diagrams present in a Keadex Mina project, which describe various aspects of one or more systems or software applications. More specifically, this tool returns a vector of diagrams that include architectural components and their associated data (such as the GitHub repository, technology stack, and description), the relationships between these components, and links to other diagrams. Do not use this tool for remote Keadex Mina projects that have not been cloned locally."
+    description = "Read all architectural diagrams in a local Keadex Mina project. Use this tool when you need to access all the architectural diagrams present in a Keadex Mina project, which describe various aspects of one or more systems or software applications. More specifically, this tool returns a vector of diagrams that include architectural components and their associated data (such as the GitHub repository, technology stack, and description), the relationships between these components, and links to other diagrams. Do not use this tool for remote Keadex Mina projects that have not been cloned locally.",
+    annotations(
+      read_only_hint = true,
+      destructive_hint = false,
+      idempotent_hint = true
+    )
   )]
   async fn read_all_local_diagrams(
     &self,
