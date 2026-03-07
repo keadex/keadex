@@ -1,26 +1,30 @@
 pub mod models;
 pub mod tools;
 
+use crate::models::requests::local_project_base_request::LocalProjectBaseRequest;
+use crate::models::responses::list_local_diagrams_response::ListLocalDiagramsResponse;
+use crate::models::responses::read_all_local_diagrams_response::ReadAllLocalDiagramsResponse;
 use crate::tools::local_diagrams_tools::list_diagrams_tool;
+use crate::tools::local_diagrams_tools::read_all_diagrams_tool;
 use crate::tools::local_diagrams_tools::read_diagram_tool;
 use anyhow::Result;
 use keadex_mina::model::diagram::Diagram;
-use keadex_mina::{error_handling::mina_error::MinaError, model::diagram::DiagramType};
 use models::requests::read_local_diagram_request::ReadLocalDiagramRequest;
 use rmcp::{
-  ServerHandler, ServiceExt,
-  handler::server::{router::tool::ToolRouter, tool::Parameters, wrapper::Json},
+  Json, ServerHandler, ServiceExt,
+  handler::server::{router::tool::ToolRouter, wrapper::Parameters},
   model::*,
   tool, tool_handler, tool_router,
+  transport::stdio,
 };
-use std::collections::HashMap;
 
-pub struct KeadexMina {
-  tool_router: ToolRouter<KeadexMina>,
+#[derive(Clone)]
+pub struct KeadexMinaServer {
+  tool_router: ToolRouter<KeadexMinaServer>,
 }
 
 #[tool_router]
-impl KeadexMina {
+impl KeadexMinaServer {
   fn new() -> Self {
     Self {
       tool_router: Self::tool_router(),
@@ -33,7 +37,7 @@ impl KeadexMina {
   async fn read_local_diagram(
     &self,
     Parameters(request): Parameters<ReadLocalDiagramRequest>,
-  ) -> Result<Json<Diagram>, Json<MinaError>> {
+  ) -> Result<Json<Diagram>, String> {
     read_diagram_tool(self, request).await
   }
 
@@ -42,26 +46,40 @@ impl KeadexMina {
   )]
   async fn list_local_diagrams(
     &self,
-    Parameters(request): Parameters<ReadLocalDiagramRequest>,
-  ) -> Result<Json<HashMap<DiagramType, Vec<String>>>, Json<MinaError>> {
-    list_diagrams_tool(self, request).await
+    Parameters(request): Parameters<LocalProjectBaseRequest>,
+  ) -> Result<Json<ListLocalDiagramsResponse>, String> {
+    list_diagrams_tool(self, &request.mina_project_path).await
+  }
+
+  #[tool(
+    description = "Read all architectural diagrams in a local Keadex Mina project. Use this tool when you need to access all the architectural diagrams present in a Keadex Mina project, which describe various aspects of one or more systems or software applications. More specifically, this tool returns a vector of diagrams that include architectural components and their associated data (such as the GitHub repository, technology stack, and description), the relationships between these components, and links to other diagrams. Do not use this tool for remote Keadex Mina projects that have not been cloned locally."
+  )]
+  async fn read_all_local_diagrams(
+    &self,
+    Parameters(request): Parameters<LocalProjectBaseRequest>,
+  ) -> Result<Json<ReadAllLocalDiagramsResponse>, String> {
+    read_all_diagrams_tool(self, &request.mina_project_path).await
   }
 }
 
 #[tool_handler]
-impl ServerHandler for KeadexMina {
+impl ServerHandler for KeadexMinaServer {
   fn get_info(&self) -> ServerInfo {
-    ServerInfo {
-      capabilities: ServerCapabilities::builder().enable_tools().build(),
-      ..Default::default()
-    }
+    let mut info = ServerInfo::default();
+    info.capabilities = ServerCapabilities::builder().enable_tools().build();
+    info
   }
 }
 
 #[tokio::main]
 async fn main() -> Result<()> {
-  let transport = (tokio::io::stdin(), tokio::io::stdout());
-  let service = KeadexMina::new().serve(transport).await?;
+  //   let transport = (tokio::io::stdin(), tokio::io::stdout());
+  //   let service = KeadexMinaServer::new().serve(transport).await?;
+  //   service.waiting().await?;
+  //   Ok(())
+
+  let service = KeadexMinaServer::new().serve(stdio()).await?;
   service.waiting().await?;
+
   Ok(())
 }
