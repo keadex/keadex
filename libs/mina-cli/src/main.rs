@@ -36,7 +36,7 @@ async fn main() {
   if args.markdown_help {
     clap_markdown::print_help_markdown::<Cli>();
   } else {
-    let mut result = init_keadex_mina(&args.project_path).await;
+    let mut result = init_keadex_mina(&args.project_path).await.map(|_| ());
     if let Err(error) = result {
       eprintln!("Error: {}", error.msg)
     } else {
