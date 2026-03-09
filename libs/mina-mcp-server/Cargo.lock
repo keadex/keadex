@@ -3030,6 +3030,7 @@ name = "mina-mcp-server"
 version = "3.0.1"
 dependencies = [
  "anyhow",
+ "base64 0.22.1",
  "keadex_mina",
  "mina-cli",
  "reqwest 0.13.2",

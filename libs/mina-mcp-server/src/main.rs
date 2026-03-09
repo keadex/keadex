@@ -1,4 +1,5 @@
 pub mod models;
+pub mod services;
 pub mod tools;
 
 use crate::models::requests::local_project_base_request::LocalProjectBaseRequest;
@@ -7,6 +8,7 @@ use crate::models::responses::read_all_local_diagrams_response::ReadAllLocalDiag
 use crate::tools::local_diagrams_tools::list_diagrams_tool;
 use crate::tools::local_diagrams_tools::read_all_diagrams_tool;
 use crate::tools::local_diagrams_tools::read_diagram_tool;
+use crate::tools::local_diagrams_tools::render_diagram_tool;
 use anyhow::Result;
 use keadex_mina::model::diagram::Diagram;
 use models::requests::read_local_diagram_request::ReadLocalDiagramRequest;
@@ -74,6 +76,21 @@ impl KeadexMinaServer {
     Parameters(request): Parameters<LocalProjectBaseRequest>,
   ) -> Result<Json<ReadAllLocalDiagramsResponse>, String> {
     read_all_diagrams_tool(self, &request.mina_project_path).await
+  }
+
+  #[tool(
+    description = "Render an architectural diagram from a local Keadex Mina project as SVG. Use this tool when you need to render and provide a visual preview of an architectural diagram present in a Keadex Mina project, which describes various aspects of one or more systems or software applications. More specifically, this tool returns an SVG containing the rendered diagram. When invoking this tool, do not print the SVG as text; instead, render it as an image. Do not use this tool for remote Keadex Mina projects that have not been cloned locally.",
+    annotations(
+      read_only_hint = true,
+      destructive_hint = false,
+      idempotent_hint = true
+    )
+  )]
+  async fn render_local_diagram(
+    &self,
+    Parameters(request): Parameters<ReadLocalDiagramRequest>,
+  ) -> Result<Annotated<RawContent>, String> {
+    render_diagram_tool(self, request).await
   }
 }
 

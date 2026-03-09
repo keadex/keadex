@@ -1,15 +1,19 @@
 use crate::models::requests::read_local_diagram_request::ReadLocalDiagramRequest;
+use crate::models::requests::render_diagram_request::RenderDiagramRequest;
 use crate::models::responses::list_local_diagrams_response::ListLocalDiagramsResponse;
+use crate::services::keadex_battisti_service::render_diagram;
 use crate::{
   KeadexMinaServer,
   models::responses::read_all_local_diagrams_response::ReadAllLocalDiagramsResponse,
 };
 use anyhow::Result;
+use base64::{Engine, engine::general_purpose};
 use keadex_mina::model::diagram::Diagram;
 use keadex_mina::repository::diagram_repository::list_diagrams;
 use keadex_mina::service::diagram_service::get_diagram;
 use mina_cli::helpers::mina_lifecycle_helper::{clear_keadex_mina, init_keadex_mina};
 use rmcp::Json;
+use rmcp::model::{Annotated, Content, RawContent};
 use std::path::PathBuf;
 
 pub async fn read_diagram_tool(
@@ -59,4 +63,38 @@ pub async fn read_all_diagrams_tool(
   Ok(Json(ReadAllLocalDiagramsResponse {
     diagrams: all_diagrams,
   }))
+}
+
+pub async fn render_diagram_tool(
+  _router: &KeadexMinaServer,
+  request: ReadLocalDiagramRequest,
+) -> Result<Annotated<RawContent>, String> {
+  // Read project
+  let project = init_keadex_mina(&PathBuf::from(&request.mina_project_path))
+    .await
+    .map_err(|e| e.msg)?;
+  let diagrams_theme_settings = project
+    .project_settings
+    .themes_settings
+    .and_then(|ts| ts.diagrams_theme_settings);
+
+  // Read diagram
+  let diagram = get_diagram(&request.diagram_name, request.diagram_type)
+    .await
+    .map_err(|e| e.msg)?;
+
+  // Invoke Keadex Battisti API to render the diagram
+  let svg_string = render_diagram(RenderDiagramRequest {
+    diagrams_theme_settings,
+    diagram,
+  })
+  .await
+  .map_err(|e| e.to_string())?;
+
+  // Close project
+  clear_keadex_mina(&PathBuf::from(&request.mina_project_path)).await;
+
+  // let encoded_svg = general_purpose::STANDARD.encode(svg_string);
+
+  Ok(Content::image(svg_string, "image/svg+xml"))
 }
