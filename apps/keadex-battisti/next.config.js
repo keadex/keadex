@@ -75,6 +75,7 @@ const nextConfig = {
         'public/fonts/*.ttf',
       ],
   },
+  serverExternalPackages: ['@resvg/resvg-js'],
   async redirects() {
     return [
       {

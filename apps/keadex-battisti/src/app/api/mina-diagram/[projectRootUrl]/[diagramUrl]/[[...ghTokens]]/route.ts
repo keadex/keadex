@@ -86,5 +86,5 @@ export async function GET(
     ghToken,
   )
 
-  return renderDiagram(projectDiagram)
+  return renderDiagram(request.headers, projectDiagram)
 }

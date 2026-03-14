@@ -18,6 +18,7 @@
     "@keadex/mina-react-npm": "npm:@keadex/mina-react@^3.0.1",
     "@keadex/mina-live-npm": "npm:@keadex/mina-live@^3.0.1",
     "@next/bundle-analyzer": "^16.1.4",
+    "@resvg/resvg-js": "^2.6.2",
     "accept-language": "^3.0.20",
     "animate.css": "^4.1.1",
     "change-case": "^5.4.4",

@@ -5,6 +5,8 @@ import {
   DiagramsThemeSettings,
 } from '@keadex/c4-model-ui-kit'
 import { KeadexCanvas } from '@keadex/keadex-ui-kit/components/cross/Canvas/KeadexCanvas'
+import { KEADEX_HEADERS } from '@keadex/keadex-utils/api'
+import { Resvg } from '@resvg/resvg-js'
 import { registerFont } from 'canvas'
 import { fabric } from 'fabric'
 import { join } from 'path'
@@ -15,8 +17,17 @@ export type RenderMinaDiagramRequest = {
 }
 
 export async function renderDiagram(
+  headers: Headers,
   request?: RenderMinaDiagramRequest,
 ): Promise<Response> {
+  let outputFormat = headers.get(KEADEX_HEADERS.MINA_DIAGRAM_FORMAT) as
+    | 'svg'
+    | 'png'
+    | null
+  if (!outputFormat) {
+    outputFormat = 'svg'
+  }
+
   const diagramRenderer = new DiagramRenderer()
   await diagramRenderer.initialize()
 
@@ -88,6 +99,22 @@ export async function renderDiagram(
       '<svg ',
       `<svg style='background-color: ${backgroundColor}' `,
     )
+
+    if (outputFormat === 'png') {
+      const resvg = new Resvg(svg, {
+        background: 'rgba(255, 255, 255, 1)',
+        fitTo: {
+          mode: 'width',
+          value: canvas.getWidth(),
+        },
+      })
+      const pngData = resvg.render()
+      const pngBuffer = pngData.asPng()
+      return new Response(new Uint8Array(pngBuffer), {
+        status: 200,
+        headers: { 'Content-Type': 'image/png' },
+      })
+    }
 
     return new Response(svg, {
       status: 200,
