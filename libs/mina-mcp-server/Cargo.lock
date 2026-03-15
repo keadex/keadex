@@ -3031,6 +3031,7 @@ version = "3.0.1"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
+ "bytes",
  "keadex_mina",
  "mina-cli",
  "reqwest 0.13.2",

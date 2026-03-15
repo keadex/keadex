@@ -84,7 +84,7 @@ pub async fn render_diagram_tool(
     .map_err(|e| e.msg)?;
 
   // Invoke Keadex Battisti API to render the diagram
-  let svg_string = render_diagram(RenderDiagramRequest {
+  let png_data = render_diagram(RenderDiagramRequest {
     diagrams_theme_settings,
     diagram,
   })
@@ -94,7 +94,7 @@ pub async fn render_diagram_tool(
   // Close project
   clear_keadex_mina(&PathBuf::from(&request.mina_project_path)).await;
 
-  // let encoded_svg = general_purpose::STANDARD.encode(svg_string);
+  let encoded_png = general_purpose::STANDARD.encode(png_data);
 
-  Ok(Content::image(svg_string, "image/svg+xml"))
+  Ok(Content::image(encoded_png, "image/png"))
 }
