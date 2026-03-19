@@ -32,8 +32,8 @@
     "./webpack-config": "./webpack.config.js"
   },
   "devDependencies": {
-    "@nx/react": "^22.4.1",
-    "@nx/webpack": "^22.4.1",
+    "@nx/react": "^22.6.0",
+    "@nx/webpack": "^22.6.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "webpack": "^5.104.1",

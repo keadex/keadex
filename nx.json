@@ -80,5 +80,6 @@
   },
   "tui": {
     "enabled": false
-  }
+  },
+  "analytics": false
 }
