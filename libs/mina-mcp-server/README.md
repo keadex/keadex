@@ -5,7 +5,8 @@
 <div align="center">
 
 ![GitHub](https://img.shields.io/github/license/keadex/keadex)
-![Dynamic TOML Badge](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fkeadex%2Fkeadex%2Frefs%2Fheads%2Fmain%2Flibs%2Fmina-mcp-server%2FCargo.toml&query=package.version&label=version)
+![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/keadex/keadex?filename=libs%2Fmina-mcp-server%2Fpackage.json)
+[![NPM Version](https://img.shields.io/npm/v/%40keadex%2Fmina-mcp-server)](https://www.npmjs.com/package/@keadex/mina-mcp-server)
 
 </div>
 
