@@ -48,22 +48,38 @@ const runExecutor: PromiseExecutor<
   }
   console.info('Projects to release:', projectsToRelease)
 
+  let result: boolean
+
   // Version the projects
-  console.info('Versioning the projects...')
-  let result = await version(projectsToRelease, options)
-  if (!result) {
-    console.error('Failed to version projects.')
+  try {
+    console.info('Versioning the projects...')
+    result = await version(projectsToRelease, options)
+    if (!result) {
+      console.error('Failed to version projects.')
+      if (!options.multiplatformMode) {
+        return {
+          success: false,
+        }
+      }
+      // In multiplatform mode, we want to continue with the release process even if versioning fails, as it might be caused by versisoning the same project multiple times, which is expected in this mode
+      console.warn(
+        'Continuing with the release process in multiplatform mode despite versioning failure.',
+      )
+    } else {
+      console.info('Projects versioned successfully.')
+    }
+  } catch (error) {
     if (!options.multiplatformMode) {
+      console.error('Unexpected error during versioning:', error)
       return {
         success: false,
       }
+    } else {
+      console.warn(
+        'Unexpected error during versioning in multiplatform mode, continuing with the release process:',
+        error,
+      )
     }
-    // In multiplatform mode, we want to continue with the release process even if versioning fails, as it might be caused by versisoning the same project multiple times, which is expected in this mode
-    console.warn(
-      'Continuing with the release process in multiplatform mode despite versioning failure.',
-    )
-  } else {
-    console.info('Projects versioned successfully.')
   }
 
   // Build the projects
