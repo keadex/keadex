@@ -3520,10 +3520,10 @@
   resolved "https://registry.yarnpkg.com/@jsonjoy.com/util/-/util-1.6.0.tgz#23991b2fe12cb3a006573d9dc97c768d3ed2c9f1"
   integrity sha512-sw/RMbehRhN68WRtcKCpQOPfnH6lLP4GJfqzi3iYej8tnzpZUDr6UkZYJjcjjC0FWEJOJbyM3PTIwxucUmDG2A==
 
-"@keadex/mina-live-npm@npm:@keadex/mina-live@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-live/-/mina-live-3.0.1.tgz#de6b4065818a92805f34a56a030eaa367dc32a35"
-  integrity sha512-wlWdQmE6Mns/2+Cd8Y+XgpHb915epLzO68DuIHqIiGfaeRGEhVJEY/cG+/4ng/S/jPe/wi6VCCR7B4end9BcFg==
+"@keadex/mina-live-npm@npm:@keadex/mina-live@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-live/-/mina-live-3.1.0.tgz#7b2960f2a1f5479748a6f22aa8f09262588f2788"
+  integrity sha512-RfqtirRcsdaQOi4x2CU3Ta0EQvDfD+n3lennnNfEATsYsJBIUc7vM3Hw6onUIFI73Sj3WLF+tog7c1kSF0XcSg==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^7.1.0"
     "@fortawesome/free-solid-svg-icons" "^7.1.0"
@@ -3573,12 +3573,12 @@
     ts-key-enum "^2.0.12"
     tw-elements "1.0.0"
     uuid "^13.0.0"
-    wasm-pack "^0.14.0"
+    wasm-pack "^0.15.0"
 
-"@keadex/mina-react-npm@npm:@keadex/mina-react@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-3.0.1.tgz#e4a52d5ce719da858a03a9da9ee5a6f2fa115981"
-  integrity sha512-pY9+PmmRnFx11SKBOhh8pF/MctJhhwcYNPoIa+DjXByKVtq5L/YKIReRDWcDxpK0cynxVRFLOpbddJghxq02Vw==
+"@keadex/mina-react-npm@npm:@keadex/mina-react@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@keadex/mina-react/-/mina-react-3.1.0.tgz#22161e3f099ac247ca3be84619d4abed7d2dce17"
+  integrity sha512-EEODld0cgDGfmj+Ltn89WBbaIFR/E169/uNEKEAtL/H4bxhT71BE/QC1uvK/hOp2i1pjHvjQIhvv0csIVkYzyA==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^7.1.0"
     "@fortawesome/free-solid-svg-icons" "^7.1.0"
@@ -3609,7 +3609,7 @@
     tailwindcss "^4.1.18"
     ts-key-enum "^2.0.12"
     tw-elements "1.0.0"
-    wasm-pack "^0.14.0"
+    wasm-pack "^0.15.0"
 
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.4"
@@ -21177,7 +21177,7 @@ warning@^4.0.2:
   dependencies:
     loose-envify "^1.0.0"
 
-wasm-pack@^0.14.0, wasm-pack@^0.15.0:
+wasm-pack@^0.15.0:
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/wasm-pack/-/wasm-pack-0.15.0.tgz#f9c477827196aab6fb13aac6f3d438dc44ad072c"
   integrity sha512-DdqtGWc3+iFx+7lL7QU5LBWs7qMnwQSWxF0htSfE15sNa3roVwHjAkTm2JXgueU2GGfSwNqbq2EzyC2b/biKDA==
