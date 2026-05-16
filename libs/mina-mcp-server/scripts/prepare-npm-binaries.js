@@ -1,8 +1,36 @@
 const fs = require('fs')
 const path = require('path')
 
+function getPlatformArch() {
+  const platform = process.platform
+  const arch = process.arch
+
+  // Normalize architecture names
+  let normalizedArch
+
+  switch (arch) {
+    case 'x64':
+      normalizedArch = 'x64'
+      break
+    case 'arm64':
+      normalizedArch = 'arm64'
+      break
+    default:
+      throw new Error(`Unsupported architecture: ${arch}`)
+  }
+
+  // Supported outputs
+  const supported = ['linux', 'darwin', 'win32']
+
+  if (!supported.includes(platform)) {
+    throw new Error(`Unsupported platform: ${platform}`)
+  }
+
+  return `${platform}-${normalizedArch}`
+}
+
 // Copy the compiled Rust binaries to the binaries directory for packaging
-let builtPlatform = null
+const builtPlatform = getPlatformArch()
 const basePathRustTargetRelease = path.join(
   __dirname,
   '..',
@@ -42,7 +70,6 @@ for (const { src, dest, platform } of binaries) {
   if (fs.existsSync(src)) {
     fs.mkdirSync(path.dirname(dest), { recursive: true })
     fs.copyFileSync(src, dest)
-    builtPlatform = platform
     console.log(`Copied ${src} → ${dest} (${platform})`)
     break
   }
