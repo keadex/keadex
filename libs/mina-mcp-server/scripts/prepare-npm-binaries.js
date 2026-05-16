@@ -1,36 +1,31 @@
 const fs = require('fs')
 const path = require('path')
 
-function getPlatformArch() {
-  const platform = process.platform
-  const arch = process.arch
-
-  // Normalize architecture names
-  let normalizedArch
-
-  switch (arch) {
-    case 'x64':
-      normalizedArch = 'x64'
-      break
-    case 'arm64':
-      normalizedArch = 'arm64'
-      break
-    default:
-      throw new Error(`Unsupported architecture: ${arch}`)
+function getPlatformArch(target) {
+  if (!target) {
+    console.warn(
+      'TARGET environment variable not set. Defaulting to current platform and architecture.',
+    )
+    return `${process.platform}-${process.arch}`
+  }
+  const mappings = {
+    'aarch64-apple-darwin': 'darwin-arm64',
+    'x86_64-apple-darwin': 'darwin-x64',
+    'x86_64-unknown-linux-gnu': 'linux-x64',
+    'x86_64-pc-windows-msvc': 'win32-x64',
   }
 
-  // Supported outputs
-  const supported = ['linux', 'darwin', 'win32']
+  const result = mappings[target]
 
-  if (!supported.includes(platform)) {
-    throw new Error(`Unsupported platform: ${platform}`)
+  if (!result) {
+    throw new Error(`Unsupported target: ${target}`)
   }
 
-  return `${platform}-${normalizedArch}`
+  return result
 }
 
 // Copy the compiled Rust binaries to the binaries directory for packaging
-const builtPlatform = getPlatformArch()
+const builtPlatform = getPlatformArch(process.env.TARGET)
 const basePathRustTargetRelease = path.join(
   __dirname,
   '..',
