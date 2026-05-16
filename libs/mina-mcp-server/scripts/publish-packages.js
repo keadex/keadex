@@ -19,7 +19,10 @@ function publishPackage(packagePath, ignoreErrors = false) {
     `Publishing ${packageName}@${packageVersion} from ${packagePath}...`,
   )
   try {
-    execSync(`npm publish ${packagePath} --access public`, { stdio: 'inherit' })
+    execSync(
+      `npm publish ${packagePath} --access public --registry "https://registry.npmjs.org/"`,
+      { stdio: 'inherit' },
+    )
     console.log(`Successfully published ${packageName}@${packageVersion}`)
   } catch (error) {
     console.error(
