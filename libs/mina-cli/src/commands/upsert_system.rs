@@ -12,20 +12,23 @@ use std::collections::HashMap;
 use strfmt::strfmt;
 
 pub async fn upsert_system(args: UpdateSystem) -> Result<(), MinaError> {
+  let response = upsert_system_core(args).await?;
+  let json = serialize_obj_to_json_string(&response, false)?;
+  println!("{}", json);
+  return Ok(());
+}
+
+pub async fn upsert_system_core(args: UpdateSystem) -> Result<Response, MinaError> {
   let result = search_library_element(&args.alias).await;
   if let Ok(found) = result {
     if found.is_some() {
       // The element exists, so we can update it
-      let result = update_system(args).await;
-      if result.is_ok() {
-        let response = Response {
-          code: 0,
-          message: SUCCESS_UPDATE_ELEMENT.to_string(),
-        };
-        let json = serialize_obj_to_json_string(&response, false)?;
-        println!("{}", json);
-      }
-      return result;
+      let _ = update_system(args).await?;
+      let response = Response {
+        code: 0,
+        message: SUCCESS_UPDATE_ELEMENT.to_string(),
+      };
+      return Ok(response);
     }
   }
 
@@ -46,16 +49,12 @@ pub async fn upsert_system(args: UpdateSystem) -> Result<(), MinaError> {
       link: args.new_link,
       notes: args.new_notes,
     };
-    let result = create_system(create_args).await;
-    if result.is_ok() {
-      let response = Response {
-        code: 0,
-        message: strfmt(SUCCESS_INSERT_ELEMENT_UPSERT, &vars).unwrap(),
-      };
-      let json = serialize_obj_to_json_string(&response, false)?;
-      println!("{}", json);
-    }
-    return result;
+    let _ = create_system(create_args).await?;
+    let response = Response {
+      code: 0,
+      message: strfmt(SUCCESS_INSERT_ELEMENT_UPSERT, &vars).unwrap(),
+    };
+    return Ok(response);
   } else {
     // Some required fields have not been passed, so we cannot proceed with the creation
     return Err(MinaError {

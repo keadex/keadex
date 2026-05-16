@@ -1,0 +1,12 @@
+pub mod create_diagram_request;
+pub mod create_project_request;
+pub mod diagram_element_request;
+pub mod edit_plantuml_request;
+pub mod find_diagram_element_request;
+pub mod generate_plantuml_code_diagram_request;
+pub mod generate_plantuml_code_elements_request;
+pub mod local_diagram_base_request;
+pub mod local_project_base_request;
+pub mod read_remote_diagram_request;
+pub mod render_diagram_request;
+pub mod validate_plantuml_code_request;

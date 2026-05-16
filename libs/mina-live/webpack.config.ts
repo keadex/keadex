@@ -141,7 +141,7 @@ export default composePlugins(
         }),
         new DefinePlugin({
           'import.meta.env': {
-            VITE_AI_ENABLED: JSON.stringify(true),
+            VITE_AI_ENABLED: JSON.stringify(false),
             VITE_WEB_MODE: JSON.stringify(true),
             VITE_APP_VERSION: JSON.stringify(
               JSON.parse(

@@ -14,7 +14,9 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { Trans } from 'react-i18next'
+
 import minaLogo from '../../../public/img/keadex-mina-logo-color.svg'
+import minaHero from '../../../public/img/mina/mina-hero.png'
 import { useTranslation } from '../../app/i18n/client'
 import ROUTES, {
   KEADEX_MINA_LIVE_EDITOR,
@@ -279,13 +281,13 @@ export default function MinaSummary({
               </Button>
             </div>
           </div>
-          <iframe
-            src="https://www.youtube.com/embed/ukyEA9OKJ6E"
-            className="w-full mt-10 md:w-1/2 md:mt-0 h-80 border-0 pl-0 md:pl-8"
-            frameBorder="0"
-            allowFullScreen
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          />
+          <div className="w-full md:w-1/2 text-right flex">
+            <Image
+              src={minaHero}
+              alt="Keadex Mina Hero"
+              className="w-160 max-w-full ml-auto mr-auto mt-10 mb-0 md:mt-auto md:mb-auto"
+            />
+          </div>
         </div>
       </div>
     </div>

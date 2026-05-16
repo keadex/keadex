@@ -1,11 +1,4 @@
 const meta = {
-  ai: {
-    title: 'AI',
-    theme: {
-      layout: 'full',
-      toc: false,
-    },
-  },
   autolayout: {
     theme: {
       layout: 'full',
@@ -45,6 +38,13 @@ const meta = {
   library: {},
   links: {},
   'low-coding': {
+    theme: {
+      layout: 'full',
+      toc: false,
+    },
+  },
+  'mcp-server': {
+    title: 'MCP Server',
     theme: {
       layout: 'full',
       toc: false,

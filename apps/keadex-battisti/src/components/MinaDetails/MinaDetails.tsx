@@ -5,9 +5,10 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { PropsWithChildren } from 'react'
 import { Trans } from 'react-i18next'
+
 import bannerFeatures from '../../../public/img/mina/banner-features.svg'
 import { useTranslation } from '../../app/i18n/client'
-import ROUTES, { MINA_AI } from '../../core/routes'
+import ROUTES, { MINA_AUTOLAYOUT } from '../../core/routes'
 
 export type MinaDetailsProps = {
   lang: string
@@ -70,8 +71,8 @@ export default function MinaDetails({
       </div>
       <div className="text-center mt-16">
         <Button
-          className="!text-sm"
-          onClick={() => router.push(ROUTES[MINA_AI].path)}
+          className="text-sm!"
+          onClick={() => router.push(ROUTES[MINA_AUTOLAYOUT].path)}
         >
           {t('keadex_mina.details.explore_all_features')}
         </Button>

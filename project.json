@@ -14,6 +14,7 @@
           "yarn nx build mina-cli --skip-nx-cache",
           "yarn nx build mina-confluence-plugin --skip-nx-cache",
           "yarn nx build mina-live --skip-nx-cache",
+          "yarn nx build mina-mcp-server --skip-nx-cache",
           "yarn nx build mina-react --skip-nx-cache",
           "yarn nx generate-api-docs c4-model-ui-kit",
           "yarn nx generate-api-docs mina-cli"

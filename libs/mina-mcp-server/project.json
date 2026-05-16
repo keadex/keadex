@@ -1,0 +1,58 @@
+{
+  "name": "mina-mcp-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mina-mcp-server/src",
+  "projectType": "library",
+  "implicitDependencies": ["keadex-mina", "mina-cli"],
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "prepare-npm-binaries"
+      },
+      "dependsOn": ["build-rust-code"]
+    },
+    "build-rust-code": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "libs/mina-mcp-server",
+        "command": "cargo build --release"
+      },
+      "dependsOn": ["build-node-code"]
+    },
+    "build-node-code": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "deleteOutputPath": true,
+        "compiler": "babel",
+        "outputPath": "libs/mina-mcp-server/dist",
+        "tsConfig": "libs/mina-mcp-server/tsconfig.lib.json",
+        "webpackConfig": "libs/mina-mcp-server/webpack.config.ts",
+        "optimization": true,
+        "sourceMap": false,
+        "namedChunks": false,
+        "extractLicenses": false,
+        "vendorChunk": false,
+        "externalDependencies": "all",
+        "buildLibsFromSource": true
+      },
+      "dependsOn": []
+    },
+    "inspect": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "target/release",
+        "command": "npx --yes @modelcontextprotocol/inspector mina-mcp-server.exe"
+      },
+      "dependsOn": []
+    },
+    "nx-release-publish": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "publish-packages"
+      }
+    }
+  }
+}

@@ -1,7 +1,9 @@
 use clap::Parser;
 use keadex_mina::model::c4_element::person::PersonType;
+use schemars::JsonSchema;
+use serde::Deserialize;
 
-#[derive(Parser, Debug)]
+#[derive(Parser, Debug, Deserialize, JsonSchema)]
 pub struct UpdatePerson {
   #[arg(long)]
   pub alias: String,

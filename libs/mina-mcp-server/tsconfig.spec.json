@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "module": "ESNext",
+    "types": ["jest", "node"]
+  },
+  "include": [
+    "jest.config.ts",
+    "src-js/**/*.test.ts",
+    "src-js/**/*.spec.ts",
+    "src-js/**/*.test.tsx",
+    "src-js/**/*.spec.tsx",
+    "src-js/**/*.test.js",
+    "src-js/**/*.spec.js",
+    "src-js/**/*.test.jsx",
+    "src-js/**/*.spec.jsx",
+    "src-js/**/*.d.ts"
+  ]
+}

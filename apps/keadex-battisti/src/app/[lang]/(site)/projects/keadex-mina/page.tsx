@@ -1,6 +1,6 @@
 import { type Metadata, type NextPage } from 'next'
 import keadexMina from '../../../../../../public/img/keadex-mina-logo.svg'
-import MinaAI from '../../../../../components/MinaAI/MinaAI'
+import MinaMCP from '../../../../../components/MinaMCP/MinaMCP'
 import MinaDetails from '../../../../../components/MinaDetails/MinaDetails'
 import MinaDocsIntegration from '../../../../../components/MinaDocsIntegration/MinaDocsIntegration'
 import MinaFAQ from '../../../../../components/MinaFAQ/MinaFAQ'
@@ -47,7 +47,7 @@ const KeadexMina: NextPage<PageProps> = async ({ params }) => {
       <MinaRendering lang={lang} />
       <MinaProjectStructure lang={lang} />
       <MinaDocsIntegration lang={lang} />
-      <MinaAI lang={lang} />
+      <MinaMCP lang={lang} />
       <MinaFAQ lang={lang} />
     </div>
   )

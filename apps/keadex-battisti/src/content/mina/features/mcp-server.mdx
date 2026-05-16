@@ -1,0 +1,110 @@
+import { faRobot } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Callout } from 'nextra/components'
+
+import { faKeadexMina } from '../../../../../keadex-mina/src/assets/icons'
+import { PlayerClient } from '../../../components/client-wrappers'
+
+# Local Mina MCP Server
+
+Keadex Mina provides a [local MCP server](https://www.npmjs.com/package/@keadex/mina-mcp-server) with 26+ tools and a specialized agent skill that enable AI agents to **generate**, **explore**, and **reason** about Keadex Mina projects and C4 Model architecture diagrams.
+
+<div className="relative h-auto w-160 max-w-full mx-auto mt-8">
+  <PlayerClient
+    src="https://player.vimeo.com/video/1192405191"
+    playing
+    muted
+    loop
+    width="100%"
+    height="100%"
+    controls
+    config={{
+      vimeo: {
+        responsive: true,
+      },
+    }}
+  />
+</div>
+
+## Supported Platforms
+
+| Platform | Architecture |
+| -------- | ------------ |
+| Linux    | x64          |
+| macOS    | x64, arm64   |
+| Windows  | x64          |
+
+## Usage
+
+### Installation
+
+#### Keadex Mina Skill
+
+Add the Keadex Mina skill to your AI assistant (e.g. Claude, Cursor). The skill provides the necessary prompts and logic to work with Mina projects, and it will automatically use the MCP server to execute commands.
+
+```bash
+npx skills add keadex/keadex -s keadex-mina
+```
+
+#### MCP Server
+
+No manual installation is required. Run the MCP server directly with `npx`:
+
+```bash
+npx @keadex/mina-mcp-server
+```
+
+### MCP Client Configuration
+
+#### Claude Desktop
+
+Add the following to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "mina": {
+      "command": "npx",
+      "args": ["-y", "@keadex/mina-mcp-server"]
+    }
+  }
+}
+```
+
+#### Cursor
+
+Add the following to your Cursor MCP settings:
+
+```json
+{
+  "mcpServers": {
+    "mina": {
+      "command": "npx",
+      "args": ["-y", "@keadex/mina-mcp-server"]
+    }
+  }
+}
+```
+
+## How It Works
+
+```
+AI Assistant (Claude, Cursor, etc.)
+        │  MCP protocol (stdio)
+        ▼
+@keadex/mina-mcp-server
+  ├── Rust binary  ←  handles MCP protocol
+  └── JS bridge    ←  runs Mina rendering logic
+```
+
+The package ships a precompiled Rust binary for your platform (installed automatically as an optional dependency) alongside a JavaScript bridge that executes Mina's rendering and parsing logic. The correct binary for your OS and architecture is resolved automatically at runtime.
+
+## Example Prompts
+
+Once the MCP server is connected to your AI assistant, you can ask things like:
+
+- _"List all the diagrams in my Mina project"_
+- _"Show me the system context diagram for the payment service"_
+- _"Render the container diagram for the frontend application"_
+- _"What are the relationships between the components in the auth service diagram?"_
+- _"Summarize the architecture described in my Mina project"_

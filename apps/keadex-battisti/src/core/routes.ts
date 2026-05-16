@@ -92,7 +92,6 @@ export const MINA_GS_QUICK_START = `${MINA_GETTING_STARTED}/quick-start`
 export const MINA_GS_PROJECT_STRUCTURE = `${MINA_GETTING_STARTED}/project-structure`
 // --> Mina Features
 export const MINA_FEATURES = `${MINA_DOCS}/features`
-export const MINA_AI = `${MINA_FEATURES}/ai`
 export const MINA_AUTOLAYOUT = `${MINA_FEATURES}/autolayout`
 export const MINA_CONTINUOUS_INTEGRATION = `${MINA_FEATURES}/continuous-integration`
 export const MINA_DEPENDENCY_TABLE = `${MINA_FEATURES}/dependency-table`
@@ -161,9 +160,6 @@ ROUTES[MINA_GS_PROJECT_STRUCTURE] = {
 }
 ROUTES[MINA_FEATURES] = {
   path: MINA_FEATURES,
-}
-ROUTES[MINA_AI] = {
-  path: MINA_AI,
 }
 ROUTES[MINA_AUTOLAYOUT] = {
   path: MINA_AUTOLAYOUT,

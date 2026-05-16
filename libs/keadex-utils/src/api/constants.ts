@@ -7,6 +7,7 @@ export const KEADEX_HEADERS = {
   GH_REPO: `${KEADEX_HEADER_PREFIX}-Gh-Repo`,
   GH_OWNER: `${KEADEX_HEADER_PREFIX}-Gh-Owner`,
   GH_BRANCH: `${KEADEX_HEADER_PREFIX}-Gh-Branch`,
+  MINA_DIAGRAM_FORMAT: `${KEADEX_HEADER_PREFIX}-Mina-Diagram-Format`,
 }
 
 // Client IDs

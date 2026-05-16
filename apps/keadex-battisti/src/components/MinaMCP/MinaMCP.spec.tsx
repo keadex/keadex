@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react'
 
-import MinaAI from './MinaAI'
+import MinaMCP from './MinaMCP'
 
-describe('MinaAI', () => {
+describe('MinaMCP', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<MinaAI lang={'en'} />)
+    const { baseElement } = render(<MinaMCP lang={'en'} />)
     expect(baseElement).toBeTruthy()
   })
 })

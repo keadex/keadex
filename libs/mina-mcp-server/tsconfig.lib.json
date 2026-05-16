@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "declaration": true,
+    "emitDeclarationOnly": true
+  },
+  "exclude": [
+    "jest.config.ts",
+    "src-js/**/*.spec.ts",
+    "src-js/**/*.test.ts",
+    "src-js/**/*.spec.tsx",
+    "src-js/**/*.test.tsx",
+    "src-js/**/*.spec.js",
+    "src-js/**/*.test.js",
+    "src-js/**/*.spec.jsx",
+    "src-js/**/*.test.jsx"
+  ],
+  "include": [
+    "src-js/**/*.js",
+    "src-js/**/*.jsx",
+    "src-js/**/*.ts",
+    "src-js/**/*.tsx"
+  ]
+}

@@ -1,7 +1,9 @@
 use clap::Parser;
 use keadex_mina::model::c4_element::container::ContainerType;
+use schemars::JsonSchema;
+use serde::Deserialize;
 
-#[derive(Parser, Debug)]
+#[derive(Parser, Debug, Deserialize, JsonSchema)]
 pub struct UpdateContainer {
   #[arg(long)]
   pub alias: String,

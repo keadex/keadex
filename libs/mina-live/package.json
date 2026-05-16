@@ -32,8 +32,8 @@
     "./webpack-config": "./webpack.config.js"
   },
   "devDependencies": {
-    "@nx/react": "^22.4.1",
-    "@nx/webpack": "^22.4.1",
+    "@nx/react": "^22.6.0",
+    "@nx/webpack": "^22.6.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "webpack": "^5.104.1",
@@ -105,7 +105,7 @@
     "ts-key-enum": "^2.0.12",
     "tw-elements": "1.0.0",
     "uuid": "^13.0.0",
-    "wasm-pack": "^0.14.0"
+    "wasm-pack": "^0.15.0"
   },
   "peerDependencies": {
     "react-router": "^7.13.0",

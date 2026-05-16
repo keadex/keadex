@@ -10,6 +10,7 @@ use crate::core::app::ROOT_RESOLVER;
 use crate::core::resolver::ResolvableModules::{ProjectSettingsFsDAO, ProjectSettingsIMDAO};
 use crate::dao::filesystem::FileSystemDAO;
 use crate::dao::inmemory::InMemoryDAO;
+use crate::error_handling::errors::{PROJECT_NOT_LOADED_ERROR_CODE, PROJECT_NOT_LOADED_ERROR_MSG};
 use crate::error_handling::mina_error::MinaError;
 use crate::helper::project_helper::project_settings_path;
 use crate::model::project_settings::ProjectSettings;
@@ -62,4 +63,19 @@ pub async fn save_project_settings(
     .await
     .unwrap();
   Ok(updated_project_settings)
+}
+
+pub async fn get_project_settings() -> Result<ProjectSettings, MinaError> {
+  let store = ROOT_RESOLVER.get().read().await;
+  let project_settings = resolve_to_write!(store, ProjectSettingsIMDAO)
+    .await
+    .get()
+    .await;
+  if let None = project_settings {
+    return Err(MinaError::new(
+      PROJECT_NOT_LOADED_ERROR_CODE,
+      PROJECT_NOT_LOADED_ERROR_MSG,
+    ));
+  }
+  Ok(project_settings.unwrap())
 }

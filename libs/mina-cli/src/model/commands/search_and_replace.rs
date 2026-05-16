@@ -1,6 +1,8 @@
 use clap::Parser;
+use schemars::JsonSchema;
+use serde::Deserialize;
 
-#[derive(Parser, Debug)]
+#[derive(Parser, Debug, Deserialize, JsonSchema)]
 pub struct SearchAndReplace {
   #[arg(long)]
   pub text_to_search: String,

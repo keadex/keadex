@@ -12,14 +12,14 @@ const Player = dynamic<PlayerProps>(
   { ssr: false },
 )
 
-export type MinaAIProps = {
+export type MinaMCPProps = {
   lang: string
 }
 
-export default function MinaAI({
+export default function MinaMCP({
   children,
   lang,
-}: PropsWithChildren<MinaAIProps>) {
+}: PropsWithChildren<MinaMCPProps>) {
   const { t } = useTranslation(lang)
 
   return (
@@ -29,7 +29,7 @@ export default function MinaAI({
           <div className="flex flex-row">
             <div className="text-3xl leading-10 font-extralight">
               <Trans
-                i18nKey="keadex_mina.ai.title"
+                i18nKey="keadex_mina.mcp.title"
                 t={t}
                 components={{ span: <span /> }}
               />
@@ -37,12 +37,14 @@ export default function MinaAI({
           </div>
           <div className="mt-5 font-light">
             <Trans
-              i18nKey="keadex_mina.ai.description"
+              i18nKey="keadex_mina.mcp.description"
               t={t}
               components={{
                 span: <span />,
                 code: <code />,
                 a: <a />,
+                ul: <ul />,
+                li: <li />,
               }}
             />
           </div>
@@ -50,7 +52,7 @@ export default function MinaAI({
         <div className="flex flex-col w-full md:w-1/2 pl-0 md:pl-10 mt-10 md:mt-0">
           <div className="my-auto">
             <Player
-              src="https://player.vimeo.com/video/1071229228"
+              src="https://player.vimeo.com/video/1192405191"
               playing
               muted
               loop
