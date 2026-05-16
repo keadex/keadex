@@ -50,7 +50,19 @@ for (const { src, dest, platform } of binaries) {
 
 // Generate the README file and package.json for the binary package, ensuring the version matches the main package.json
 const sharedPackageJson = {
+  author: 'Keadex <keadex.it@gmail.com>',
+  license: 'MIT',
   version: '0.0.0',
+  private: false,
+  homepage: 'https://keadex.dev',
+  repository: {
+    type: 'git',
+    url: 'https://github.com/keadex/keadex',
+  },
+  publishConfig: {
+    access: 'public',
+  },
+  keywords: ['mina', 'diagrams', 'c4model', 'mcp', 'model-context-protocol'],
   exports: {
     './package.json': './package.json',
   },

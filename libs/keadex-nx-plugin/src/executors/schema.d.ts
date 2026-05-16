@@ -14,4 +14,12 @@ export interface ReleaseKeadexProjectsExecutorSchema {
    * @example true
    */
   verbose?: boolean
+
+  /**
+   * If true, the executor will run in multiplatform mode, which means it will execute the release process on multiple platforms.
+   * This is useful for ensuring that the release process works correctly on different operating systems and environments.
+   * @default false
+   * @example true
+   */
+  multiplatformMode?: boolean
 }

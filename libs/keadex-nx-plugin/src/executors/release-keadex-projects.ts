@@ -1,10 +1,13 @@
 import { PromiseExecutor } from '@nx/devkit'
-import { ReleaseKeadexProjectsExecutorSchema } from './schema'
+import { spawn } from 'child_process'
+import { readFileSync } from 'fs'
 import { glob } from 'glob'
 import * as matter from 'gray-matter'
-import { readFileSync } from 'fs'
-import { spawn } from 'child_process'
 import { releaseChangelog, releasePublish, releaseVersion } from 'nx/release'
+
+import { ReleaseKeadexProjectsExecutorSchema } from './schema'
+
+const MULTIPLATFORM_PROJECTS = ['mina-mcp-server']
 
 const runExecutor: PromiseExecutor<
   ReleaseKeadexProjectsExecutorSchema
@@ -20,11 +23,22 @@ const runExecutor: PromiseExecutor<
   console.info('Version plans:', versionPlans)
 
   // Read the version plans files and extract the projects to release
-  const projectsToRelease = versionPlans.reduce((acc, versionPlan) => {
+  let projectsToRelease = versionPlans.reduce((acc, versionPlan) => {
     const { data } = matter(readFileSync(versionPlan))
     const projects = Object.keys(data)
     return acc.concat(projects)
   }, [])
+
+  // Remove mina-mcp-server from the list of projects to release, as it has a dedicated release process
+  if (!options.multiplatformMode) {
+    projectsToRelease = projectsToRelease.filter(
+      (project) => !MULTIPLATFORM_PROJECTS.includes(project),
+    )
+  } else {
+    projectsToRelease = projectsToRelease.filter((project) =>
+      MULTIPLATFORM_PROJECTS.includes(project),
+    )
+  }
 
   if (projectsToRelease.length === 0) {
     console.error('No projects to release found in the latest version plan.')
@@ -39,11 +53,18 @@ const runExecutor: PromiseExecutor<
   let result = await version(projectsToRelease, options)
   if (!result) {
     console.error('Failed to version projects.')
-    return {
-      success: false,
+    if (!options.multiplatformMode) {
+      return {
+        success: false,
+      }
     }
+    // In multiplatform mode, we want to continue with the release process even if versioning fails, as it might be caused by versisoning the same project multiple times, which is expected in this mode
+    console.warn(
+      'Continuing with the release process in multiplatform mode despite versioning failure.',
+    )
+  } else {
+    console.info('Projects versioned successfully.')
   }
-  console.info('Projects versioned successfully.')
 
   // Build the projects
   console.info('Building the projects...')

@@ -14,6 +14,11 @@
       "type": "boolean",
       "description": "If true, the command will be run in verbose mode. This means that more information will be printed to the console.",
       "default": true
+    },
+    "multiplatformMode": {
+      "type": "boolean",
+      "description": "If true, the command will be run in multiplatform mode. This means that the command will be executed on multiple platforms.",
+      "default": false
     }
   },
   "required": []
