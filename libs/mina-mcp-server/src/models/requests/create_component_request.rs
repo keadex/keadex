@@ -1,14 +1,16 @@
 use clap::Parser;
-use keadex_mina::model::c4_element::software_system::SystemType;
+use keadex_mina::model::c4_element::component::ComponentType;
 
 #[derive(Parser, Debug)]
-pub struct CreateSystem {
+pub struct CreateComponentRequest {
   #[arg(long)]
   pub alias: String,
   #[arg(long)]
   pub label: String,
   #[arg(long)]
-  pub system_type: SystemType,
+  pub component_type: ComponentType,
+  #[arg(long)]
+  pub technology: String,
   #[arg(long)]
   pub description: Option<String>,
   #[arg(long)]

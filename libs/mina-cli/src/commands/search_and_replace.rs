@@ -1,10 +1,10 @@
-use crate::model::commands::search_and_replace::SearchAndReplace;
 use keadex_mina::core::serializer::serialize_obj_to_json_string;
 use keadex_mina::error_handling::mina_error::MinaError;
 use keadex_mina::service::search_service::search_and_replace_text;
+use mina_mcp_server::models::requests::search_and_replace_request::SearchAndReplaceRequest;
 
 pub async fn search_and_replace(
-  search_and_replace_args: SearchAndReplace,
+  search_and_replace_args: SearchAndReplaceRequest,
 ) -> Result<(), MinaError> {
   let results = search_and_replace_text(
     search_and_replace_args.text_to_search,

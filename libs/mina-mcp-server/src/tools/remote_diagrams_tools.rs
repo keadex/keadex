@@ -1,4 +1,4 @@
-use crate::KeadexMinaServer;
+use crate::core::server::KeadexMinaServer;
 use crate::models::requests::read_remote_diagram_request::ReadRemoteDiagramRequest;
 use crate::models::requests::render_diagram_request::RenderDiagramRequest;
 use crate::services::diagram_service::download_diagram_data;

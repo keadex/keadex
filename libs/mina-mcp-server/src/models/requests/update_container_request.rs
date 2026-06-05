@@ -1,16 +1,16 @@
 use clap::Parser;
-use keadex_mina::model::c4_element::component::ComponentType;
+use keadex_mina::model::c4_element::container::ContainerType;
 use schemars::JsonSchema;
 use serde::Deserialize;
 
 #[derive(Parser, Debug, Deserialize, JsonSchema)]
-pub struct UpdateComponent {
+pub struct UpdateContainerRequest {
   #[arg(long)]
   pub alias: String,
   #[arg(long)]
   pub new_label: Option<String>,
   #[arg(long)]
-  pub new_component_type: Option<ComponentType>,
+  pub new_container_type: Option<ContainerType>,
   #[arg(long)]
   pub new_technology: Option<String>,
   #[arg(long)]

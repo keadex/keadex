@@ -7,26 +7,22 @@ use crate::commands::search_and_replace::search_and_replace;
 use crate::list_diagrams::list_diagrams;
 use crate::model::response::Response;
 use clap::Parser;
-use commands::create_component::create_component;
-use commands::create_container::create_container;
-use commands::create_person::create_person;
-use commands::create_system::create_system;
 use commands::find_dependent_elements::find_dependent_elements;
 use commands::list_diagrams;
 use commands::list_library_elements::list_library_elements;
 use commands::read_diagram::read_diagram;
 use commands::search_diagram_element::search_diagram_element;
 use commands::search_library_element::search_library_element;
-use commands::update_component::update_component;
-use commands::update_container::update_container;
-use commands::update_person::update_person;
-use commands::update_system::update_system;
 use commands::upsert_component::upsert_component;
 use commands::upsert_container::upsert_container;
 use commands::upsert_person::upsert_person;
 use commands::upsert_system::upsert_system;
 use helpers::mina_lifecycle_helper::{clear_keadex_mina, init_keadex_mina};
 use keadex_mina::core::serializer::serialize_obj_to_json_string;
+use mina_mcp_server::services::library_service::{
+  create_component, create_container, create_person, create_system, update_component,
+  update_container, update_person, update_system,
+};
 use model::cli::{Cli, Commands};
 
 #[tokio::main]
