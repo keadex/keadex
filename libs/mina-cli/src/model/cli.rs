@@ -6,7 +6,8 @@ use clap::{Parser, Subcommand};
 use mina_mcp_server::models::requests::{
   create_component_request::CreateComponentRequest,
   create_container_request::CreateContainerRequest, create_person_request::CreatePersonRequest,
-  create_system_request::CreateSystemRequest, search_and_replace_request::SearchAndReplaceRequest,
+  create_project_request::CreateProjectRequest, create_system_request::CreateSystemRequest,
+  search_and_replace_request::SearchAndReplaceRequest,
   update_component_request::UpdateComponentRequest,
   update_container_request::UpdateContainerRequest, update_person_request::UpdatePersonRequest,
   update_system_request::UpdateSystemRequest,
@@ -32,6 +33,12 @@ pub struct Cli {
 
 #[derive(Subcommand, Debug)]
 pub enum Commands {
+  /// Create a new Mina project in the given path.
+
+  /// This command will create a new Mina project in the given path with the given name, description and version.
+  /// Returns the configuration of the newly created project including the path of its folder.
+  CreateProject(CreateProjectRequest),
+
   /// Returns the dependents of a an architectural element with the given alias in the given diagram.
   FindDependentElements(FindDependentElements),
 

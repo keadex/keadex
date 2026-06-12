@@ -33,7 +33,7 @@ pub async fn close_project_tool(
 }
 
 pub async fn create_project_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: CreateProjectRequest,
 ) -> Result<Json<ProjectSettings>, String> {
   let mut project_settings = ProjectSettings {

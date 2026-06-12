@@ -178,7 +178,7 @@ impl KeadexMinaServer {
     &self,
     Parameters(request): Parameters<CreateProjectRequest>,
   ) -> Result<Json<ProjectSettings>, String> {
-    create_project_tool(self, request).await
+    create_project_tool(Some(self), request).await
   }
 
   #[tool(

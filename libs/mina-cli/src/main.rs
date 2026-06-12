@@ -3,22 +3,23 @@ pub mod constants;
 pub mod helpers;
 pub mod model;
 
+use crate::commands::create_project::create_project;
+use crate::commands::find_dependent_elements::find_dependent_elements;
+use crate::commands::list_diagrams;
+use crate::commands::list_library_elements::list_library_elements;
+use crate::commands::read_all_diagrams::read_all_diagrams;
+use crate::commands::read_diagram::read_diagram;
 use crate::commands::search_and_replace::search_and_replace;
+use crate::commands::search_diagram_element::search_diagram_element;
+use crate::commands::search_library_element::search_library_element;
+use crate::commands::upsert_component::upsert_component;
+use crate::commands::upsert_container::upsert_container;
+use crate::commands::upsert_person::upsert_person;
+use crate::commands::upsert_system::upsert_system;
+use crate::helpers::mina_lifecycle_helper::{clear_keadex_mina, init_keadex_mina};
 use crate::list_diagrams::list_diagrams;
 use crate::model::response::Response;
 use clap::Parser;
-use commands::find_dependent_elements::find_dependent_elements;
-use commands::list_diagrams;
-use commands::list_library_elements::list_library_elements;
-use commands::read_all_diagrams::read_all_diagrams;
-use commands::read_diagram::read_diagram;
-use commands::search_diagram_element::search_diagram_element;
-use commands::search_library_element::search_library_element;
-use commands::upsert_component::upsert_component;
-use commands::upsert_container::upsert_container;
-use commands::upsert_person::upsert_person;
-use commands::upsert_system::upsert_system;
-use helpers::mina_lifecycle_helper::{clear_keadex_mina, init_keadex_mina};
 use keadex_mina::core::serializer::serialize_obj_to_json_string;
 use mina_mcp_server::services::library_service::{
   create_component, create_container, create_person, create_system, update_component,
@@ -33,11 +34,23 @@ async fn main() {
   if args.markdown_help {
     clap_markdown::print_help_markdown::<Cli>();
   } else {
-    let mut result = init_keadex_mina(&args.project_path).await.map(|_| ());
+    let mut result;
+    match &args.cmd {
+      Commands::CreateProject(_) => {
+        result = init_keadex_mina(None).await.map(|_| ());
+      }
+      _ => {
+        result = init_keadex_mina(Some(&args.project_path)).await.map(|_| ());
+      }
+    }
     if let Err(error) = result {
       eprintln!("Error: {}", error.msg)
     } else {
       match args.cmd {
+        Commands::CreateProject(mut create_project_args) => {
+          create_project_args.root = args.project_path.to_str().unwrap().to_string();
+          result = create_project(create_project_args).await;
+        }
         Commands::FindDependentElements(args) => {
           result =
             find_dependent_elements(&args.alias, &args.diagram_name, args.diagram_type).await;
