@@ -10,6 +10,7 @@ use clap::Parser;
 use commands::find_dependent_elements::find_dependent_elements;
 use commands::list_diagrams;
 use commands::list_library_elements::list_library_elements;
+use commands::read_all_diagrams::read_all_diagrams;
 use commands::read_diagram::read_diagram;
 use commands::search_diagram_element::search_diagram_element;
 use commands::search_library_element::search_library_element;
@@ -53,6 +54,9 @@ async fn main() {
             read_diagram_args.diagram_type,
           )
           .await;
+        }
+        Commands::ReadAllDiagrams => {
+          result = read_all_diagrams().await;
         }
         Commands::SearchAndReplace(args) => {
           result = search_and_replace(args).await;

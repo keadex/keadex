@@ -44,6 +44,12 @@ pub enum Commands {
   /// Read a diagram
   ReadDiagram(ReadDiagram),
 
+  /// Read all the diagrams in the project.
+  ///
+  /// This command read all the diagrams in the project.
+  /// The returned object contains a vector of objects where each object represents a diagram.
+  ReadAllDiagrams,
+
   /// Search for the given string in the project's files and replace the found occurrences with the given replacement string.
   SearchAndReplace(SearchAndReplaceRequest),
 

@@ -117,7 +117,7 @@ impl KeadexMinaServer {
   )]
   async fn read_all_local_diagrams(&self) -> Result<Json<ReadAllLocalDiagramsResponse>, String> {
     ensure_project_is_open().await?;
-    read_all_diagrams_tool(self).await
+    read_all_diagrams_tool(Some(self)).await
   }
 
   #[tool(

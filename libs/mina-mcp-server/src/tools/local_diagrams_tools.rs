@@ -43,7 +43,7 @@ pub async fn list_diagrams_tool(
 }
 
 pub async fn read_all_diagrams_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
 ) -> Result<Json<ReadAllLocalDiagramsResponse>, String> {
   let diagrams = list_diagrams().await.map_err(|e| e.msg)?;
   let mut all_diagrams = Vec::new();

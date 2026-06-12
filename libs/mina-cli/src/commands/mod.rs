@@ -1,6 +1,7 @@
 pub mod find_dependent_elements;
 pub mod list_diagrams;
 pub mod list_library_elements;
+pub mod read_all_diagrams;
 pub mod read_diagram;
 pub mod search_and_replace;
 pub mod search_diagram_element;
