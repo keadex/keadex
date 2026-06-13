@@ -29,7 +29,7 @@ pub async fn close_project_tool(
   let success = close_project(&request.mina_project_path)
     .await
     .map_err(|e| e.msg)?;
-  Ok(Json(BaseResponse { success }))
+  Ok(Json(BaseResponse { success, msg: None }))
 }
 
 pub async fn create_project_tool(
@@ -50,7 +50,7 @@ pub async fn create_project_tool(
 }
 
 pub async fn validate_project_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: LocalProjectBaseRequest,
 ) -> Result<(), String> {
   validate_project_structure(&request.mina_project_path)

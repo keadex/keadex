@@ -11,3 +11,4 @@ pub mod upsert_component;
 pub mod upsert_container;
 pub mod upsert_person;
 pub mod upsert_system;
+pub mod validate_project;

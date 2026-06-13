@@ -193,7 +193,7 @@ impl KeadexMinaServer {
     &self,
     Parameters(request): Parameters<LocalProjectBaseRequest>,
   ) -> Result<(), String> {
-    validate_project_tool(self, request).await
+    validate_project_tool(Some(self), request).await
   }
 
   #[tool(

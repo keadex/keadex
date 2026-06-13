@@ -37,38 +37,46 @@ pub async fn upsert_person_in_library_tool(
   _router: &KeadexMinaServer,
   request: UpdatePersonRequest,
 ) -> Result<Json<BaseResponse>, String> {
-  upsert_person(request)
-    .await
-    .map_err(|e| e.msg)
-    .map(|_| Json(BaseResponse { success: true }))
+  upsert_person(request).await.map_err(|e| e.msg).map(|_| {
+    Json(BaseResponse {
+      success: true,
+      msg: None,
+    })
+  })
 }
 
 pub async fn upsert_system_in_library_tool(
   _router: &KeadexMinaServer,
   request: UpdateSystemRequest,
 ) -> Result<Json<BaseResponse>, String> {
-  upsert_system(request)
-    .await
-    .map_err(|e| e.msg)
-    .map(|_| Json(BaseResponse { success: true }))
+  upsert_system(request).await.map_err(|e| e.msg).map(|_| {
+    Json(BaseResponse {
+      success: true,
+      msg: None,
+    })
+  })
 }
 
 pub async fn upsert_container_in_library_tool(
   _router: &KeadexMinaServer,
   request: UpdateContainerRequest,
 ) -> Result<Json<BaseResponse>, String> {
-  upsert_container(request)
-    .await
-    .map_err(|e| e.msg)
-    .map(|_| Json(BaseResponse { success: true }))
+  upsert_container(request).await.map_err(|e| e.msg).map(|_| {
+    Json(BaseResponse {
+      success: true,
+      msg: None,
+    })
+  })
 }
 
 pub async fn upsert_component_in_library_tool(
   _router: &KeadexMinaServer,
   request: UpdateComponentRequest,
 ) -> Result<Json<BaseResponse>, String> {
-  upsert_component(request)
-    .await
-    .map_err(|e| e.msg)
-    .map(|_| Json(BaseResponse { success: true }))
+  upsert_component(request).await.map_err(|e| e.msg).map(|_| {
+    Json(BaseResponse {
+      success: true,
+      msg: None,
+    })
+  })
 }

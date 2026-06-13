@@ -111,7 +111,7 @@ pub async fn create_diagram_tool(
   create_diagram(diagram)
     .await
     .map_err(|e| e.msg)
-    .map(|success| Json(BaseResponse { success }))
+    .map(|success| Json(BaseResponse { success, msg: None }))
 }
 
 pub async fn delete_diagram_tool(
@@ -169,7 +169,12 @@ pub async fn validate_diagram_tool(
   )
   .await
   .map_err(|e| e.msg)
-  .map(|_| Json(BaseResponse { success: true }))
+  .map(|_| {
+    Json(BaseResponse {
+      success: true,
+      msg: None,
+    })
+  })
 }
 
 pub async fn find_dependent_elements_in_diagram_tool(

@@ -16,6 +16,7 @@ use crate::commands::upsert_component::upsert_component;
 use crate::commands::upsert_container::upsert_container;
 use crate::commands::upsert_person::upsert_person;
 use crate::commands::upsert_system::upsert_system;
+use crate::commands::validate_project::validate_project;
 use crate::helpers::mina_lifecycle_helper::{clear_keadex_mina, init_keadex_mina};
 use crate::list_diagrams::list_diagrams;
 use crate::model::response::Response;
@@ -36,7 +37,7 @@ async fn main() {
   } else {
     let mut result;
     match &args.cmd {
-      Commands::CreateProject(_) => {
+      Commands::CreateProject(_) | Commands::ValidateProject => {
         result = init_keadex_mina(None).await.map(|_| ());
       }
       _ => {
@@ -115,6 +116,9 @@ async fn main() {
         }
         Commands::UpsertComponent(upsert_component_args) => {
           result = upsert_component(upsert_component_args).await;
+        }
+        Commands::ValidateProject => {
+          result = validate_project(args.project_path.to_str().unwrap()).await;
         }
       }
       if let Err(error) = result {
