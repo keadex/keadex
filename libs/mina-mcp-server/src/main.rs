@@ -257,7 +257,7 @@ impl KeadexMinaServer {
     Parameters(request): Parameters<LocalDiagramBaseRequest>,
   ) -> Result<Json<ProjectLibrary>, String> {
     ensure_project_is_open().await?;
-    delete_diagram_tool(self, request).await
+    delete_diagram_tool(Some(self), request).await
   }
 
   #[tool(

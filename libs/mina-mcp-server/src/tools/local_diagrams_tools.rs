@@ -115,7 +115,7 @@ pub async fn create_diagram_tool(
 }
 
 pub async fn delete_diagram_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: LocalDiagramBaseRequest,
 ) -> Result<Json<ProjectLibrary>, String> {
   delete_diagram(request.diagram_name, request.diagram_type)

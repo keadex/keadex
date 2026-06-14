@@ -5,6 +5,7 @@ pub mod model;
 
 use crate::commands::create_diagram::create_diagram;
 use crate::commands::create_project::create_project;
+use crate::commands::delete_diagram::delete_diagram;
 use crate::commands::find_dependent_elements::find_dependent_elements;
 use crate::commands::list_diagrams;
 use crate::commands::list_library_elements::list_library_elements;
@@ -55,6 +56,9 @@ async fn main() {
         Commands::CreateProject(mut create_project_args) => {
           create_project_args.root = args.project_path.to_str().unwrap().to_string();
           result = create_project(create_project_args).await;
+        }
+        Commands::DeleteDiagram(delete_diagram_args) => {
+          result = delete_diagram(delete_diagram_args).await;
         }
         Commands::FindDependentElements(args) => {
           result =

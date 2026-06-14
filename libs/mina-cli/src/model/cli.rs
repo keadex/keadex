@@ -4,6 +4,7 @@ use crate::model::commands::search_diagram_element::SearchDiagramElement;
 use crate::model::commands::search_library_element::SearchLibraryElement;
 use clap::{Parser, Subcommand};
 use mina_mcp_server::models::requests::create_diagram_request::CreateDiagramRequest;
+use mina_mcp_server::models::requests::local_diagram_base_request::LocalDiagramBaseRequest;
 use mina_mcp_server::models::requests::{
   create_component_request::CreateComponentRequest,
   create_container_request::CreateContainerRequest, create_person_request::CreatePersonRequest,
@@ -56,6 +57,11 @@ pub enum Commands {
   /// This command will create a new Mina project in the given path with the given name, description and version.
   /// Returns the configuration of the newly created project including the path of its folder.
   CreateProject(CreateProjectRequest),
+
+  /// Delete a diagram in the project.
+  ///
+  /// This command will delete a diagram in the project. On success, returns the updated project library configuration reflecting the deletion of the diagram.
+  DeleteDiagram(LocalDiagramBaseRequest),
 
   /// Returns the dependents of a an architectural element with the given alias in the given diagram.
   FindDependentElements(FindDependentElements),
