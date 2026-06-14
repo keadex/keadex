@@ -3,6 +3,7 @@ use crate::model::commands::read_diagram::ReadDiagram;
 use crate::model::commands::search_diagram_element::SearchDiagramElement;
 use crate::model::commands::search_library_element::SearchLibraryElement;
 use clap::{Parser, Subcommand};
+use mina_mcp_server::models::requests::create_diagram_request::CreateDiagramRequest;
 use mina_mcp_server::models::requests::{
   create_component_request::CreateComponentRequest,
   create_container_request::CreateContainerRequest, create_person_request::CreatePersonRequest,
@@ -33,6 +34,23 @@ pub struct Cli {
 
 #[derive(Subcommand, Debug)]
 pub enum Commands {
+  /// Create a container in the project's library.
+  CreateContainer(CreateContainerRequest),
+
+  /// Create a component in the project's library.
+  CreateComponent(CreateComponentRequest),
+
+  /// Create a person in the project's library.
+  CreatePerson(CreatePersonRequest),
+
+  /// Create a software system in the project's library.
+  CreateSystem(CreateSystemRequest),
+
+  /// Create a new diagram in the project.
+  ///
+  /// This command will create a new diagram in the project. On success, returns a confirmation of the diagram creation.
+  CreateDiagram(CreateDiagramRequest),
+
   /// Create a new Mina project in the given path.
 
   /// This command will create a new Mina project in the given path with the given name, description and version.
@@ -65,18 +83,6 @@ pub enum Commands {
 
   /// Search in the project's library for an element with the given alias.
   SearchLibraryElement(SearchLibraryElement),
-
-  /// Create a person in the project's library.
-  CreatePerson(CreatePersonRequest),
-
-  /// Create a software system in the project's library.
-  CreateSystem(CreateSystemRequest),
-
-  /// Create a container in the project's library.
-  CreateContainer(CreateContainerRequest),
-
-  /// Create a component in the project's library.
-  CreateComponent(CreateComponentRequest),
 
   /// Update a person in the project's library.
   ///

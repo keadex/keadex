@@ -97,7 +97,7 @@ pub async fn search_diagram_element_in_project(
 }
 
 pub async fn create_diagram_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: CreateDiagramRequest,
 ) -> Result<Json<BaseResponse>, String> {
   let mut diagram = Diagram::default();

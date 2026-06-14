@@ -241,7 +241,7 @@ impl KeadexMinaServer {
     Parameters(request): Parameters<CreateDiagramRequest>,
   ) -> Result<Json<BaseResponse>, String> {
     ensure_project_is_open().await?;
-    create_diagram_tool(self, request).await
+    create_diagram_tool(Some(self), request).await
   }
 
   #[tool(

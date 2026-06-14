@@ -3,6 +3,7 @@ pub mod constants;
 pub mod helpers;
 pub mod model;
 
+use crate::commands::create_diagram::create_diagram;
 use crate::commands::create_project::create_project;
 use crate::commands::find_dependent_elements::find_dependent_elements;
 use crate::commands::list_diagrams;
@@ -48,6 +49,9 @@ async fn main() {
       eprintln!("Error: {}", error.msg)
     } else {
       match args.cmd {
+        Commands::CreateDiagram(create_diagram_args) => {
+          result = create_diagram(create_diagram_args).await;
+        }
         Commands::CreateProject(mut create_project_args) => {
           create_project_args.root = args.project_path.to_str().unwrap().to_string();
           result = create_project(create_project_args).await;
