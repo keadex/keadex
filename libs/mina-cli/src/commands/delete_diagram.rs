@@ -1,6 +1,5 @@
 use keadex_mina::core::serializer::serialize_obj_to_json_string;
 use keadex_mina::error_handling::mina_error::MinaError;
-use mina_mcp_server::models::requests::create_diagram_request::CreateDiagramRequest;
 use mina_mcp_server::models::requests::local_diagram_base_request::LocalDiagramBaseRequest;
 use mina_mcp_server::tools::local_diagrams_tools::delete_diagram_tool;
 
