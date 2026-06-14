@@ -26,7 +26,7 @@ use rmcp::Json;
 use rmcp::model::{Annotated, Content, RawContent};
 
 pub async fn read_diagram_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: LocalDiagramBaseRequest,
 ) -> Result<Json<Diagram>, String> {
   let diagram = get_diagram(&request.diagram_name, request.diagram_type)
@@ -36,7 +36,7 @@ pub async fn read_diagram_tool(
 }
 
 pub async fn list_diagrams_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
 ) -> Result<Json<ListLocalDiagramsResponse>, String> {
   let diagrams = list_diagrams().await.map_err(|e| e.msg)?;
   Ok(Json(ListLocalDiagramsResponse { diagrams }))
@@ -125,7 +125,7 @@ pub async fn delete_diagram_tool(
 }
 
 pub async fn edit_diagram_plantuml_code_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: EditPlantUmlRequest,
 ) -> Result<Json<Diagram>, String> {
   // Read the diagram to retrieve its current spec and metadata (e.g., id, name, type)
@@ -150,7 +150,7 @@ pub async fn edit_diagram_plantuml_code_tool(
 }
 
 pub async fn validate_diagram_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: LocalDiagramBaseRequest,
 ) -> Result<Json<BaseResponse>, String> {
   let diagram = read_diagram_tool(

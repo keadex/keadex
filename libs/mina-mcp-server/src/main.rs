@@ -91,7 +91,7 @@ impl KeadexMinaServer {
     Parameters(request): Parameters<LocalDiagramBaseRequest>,
   ) -> Result<Json<Diagram>, String> {
     ensure_project_is_open().await?;
-    read_local_diagram_tool(self, request).await
+    read_local_diagram_tool(Some(self), request).await
   }
 
   #[tool(
@@ -104,7 +104,7 @@ impl KeadexMinaServer {
   )]
   async fn list_local_diagrams(&self) -> Result<Json<ListLocalDiagramsResponse>, String> {
     ensure_project_is_open().await?;
-    list_diagrams_tool(self).await
+    list_diagrams_tool(Some(self)).await
   }
 
   #[tool(
@@ -273,7 +273,7 @@ impl KeadexMinaServer {
     Parameters(request): Parameters<EditPlantUmlRequest>,
   ) -> Result<Json<Diagram>, String> {
     ensure_project_is_open().await?;
-    edit_diagram_plantuml_code_tool(self, request).await
+    edit_diagram_plantuml_code_tool(Some(self), request).await
   }
 
   #[tool(
@@ -289,7 +289,7 @@ impl KeadexMinaServer {
     Parameters(request): Parameters<LocalDiagramBaseRequest>,
   ) -> Result<Json<BaseResponse>, String> {
     ensure_project_is_open().await?;
-    validate_diagram_tool(self, request).await
+    validate_diagram_tool(Some(self), request).await
   }
 
   #[tool(

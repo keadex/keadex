@@ -1,6 +1,7 @@
 pub mod create_diagram;
 pub mod create_project;
 pub mod delete_diagram;
+pub mod edit_diagram_plantuml_code;
 pub mod find_dependent_elements;
 pub mod list_diagrams;
 pub mod list_library_elements;

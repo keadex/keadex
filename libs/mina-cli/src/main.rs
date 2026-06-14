@@ -6,6 +6,7 @@ pub mod model;
 use crate::commands::create_diagram::create_diagram;
 use crate::commands::create_project::create_project;
 use crate::commands::delete_diagram::delete_diagram;
+use crate::commands::edit_diagram_plantuml_code::edit_diagram_plantuml_code;
 use crate::commands::find_dependent_elements::find_dependent_elements;
 use crate::commands::list_diagrams;
 use crate::commands::list_library_elements::list_library_elements;
@@ -59,6 +60,9 @@ async fn main() {
         }
         Commands::DeleteDiagram(delete_diagram_args) => {
           result = delete_diagram(delete_diagram_args).await;
+        }
+        Commands::EditDiagramPlantumlCode(edit_diagram_plantuml_code_args) => {
+          result = edit_diagram_plantuml_code(edit_diagram_plantuml_code_args).await;
         }
         Commands::FindDependentElements(args) => {
           result =

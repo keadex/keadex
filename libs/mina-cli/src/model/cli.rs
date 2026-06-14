@@ -4,6 +4,7 @@ use crate::model::commands::search_diagram_element::SearchDiagramElement;
 use crate::model::commands::search_library_element::SearchLibraryElement;
 use clap::{Parser, Subcommand};
 use mina_mcp_server::models::requests::create_diagram_request::CreateDiagramRequest;
+use mina_mcp_server::models::requests::edit_plantuml_request::EditPlantUmlRequest;
 use mina_mcp_server::models::requests::local_diagram_base_request::LocalDiagramBaseRequest;
 use mina_mcp_server::models::requests::{
   create_component_request::CreateComponentRequest,
@@ -62,6 +63,11 @@ pub enum Commands {
   ///
   /// This command will delete a diagram in the project. On success, returns the updated project library configuration reflecting the deletion of the diagram.
   DeleteDiagram(LocalDiagramBaseRequest),
+
+  /// Edit the PlantUML code of a diagram in the project.
+  ///
+  /// This command will edit the PlantUML code of a diagram in the project. On success, returns the updated diagram.
+  EditDiagramPlantumlCode(EditPlantUmlRequest),
 
   /// Returns the dependents of a an architectural element with the given alias in the given diagram.
   FindDependentElements(FindDependentElements),
