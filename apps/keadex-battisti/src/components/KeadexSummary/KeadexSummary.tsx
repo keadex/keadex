@@ -2,13 +2,13 @@
 
 import Image from 'next/image'
 import { PropsWithChildren } from 'react'
-import { Trans } from 'react-i18next'
 import keadexLogoArchitecture from '../../../public/img/keadex-logo-architecture.svg'
 import { useTranslation } from '../../app/i18n/client'
+import Link from 'next/link'
+import ROUTES, { PROJECT_KEADEX_MINA } from '../../core/routes'
+import keadexMinaLogo from '../../../public/img/keadex-mina-logo.svg'
 
-export type KeadexSummaryProps = {
-  lang: string
-}
+export type KeadexSummaryProps = { lang: string }
 
 export default function KeadexSummary({
   children,
@@ -23,11 +23,18 @@ export default function KeadexSummary({
           alt="Keadex Logo"
           className="mx-auto mb-10 lg:w-[36rem] w-[30rem]"
         />
-        <Trans
-          i18nKey="home.keadex_summary"
-          t={t}
-          components={{ span: <span /> }}
-        />
+        <div className="text-center text-lg flex flex-col absolute left-0 right-0 bottom-12 justify-center items-center">
+          <span className="font-extralight">
+            {t('common.action.explore_os_projects')}
+          </span>
+          <Link href={ROUTES[PROJECT_KEADEX_MINA].path}>
+            <Image
+              src={keadexMinaLogo}
+              alt="Keadex Mina Logo"
+              className="w-50 mx-auto mt-8"
+            />
+          </Link>
+        </div>
       </div>
     </div>
   )

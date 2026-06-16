@@ -16,7 +16,6 @@ import { PropsWithChildren, useEffect, useState } from 'react'
 import keadexLogo from '../../../public/img/keadex-logo.png'
 import { useTranslation } from '../../app/i18n/client'
 import ROUTES, {
-  ABOUT_ME,
   DOCS_OVERVIEW,
   HOME,
   PROJECTS,
@@ -24,9 +23,7 @@ import ROUTES, {
 } from '../../core/routes'
 import { twMerge } from 'tailwind-merge'
 
-export type HeaderProps = {
-  lang: string
-}
+export type HeaderProps = { lang: string }
 
 export default function Header(props: PropsWithChildren<HeaderProps>) {
   const { lang } = props
@@ -90,7 +87,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
         `fixed w-full z-30 transition-all duration-500`,
         scrollActive || !menuCollapsed
           ? ' top-0 shadow-md backdrop-blur-md bg-dark-primary/60'
-          : ' bg-transparent',
+          : ' bg-dark-primary',
       )}
     >
       <nav
@@ -152,16 +149,6 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
                   }`}
                 >
                   Docs
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={ROUTES[ABOUT_ME].path}
-                  className={`${
-                    pathname?.endsWith(ROUTES[ABOUT_ME].path) ? ' active' : ''
-                  }`}
-                >
-                  {t('common.about_me')}
                 </Link>
               </li>
               <li className="text-center lg:text-right">
