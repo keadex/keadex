@@ -12,7 +12,7 @@ export const Player = (props: PlayerProps) => {
 
   function buildVimeoUrl() {
     if (src) {
-      return `${src}${src.includes('?') ? '' : '?'}&byline=0&portrait=0&playsinline=0&badge=0&title=0&player_id=0&app_id=58479&autopause=0&controls=${controls ? '1' : '0'}&autoplay=${playing ? '1' : '0'}&muted=${muted ? '1' : '0'}&loop=${loop ? '1' : '0'}&responsive=${props.config?.vimeo?.responsive ? '1' : '0'}&transparent=${props.config?.vimeo?.transparent === false ? '0' : '1'}`
+      return `${src}${src.includes('?') ? '' : '?'}&quality=1080p&byline=0&portrait=0&playsinline=0&badge=0&title=0&player_id=0&app_id=58479&autopause=0&controls=${controls ? '1' : '0'}&autoplay=${playing ? '1' : '0'}&muted=${muted ? '1' : '0'}&loop=${loop ? '1' : '0'}&responsive=${props.config?.vimeo?.responsive ? '1' : '0'}&transparent=${props.config?.vimeo?.transparent === false ? '0' : '1'}`
     }
     return src
   }
