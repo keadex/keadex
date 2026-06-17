@@ -66,8 +66,12 @@ async fn main() {
           result = edit_diagram_plantuml_code(edit_diagram_plantuml_code_args).await;
         }
         Commands::FindDependentElements(args) => {
-          result =
-            find_dependent_elements(&args.alias, &args.diagram_name, args.diagram_type).await;
+          result = find_dependent_elements(
+            &args.diagram_element_alias,
+            &args.diagram_name,
+            args.diagram_type,
+          )
+          .await;
         }
         Commands::ListDiagrams => {
           result = list_diagrams().await;

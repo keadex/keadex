@@ -1,10 +1,7 @@
-use crate::model::commands::find_dependent_elements::FindDependentElements;
-use crate::model::commands::read_diagram::ReadDiagram;
-use crate::model::commands::search_diagram_element::SearchDiagramElement;
-use crate::model::commands::search_library_element::SearchLibraryElement;
 use clap::{Parser, Subcommand};
 use mina_mcp_server::models::requests::create_diagram_request::CreateDiagramRequest;
 use mina_mcp_server::models::requests::edit_plantuml_request::EditPlantUmlRequest;
+use mina_mcp_server::models::requests::find_diagram_element_request::FindDiagramElementRequest;
 use mina_mcp_server::models::requests::local_diagram_base_request::LocalDiagramBaseRequest;
 use mina_mcp_server::models::requests::{
   create_component_request::CreateComponentRequest,
@@ -16,6 +13,8 @@ use mina_mcp_server::models::requests::{
   update_system_request::UpdateSystemRequest,
 };
 use std::path::PathBuf;
+
+use crate::model::commands::diagram_element::DiagramElement;
 
 /// A CLI for interacting with a Keadex Mina project.
 ///
@@ -70,7 +69,7 @@ pub enum Commands {
   EditDiagramPlantumlCode(EditPlantUmlRequest),
 
   /// Returns the dependents of a an architectural element with the given alias in the given diagram.
-  FindDependentElements(FindDependentElements),
+  FindDependentElements(FindDiagramElementRequest),
 
   /// Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names.
   ListDiagrams,
@@ -79,7 +78,7 @@ pub enum Commands {
   ListLibraryElements,
 
   /// Read a diagram
-  ReadDiagram(ReadDiagram),
+  ReadDiagram(LocalDiagramBaseRequest),
 
   /// Read all the diagrams in the project.
   ///
@@ -91,10 +90,10 @@ pub enum Commands {
   SearchAndReplace(SearchAndReplaceRequest),
 
   /// Search for the project's diagrams that include the element with the given alias.
-  SearchDiagramElement(SearchDiagramElement),
+  SearchDiagramElement(DiagramElement),
 
   /// Search in the project's library for an element with the given alias.
-  SearchLibraryElement(SearchLibraryElement),
+  SearchLibraryElement(DiagramElement),
 
   /// Update a person in the project's library.
   ///
