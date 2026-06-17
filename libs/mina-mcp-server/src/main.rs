@@ -443,7 +443,7 @@ impl KeadexMinaServer {
     &self,
     Parameters(request): Parameters<ValidatePlantUmlCodeRequest>,
   ) -> Result<(), String> {
-    validate_diagram_plantuml_code_tool(self, request).await
+    validate_diagram_plantuml_code_tool(Some(self), request).await
   }
 
   // *************************************************

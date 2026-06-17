@@ -15,4 +15,5 @@ pub mod upsert_container;
 pub mod upsert_person;
 pub mod upsert_system;
 pub mod validate_diagram;
+pub mod validate_plantuml_code;
 pub mod validate_project;

@@ -20,6 +20,7 @@ use crate::commands::upsert_container::upsert_container;
 use crate::commands::upsert_person::upsert_person;
 use crate::commands::upsert_system::upsert_system;
 use crate::commands::validate_diagram::validate_diagram;
+use crate::commands::validate_plantuml_code::validate_plantuml_code;
 use crate::commands::validate_project::validate_project;
 use crate::helpers::mina_lifecycle_helper::{clear_keadex_mina, init_keadex_mina};
 use crate::list_diagrams::list_diagrams;
@@ -41,7 +42,9 @@ async fn main() {
   } else {
     let mut result;
     match &args.cmd {
-      Commands::CreateProject(_) | Commands::ValidateProject => {
+      Commands::CreateProject(_)
+      | Commands::ValidateProject
+      | Commands::ValidatePlantumlCode(_) => {
         result = init_keadex_mina(None).await.map(|_| ());
       }
       _ => {
@@ -136,6 +139,9 @@ async fn main() {
         }
         Commands::ValidateDiagram(validate_diagram_args) => {
           result = validate_diagram(validate_diagram_args).await;
+        }
+        Commands::ValidatePlantumlCode(validate_plantuml_code_args) => {
+          result = validate_plantuml_code(validate_plantuml_code_args).await;
         }
         Commands::ValidateProject => {
           result = validate_project(args.project_path.to_str().unwrap()).await;

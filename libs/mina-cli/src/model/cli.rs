@@ -1,8 +1,10 @@
+use crate::model::commands::diagram_element::DiagramElement;
 use clap::{Parser, Subcommand};
 use mina_mcp_server::models::requests::create_diagram_request::CreateDiagramRequest;
 use mina_mcp_server::models::requests::edit_plantuml_request::EditPlantUmlRequest;
 use mina_mcp_server::models::requests::find_diagram_element_request::FindDiagramElementRequest;
 use mina_mcp_server::models::requests::local_diagram_base_request::LocalDiagramBaseRequest;
+use mina_mcp_server::models::requests::validate_plantuml_code_request::ValidatePlantUmlCodeRequest;
 use mina_mcp_server::models::requests::{
   create_component_request::CreateComponentRequest,
   create_container_request::CreateContainerRequest, create_person_request::CreatePersonRequest,
@@ -13,8 +15,6 @@ use mina_mcp_server::models::requests::{
   update_system_request::UpdateSystemRequest,
 };
 use std::path::PathBuf;
-
-use crate::model::commands::diagram_element::DiagramElement;
 
 /// A CLI for interacting with a Keadex Mina project.
 ///
@@ -135,6 +135,11 @@ pub enum Commands {
   ///
   /// This command will return an object containing the validation result of the diagram.
   ValidateDiagram(LocalDiagramBaseRequest),
+
+  /// Validate the PlantUML code of a diagram.
+  ///
+  /// This command will return an object containing the validation result of the PlantUML code of the diagram.
+  ValidatePlantumlCode(ValidatePlantUmlCodeRequest),
 
   /// Validate the project in the given path. This command will return an error if the project is not valid.
   ValidateProject,

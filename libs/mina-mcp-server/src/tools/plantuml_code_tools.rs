@@ -29,7 +29,7 @@ pub async fn generate_plantuml_code_of_diagram_elements_tool(
 }
 
 pub async fn validate_diagram_plantuml_code_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: ValidatePlantUmlCodeRequest,
 ) -> Result<(), String> {
   // deserialize to check the given raw PlantUML has a valid syntax
