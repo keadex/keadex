@@ -132,6 +132,11 @@ pub enum Commands {
   /// Create or update a component (and the dependent diagrams) in the project's library.
   UpsertComponent(UpdateComponentRequest),
 
+  /// Validate a diagram in the project.
+  ///
+  /// This command will return an object containing the validation result of the diagram.
+  ValidateDiagram(LocalDiagramBaseRequest),
+
   /// Validate the project in the given path. This command will return an error if the project is not valid.
   ValidateProject,
 }

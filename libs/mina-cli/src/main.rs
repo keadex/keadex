@@ -19,6 +19,7 @@ use crate::commands::upsert_component::upsert_component;
 use crate::commands::upsert_container::upsert_container;
 use crate::commands::upsert_person::upsert_person;
 use crate::commands::upsert_system::upsert_system;
+use crate::commands::validate_diagram::validate_diagram;
 use crate::commands::validate_project::validate_project;
 use crate::helpers::mina_lifecycle_helper::{clear_keadex_mina, init_keadex_mina};
 use crate::list_diagrams::list_diagrams;
@@ -128,6 +129,9 @@ async fn main() {
         }
         Commands::UpsertComponent(upsert_component_args) => {
           result = upsert_component(upsert_component_args).await;
+        }
+        Commands::ValidateDiagram(validate_diagram_args) => {
+          result = validate_diagram(validate_diagram_args).await;
         }
         Commands::ValidateProject => {
           result = validate_project(args.project_path.to_str().unwrap()).await;
