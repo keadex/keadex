@@ -462,7 +462,7 @@ impl KeadexMinaServer {
     &self,
     Parameters(request): Parameters<ReadRemoteDiagramRequest>,
   ) -> Result<Json<Diagram>, String> {
-    let diagram_data = read_remote_diagram_tool(self, request).await?;
+    let diagram_data = read_remote_diagram_tool(Some(self), request).await?;
     match diagram_data {
       Some((diagram, _)) => Ok(Json(diagram)),
       None => Err("Diagram not found. Please verify the URLs provided, or, if linking to a private repository, ensure the GitHub token is configured.".to_string()),        

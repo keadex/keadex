@@ -12,6 +12,7 @@ use crate::commands::list_diagrams;
 use crate::commands::list_library_elements::list_library_elements;
 use crate::commands::read_all_diagrams::read_all_diagrams;
 use crate::commands::read_diagram::read_diagram;
+use crate::commands::read_remote_diagram::read_diagram as read_remote_diagram;
 use crate::commands::search_and_replace::search_and_replace;
 use crate::commands::search_diagram_element::search_diagram_element;
 use crate::commands::search_library_element::search_library_element;
@@ -44,11 +45,14 @@ async fn main() {
     match &args.cmd {
       Commands::CreateProject(_)
       | Commands::ValidateProject
-      | Commands::ValidatePlantumlCode(_) => {
+      | Commands::ValidatePlantumlCode(_)
+      | Commands::ReadRemoteDiagram(_) => {
         result = init_keadex_mina(None).await.map(|_| ());
       }
       _ => {
-        result = init_keadex_mina(Some(&args.project_path)).await.map(|_| ());
+        result = init_keadex_mina(args.project_path.as_ref())
+          .await
+          .map(|_| ());
       }
     }
     if let Err(error) = result {
@@ -59,7 +63,13 @@ async fn main() {
           result = create_diagram(create_diagram_args).await;
         }
         Commands::CreateProject(mut create_project_args) => {
-          create_project_args.root = args.project_path.to_str().unwrap().to_string();
+          create_project_args.root = args
+            .project_path
+            .clone()
+            .unwrap()
+            .to_str()
+            .unwrap()
+            .to_string();
           result = create_project(create_project_args).await;
         }
         Commands::DeleteDiagram(delete_diagram_args) => {
@@ -91,6 +101,9 @@ async fn main() {
         }
         Commands::ReadAllDiagrams => {
           result = read_all_diagrams().await;
+        }
+        Commands::ReadRemoteDiagram(read_remote_diagram_args) => {
+          result = read_remote_diagram(read_remote_diagram_args).await;
         }
         Commands::SearchAndReplace(args) => {
           result = search_and_replace(args).await;
@@ -144,7 +157,7 @@ async fn main() {
           result = validate_plantuml_code(validate_plantuml_code_args).await;
         }
         Commands::ValidateProject => {
-          result = validate_project(args.project_path.to_str().unwrap()).await;
+          result = validate_project(args.project_path.clone().unwrap().to_str().unwrap()).await;
         }
       }
       if let Err(error) = result {
@@ -155,7 +168,7 @@ async fn main() {
         let json = serialize_obj_to_json_string(&response, false).unwrap();
         eprintln!("{}", json);
       }
-      clear_keadex_mina(&args.project_path).await;
+      clear_keadex_mina(args.project_path.as_ref()).await;
     }
   }
 }

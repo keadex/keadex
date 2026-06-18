@@ -14,6 +14,8 @@ pub async fn init_keadex_mina(
   Ok(None)
 }
 
-pub async fn clear_keadex_mina(project_path: &PathBuf) {
-  let _ = unload_project(project_path.to_str().unwrap()).await;
+pub async fn clear_keadex_mina(project_path: Option<&PathBuf>) {
+  if let Some(project_path) = project_path {
+    let _ = unload_project(project_path.to_str().unwrap()).await;
+  }
 }

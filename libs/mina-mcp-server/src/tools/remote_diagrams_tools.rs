@@ -10,7 +10,7 @@ use keadex_mina::model::themes::diagrams_theme_settings::DiagramsThemeSettings;
 use rmcp::model::{Annotated, Content, RawContent};
 
 pub async fn read_diagram_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: ReadRemoteDiagramRequest,
 ) -> Result<Option<(Diagram, Option<DiagramsThemeSettings>)>, String> {
   let project_root_url = request.project_root_url;
@@ -43,7 +43,7 @@ pub async fn render_diagram_tool(
   request: ReadRemoteDiagramRequest,
 ) -> Result<Annotated<RawContent>, String> {
   // Read remote diagram
-  let diagram_data = read_diagram_tool(_router, request).await?;
+  let diagram_data = read_diagram_tool(Some(_router), request).await?;
   let (diagram, diagrams_theme_settings) = match diagram_data {
     Some((diagram, diagrams_theme_settings)) => (diagram, diagrams_theme_settings),
     None => return Err("Diagram not found. Please verify the URLs provided, or, if linking to a private repository, ensure the GitHub token is configured.".to_string()),

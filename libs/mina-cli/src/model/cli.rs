@@ -4,6 +4,7 @@ use mina_mcp_server::models::requests::create_diagram_request::CreateDiagramRequ
 use mina_mcp_server::models::requests::edit_plantuml_request::EditPlantUmlRequest;
 use mina_mcp_server::models::requests::find_diagram_element_request::FindDiagramElementRequest;
 use mina_mcp_server::models::requests::local_diagram_base_request::LocalDiagramBaseRequest;
+use mina_mcp_server::models::requests::read_remote_diagram_request::ReadRemoteDiagramRequest;
 use mina_mcp_server::models::requests::validate_plantuml_code_request::ValidatePlantUmlCodeRequest;
 use mina_mcp_server::models::requests::{
   create_component_request::CreateComponentRequest,
@@ -24,7 +25,7 @@ use std::path::PathBuf;
 pub struct Cli {
   /// Path of the Mina project
   #[arg(short, long)]
-  pub project_path: PathBuf,
+  pub project_path: Option<PathBuf>,
 
   #[command(subcommand)]
   pub cmd: Commands,
@@ -79,6 +80,11 @@ pub enum Commands {
 
   /// Read a diagram
   ReadDiagram(LocalDiagramBaseRequest),
+
+  /// Read a diagram from a remote Keadex Mina project hosted in a GitHub repository.
+  ///
+  /// This command will read a diagram from a remote Keadex Mina project hosted in a GitHub repository. On success, returns the read diagram.
+  ReadRemoteDiagram(ReadRemoteDiagramRequest),
 
   /// Read all the diagrams in the project.
   ///

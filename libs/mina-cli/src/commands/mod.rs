@@ -7,6 +7,7 @@ pub mod list_diagrams;
 pub mod list_library_elements;
 pub mod read_all_diagrams;
 pub mod read_diagram;
+pub mod read_remote_diagram;
 pub mod search_and_replace;
 pub mod search_diagram_element;
 pub mod search_library_element;
