@@ -5,17 +5,23 @@ This document contains the help content for the `mina-cli` command-line program.
 **Command Overview:**
 
 * [`mina-cli`↴](#mina-cli)
+* [`mina-cli create-container`↴](#mina-cli-create-container)
+* [`mina-cli create-component`↴](#mina-cli-create-component)
+* [`mina-cli create-person`↴](#mina-cli-create-person)
+* [`mina-cli create-system`↴](#mina-cli-create-system)
+* [`mina-cli create-diagram`↴](#mina-cli-create-diagram)
+* [`mina-cli create-project`↴](#mina-cli-create-project)
+* [`mina-cli delete-diagram`↴](#mina-cli-delete-diagram)
+* [`mina-cli edit-diagram-plantuml-code`↴](#mina-cli-edit-diagram-plantuml-code)
 * [`mina-cli find-dependent-elements`↴](#mina-cli-find-dependent-elements)
 * [`mina-cli list-diagrams`↴](#mina-cli-list-diagrams)
 * [`mina-cli list-library-elements`↴](#mina-cli-list-library-elements)
 * [`mina-cli read-diagram`↴](#mina-cli-read-diagram)
+* [`mina-cli read-remote-diagram`↴](#mina-cli-read-remote-diagram)
+* [`mina-cli read-all-diagrams`↴](#mina-cli-read-all-diagrams)
 * [`mina-cli search-and-replace`↴](#mina-cli-search-and-replace)
 * [`mina-cli search-diagram-element`↴](#mina-cli-search-diagram-element)
 * [`mina-cli search-library-element`↴](#mina-cli-search-library-element)
-* [`mina-cli create-person`↴](#mina-cli-create-person)
-* [`mina-cli create-system`↴](#mina-cli-create-system)
-* [`mina-cli create-container`↴](#mina-cli-create-container)
-* [`mina-cli create-component`↴](#mina-cli-create-component)
 * [`mina-cli update-person`↴](#mina-cli-update-person)
 * [`mina-cli update-system`↴](#mina-cli-update-system)
 * [`mina-cli update-container`↴](#mina-cli-update-container)
@@ -24,26 +30,35 @@ This document contains the help content for the `mina-cli` command-line program.
 * [`mina-cli upsert-system`↴](#mina-cli-upsert-system)
 * [`mina-cli upsert-container`↴](#mina-cli-upsert-container)
 * [`mina-cli upsert-component`↴](#mina-cli-upsert-component)
+* [`mina-cli validate-diagram`↴](#mina-cli-validate-diagram)
+* [`mina-cli validate-plantuml-code`↴](#mina-cli-validate-plantuml-code)
+* [`mina-cli validate-project`↴](#mina-cli-validate-project)
 
 ## `mina-cli`
 
 CLI for interacting with Mina projects.
 
-**Usage:** `mina-cli --project-path <PROJECT_PATH> <COMMAND>`
+**Usage:** `mina-cli [OPTIONS] <COMMAND>`
 
 ###### **Subcommands:**
 
+* `create-container` — Create a container in the project's library
+* `create-component` — Create a component in the project's library
+* `create-person` — Create a person in the project's library
+* `create-system` — Create a software system in the project's library
+* `create-diagram` — Create a new diagram in the project
+* `create-project` — Create a new Mina project in the given path. This command will create a new Mina project in the given path with the given name, description and version. Returns the configuration of the newly created project including the path of its folder
+* `delete-diagram` — Delete a diagram in the project
+* `edit-diagram-plantuml-code` — Edit the PlantUML code of a diagram in the project
 * `find-dependent-elements` — Returns the dependents of a an architectural element with the given alias in the given diagram
 * `list-diagrams` — Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names
 * `list-library-elements` — Returns the elements in the project's library. The returned object is a map where the keys represent the elements' types, and the values represent the elements in the library
 * `read-diagram` — Read a diagram
+* `read-remote-diagram` — Read a diagram from a remote Keadex Mina project hosted in a GitHub repository
+* `read-all-diagrams` — Read all the diagrams in the project
 * `search-and-replace` — Search for the given string in the project's files and replace the found occurrences with the given replacement string
 * `search-diagram-element` — Search for the project's diagrams that include the element with the given alias
 * `search-library-element` — Search in the project's library for an element with the given alias
-* `create-person` — Create a person in the project's library
-* `create-system` — Create a software system in the project's library
-* `create-container` — Create a container in the project's library
-* `create-component` — Create a component in the project's library
 * `update-person` — Update a person in the project's library
 * `update-system` — Update a software system in the project's library
 * `update-container` — Update a container in the project's library
@@ -52,125 +67,13 @@ CLI for interacting with Mina projects.
 * `upsert-system` — Create or update a software system (and the dependent diagrams) in the project's library
 * `upsert-container` — Create or update a container (and the dependent diagrams) in the project's library
 * `upsert-component` — Create or update a component (and the dependent diagrams) in the project's library
+* `validate-diagram` — Validate a diagram in the project
+* `validate-plantuml-code` — Validate the PlantUML code of a diagram
+* `validate-project` — Validate the project in the given path. This command will return an error if the project is not valid
 
 ###### **Options:**
 
 * `-p`, `--project-path <PROJECT_PATH>` — Path of the Mina project
-
-
-
-## `mina-cli find-dependent-elements`
-
-Returns the dependents of a an architectural element with the given alias in the given diagram
-
-**Usage:** `mina-cli find-dependent-elements --alias <ALIAS> --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
-
-###### **Options:**
-
-* `--alias <ALIAS>` — Alias of the architectural element to analyze
-* `--diagram-name <DIAGRAM_NAME>` — Name of the diagram in lowercase and kebab-case (e.g., "my-diagram")
-* `--diagram-type <DIAGRAM_TYPE>` — Type of the diagram in uppercase and snake-case (e.g., "SYSTEM_CONTEXT")
-
-
-
-## `mina-cli list-diagrams`
-
-Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names
-
-**Usage:** `mina-cli list-diagrams`
-
-
-
-## `mina-cli list-library-elements`
-
-Returns the elements in the project's library. The returned object is a map where the keys represent the elements' types, and the values represent the elements in the library
-
-**Usage:** `mina-cli list-library-elements`
-
-
-
-## `mina-cli read-diagram`
-
-Read a diagram
-
-**Usage:** `mina-cli read-diagram --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
-
-###### **Options:**
-
-* `--diagram-name <DIAGRAM_NAME>` — Name of the diagram in lowercase and kebab-case (e.g., "my-diagram")
-* `--diagram-type <DIAGRAM_TYPE>` — Type of the diagram in uppercase and snake-case (e.g., "SYSTEM_CONTEXT")
-
-
-
-## `mina-cli search-and-replace`
-
-Search for the given string in the project's files and replace the found occurrences with the given replacement string
-
-**Usage:** `mina-cli search-and-replace [OPTIONS] --text-to-search <TEXT_TO_SEARCH> --replacement <REPLACEMENT>`
-
-###### **Options:**
-
-* `--text-to-search <TEXT_TO_SEARCH>`
-* `--replacement <REPLACEMENT>`
-* `--include-diagrams`
-* `--include-library`
-
-
-
-## `mina-cli search-diagram-element`
-
-Search for the project's diagrams that include the element with the given alias
-
-**Usage:** `mina-cli search-diagram-element --alias <ALIAS>`
-
-###### **Options:**
-
-* `--alias <ALIAS>` — Alias of the architectural element to search
-
-
-
-## `mina-cli search-library-element`
-
-Search in the project's library for an element with the given alias
-
-**Usage:** `mina-cli search-library-element --alias <ALIAS>`
-
-###### **Options:**
-
-* `--alias <ALIAS>`
-
-
-
-## `mina-cli create-person`
-
-Create a person in the project's library
-
-**Usage:** `mina-cli create-person [OPTIONS] --alias <ALIAS> --label <LABEL> --person-type <PERSON_TYPE>`
-
-###### **Options:**
-
-* `--alias <ALIAS>`
-* `--label <LABEL>`
-* `--person-type <PERSON_TYPE>`
-* `--description <DESCRIPTION>`
-* `--notes <NOTES>`
-
-
-
-## `mina-cli create-system`
-
-Create a software system in the project's library
-
-**Usage:** `mina-cli create-system [OPTIONS] --alias <ALIAS> --label <LABEL> --system-type <SYSTEM_TYPE>`
-
-###### **Options:**
-
-* `--alias <ALIAS>`
-* `--label <LABEL>`
-* `--system-type <SYSTEM_TYPE>`
-* `--description <DESCRIPTION>`
-* `--link <LINK>`
-* `--notes <NOTES>`
 
 
 
@@ -207,6 +110,209 @@ Create a component in the project's library
 * `--description <DESCRIPTION>`
 * `--link <LINK>`
 * `--notes <NOTES>`
+
+
+
+## `mina-cli create-person`
+
+Create a person in the project's library
+
+**Usage:** `mina-cli create-person [OPTIONS] --alias <ALIAS> --label <LABEL> --person-type <PERSON_TYPE>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--label <LABEL>`
+* `--person-type <PERSON_TYPE>`
+* `--description <DESCRIPTION>`
+* `--notes <NOTES>`
+
+
+
+## `mina-cli create-system`
+
+Create a software system in the project's library
+
+**Usage:** `mina-cli create-system [OPTIONS] --alias <ALIAS> --label <LABEL> --system-type <SYSTEM_TYPE>`
+
+###### **Options:**
+
+* `--alias <ALIAS>`
+* `--label <LABEL>`
+* `--system-type <SYSTEM_TYPE>`
+* `--description <DESCRIPTION>`
+* `--link <LINK>`
+* `--notes <NOTES>`
+
+
+
+## `mina-cli create-diagram`
+
+Create a new diagram in the project.
+
+This command will create a new diagram in the project. On success, returns a confirmation of the diagram creation.
+
+**Usage:** `mina-cli create-diagram [OPTIONS] --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
+
+###### **Options:**
+
+* `--diagram-name <DIAGRAM_NAME>`
+* `--diagram-type <DIAGRAM_TYPE>`
+* `--description <DESCRIPTION>`
+* `--tags <TAGS>`
+
+
+
+## `mina-cli create-project`
+
+Create a new Mina project in the given path. This command will create a new Mina project in the given path with the given name, description and version. Returns the configuration of the newly created project including the path of its folder
+
+**Usage:** `mina-cli create-project --name <NAME> --description <DESCRIPTION> --version <VERSION>`
+
+###### **Options:**
+
+* `--name <NAME>` — Name of the project
+* `--description <DESCRIPTION>` — Description of the project
+* `--version <VERSION>` — Version of the project. Use semantic versioning format (e.g., "1.0.0")
+
+
+
+## `mina-cli delete-diagram`
+
+Delete a diagram in the project.
+
+This command will delete a diagram in the project. On success, returns the updated project library configuration reflecting the deletion of the diagram.
+
+**Usage:** `mina-cli delete-diagram --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
+
+###### **Options:**
+
+* `--diagram-name <DIAGRAM_NAME>` — Name of the diagram in lowercase and kebab-case (e.g., "my-diagram")
+* `--diagram-type <DIAGRAM_TYPE>` — Type of the diagram in uppercase and snake-case (e.g., "SYSTEM_CONTEXT")
+
+
+
+## `mina-cli edit-diagram-plantuml-code`
+
+Edit the PlantUML code of a diagram in the project.
+
+This command will edit the PlantUML code of a diagram in the project. On success, returns the updated diagram.
+
+**Usage:** `mina-cli edit-diagram-plantuml-code --raw-plantuml <RAW_PLANTUML> --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
+
+###### **Options:**
+
+* `--raw-plantuml <RAW_PLANTUML>`
+* `--diagram-name <DIAGRAM_NAME>`
+* `--diagram-type <DIAGRAM_TYPE>`
+
+
+
+## `mina-cli find-dependent-elements`
+
+Returns the dependents of a an architectural element with the given alias in the given diagram
+
+**Usage:** `mina-cli find-dependent-elements --diagram-element-alias <DIAGRAM_ELEMENT_ALIAS> --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
+
+###### **Options:**
+
+* `--diagram-element-alias <DIAGRAM_ELEMENT_ALIAS>` — Alias of the architectural element
+* `--diagram-name <DIAGRAM_NAME>` — Name of the diagram in lowercase and kebab-case (e.g., "my-diagram")
+* `--diagram-type <DIAGRAM_TYPE>` — Type of the diagram in uppercase and snake-case (e.g., "SYSTEM_CONTEXT")
+
+
+
+## `mina-cli list-diagrams`
+
+Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names
+
+**Usage:** `mina-cli list-diagrams`
+
+
+
+## `mina-cli list-library-elements`
+
+Returns the elements in the project's library. The returned object is a map where the keys represent the elements' types, and the values represent the elements in the library
+
+**Usage:** `mina-cli list-library-elements`
+
+
+
+## `mina-cli read-diagram`
+
+Read a diagram
+
+**Usage:** `mina-cli read-diagram --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
+
+###### **Options:**
+
+* `--diagram-name <DIAGRAM_NAME>` — Name of the diagram in lowercase and kebab-case (e.g., "my-diagram")
+* `--diagram-type <DIAGRAM_TYPE>` — Type of the diagram in uppercase and snake-case (e.g., "SYSTEM_CONTEXT")
+
+
+
+## `mina-cli read-remote-diagram`
+
+Read a diagram from a remote Keadex Mina project hosted in a GitHub repository.
+
+This command will read a diagram from a remote Keadex Mina project hosted in a GitHub repository. On success, returns the read diagram.
+
+**Usage:** `mina-cli read-remote-diagram [OPTIONS] --project-root-url <PROJECT_ROOT_URL> --diagram-url <DIAGRAM_URL>`
+
+###### **Options:**
+
+* `--project-root-url <PROJECT_ROOT_URL>`
+* `--diagram-url <DIAGRAM_URL>`
+* `--gh-token <GH_TOKEN>`
+
+
+
+## `mina-cli read-all-diagrams`
+
+Read all the diagrams in the project.
+
+This command read all the diagrams in the project. The returned object contains a vector of objects where each object represents a diagram.
+
+**Usage:** `mina-cli read-all-diagrams`
+
+
+
+## `mina-cli search-and-replace`
+
+Search for the given string in the project's files and replace the found occurrences with the given replacement string
+
+**Usage:** `mina-cli search-and-replace [OPTIONS] --text-to-search <TEXT_TO_SEARCH> --replacement <REPLACEMENT>`
+
+###### **Options:**
+
+* `--text-to-search <TEXT_TO_SEARCH>`
+* `--replacement <REPLACEMENT>`
+* `--include-diagrams`
+* `--include-library`
+
+
+
+## `mina-cli search-diagram-element`
+
+Search for the project's diagrams that include the element with the given alias
+
+**Usage:** `mina-cli search-diagram-element --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>` — Alias of the architectural element
+
+
+
+## `mina-cli search-library-element`
+
+Search in the project's library for an element with the given alias
+
+**Usage:** `mina-cli search-library-element --alias <ALIAS>`
+
+###### **Options:**
+
+* `--alias <ALIAS>` — Alias of the architectural element
 
 
 
@@ -353,6 +459,43 @@ Create or update a component (and the dependent diagrams) in the project's libra
 * `--new-description <NEW_DESCRIPTION>`
 * `--new-link <NEW_LINK>`
 * `--new-notes <NEW_NOTES>`
+
+
+
+## `mina-cli validate-diagram`
+
+Validate a diagram in the project.
+
+This command will return an object containing the validation result of the diagram.
+
+**Usage:** `mina-cli validate-diagram --diagram-name <DIAGRAM_NAME> --diagram-type <DIAGRAM_TYPE>`
+
+###### **Options:**
+
+* `--diagram-name <DIAGRAM_NAME>` — Name of the diagram in lowercase and kebab-case (e.g., "my-diagram")
+* `--diagram-type <DIAGRAM_TYPE>` — Type of the diagram in uppercase and snake-case (e.g., "SYSTEM_CONTEXT")
+
+
+
+## `mina-cli validate-plantuml-code`
+
+Validate the PlantUML code of a diagram.
+
+This command will return an object containing the validation result of the PlantUML code of the diagram.
+
+**Usage:** `mina-cli validate-plantuml-code --plantuml-code <PLANTUML_CODE>`
+
+###### **Options:**
+
+* `--plantuml-code <PLANTUML_CODE>`
+
+
+
+## `mina-cli validate-project`
+
+Validate the project in the given path. This command will return an error if the project is not valid
+
+**Usage:** `mina-cli validate-project`
 
 
 

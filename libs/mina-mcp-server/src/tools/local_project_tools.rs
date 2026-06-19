@@ -1,6 +1,7 @@
-use crate::KeadexMinaServer;
+use crate::core::server::KeadexMinaServer;
 use crate::models::requests::create_project_request::CreateProjectRequest;
 use crate::models::requests::local_project_base_request::LocalProjectBaseRequest;
+use crate::models::requests::search_and_replace_request::SearchAndReplaceRequest;
 use crate::models::responses::base_response::BaseResponse;
 use anyhow::Result;
 use keadex_mina::controller::project_controller::{close_project, create_project, open_project};
@@ -9,7 +10,6 @@ use keadex_mina::model::project::Project;
 use keadex_mina::model::project_settings::ProjectSettings;
 use keadex_mina::service::search_service::search_and_replace_text;
 use keadex_mina::validator::project_validator::validate_project_structure;
-use mina_cli::model::commands::search_and_replace::SearchAndReplace;
 use rmcp::Json;
 
 pub async fn open_project_tool(
@@ -29,11 +29,11 @@ pub async fn close_project_tool(
   let success = close_project(&request.mina_project_path)
     .await
     .map_err(|e| e.msg)?;
-  Ok(Json(BaseResponse { success }))
+  Ok(Json(BaseResponse { success, msg: None }))
 }
 
 pub async fn create_project_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: CreateProjectRequest,
 ) -> Result<Json<ProjectSettings>, String> {
   let mut project_settings = ProjectSettings {
@@ -50,7 +50,7 @@ pub async fn create_project_tool(
 }
 
 pub async fn validate_project_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: LocalProjectBaseRequest,
 ) -> Result<(), String> {
   validate_project_structure(&request.mina_project_path)
@@ -60,7 +60,7 @@ pub async fn validate_project_tool(
 
 pub async fn search_and_replace_in_project_tool(
   _router: &KeadexMinaServer,
-  request: SearchAndReplace,
+  request: SearchAndReplaceRequest,
 ) -> Result<Json<FileSearchResults>, String> {
   search_and_replace_text(
     request.text_to_search,

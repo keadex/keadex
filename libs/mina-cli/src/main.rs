@@ -3,30 +3,35 @@ pub mod constants;
 pub mod helpers;
 pub mod model;
 
+use crate::commands::create_diagram::create_diagram;
+use crate::commands::create_project::create_project;
+use crate::commands::delete_diagram::delete_diagram;
+use crate::commands::edit_diagram_plantuml_code::edit_diagram_plantuml_code;
+use crate::commands::find_dependent_elements::find_dependent_elements;
+use crate::commands::list_diagrams;
+use crate::commands::list_library_elements::list_library_elements;
+use crate::commands::read_all_diagrams::read_all_diagrams;
+use crate::commands::read_diagram::read_diagram;
+use crate::commands::read_remote_diagram::read_diagram as read_remote_diagram;
 use crate::commands::search_and_replace::search_and_replace;
+use crate::commands::search_diagram_element::search_diagram_element;
+use crate::commands::search_library_element::search_library_element;
+use crate::commands::upsert_component::upsert_component;
+use crate::commands::upsert_container::upsert_container;
+use crate::commands::upsert_person::upsert_person;
+use crate::commands::upsert_system::upsert_system;
+use crate::commands::validate_diagram::validate_diagram;
+use crate::commands::validate_plantuml_code::validate_plantuml_code;
+use crate::commands::validate_project::validate_project;
+use crate::helpers::mina_lifecycle_helper::{clear_keadex_mina, init_keadex_mina};
 use crate::list_diagrams::list_diagrams;
 use crate::model::response::Response;
 use clap::Parser;
-use commands::create_component::create_component;
-use commands::create_container::create_container;
-use commands::create_person::create_person;
-use commands::create_system::create_system;
-use commands::find_dependent_elements::find_dependent_elements;
-use commands::list_diagrams;
-use commands::list_library_elements::list_library_elements;
-use commands::read_diagram::read_diagram;
-use commands::search_diagram_element::search_diagram_element;
-use commands::search_library_element::search_library_element;
-use commands::update_component::update_component;
-use commands::update_container::update_container;
-use commands::update_person::update_person;
-use commands::update_system::update_system;
-use commands::upsert_component::upsert_component;
-use commands::upsert_container::upsert_container;
-use commands::upsert_person::upsert_person;
-use commands::upsert_system::upsert_system;
-use helpers::mina_lifecycle_helper::{clear_keadex_mina, init_keadex_mina};
 use keadex_mina::core::serializer::serialize_obj_to_json_string;
+use mina_mcp_server::services::library_service::{
+  create_component, create_container, create_person, create_system, update_component,
+  update_container, update_person, update_system,
+};
 use model::cli::{Cli, Commands};
 
 #[tokio::main]
@@ -36,14 +41,50 @@ async fn main() {
   if args.markdown_help {
     clap_markdown::print_help_markdown::<Cli>();
   } else {
-    let mut result = init_keadex_mina(&args.project_path).await.map(|_| ());
+    let mut result;
+    match &args.cmd {
+      Commands::CreateProject(_)
+      | Commands::ValidateProject
+      | Commands::ValidatePlantumlCode(_)
+      | Commands::ReadRemoteDiagram(_) => {
+        result = init_keadex_mina(None).await.map(|_| ());
+      }
+      _ => {
+        result = init_keadex_mina(args.project_path.as_ref())
+          .await
+          .map(|_| ());
+      }
+    }
     if let Err(error) = result {
       eprintln!("Error: {}", error.msg)
     } else {
       match args.cmd {
+        Commands::CreateDiagram(create_diagram_args) => {
+          result = create_diagram(create_diagram_args).await;
+        }
+        Commands::CreateProject(mut create_project_args) => {
+          create_project_args.root = args
+            .project_path
+            .clone()
+            .unwrap()
+            .to_str()
+            .unwrap()
+            .to_string();
+          result = create_project(create_project_args).await;
+        }
+        Commands::DeleteDiagram(delete_diagram_args) => {
+          result = delete_diagram(delete_diagram_args).await;
+        }
+        Commands::EditDiagramPlantumlCode(edit_diagram_plantuml_code_args) => {
+          result = edit_diagram_plantuml_code(edit_diagram_plantuml_code_args).await;
+        }
         Commands::FindDependentElements(args) => {
-          result =
-            find_dependent_elements(&args.alias, &args.diagram_name, args.diagram_type).await;
+          result = find_dependent_elements(
+            &args.diagram_element_alias,
+            &args.diagram_name,
+            args.diagram_type,
+          )
+          .await;
         }
         Commands::ListDiagrams => {
           result = list_diagrams().await;
@@ -57,6 +98,12 @@ async fn main() {
             read_diagram_args.diagram_type,
           )
           .await;
+        }
+        Commands::ReadAllDiagrams => {
+          result = read_all_diagrams().await;
+        }
+        Commands::ReadRemoteDiagram(read_remote_diagram_args) => {
+          result = read_remote_diagram(read_remote_diagram_args).await;
         }
         Commands::SearchAndReplace(args) => {
           result = search_and_replace(args).await;
@@ -103,6 +150,15 @@ async fn main() {
         Commands::UpsertComponent(upsert_component_args) => {
           result = upsert_component(upsert_component_args).await;
         }
+        Commands::ValidateDiagram(validate_diagram_args) => {
+          result = validate_diagram(validate_diagram_args).await;
+        }
+        Commands::ValidatePlantumlCode(validate_plantuml_code_args) => {
+          result = validate_plantuml_code(validate_plantuml_code_args).await;
+        }
+        Commands::ValidateProject => {
+          result = validate_project(args.project_path.clone().unwrap().to_str().unwrap()).await;
+        }
       }
       if let Err(error) = result {
         let response = Response {
@@ -112,7 +168,7 @@ async fn main() {
         let json = serialize_obj_to_json_string(&response, false).unwrap();
         eprintln!("{}", json);
       }
-      clear_keadex_mina(&args.project_path).await;
+      clear_keadex_mina(args.project_path.as_ref()).await;
     }
   }
 }

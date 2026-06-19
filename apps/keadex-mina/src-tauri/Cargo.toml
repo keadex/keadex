@@ -1,6 +1,6 @@
 [package]
 name = "keadex_mina"
-version = "3.1.0"
+version = "3.2.0"
 description = "Desktop application to draw, manage and share the architectures of software systems."
 authors = ["Keadex"]
 license = "MIT"

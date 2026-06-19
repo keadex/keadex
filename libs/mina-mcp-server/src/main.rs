@@ -1,9 +1,11 @@
+pub mod constants;
 pub mod core;
 pub mod models;
 pub mod services;
 pub mod tools;
 
 use crate::core::node_bridge::NodeBridge;
+use crate::core::server::KeadexMinaServer;
 use crate::models::requests::create_diagram_request::CreateDiagramRequest;
 use crate::models::requests::create_project_request::CreateProjectRequest;
 use crate::models::requests::diagram_element_request::DiagramElementRequest;
@@ -14,6 +16,11 @@ use crate::models::requests::generate_plantuml_code_elements_request::GeneratePl
 use crate::models::requests::local_diagram_base_request::LocalDiagramBaseRequest;
 use crate::models::requests::local_project_base_request::LocalProjectBaseRequest;
 use crate::models::requests::read_remote_diagram_request::ReadRemoteDiagramRequest;
+use crate::models::requests::search_and_replace_request::SearchAndReplaceRequest;
+use crate::models::requests::update_component_request::UpdateComponentRequest;
+use crate::models::requests::update_container_request::UpdateContainerRequest;
+use crate::models::requests::update_person_request::UpdatePersonRequest;
+use crate::models::requests::update_system_request::UpdateSystemRequest;
 use crate::models::requests::validate_plantuml_code_request::ValidatePlantUmlCodeRequest;
 use crate::models::responses::base_response::BaseResponse;
 use crate::models::responses::found_element_response::FoundElementResponse;
@@ -55,23 +62,10 @@ use keadex_mina::model::file_search_results::FileSearchResults;
 use keadex_mina::model::project::Project;
 use keadex_mina::model::project_library::ProjectLibrary;
 use keadex_mina::model::project_settings::ProjectSettings;
-use mina_cli::model::commands::search_and_replace::SearchAndReplace;
-use mina_cli::model::commands::update_component::UpdateComponent;
-use mina_cli::model::commands::update_container::UpdateContainer;
-use mina_cli::model::commands::update_person::UpdatePerson;
-use mina_cli::model::commands::update_system::UpdateSystem;
 use rmcp::{
-  Json, ServerHandler, ServiceExt,
-  handler::server::{router::tool::ToolRouter, wrapper::Parameters},
-  model::*,
-  tool, tool_handler, tool_router,
-  transport::stdio,
+  Json, ServerHandler, ServiceExt, handler::server::wrapper::Parameters, model::*, tool,
+  tool_handler, tool_router, transport::stdio,
 };
-
-#[derive(Clone)]
-pub struct KeadexMinaServer {
-  tool_router: ToolRouter<KeadexMinaServer>,
-}
 
 #[tool_router]
 impl KeadexMinaServer {
@@ -97,7 +91,7 @@ impl KeadexMinaServer {
     Parameters(request): Parameters<LocalDiagramBaseRequest>,
   ) -> Result<Json<Diagram>, String> {
     ensure_project_is_open().await?;
-    read_local_diagram_tool(self, request).await
+    read_local_diagram_tool(Some(self), request).await
   }
 
   #[tool(
@@ -110,7 +104,7 @@ impl KeadexMinaServer {
   )]
   async fn list_local_diagrams(&self) -> Result<Json<ListLocalDiagramsResponse>, String> {
     ensure_project_is_open().await?;
-    list_diagrams_tool(self).await
+    list_diagrams_tool(Some(self)).await
   }
 
   #[tool(
@@ -123,7 +117,7 @@ impl KeadexMinaServer {
   )]
   async fn read_all_local_diagrams(&self) -> Result<Json<ReadAllLocalDiagramsResponse>, String> {
     ensure_project_is_open().await?;
-    read_all_diagrams_tool(self).await
+    read_all_diagrams_tool(Some(self)).await
   }
 
   #[tool(
@@ -184,7 +178,7 @@ impl KeadexMinaServer {
     &self,
     Parameters(request): Parameters<CreateProjectRequest>,
   ) -> Result<Json<ProjectSettings>, String> {
-    create_project_tool(self, request).await
+    create_project_tool(Some(self), request).await
   }
 
   #[tool(
@@ -199,7 +193,7 @@ impl KeadexMinaServer {
     &self,
     Parameters(request): Parameters<LocalProjectBaseRequest>,
   ) -> Result<(), String> {
-    validate_project_tool(self, request).await
+    validate_project_tool(Some(self), request).await
   }
 
   #[tool(
@@ -228,7 +222,7 @@ impl KeadexMinaServer {
   )]
   async fn search_and_replace_in_local_project(
     &self,
-    Parameters(request): Parameters<SearchAndReplace>,
+    Parameters(request): Parameters<SearchAndReplaceRequest>,
   ) -> Result<Json<FileSearchResults>, String> {
     ensure_project_is_open().await?;
     search_and_replace_in_project_tool(self, request).await
@@ -247,7 +241,7 @@ impl KeadexMinaServer {
     Parameters(request): Parameters<CreateDiagramRequest>,
   ) -> Result<Json<BaseResponse>, String> {
     ensure_project_is_open().await?;
-    create_diagram_tool(self, request).await
+    create_diagram_tool(Some(self), request).await
   }
 
   #[tool(
@@ -263,7 +257,7 @@ impl KeadexMinaServer {
     Parameters(request): Parameters<LocalDiagramBaseRequest>,
   ) -> Result<Json<ProjectLibrary>, String> {
     ensure_project_is_open().await?;
-    delete_diagram_tool(self, request).await
+    delete_diagram_tool(Some(self), request).await
   }
 
   #[tool(
@@ -279,7 +273,7 @@ impl KeadexMinaServer {
     Parameters(request): Parameters<EditPlantUmlRequest>,
   ) -> Result<Json<Diagram>, String> {
     ensure_project_is_open().await?;
-    edit_diagram_plantuml_code_tool(self, request).await
+    edit_diagram_plantuml_code_tool(Some(self), request).await
   }
 
   #[tool(
@@ -295,7 +289,7 @@ impl KeadexMinaServer {
     Parameters(request): Parameters<LocalDiagramBaseRequest>,
   ) -> Result<Json<BaseResponse>, String> {
     ensure_project_is_open().await?;
-    validate_diagram_tool(self, request).await
+    validate_diagram_tool(Some(self), request).await
   }
 
   #[tool(
@@ -353,7 +347,7 @@ impl KeadexMinaServer {
   )]
   async fn upsert_person_in_local_library(
     &self,
-    Parameters(request): Parameters<UpdatePerson>,
+    Parameters(request): Parameters<UpdatePersonRequest>,
   ) -> Result<Json<BaseResponse>, String> {
     ensure_project_is_open().await?;
     upsert_person_in_library_tool(self, request).await
@@ -369,7 +363,7 @@ impl KeadexMinaServer {
   )]
   async fn upsert_system_in_local_library(
     &self,
-    Parameters(request): Parameters<UpdateSystem>,
+    Parameters(request): Parameters<UpdateSystemRequest>,
   ) -> Result<Json<BaseResponse>, String> {
     ensure_project_is_open().await?;
     upsert_system_in_library_tool(self, request).await
@@ -385,7 +379,7 @@ impl KeadexMinaServer {
   )]
   async fn upsert_container_in_local_library(
     &self,
-    Parameters(request): Parameters<UpdateContainer>,
+    Parameters(request): Parameters<UpdateContainerRequest>,
   ) -> Result<Json<BaseResponse>, String> {
     ensure_project_is_open().await?;
     upsert_container_in_library_tool(self, request).await
@@ -401,7 +395,7 @@ impl KeadexMinaServer {
   )]
   async fn upsert_component_in_local_library(
     &self,
-    Parameters(request): Parameters<UpdateComponent>,
+    Parameters(request): Parameters<UpdateComponentRequest>,
   ) -> Result<Json<BaseResponse>, String> {
     ensure_project_is_open().await?;
     upsert_component_in_library_tool(self, request).await
@@ -449,7 +443,7 @@ impl KeadexMinaServer {
     &self,
     Parameters(request): Parameters<ValidatePlantUmlCodeRequest>,
   ) -> Result<(), String> {
-    validate_diagram_plantuml_code_tool(self, request).await
+    validate_diagram_plantuml_code_tool(Some(self), request).await
   }
 
   // *************************************************
@@ -468,7 +462,7 @@ impl KeadexMinaServer {
     &self,
     Parameters(request): Parameters<ReadRemoteDiagramRequest>,
   ) -> Result<Json<Diagram>, String> {
-    let diagram_data = read_remote_diagram_tool(self, request).await?;
+    let diagram_data = read_remote_diagram_tool(Some(self), request).await?;
     match diagram_data {
       Some((diagram, _)) => Ok(Json(diagram)),
       None => Err("Diagram not found. Please verify the URLs provided, or, if linking to a private repository, ensure the GitHub token is configured.".to_string()),        

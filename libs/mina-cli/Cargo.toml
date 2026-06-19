@@ -1,6 +1,6 @@
 [package]
 name = "mina-cli"
-version = "3.1.0"
+version = "3.2.0"
 description = "CLI for interacting with Mina projects."
 authors = ["Keadex"]
 license = "MIT"
@@ -21,3 +21,4 @@ uuid = { version = "1.20", features = [
   "macro-diagnostics",
 ] }
 keadex_mina = { path = "../../apps/keadex-mina/src-tauri" }
+mina-mcp-server = { path = "../../libs/mina-mcp-server" }

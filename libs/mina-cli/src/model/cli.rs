@@ -1,17 +1,20 @@
-use crate::model::commands::create_component::CreateComponent;
-use crate::model::commands::create_container::CreateContainer;
-use crate::model::commands::create_person::CreatePerson;
-use crate::model::commands::create_system::CreateSystem;
-use crate::model::commands::find_dependent_elements::FindDependentElements;
-use crate::model::commands::read_diagram::ReadDiagram;
-use crate::model::commands::search_and_replace::SearchAndReplace;
-use crate::model::commands::search_diagram_element::SearchDiagramElement;
-use crate::model::commands::search_library_element::SearchLibraryElement;
-use crate::model::commands::update_component::UpdateComponent;
-use crate::model::commands::update_container::UpdateContainer;
-use crate::model::commands::update_person::UpdatePerson;
-use crate::model::commands::update_system::UpdateSystem;
+use crate::model::commands::diagram_element::DiagramElement;
 use clap::{Parser, Subcommand};
+use mina_mcp_server::models::requests::create_diagram_request::CreateDiagramRequest;
+use mina_mcp_server::models::requests::edit_plantuml_request::EditPlantUmlRequest;
+use mina_mcp_server::models::requests::find_diagram_element_request::FindDiagramElementRequest;
+use mina_mcp_server::models::requests::local_diagram_base_request::LocalDiagramBaseRequest;
+use mina_mcp_server::models::requests::read_remote_diagram_request::ReadRemoteDiagramRequest;
+use mina_mcp_server::models::requests::validate_plantuml_code_request::ValidatePlantUmlCodeRequest;
+use mina_mcp_server::models::requests::{
+  create_component_request::CreateComponentRequest,
+  create_container_request::CreateContainerRequest, create_person_request::CreatePersonRequest,
+  create_project_request::CreateProjectRequest, create_system_request::CreateSystemRequest,
+  search_and_replace_request::SearchAndReplaceRequest,
+  update_component_request::UpdateComponentRequest,
+  update_container_request::UpdateContainerRequest, update_person_request::UpdatePersonRequest,
+  update_system_request::UpdateSystemRequest,
+};
 use std::path::PathBuf;
 
 /// A CLI for interacting with a Keadex Mina project.
@@ -22,7 +25,7 @@ use std::path::PathBuf;
 pub struct Cli {
   /// Path of the Mina project
   #[arg(short, long)]
-  pub project_path: PathBuf,
+  pub project_path: Option<PathBuf>,
 
   #[command(subcommand)]
   pub cmd: Commands,
@@ -33,8 +36,41 @@ pub struct Cli {
 
 #[derive(Subcommand, Debug)]
 pub enum Commands {
+  /// Create a container in the project's library.
+  CreateContainer(CreateContainerRequest),
+
+  /// Create a component in the project's library.
+  CreateComponent(CreateComponentRequest),
+
+  /// Create a person in the project's library.
+  CreatePerson(CreatePersonRequest),
+
+  /// Create a software system in the project's library.
+  CreateSystem(CreateSystemRequest),
+
+  /// Create a new diagram in the project.
+  ///
+  /// This command will create a new diagram in the project. On success, returns a confirmation of the diagram creation.
+  CreateDiagram(CreateDiagramRequest),
+
+  /// Create a new Mina project in the given path.
+
+  /// This command will create a new Mina project in the given path with the given name, description and version.
+  /// Returns the configuration of the newly created project including the path of its folder.
+  CreateProject(CreateProjectRequest),
+
+  /// Delete a diagram in the project.
+  ///
+  /// This command will delete a diagram in the project. On success, returns the updated project library configuration reflecting the deletion of the diagram.
+  DeleteDiagram(LocalDiagramBaseRequest),
+
+  /// Edit the PlantUML code of a diagram in the project.
+  ///
+  /// This command will edit the PlantUML code of a diagram in the project. On success, returns the updated diagram.
+  EditDiagramPlantumlCode(EditPlantUmlRequest),
+
   /// Returns the dependents of a an architectural element with the given alias in the given diagram.
-  FindDependentElements(FindDependentElements),
+  FindDependentElements(FindDiagramElementRequest),
 
   /// Returns the diagrams in the project. The returned object is a map where the keys represent the diagrams' types, and the values represent the diagrams' names.
   ListDiagrams,
@@ -43,62 +79,74 @@ pub enum Commands {
   ListLibraryElements,
 
   /// Read a diagram
-  ReadDiagram(ReadDiagram),
+  ReadDiagram(LocalDiagramBaseRequest),
+
+  /// Read a diagram from a remote Keadex Mina project hosted in a GitHub repository.
+  ///
+  /// This command will read a diagram from a remote Keadex Mina project hosted in a GitHub repository. On success, returns the read diagram.
+  ReadRemoteDiagram(ReadRemoteDiagramRequest),
+
+  /// Read all the diagrams in the project.
+  ///
+  /// This command read all the diagrams in the project.
+  /// The returned object contains a vector of objects where each object represents a diagram.
+  ReadAllDiagrams,
 
   /// Search for the given string in the project's files and replace the found occurrences with the given replacement string.
-  SearchAndReplace(SearchAndReplace),
+  SearchAndReplace(SearchAndReplaceRequest),
 
   /// Search for the project's diagrams that include the element with the given alias.
-  SearchDiagramElement(SearchDiagramElement),
+  SearchDiagramElement(DiagramElement),
 
   /// Search in the project's library for an element with the given alias.
-  SearchLibraryElement(SearchLibraryElement),
-
-  /// Create a person in the project's library.
-  CreatePerson(CreatePerson),
-
-  /// Create a software system in the project's library.
-  CreateSystem(CreateSystem),
-
-  /// Create a container in the project's library.
-  CreateContainer(CreateContainer),
-
-  /// Create a component in the project's library.
-  CreateComponent(CreateComponent),
+  SearchLibraryElement(DiagramElement),
 
   /// Update a person in the project's library.
   ///
   /// This command will update a person in the project's library
   /// and will update all the diagrams that import it.
-  UpdatePerson(UpdatePerson),
+  UpdatePerson(UpdatePersonRequest),
 
   /// Update a software system in the project's library.
   ///
   /// This command will update a software system in the project's library
   /// and will update all the diagrams that import it.
-  UpdateSystem(UpdateSystem),
+  UpdateSystem(UpdateSystemRequest),
 
   /// Update a container in the project's library.
   ///
   /// This command will update a container in the project's library
   /// and will update all the diagrams that import it.
-  UpdateContainer(UpdateContainer),
+  UpdateContainer(UpdateContainerRequest),
 
   /// Update a component in the project's library.
   ///
   /// This command will update a component in the project's library
   /// and will update all the diagrams that import it.
-  UpdateComponent(UpdateComponent),
+  UpdateComponent(UpdateComponentRequest),
 
   /// Create or update a person (and the dependent diagrams) in the project's library.
-  UpsertPerson(UpdatePerson),
+  UpsertPerson(UpdatePersonRequest),
 
   /// Create or update a software system (and the dependent diagrams) in the project's library.
-  UpsertSystem(UpdateSystem),
+  UpsertSystem(UpdateSystemRequest),
 
   /// Create or update a container (and the dependent diagrams) in the project's library.
-  UpsertContainer(UpdateContainer),
+  UpsertContainer(UpdateContainerRequest),
 
   /// Create or update a component (and the dependent diagrams) in the project's library.
-  UpsertComponent(UpdateComponent),
+  UpsertComponent(UpdateComponentRequest),
+
+  /// Validate a diagram in the project.
+  ///
+  /// This command will return an object containing the validation result of the diagram.
+  ValidateDiagram(LocalDiagramBaseRequest),
+
+  /// Validate the PlantUML code of a diagram.
+  ///
+  /// This command will return an object containing the validation result of the PlantUML code of the diagram.
+  ValidatePlantumlCode(ValidatePlantUmlCodeRequest),
+
+  /// Validate the project in the given path. This command will return an error if the project is not valid.
+  ValidateProject,
 }

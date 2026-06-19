@@ -1,17 +1,15 @@
-use crate::LocalDiagramBaseRequest;
+use crate::core::server::KeadexMinaServer;
 use crate::models::requests::create_diagram_request::CreateDiagramRequest;
 use crate::models::requests::diagram_element_request::DiagramElementRequest;
 use crate::models::requests::edit_plantuml_request::EditPlantUmlRequest;
 use crate::models::requests::find_diagram_element_request::FindDiagramElementRequest;
+use crate::models::requests::local_diagram_base_request::LocalDiagramBaseRequest;
 use crate::models::requests::render_diagram_request::RenderDiagramRequest;
 use crate::models::responses::base_response::BaseResponse;
 use crate::models::responses::found_elements_response::FoundElementsResponse;
 use crate::models::responses::list_local_diagrams_response::ListLocalDiagramsResponse;
+use crate::models::responses::read_all_local_diagrams_response::ReadAllLocalDiagramsResponse;
 use crate::services::diagram_service::render_diagram;
-use crate::{
-  KeadexMinaServer,
-  models::responses::read_all_local_diagrams_response::ReadAllLocalDiagramsResponse,
-};
 use anyhow::Result;
 use keadex_mina::controller::diagram_controller::{
   create_diagram, delete_diagram, dependent_elements_in_diagram, save_spec_diagram_raw_plantuml,
@@ -28,7 +26,7 @@ use rmcp::Json;
 use rmcp::model::{Annotated, Content, RawContent};
 
 pub async fn read_diagram_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: LocalDiagramBaseRequest,
 ) -> Result<Json<Diagram>, String> {
   let diagram = get_diagram(&request.diagram_name, request.diagram_type)
@@ -38,14 +36,14 @@ pub async fn read_diagram_tool(
 }
 
 pub async fn list_diagrams_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
 ) -> Result<Json<ListLocalDiagramsResponse>, String> {
   let diagrams = list_diagrams().await.map_err(|e| e.msg)?;
   Ok(Json(ListLocalDiagramsResponse { diagrams }))
 }
 
 pub async fn read_all_diagrams_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
 ) -> Result<Json<ReadAllLocalDiagramsResponse>, String> {
   let diagrams = list_diagrams().await.map_err(|e| e.msg)?;
   let mut all_diagrams = Vec::new();
@@ -99,7 +97,7 @@ pub async fn search_diagram_element_in_project(
 }
 
 pub async fn create_diagram_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: CreateDiagramRequest,
 ) -> Result<Json<BaseResponse>, String> {
   let mut diagram = Diagram::default();
@@ -113,11 +111,11 @@ pub async fn create_diagram_tool(
   create_diagram(diagram)
     .await
     .map_err(|e| e.msg)
-    .map(|success| Json(BaseResponse { success }))
+    .map(|success| Json(BaseResponse { success, msg: None }))
 }
 
 pub async fn delete_diagram_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: LocalDiagramBaseRequest,
 ) -> Result<Json<ProjectLibrary>, String> {
   delete_diagram(request.diagram_name, request.diagram_type)
@@ -127,7 +125,7 @@ pub async fn delete_diagram_tool(
 }
 
 pub async fn edit_diagram_plantuml_code_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: EditPlantUmlRequest,
 ) -> Result<Json<Diagram>, String> {
   // Read the diagram to retrieve its current spec and metadata (e.g., id, name, type)
@@ -152,7 +150,7 @@ pub async fn edit_diagram_plantuml_code_tool(
 }
 
 pub async fn validate_diagram_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: LocalDiagramBaseRequest,
 ) -> Result<Json<BaseResponse>, String> {
   let diagram = read_diagram_tool(
@@ -171,7 +169,12 @@ pub async fn validate_diagram_tool(
   )
   .await
   .map_err(|e| e.msg)
-  .map(|_| Json(BaseResponse { success: true }))
+  .map(|_| {
+    Json(BaseResponse {
+      success: true,
+      msg: None,
+    })
+  })
 }
 
 pub async fn find_dependent_elements_in_diagram_tool(

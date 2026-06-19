@@ -1,18 +1,17 @@
-use crate::DiagramElementRequest;
-use crate::FoundElementResponse;
-use crate::KeadexMinaServer;
+use crate::core::server::KeadexMinaServer;
+use crate::models::requests::diagram_element_request::DiagramElementRequest;
+use crate::models::requests::update_component_request::UpdateComponentRequest;
+use crate::models::requests::update_container_request::UpdateContainerRequest;
+use crate::models::requests::update_person_request::UpdatePersonRequest;
+use crate::models::requests::update_system_request::UpdateSystemRequest;
 use crate::models::responses::base_response::BaseResponse;
+use crate::models::responses::found_element_response::FoundElementResponse;
+use crate::services::library_service::{
+  upsert_component, upsert_container, upsert_person, upsert_system,
+};
 use keadex_mina::model::c4_element::C4Elements;
 use keadex_mina::repository::library::library_repository::list_library_elements;
 use keadex_mina::repository::library::library_repository::search_library_element;
-use mina_cli::commands::upsert_component::upsert_component_core;
-use mina_cli::commands::upsert_container::upsert_container_core;
-use mina_cli::commands::upsert_person::upsert_person_core;
-use mina_cli::commands::upsert_system::upsert_system_core;
-use mina_cli::model::commands::update_component::UpdateComponent;
-use mina_cli::model::commands::update_container::UpdateContainer;
-use mina_cli::model::commands::update_person::UpdatePerson;
-use mina_cli::model::commands::update_system::UpdateSystem;
 use rmcp::Json;
 
 pub async fn list_library_elements_tool(
@@ -36,40 +35,48 @@ pub async fn search_diagram_element_in_library_tool(
 
 pub async fn upsert_person_in_library_tool(
   _router: &KeadexMinaServer,
-  request: UpdatePerson,
+  request: UpdatePersonRequest,
 ) -> Result<Json<BaseResponse>, String> {
-  upsert_person_core(request)
-    .await
-    .map_err(|e| e.msg)
-    .map(|_| Json(BaseResponse { success: true }))
+  upsert_person(request).await.map_err(|e| e.msg).map(|_| {
+    Json(BaseResponse {
+      success: true,
+      msg: None,
+    })
+  })
 }
 
 pub async fn upsert_system_in_library_tool(
   _router: &KeadexMinaServer,
-  request: UpdateSystem,
+  request: UpdateSystemRequest,
 ) -> Result<Json<BaseResponse>, String> {
-  upsert_system_core(request)
-    .await
-    .map_err(|e| e.msg)
-    .map(|_| Json(BaseResponse { success: true }))
+  upsert_system(request).await.map_err(|e| e.msg).map(|_| {
+    Json(BaseResponse {
+      success: true,
+      msg: None,
+    })
+  })
 }
 
 pub async fn upsert_container_in_library_tool(
   _router: &KeadexMinaServer,
-  request: UpdateContainer,
+  request: UpdateContainerRequest,
 ) -> Result<Json<BaseResponse>, String> {
-  upsert_container_core(request)
-    .await
-    .map_err(|e| e.msg)
-    .map(|_| Json(BaseResponse { success: true }))
+  upsert_container(request).await.map_err(|e| e.msg).map(|_| {
+    Json(BaseResponse {
+      success: true,
+      msg: None,
+    })
+  })
 }
 
 pub async fn upsert_component_in_library_tool(
   _router: &KeadexMinaServer,
-  request: UpdateComponent,
+  request: UpdateComponentRequest,
 ) -> Result<Json<BaseResponse>, String> {
-  upsert_component_core(request)
-    .await
-    .map_err(|e| e.msg)
-    .map(|_| Json(BaseResponse { success: true }))
+  upsert_component(request).await.map_err(|e| e.msg).map(|_| {
+    Json(BaseResponse {
+      success: true,
+      msg: None,
+    })
+  })
 }

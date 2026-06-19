@@ -1,9 +1,7 @@
+use crate::core::server::KeadexMinaServer;
 use crate::models::requests::generate_plantuml_code_diagram_request::GeneratePlantUmlCodeDiagramRequest;
+use crate::models::requests::generate_plantuml_code_elements_request::GeneratePlantUmlCodeElementsRequest;
 use crate::models::requests::validate_plantuml_code_request::ValidatePlantUmlCodeRequest;
-use crate::{
-  KeadexMinaServer,
-  models::requests::generate_plantuml_code_elements_request::GeneratePlantUmlCodeElementsRequest,
-};
 use keadex_mina::core::serializer::deserialize_plantuml_by_string;
 use keadex_mina::model::diagram::diagram_plantuml::{
   DiagramPlantUML, PlantUMLSerializer, serialize_elements_to_plantuml,
@@ -31,7 +29,7 @@ pub async fn generate_plantuml_code_of_diagram_elements_tool(
 }
 
 pub async fn validate_diagram_plantuml_code_tool(
-  _router: &KeadexMinaServer,
+  _router: Option<&KeadexMinaServer>,
   request: ValidatePlantUmlCodeRequest,
 ) -> Result<(), String> {
   // deserialize to check the given raw PlantUML has a valid syntax

@@ -1,20 +1,16 @@
 use clap::Parser;
-use keadex_mina::model::c4_element::component::ComponentType;
+use keadex_mina::model::c4_element::person::PersonType;
 
 #[derive(Parser, Debug)]
-pub struct CreateComponent {
+pub struct CreatePersonRequest {
   #[arg(long)]
   pub alias: String,
   #[arg(long)]
   pub label: String,
   #[arg(long)]
-  pub component_type: ComponentType,
-  #[arg(long)]
-  pub technology: String,
+  pub person_type: PersonType,
   #[arg(long)]
   pub description: Option<String>,
-  #[arg(long)]
-  pub link: Option<String>,
   #[arg(long)]
   pub notes: Option<String>,
 }

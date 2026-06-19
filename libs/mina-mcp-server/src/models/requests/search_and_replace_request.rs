@@ -3,7 +3,7 @@ use schemars::JsonSchema;
 use serde::Deserialize;
 
 #[derive(Parser, Debug, Deserialize, JsonSchema)]
-pub struct SearchAndReplace {
+pub struct SearchAndReplaceRequest {
   #[arg(long)]
   pub text_to_search: String,
   #[arg(long)]
