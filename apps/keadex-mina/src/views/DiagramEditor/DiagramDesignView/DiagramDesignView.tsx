@@ -1,4 +1,6 @@
 import {
+  C4Diagram,
+  C4DiagramCommmands,
   CANVAS_EVENTS,
   DEFAULT_SUBGRAPH_INNER_MARGIN,
   DEFAULT_SUBGRAPH_OUTER_MARGIN,
@@ -6,7 +8,7 @@ import {
   DiagramElementSpec,
   DiagramListener,
   DiagramOrientation,
-  DiagramRenderer,
+  DiagramRendererV2 as DiagramRenderer,
   DiagramSpec,
   DiagramsThemeSettings,
   ELEMENT,
@@ -112,6 +114,8 @@ export const DiagramDesignView = forwardRef(
     } = props
 
     const { t } = useTranslation()
+
+    const c4DiagramRef = useRef<C4DiagramCommmands>(null)
     const canvas = useRef<KeadexCanvas>(undefined)
     const canvasEl = useRef<HTMLCanvasElement>(null)
     const parentDivEl = useRef<HTMLDivElement>(null)
@@ -127,9 +131,7 @@ export const DiagramDesignView = forwardRef(
       useState(false)
     const [diagramCodePanelVisible, setDiagramCodePanelVisible] =
       useState(false)
-    const [diagramRenderer, setDiagramRenderer] = useState<
-      DiagramRenderer | undefined
-    >()
+    const diagramRenderer = useRef<DiagramRenderer | undefined>(undefined)
     const { modal, showModal, hideModal } = useModal()
 
     // Before checking if the diagram has been changed, we need to exclude the
@@ -497,12 +499,12 @@ export const DiagramDesignView = forwardRef(
 
     function loadHistory(history: DiagramSpec) {
       // console.debug('Load history')
-      if (canvas.current) {
+      if (c4DiagramRef.current) {
         resetCanvas(getCanvasState())
         setCanvasMode()
         if (diagramRenderer)
-          diagramRenderer.renderDiagram(
-            canvas.current,
+          diagramRenderer.current?.renderDiagram(
+            c4DiagramRef.current,
             diagramListener,
             {
               ...currentRenderedDiagram.current,
@@ -657,13 +659,21 @@ export const DiagramDesignView = forwardRef(
     }, [readOnly, historyUndo, historyRedo])
 
     useEffect(() => {
-      if (canvas.current && currentRenderedDiagram.current && diagramRenderer) {
+      console.log('1111')
+      if (
+        c4DiagramRef.current &&
+        currentRenderedDiagram.current &&
+        diagramRenderer.current
+      ) {
+        console.log('2222')
+        console.log(c4DiagramRef.current)
+        console.log(diagramRenderer.current)
         // Set history processing to true to avoid to save the history during the first rendering
         historyProcessing.current = true
         console.debug('Rendering the diagram')
         setCanvasMode()
-        diagramRenderer.renderDiagram(
-          canvas.current,
+        diagramRenderer.current?.renderDiagram(
+          c4DiagramRef.current,
           diagramListener,
           currentRenderedDiagram.current,
           diagramsThemeSettings,
@@ -674,7 +684,7 @@ export const DiagramDesignView = forwardRef(
         if (!readOnly) initHistory()
       }
       // eslint-disable-next-line react-hooks/refs
-    }, [currentRenderedDiagram.current, diagramRenderer])
+    }, [currentRenderedDiagram.current, diagramRenderer.current])
 
     useEffect(() => {
       if (!readOnly && diagramDesignViewToolbarCommands) {
@@ -686,7 +696,7 @@ export const DiagramDesignView = forwardRef(
     useEffect(() => {
       async function initDiagramRenderer() {
         const renderer = await new DiagramRenderer().initialize()
-        setDiagramRenderer(renderer)
+        diagramRenderer.current = renderer
       }
       initDiagramRenderer()
     }, [])
@@ -721,7 +731,8 @@ export const DiagramDesignView = forwardRef(
           setDiagramCodePanelVisible={setDiagramCodePanelVisible}
         />
         <div className="h-full w-full flex-row flex-wrap" ref={parentDivEl}>
-          <canvas ref={canvasEl} />
+          {/* <canvas ref={canvasEl} /> */}
+          <C4Diagram ref={c4DiagramRef} />
         </div>
       </div>
     )
