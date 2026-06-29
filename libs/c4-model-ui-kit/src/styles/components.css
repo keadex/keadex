@@ -1,1 +1,4 @@
 /* @import '../components/desktop/WindowTitlebar/WindowTitlebar.css'; */
+@import '@xyflow/react/dist/style.css';
+
+@import '../components/v2/C4Diagram/C4Diagram.css';

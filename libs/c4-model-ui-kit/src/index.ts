@@ -2,91 +2,96 @@ import './styles/index.css'
 
 // Constants
 export {
-  DIAGRAM_TYPES,
-  DIAGRAM_ELEMENTS_TYPES,
+  ADD_ELEMENT_TAG_TYPES,
+  AUTO_LAYOUT_ORIENTATIONS,
+  BOUNDARY_TYPES,
   C4_ELEMENTS_TYPES,
-  PERSON_TYPES,
   COMPONENT_TYPES,
   CONTAINER_TYPES,
-  SYSTEM_TYPES,
-  BOUNDARY_TYPES,
   DEPLOYMENT_NODE_TYPES,
+  DIAGRAM_ELEMENTS_TYPES,
+  DIAGRAM_TYPES,
+  PERSON_TYPES,
   RELATIONSHIP_TYPES,
-  AUTO_LAYOUT_ORIENTATIONS,
-  ADD_ELEMENT_TAG_TYPES,
+  SYSTEM_TYPES,
 } from './constants/diagram'
 export {
-  DIAGRAM_INTERNAL_LINK_PROTOCOLS,
   DIAGRAM_EXTERNAL_LINK_PROTOCOLS,
+  DIAGRAM_INTERNAL_LINK_PROTOCOLS,
   DIAGRAM_LINKS_SEPARATOR,
   DiagramExternalLinkVariables,
 } from './constants/diagram-link'
 export {
   CANVAS_EVENTS,
-  OBJECT_EVENTS,
   MOUSE_EVENTS,
+  OBJECT_EVENTS,
 } from './constants/fabric-events'
 export {
-  DIAGRAM,
+  DEFAULT_GRAPHVIZ_SUBGRAPH_PAD,
+  DEFAULT_SUBGRAPH_FAKE_FONT_SIZE,
+  DEFAULT_SUBGRAPH_INNER_MARGIN,
+  DEFAULT_SUBGRAPH_OUTER_MARGIN,
+  GRAPHVIZ_DPI,
+  PENWIDTH,
+  PERIPHERIES,
+  PERIPHERY_SIZE,
+  X_PAD,
+  Y_PAD,
+} from './rendering-system/auto-layout/dot-serializer'
+export {
   BOX,
+  DIAGRAM,
   ELEMENT,
   LEGEND,
   RELATIONSHIP,
 } from './styles/style-constants'
-export {
-  GRAPHVIZ_DPI,
-  X_PAD,
-  Y_PAD,
-  PERIPHERIES,
-  PERIPHERY_SIZE,
-  PENWIDTH,
-  DEFAULT_GRAPHVIZ_SUBGRAPH_PAD,
-  DEFAULT_SUBGRAPH_OUTER_MARGIN,
-  DEFAULT_SUBGRAPH_INNER_MARGIN,
-  DEFAULT_SUBGRAPH_FAKE_FONT_SIZE,
-} from './rendering-system/auto-layout/dot-serializer'
 
 // Rendering System
-export { DiagramRenderer } from './rendering-system/diagram-renderer'
+export { generateAutoLayout } from './rendering-system/auto-layout/index'
 export { renderBoundaryDiagramElement } from './rendering-system/boundary-renderer'
 export { renderComponentDiagramElement } from './rendering-system/component-renderer'
 export { renderContainerDiagramElement } from './rendering-system/container-renderer'
 export { renderDeploymentNodeDiagramElement } from './rendering-system/deployment-node-renderer'
+export { DiagramRenderer } from './rendering-system/diagram-renderer'
 export { renderPersonDiagramElement } from './rendering-system/person-renderer'
 export { renderRelationshipDiagramElement } from './rendering-system/relationship-renderer'
 export { renderSoftwareSystemDiagramElement } from './rendering-system/software-system-renderer'
-export { generateAutoLayout } from './rendering-system/auto-layout/index'
+export { DiagramRenderer as DiagramRendererV2 } from './rendering-system/v2/diagram-renderer'
 
 // Components
-export { type DiagramListener } from './components/C4BaseComponent'
-export { C4Legend } from './components/C4Legend'
-export { C4SoftwareSystem } from './components/c4-software-system/C4SoftwareSystem'
-export { C4SoftwareSystemExt } from './components/c4-software-system/C4SoftwareSystemExt'
 export { C4Component } from './components/c4-component/C4Component'
 export { C4ComponentExt } from './components/c4-component/C4ComponentExt'
+export { C4SoftwareSystem } from './components/c4-software-system/C4SoftwareSystem'
+export { C4SoftwareSystemExt } from './components/c4-software-system/C4SoftwareSystemExt'
+export { type DiagramListener } from './components/C4BaseComponent'
+export { C4Legend } from './components/C4Legend'
+export {
+  C4Diagram,
+  type C4DiagramCommmands,
+} from './components/v2/C4Diagram/C4Diagram'
 
 // Helpers
 export {
-  getElementSpecByAlias,
-  updateDiagramElementsSpecsFromCanvas,
   boundaryDiagramElement,
+  c4ElementTypeHumanName,
+  c4ElementTypePathName,
   componentDiagramElement,
   containerDiagramElement,
   deploymentNodeDiagramElement,
+  diagramContainsSubDiagrams,
+  diagramDirName,
+  diagramTypeHumanName,
+  getElementSpecByAlias,
+  isDefaultDiagramElementSpec,
+  isLegendAlias,
+  isRelationshipAlias,
+  locationEntityHumanName,
+  parseDiagramTypeHumanName,
   personDiagramElement,
+  personTypeHumanName,
   relationshipDiagramElement,
   softwareSystemDiagramElement,
-  diagramTypeHumanName,
-  diagramDirName,
-  c4ElementTypeHumanName,
-  c4ElementTypePathName,
-  locationEntityHumanName,
-  personTypeHumanName,
-  parseDiagramTypeHumanName,
-  isDefaultDiagramElementSpec,
-  isRelationshipAlias,
-  isLegendAlias,
-  diagramContainsSubDiagrams,
+  updateDiagramElementsSpecsFromCanvas,
 } from './helper/diagram-helper'
 export {
   externalLinkVariableToPlaceholder,
@@ -98,27 +103,27 @@ export {
 export {
   addObjectsToGroupAndKeepScale,
   getBoundingBox,
-  getZIndexOfObject,
-  getSavedZIndex,
   getCanvasPan,
+  getSavedZIndex,
+  getZIndexOfObject,
   invalidateCanvasCache,
 } from './helper/fabric-helper'
 export {
+  generateSubgraphMarginHackId,
+  getGraphHeightInPtFromBB,
   graphvizCoordinatesToPx,
   isC4ElasticContainer,
   isSubgraphInvisibleNodeHack,
   isSubgraphMarginHack,
-  generateSubgraphMarginHackId,
-  getGraphHeightInPtFromBB,
   svgPathFromGraphvizPos,
 } from './helper/graphviz-helper'
+export { getSupportedBorderStyle } from './helper/style-helper'
 export {
+  buildTags,
   getCustomTagsStyle,
   parseTags,
-  buildTags,
   TAGS_SEPARATOR,
 } from './helper/tags-helper'
-export { getSupportedBorderStyle } from './helper/style-helper'
 
 // Models
 export type { AddElementTag } from './models/autogenerated/AddElementTag'
@@ -135,8 +140,8 @@ export type { ContainerType } from './models/autogenerated/ContainerType'
 export type { DeploymentNode } from './models/autogenerated/DeploymentNode'
 export type { DeploymentNodeType } from './models/autogenerated/DeploymentNodeType'
 export type { Diagram } from './models/autogenerated/Diagram'
-export type { DiagramElementType } from './models/autogenerated/DiagramElementType'
 export type { DiagramElementSpec } from './models/autogenerated/DiagramElementSpec'
+export type { DiagramElementType } from './models/autogenerated/DiagramElementType'
 export type { DiagramOrientation } from './models/autogenerated/DiagramOrientation'
 export type { DiagramPlantUML } from './models/autogenerated/DiagramPlantUML'
 export type { DiagramSpec } from './models/autogenerated/DiagramSpec'
