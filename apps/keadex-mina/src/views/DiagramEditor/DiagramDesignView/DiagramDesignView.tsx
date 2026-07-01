@@ -659,15 +659,11 @@ export const DiagramDesignView = forwardRef(
     }, [readOnly, historyUndo, historyRedo])
 
     useEffect(() => {
-      console.log('1111')
       if (
         c4DiagramRef.current &&
         currentRenderedDiagram.current &&
         diagramRenderer.current
       ) {
-        console.log('2222')
-        console.log(c4DiagramRef.current)
-        console.log(diagramRenderer.current)
         // Set history processing to true to avoid to save the history during the first rendering
         historyProcessing.current = true
         console.debug('Rendering the diagram')
