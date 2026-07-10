@@ -120,6 +120,7 @@ export const renderElements = (
           diagramSpec,
         ),
         renderElementsOptions: options,
+        resizable: false,
       })
       if (component) {
         nodes.push(component)

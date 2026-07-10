@@ -36,7 +36,7 @@ import {
 } from '../C4Legend/C4Legend'
 
 export type C4Node<
-  T extends C4BaseNodeProps = C4BaseNodeProps,
+  T extends Record<string, unknown> & C4BaseNodeProps = C4BaseNodeProps,
   K extends string = string,
 > = NodeType<T, K> & C4BaseNode
 export type C4Edge = EdgeType & {}
