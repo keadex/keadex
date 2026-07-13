@@ -18,6 +18,7 @@ export const LEGEND = {
     WIDTH: 120,
     HEIGHT: 20,
     PADDING_LEFT: 10,
+    TEXT_PADDING_Y: 1.5,
   },
 }
 

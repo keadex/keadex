@@ -1,3 +1,5 @@
+import { Node as NodeType } from '@xyflow/react'
+
 export function calculateScale(
   initialWidth: number,
   newWidth: number,
@@ -12,4 +14,15 @@ export function calculateScale(
 
   // They should be equal if aspect ratio is locked; average guards against float drift
   return (scaleX + scaleY) / 2
+}
+
+export function editableNode(
+  _editable?: boolean,
+): Pick<NodeType, 'draggable' | 'selectable' | 'connectable'> {
+  const editable = _editable !== undefined ? _editable : true
+  return {
+    draggable: editable,
+    selectable: editable,
+    connectable: editable,
+  }
 }
