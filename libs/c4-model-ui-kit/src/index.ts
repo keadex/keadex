@@ -117,6 +117,7 @@ export {
   isSubgraphMarginHack,
   svgPathFromGraphvizPos,
 } from './helper/graphviz-helper'
+export { calculateScale } from './helper/react-flow-helper'
 export { getSupportedBorderStyle } from './helper/style-helper'
 export {
   buildTags,
