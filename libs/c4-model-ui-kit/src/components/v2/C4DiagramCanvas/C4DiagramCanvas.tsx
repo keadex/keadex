@@ -4,6 +4,8 @@ import '@xyflow/react/dist/style.css'
 
 import {
   addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
   Background,
   BackgroundVariant,
   Connection,
@@ -11,6 +13,8 @@ import {
   Edge as EdgeType,
   MiniMap,
   Node as NodeType,
+  OnEdgesChange,
+  OnNodesChange,
   Panel,
   ReactFlow,
   ReactFlowInstance,
@@ -63,12 +67,14 @@ export type C4DiagramCanvasCommands = {
 
 export const C4DiagramCanvas = forwardRef(
   (props: C4DiagramCanvasProps, ref: Ref<C4DiagramCanvasCommands>) => {
+    const { readOnly: readOnlyProps, onDiagramModified } = props
+
     const [rfInstance, setRfInstance] = useState<ReactFlowInstance<
       C4Node,
       C4Edge
     > | null>(null)
-    const [nodes, setNodes, onNodesChange] = useNodesState<C4Node>([])
-    const [edges, setEdges, onEdgesChange] = useEdgesState<C4Edge>([])
+    const [nodes, setNodes] = useNodesState<C4Node>([])
+    const [edges, setEdges] = useEdgesState<C4Edge>([])
     const diagramListener = useRef<DiagramListener | null>(null)
     const [autoLayoutEnabled, setAutoLayoutEnabled] = useState(true)
     const [autoLayoutOrientation, setAutoLayoutOrientation] = useState<
@@ -78,7 +84,7 @@ export const C4DiagramCanvas = forwardRef(
       DIAGRAM.COLOR.BG_COLOR,
     )
     const [gridEnabled, setGridEnabled] = useState(false)
-    const [readOnly, setReadOnly] = useState(props.readOnly)
+    const [readOnly, setReadOnly] = useState(readOnlyProps)
 
     //---- Start Ref implementation
     function setDiagramListener(newDiagramListener: DiagramListener) {
@@ -100,6 +106,28 @@ export const C4DiagramCanvas = forwardRef(
     const onConnect = useCallback(
       (params: Connection) => setEdges((eds) => addEdge(params, eds)),
       [setEdges],
+    )
+
+    const onNodesChange: OnNodesChange<C4Node> = useCallback(
+      (changes) => {
+        setNodes((nds) => applyNodeChanges(changes, nds))
+        if (onDiagramModified) {
+          // TODO: this is always triggered, even on the first render, which is not what we want. We should only trigger it when the user actually modifies the diagram.
+          onDiagramModified()
+        }
+      },
+      [setNodes, onDiagramModified],
+    )
+
+    const onEdgesChange: OnEdgesChange<C4Edge> = useCallback(
+      (changes) => {
+        setEdges((eds) => applyEdgeChanges(changes, eds))
+        if (onDiagramModified) {
+          // TODO: this is always triggered, even on the first render, which is not what we want. We should only trigger it when the user actually modifies the diagram.
+          onDiagramModified()
+        }
+      },
+      [setEdges, onDiagramModified],
     )
 
     const onSave = useCallback(() => {

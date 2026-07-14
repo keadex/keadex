@@ -157,6 +157,7 @@ export const DiagramDesignView = forwardRef(
     }
 
     function canvasModifiedCallback() {
+      console.debug('Canvas modified')
       isDiagramChanged.current = true
       if (!readOnly) saveHistory()
     }
@@ -728,7 +729,11 @@ export const DiagramDesignView = forwardRef(
         />
         <div className="h-full w-full flex-row flex-wrap" ref={parentDivEl}>
           {/* <canvas ref={canvasEl} /> */}
-          <C4DiagramCanvas ref={c4DiagramRef} readOnly={readOnly} />
+          <C4DiagramCanvas
+            ref={c4DiagramRef}
+            readOnly={readOnly}
+            onDiagramModified={canvasModifiedCallback}
+          />
         </div>
       </div>
     )
