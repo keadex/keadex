@@ -1,6 +1,6 @@
 import {
-  C4Diagram,
-  C4DiagramCommmands,
+  C4DiagramCanvas,
+  C4DiagramCanvasCommands,
   CANVAS_EVENTS,
   DEFAULT_SUBGRAPH_INNER_MARGIN,
   DEFAULT_SUBGRAPH_OUTER_MARGIN,
@@ -115,7 +115,7 @@ export const DiagramDesignView = forwardRef(
 
     const { t } = useTranslation()
 
-    const c4DiagramRef = useRef<C4DiagramCommmands>(null)
+    const c4DiagramRef = useRef<C4DiagramCanvasCommands>(null)
     const canvas = useRef<KeadexCanvas>(undefined)
     const canvasEl = useRef<HTMLCanvasElement>(null)
     const parentDivEl = useRef<HTMLDivElement>(null)
@@ -728,7 +728,7 @@ export const DiagramDesignView = forwardRef(
         />
         <div className="h-full w-full flex-row flex-wrap" ref={parentDivEl}>
           {/* <canvas ref={canvasEl} /> */}
-          <C4Diagram ref={c4DiagramRef} readOnly={readOnly} />
+          <C4DiagramCanvas ref={c4DiagramRef} readOnly={readOnly} />
         </div>
       </div>
     )

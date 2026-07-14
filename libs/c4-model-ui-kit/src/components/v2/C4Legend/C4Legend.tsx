@@ -11,7 +11,7 @@ import {
   C4BaseNodeProps,
   withC4BaseNode,
 } from '../C4BaseNode/C4BaseNode'
-import { C4Node } from '../C4Diagram/C4Diagram'
+import { C4Node } from '../C4DiagramCanvas/C4DiagramCanvas'
 
 export const ALIAS = 'legend'
 export const NODE_TYPE = 'c4Legend'

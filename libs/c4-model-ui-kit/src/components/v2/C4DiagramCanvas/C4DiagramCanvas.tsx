@@ -45,12 +45,12 @@ const nodeTypes = {
   [C4_LEGEND_NODE_TYPE]: C4Legend,
 }
 
-export type C4DiagramProps = {
+export type C4DiagramCanvasProps = {
   readOnly?: boolean
   onDiagramModified?: () => void
 }
 
-export type C4DiagramCommmands = {
+export type C4DiagramCanvasCommands = {
   setDiagramListener: (diagramListener: DiagramListener) => void
   setAutoLayoutEnabled: (enabled: boolean) => void
   setAutoLayoutOrientation: (orientation?: DiagramOrientation) => void
@@ -61,8 +61,8 @@ export type C4DiagramCommmands = {
   setEdges: (edges: C4Edge[]) => void
 }
 
-export const C4Diagram = forwardRef(
-  (props: C4DiagramProps, ref: Ref<C4DiagramCommmands>) => {
+export const C4DiagramCanvas = forwardRef(
+  (props: C4DiagramCanvasProps, ref: Ref<C4DiagramCanvasCommands>) => {
     const [rfInstance, setRfInstance] = useState<ReactFlowInstance<
       C4Node,
       C4Edge
@@ -142,4 +142,4 @@ export const C4Diagram = forwardRef(
   },
 )
 
-export default C4Diagram
+export default C4DiagramCanvas

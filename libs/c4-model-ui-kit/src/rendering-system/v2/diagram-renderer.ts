@@ -6,10 +6,10 @@ import {
   DiagramListener,
 } from '../../components/C4BaseComponent'
 import {
-  C4DiagramCommmands,
+  C4DiagramCanvasCommands,
   C4Edge,
   C4Node,
-} from '../../components/v2/C4Diagram/C4Diagram'
+} from '../../components/v2/C4DiagramCanvas/C4DiagramCanvas'
 import {
   ALIAS as LEGEND_ALIAS,
   C4LegendNodeBuilder,
@@ -38,7 +38,7 @@ export class DiagramRenderer {
   }
 
   renderDiagram(
-    c4DiagramRef: C4DiagramCommmands | null,
+    c4DiagramRef: C4DiagramCanvasCommands | null,
     diagramListener: DiagramListener,
     diagram: Diagram | undefined,
     diagramsThemeSettings: DiagramsThemeSettings | undefined,
@@ -100,7 +100,7 @@ export type RenderElementsOptions = {
 }
 
 export const renderElements = (
-  c4DiagramRef: C4DiagramCommmands | null,
+  c4DiagramRef: C4DiagramCanvasCommands | null,
   diagramElements: DiagramElementType[] | undefined,
   diagramSpec: DiagramSpec | undefined,
   autoLayout: Record<string, ElementData>,

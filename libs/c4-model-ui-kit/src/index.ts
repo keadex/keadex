@@ -66,9 +66,9 @@ export { C4SoftwareSystemExt } from './components/c4-software-system/C4SoftwareS
 export { type DiagramListener } from './components/C4BaseComponent'
 export { C4Legend } from './components/C4Legend'
 export {
-  C4Diagram,
-  type C4DiagramCommmands,
-} from './components/v2/C4Diagram/C4Diagram'
+  C4DiagramCanvas,
+  type C4DiagramCanvasCommands,
+} from './components/v2/C4DiagramCanvas/C4DiagramCanvas'
 
 // Helpers
 export {
