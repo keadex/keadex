@@ -728,7 +728,7 @@ export const DiagramDesignView = forwardRef(
         />
         <div className="h-full w-full flex-row flex-wrap" ref={parentDivEl}>
           {/* <canvas ref={canvasEl} /> */}
-          <C4Diagram ref={c4DiagramRef} />
+          <C4Diagram ref={c4DiagramRef} readOnly={readOnly} />
         </div>
       </div>
     )

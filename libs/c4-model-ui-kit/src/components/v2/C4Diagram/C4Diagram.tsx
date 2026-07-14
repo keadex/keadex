@@ -45,8 +45,10 @@ const nodeTypes = {
   [C4_LEGEND_NODE_TYPE]: C4Legend,
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export type C4DiagramProps = {}
+export type C4DiagramProps = {
+  readOnly?: boolean
+  onDiagramModified?: () => void
+}
 
 export type C4DiagramCommmands = {
   setDiagramListener: (diagramListener: DiagramListener) => void
@@ -54,6 +56,7 @@ export type C4DiagramCommmands = {
   setAutoLayoutOrientation: (orientation?: DiagramOrientation) => void
   setBackgroundColor: (color: string) => void
   setGridEnabled: (enabled: boolean) => void
+  setReadOnly: (readOnly: boolean) => void
   setNodes: (nodes: C4Node[]) => void
   setEdges: (edges: C4Edge[]) => void
 }
@@ -75,6 +78,7 @@ export const C4Diagram = forwardRef(
       DIAGRAM.COLOR.BG_COLOR,
     )
     const [gridEnabled, setGridEnabled] = useState(false)
+    const [readOnly, setReadOnly] = useState(props.readOnly)
 
     //---- Start Ref implementation
     function setDiagramListener(newDiagramListener: DiagramListener) {
@@ -87,6 +91,7 @@ export const C4Diagram = forwardRef(
       setAutoLayoutOrientation,
       setBackgroundColor,
       setGridEnabled,
+      setReadOnly,
       setNodes,
       setEdges,
     }))
