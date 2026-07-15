@@ -23,6 +23,8 @@ import {
 } from '@xyflow/react'
 import {
   forwardRef,
+  MouseEvent,
+  MouseEventHandler,
   Ref,
   useCallback,
   useImperativeHandle,
@@ -52,6 +54,8 @@ const nodeTypes = {
 export type C4DiagramCanvasProps = {
   readOnly?: boolean
   onDiagramModified?: () => void
+  onMouseDown?: (event?: MouseEvent) => void
+  onMouseOut?: (event?: MouseEvent) => void
 }
 
 export type C4DiagramCanvasCommands = {
@@ -67,7 +71,12 @@ export type C4DiagramCanvasCommands = {
 
 export const C4DiagramCanvas = forwardRef(
   (props: C4DiagramCanvasProps, ref: Ref<C4DiagramCanvasCommands>) => {
-    const { readOnly: readOnlyProps, onDiagramModified } = props
+    const {
+      readOnly: readOnlyProps,
+      onDiagramModified,
+      onMouseDown,
+      onMouseOut,
+    } = props
 
     const [rfInstance, setRfInstance] = useState<ReactFlowInstance<
       C4Node,
@@ -130,6 +139,24 @@ export const C4DiagramCanvas = forwardRef(
       [setEdges, onDiagramModified],
     )
 
+    const handleOnMouseOut: MouseEventHandler<HTMLDivElement> = useCallback(
+      (e) => {
+        if (onMouseOut) {
+          onMouseOut(e)
+        }
+      },
+      [onMouseOut],
+    )
+
+    const handleOnMouseDown: MouseEventHandler<HTMLDivElement> = useCallback(
+      (e) => {
+        if (onMouseDown) {
+          onMouseDown(e)
+        }
+      },
+      [onMouseDown],
+    )
+
     const onSave = useCallback(() => {
       if (rfInstance) {
         rfInstance.getNodes().forEach((node) => {
@@ -156,6 +183,8 @@ export const C4DiagramCanvas = forwardRef(
         style={{ backgroundColor }}
         panActivationKeyCode={null}
         autoPanOnNodeDrag={false}
+        onMouseOut={handleOnMouseOut}
+        onMouseDownCapture={handleOnMouseDown}
       >
         <MiniMap />
         <Controls />

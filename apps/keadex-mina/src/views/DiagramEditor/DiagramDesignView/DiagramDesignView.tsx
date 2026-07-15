@@ -733,6 +733,8 @@ export const DiagramDesignView = forwardRef(
             ref={c4DiagramRef}
             readOnly={readOnly}
             onDiagramModified={canvasModifiedCallback}
+            onMouseDown={() => (mouseOnCanvas.current = true)}
+            onMouseOut={() => (mouseOnCanvas.current = false)}
           />
         </div>
       </div>
