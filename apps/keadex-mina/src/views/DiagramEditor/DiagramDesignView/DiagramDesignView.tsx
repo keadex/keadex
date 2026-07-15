@@ -732,6 +732,7 @@ export const DiagramDesignView = forwardRef(
           <C4DiagramCanvas
             ref={c4DiagramRef}
             readOnly={readOnly}
+            codingFeaturesEnabled={props.target === 'desktop'}
             onDiagramModified={canvasModifiedCallback}
             onMouseDown={() => (mouseOnCanvas.current = true)}
             onMouseOut={() => (mouseOnCanvas.current = false)}

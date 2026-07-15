@@ -53,6 +53,7 @@ const nodeTypes = {
 
 export type C4DiagramCanvasProps = {
   readOnly?: boolean
+  codingFeaturesEnabled?: boolean
   onDiagramModified?: () => void
   onMouseDown?: (event?: MouseEvent) => void
   onMouseOut?: (event?: MouseEvent) => void
@@ -73,6 +74,7 @@ export const C4DiagramCanvas = forwardRef(
   (props: C4DiagramCanvasProps, ref: Ref<C4DiagramCanvasCommands>) => {
     const {
       readOnly: readOnlyProps,
+      codingFeaturesEnabled,
       onDiagramModified,
       onMouseDown,
       onMouseOut,
