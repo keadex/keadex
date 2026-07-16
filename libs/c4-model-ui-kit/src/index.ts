@@ -68,6 +68,7 @@ export { C4Legend } from './components/C4Legend'
 export {
   C4DiagramCanvas,
   type C4DiagramCanvasCommands,
+  type C4DiagramCanvasState,
 } from './components/v2/C4DiagramCanvas/C4DiagramCanvas'
 
 // Helpers

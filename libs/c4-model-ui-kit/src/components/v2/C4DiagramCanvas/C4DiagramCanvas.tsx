@@ -27,6 +27,7 @@ import {
   MouseEventHandler,
   Ref,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -51,6 +52,11 @@ const nodeTypes = {
   [C4_LEGEND_NODE_TYPE]: C4Legend,
 }
 
+export type C4DiagramCanvasState = {
+  zoom: number
+  pan: { x: number; y: number }
+}
+
 export type C4DiagramCanvasProps = {
   readOnly?: boolean
   codingFeaturesEnabled?: boolean
@@ -66,6 +72,10 @@ export type C4DiagramCanvasCommands = {
   setBackgroundColor: (color: string) => void
   setGridEnabled: (enabled: boolean) => void
   setReadOnly: (readOnly: boolean) => void
+  setZoom: (zoom: number) => void
+  getZoom: () => number
+  setPan: (pan: { x: number; y: number }) => void
+  getPan: () => { x: number; y: number }
   setNodes: (nodes: C4Node[]) => void
   setEdges: (edges: C4Edge[]) => void
 }
@@ -96,10 +106,25 @@ export const C4DiagramCanvas = forwardRef(
     )
     const [gridEnabled, setGridEnabled] = useState(false)
     const [readOnly, setReadOnly] = useState(readOnlyProps)
+    const [zoom, setZoom] = useState(1)
+    const [pan, setPan] = useState({ x: 0, y: 0 })
+    const [viewport, setViewport] = useState({ x: pan.x, y: pan.y, zoom })
+
+    useEffect(() => {
+      setViewport({ x: pan.x, y: pan.y, zoom })
+    }, [pan, zoom])
 
     //---- Start Ref implementation
     function setDiagramListener(newDiagramListener: DiagramListener) {
       diagramListener.current = newDiagramListener
+    }
+
+    function getZoom() {
+      return viewport.zoom
+    }
+
+    function getPan() {
+      return { x: viewport.x, y: viewport.y }
     }
 
     useImperativeHandle(ref, () => ({
@@ -109,8 +134,12 @@ export const C4DiagramCanvas = forwardRef(
       setBackgroundColor,
       setGridEnabled,
       setReadOnly,
+      setZoom,
+      setPan,
       setNodes,
       setEdges,
+      getZoom,
+      getPan,
     }))
     //---- End Ref implementation
 
@@ -187,6 +216,8 @@ export const C4DiagramCanvas = forwardRef(
         autoPanOnNodeDrag={false}
         onMouseOut={handleOnMouseOut}
         onMouseDownCapture={handleOnMouseDown}
+        viewport={viewport}
+        onViewportChange={(viewport) => setViewport(viewport)}
       >
         <MiniMap />
         <Controls />

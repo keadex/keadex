@@ -1,6 +1,7 @@
 import {
   Boundary,
   boundaryDiagramElement,
+  C4DiagramCanvasState,
   Component,
   componentDiagramElement,
   Container,
@@ -48,7 +49,6 @@ import DiagramCodeView, {
 } from './DiagramCodeView/DiagramCodeView'
 import DiagramDesignView, {
   DiagramDesignViewCommands,
-  KeadexCanvasState,
 } from './DiagramDesignView/DiagramDesignView'
 import { twMerge } from 'tailwind-merge'
 
@@ -262,7 +262,7 @@ export const DiagramEditor = (props: DiagramEditorProps) => {
 
   const handleCloseDiagram = async (
     navigateToHome: boolean,
-    canvasState?: KeadexCanvasState,
+    canvasState?: C4DiagramCanvasState,
   ) => {
     await closeDiagram(
       diagramEditorState.diagramName,
