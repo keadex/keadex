@@ -68,11 +68,10 @@ function C4LegendComponent(node: NodeProps<C4LegendNode>) {
             scaledWidth && scaledWidth !== 0
               ? scaledWidth
               : LEGEND.SIZES.WIDTH - strokeWidth,
-          ...(scaledHeight && scaledHeight !== 0
-            ? {
-                height: LEGEND.SIZES.HEIGHT - strokeWidth,
-              }
-            : {}),
+          height:
+            scaledHeight && scaledHeight !== 0
+              ? scaledHeight
+              : LEGEND.SIZES.HEIGHT - strokeWidth,
         }}
       >
         <span
@@ -265,7 +264,7 @@ function C4LegendComponent(node: NodeProps<C4LegendNode>) {
   }
 
   return (
-    <div className="flex flex-col h-full w-full">
+    <div className="flex flex-col">
       <div
         className="font-bold"
         style={{
