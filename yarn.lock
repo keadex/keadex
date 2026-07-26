@@ -6379,6 +6379,74 @@
     "@tailwindcss/oxide" "4.1.18"
     tailwindcss "4.1.18"
 
+"@takumi-rs/core-darwin-arm64@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-darwin-arm64/-/core-darwin-arm64-2.4.2.tgz#8bbb939b766cfdd27623a86508bada29de493a6d"
+  integrity sha512-M4An7zjTH/yNlAPZh5dcHVLOJMzxp0n8QuH2LwHDl87l3YL42HYlGztzkI15hQLb5Nr3P0JFYHX3TR6tO+Fsgw==
+
+"@takumi-rs/core-darwin-x64@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-darwin-x64/-/core-darwin-x64-2.4.2.tgz#cba0d96f46e3119dbf306a82479030112979f33d"
+  integrity sha512-OZ2SI27EUS1kdFzPNPQMIxtURWWLeTsWWjWUxq2RPPAPg3unce+PamgCodhlA+GWFxEWs7MbmaCADBa+/2YJ+w==
+
+"@takumi-rs/core-linux-arm64-gnu@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-linux-arm64-gnu/-/core-linux-arm64-gnu-2.4.2.tgz#22adfb8d9821d1a031d234218c3f748b8f7ff53b"
+  integrity sha512-2Qp1ddv12zE54bgGEWccsytvgUo4BAs0KEXl/5K5URbYxvCIPATmwsdC4EPw7VL9IT7sOJSoCwkXN4JyWWLrpQ==
+
+"@takumi-rs/core-linux-arm64-musl@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-linux-arm64-musl/-/core-linux-arm64-musl-2.4.2.tgz#95063078c6d83ef6df96564337e21e1903807d15"
+  integrity sha512-Cvq2gA0UHbJWmCHxnlWE1npKGr4tx8utW+28vQd6Zkm3j1uUmz5mofI69eeFcL84KMXlDo8XIF8AcFs9EGn3Tw==
+
+"@takumi-rs/core-linux-x64-gnu@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-linux-x64-gnu/-/core-linux-x64-gnu-2.4.2.tgz#07d5b0ca79e37c8a1b6d6498ef676920abc543f8"
+  integrity sha512-oym4VzPKsnbJOyPaR4a5KISYnKJofjSDEPssfqtz56vI2cEIUNBTO8a/c+WwVtkI8kAk/NfQ8/Ssv75hDICSQg==
+
+"@takumi-rs/core-linux-x64-musl@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-linux-x64-musl/-/core-linux-x64-musl-2.4.2.tgz#9bdb5c46c2605f42d3330f8399d007a22dc791ea"
+  integrity sha512-85+TN8U4N0+rP3lebDp3FZ0VDd5DQzNravKKwlmctLhgsH9D6vo8zeDKLzMU5DiJgTdTQa0S2MZDj7LDazUHOw==
+
+"@takumi-rs/core-win32-arm64-msvc@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-win32-arm64-msvc/-/core-win32-arm64-msvc-2.4.2.tgz#45dfb7cff178d83b65b24a2d12131dc16d5e0c01"
+  integrity sha512-3KUdiU56UpR/6yOHjxPrwSNeiq7KyrpUuwu3QUpjHf5vtOcCTMVZvyXXo7Zss1JX+8+9Qgh7hnxqAnnBfy67hg==
+
+"@takumi-rs/core-win32-x64-msvc@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-win32-x64-msvc/-/core-win32-x64-msvc-2.4.2.tgz#1f675a257d5e98c808d08396209e3e4f8cde7674"
+  integrity sha512-p7l6uvV3ofmkhn+kK6qKhyYlmnX/dprOC5xyGkTfp/ao+kfsFOGOTuPfxUba9plBiVjuLDgwzFzockycjv2G6g==
+
+"@takumi-rs/core@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core/-/core-2.4.2.tgz#ee52e8184708ccfe1624ef3308231bbdb0ff0267"
+  integrity sha512-iAM6O4hzqVqqycKxc933AOExylzXGvzDl/CUq2V7HU3TAIFdo84AcUKDZT52wxbqRNKEEeHX0UW2SYbOhyXqLA==
+  dependencies:
+    "@takumi-rs/helpers" "2.4.2"
+  optionalDependencies:
+    "@takumi-rs/core-darwin-arm64" "2.4.2"
+    "@takumi-rs/core-darwin-x64" "2.4.2"
+    "@takumi-rs/core-linux-arm64-gnu" "2.4.2"
+    "@takumi-rs/core-linux-arm64-musl" "2.4.2"
+    "@takumi-rs/core-linux-x64-gnu" "2.4.2"
+    "@takumi-rs/core-linux-x64-musl" "2.4.2"
+    "@takumi-rs/core-win32-arm64-msvc" "2.4.2"
+    "@takumi-rs/core-win32-x64-msvc" "2.4.2"
+
+"@takumi-rs/helpers@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/helpers/-/helpers-2.4.2.tgz#fb9a58b21e5fa50c0dbfcc3ccbd27be64827c452"
+  integrity sha512-ScoYBNY7n9z5RdjW2PvpA+6zyihmvliJbGARnA3Nc7wTcYGLvqM8KrJwiJQciF8fpDwJoev6yqmalr+oWC0nqQ==
+
+"@takumi-rs/wasm@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/wasm/-/wasm-2.4.2.tgz#263ec8d751dd32cc31e62cef2aec63be2c514c54"
+  integrity sha512-LVj7R5kuFC8NpzrHM/AbUyFI3CvldSI32eN3VRK8C40PPEXy3boilI5CivUf9aOXmQuPqDWn6UcZnfnIIzVJZw==
+  dependencies:
+    "@takumi-rs/helpers" "2.4.2"
+
 "@tanstack/react-table@^8.21.3":
   version "8.21.3"
   resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.21.3.tgz#2c38c747a5731c1a07174fda764b9c2b1fb5e91b"
@@ -19972,6 +20040,15 @@ tailwindcss@4.1.18, tailwindcss@^4.1.18:
   version "4.1.18"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.1.18.tgz#f488ba47853abdb5354daf9679d3e7791fc4f4e3"
   integrity sha512-4+Z+0yiYyEtUVCScyfHCxOYP06L5Ne+JiHhY2IjR2KWMIWhJOYZKLSGZaP5HkZ8+bY0cxfzwDE5uOmzFXyIwxw==
+
+takumi-js@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/takumi-js/-/takumi-js-2.4.2.tgz#e454dffffd2962f187c88ad801c4ec443def867c"
+  integrity sha512-qWwKLsFJcCimm+4eG2tZgRV7EkI1ee65RH9VBrN3+yCXjEQnl9o113OCfUbiOwwcfg/e/4Hmam1YL1w/7SwknA==
+  dependencies:
+    "@takumi-rs/core" "2.4.2"
+    "@takumi-rs/helpers" "2.4.2"
+    "@takumi-rs/wasm" "2.4.2"
 
 tapable@2.3.0, tapable@^2.2.0, tapable@^2.2.1, tapable@^2.3.0:
   version "2.3.0"
