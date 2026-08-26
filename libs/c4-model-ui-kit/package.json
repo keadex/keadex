@@ -14,7 +14,7 @@
     "fabric": "^5.5.2",
     "pluralize": "^8.0.0",
     "react-toastify": "^11.0.5",
-    "takumi-js": "^2.4.2",
+    "takumi-js": "^2.12.0",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
