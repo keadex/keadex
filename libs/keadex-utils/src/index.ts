@@ -1,13 +1,14 @@
 // Helpers
-export { getDataAttributes, isCSR } from './helper/component-helper'
-export { objectsAreEqual, cloneDeep } from './helper/object-helper'
-export { unescape, longerString } from './helper/string-helper'
-export { pxToInch, pxToPt, inchToPx, ptToPx } from './helper/units-helper'
-export { initConsole } from './helper/console-helper'
-export {
-  isWebFsSupported,
-  ensureDir,
-  printDirectoryStructure,
-  clearOPFSTempDir,
-} from './helper/web-fs-helper'
 export { extractToOPFS } from './helper/archive-helper'
+export { getDataAttributes, isCSR } from './helper/component-helper'
+export { initConsole } from './helper/console-helper'
+export { roundToDecimalPlaces } from './helper/math-helper'
+export { cloneDeep, objectsAreEqual } from './helper/object-helper'
+export { longerString, unescape } from './helper/string-helper'
+export { inchToPx, ptToPx, pxToInch, pxToPt } from './helper/units-helper'
+export {
+  clearOPFSTempDir,
+  ensureDir,
+  isWebFsSupported,
+  printDirectoryStructure,
+} from './helper/web-fs-helper'
