@@ -5,6 +5,7 @@ import { render as takumiRender } from 'takumi-js'
 import { googleFonts } from 'takumi-js/helpers'
 
 import { DiagramListener } from '../../components/C4BaseComponent'
+import { C4BaseNodePropsSSRBuilder } from '../../components/v2/C4BaseNode/C4BaseNode'
 import {
   C4DiagramCanvasCommands,
   C4Edge,
@@ -193,22 +194,7 @@ export const renderElements = (
       })
       nodes.push(node)
       if (options?.ssr) {
-        components.push(
-          <C4Legend
-            data={node.data}
-            deletable={false}
-            draggable={false}
-            dragging={false}
-            id={node.id}
-            isConnectable={false}
-            positionAbsoluteX={node.position.x}
-            positionAbsoluteY={node.position.y}
-            selectable={false}
-            selected={false}
-            type={node.type}
-            zIndex={1}
-          />,
-        )
+        components.push(<C4Legend {...C4BaseNodePropsSSRBuilder(node)} />)
       }
     }
   }

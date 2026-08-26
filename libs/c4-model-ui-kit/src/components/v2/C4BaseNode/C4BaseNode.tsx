@@ -25,6 +25,29 @@ export type C4BaseNode = {
   ): DiagramElementSpec | undefined
 }
 
+export function C4BaseNodePropsSSRBuilder<
+  T extends Record<string, unknown> & C4BaseNodeProps,
+  K extends string,
+>(node: C4Node<T, K>): NodeProps<C4Node<T, K>> {
+  const props: NodeProps<C4Node<T>> = {
+    id: node.id,
+    data: node.data,
+    type: node.type as K,
+    positionAbsoluteX: node.position.x,
+    positionAbsoluteY: node.position.y,
+    width: node.width,
+    height: node.height,
+    deletable: false,
+    draggable: false,
+    dragging: false,
+    isConnectable: false,
+    selectable: false,
+    selected: false,
+    zIndex: 1,
+  }
+  return props as NodeProps<C4Node<T, K>>
+}
+
 export function C4BaseNodeBuilder<T extends C4BaseNodeProps>(
   props: T,
   defaults?: DiagramElementSpec,
