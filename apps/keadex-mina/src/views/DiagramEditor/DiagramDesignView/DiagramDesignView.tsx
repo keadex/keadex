@@ -2,7 +2,6 @@ import {
   C4DiagramCanvas,
   C4DiagramCanvasCommands,
   C4DiagramCanvasState,
-  CANVAS_EVENTS,
   DEFAULT_SUBGRAPH_INNER_MARGIN,
   DEFAULT_SUBGRAPH_OUTER_MARGIN,
   Diagram,
@@ -13,18 +12,10 @@ import {
   DiagramSpec,
   DiagramsThemeSettings,
   ELEMENT,
-  getBoundingBox,
-  getCanvasPan,
   invalidateCanvasCache,
-  updateDiagramElementsSpecsFromCanvas,
 } from '@keadex/c4-model-ui-kit'
-import {
-  KeadexCanvas,
-  KeadexCanvasOptions,
-  useModal,
-} from '@keadex/keadex-ui-kit/cross'
+import { KeadexCanvas, useModal } from '@keadex/keadex-ui-kit/cross'
 import { objectsAreEqual } from '@keadex/keadex-utils'
-import { fabric } from 'fabric'
 import FontFaceObserver from 'fontfaceobserver'
 import {
   forwardRef,
@@ -214,56 +205,131 @@ export const DiagramDesignView = forwardRef(
       }
     }
 
+    // async function exportDiagramOld() {
+    //   if (
+    //     currentRenderedDiagram.current?.diagram_name &&
+    //     currentRenderedDiagram.current.diagram_type &&
+    //     canvas.current
+    //   ) {
+    //     const format = 'png' //TODO
+    //     console.debug(`Exporting to ${format}`)
+
+    //     // Temporary reset the viewport transform in order to ignore zoom and pan
+    //     // in the exported diagram.
+    //     const originalTransform = canvas.current.viewportTransform
+    //     canvas.current.viewportTransform = fabric.iMatrix.slice(0)
+
+    //     // Calculate the bounding box of all the objects of the canvas in order to
+    //     // export also the objects "outside" the canvas and not visible in the viewport
+    //     let { width, height, left, top } = getBoundingBox(
+    //       canvas.current.getObjects(),
+    //     )
+    //     if (width && height && left && top) {
+    //       width += MARGIN_EXPORTED_DIAGRAM
+    //       height += MARGIN_EXPORTED_DIAGRAM
+    //       left -= MARGIN_EXPORTED_DIAGRAM / 2
+    //       top -= MARGIN_EXPORTED_DIAGRAM / 2
+    //     }
+
+    //     await exportDiagramToFile(
+    //       currentRenderedDiagram.current.diagram_name,
+    //       currentRenderedDiagram.current.diagram_type,
+    //       canvas.current.toDataURL({
+    //         format,
+    //         enableRetinaScaling: true,
+    //         width,
+    //         height,
+    //         left,
+    //         top,
+    //       }),
+    //       format,
+    //     )
+    //       .then((pathExportedDiagram) =>
+    //         toast.success(
+    //           t('common.info.diagram_exported', { pathExportedDiagram }),
+    //         ),
+    //       )
+    //       .catch((error: MinaError) => toast.success(error.msg))
+
+    //     // Restore the original viewport transform (with zoom and pan)
+    //     canvas.current.viewportTransform = originalTransform
+    //   }
+    // }
+
     async function exportDiagram() {
       if (
         currentRenderedDiagram.current?.diagram_name &&
-        currentRenderedDiagram.current.diagram_type &&
-        canvas.current
+        currentRenderedDiagram.current.diagram_type
       ) {
         const format = 'png' //TODO
         console.debug(`Exporting to ${format}`)
 
-        // Temporary reset the viewport transform in order to ignore zoom and pan
-        // in the exported diagram.
-        const originalTransform = canvas.current.viewportTransform
-        canvas.current.viewportTransform = fabric.iMatrix.slice(0)
-
-        // Calculate the bounding box of all the objects of the canvas in order to
-        // export also the objects "outside" the canvas and not visible in the viewport
-        let { width, height, left, top } = getBoundingBox(
-          canvas.current.getObjects(),
-        )
-        if (width && height && left && top) {
-          width += MARGIN_EXPORTED_DIAGRAM
-          height += MARGIN_EXPORTED_DIAGRAM
-          left -= MARGIN_EXPORTED_DIAGRAM / 2
-          top -= MARGIN_EXPORTED_DIAGRAM / 2
-        }
-
-        await exportDiagramToFile(
-          currentRenderedDiagram.current.diagram_name,
-          currentRenderedDiagram.current.diagram_type,
-          canvas.current.toDataURL({
+        // // Calculate the bounding box of all the objects of the canvas in order to
+        // // export also the objects "outside" the canvas and not visible in the viewport
+        // let { width, height, left, top } = getBoundingBox(
+        //   canvas.current.getObjects(),
+        // )
+        // if (width && height && left && top) {
+        //   width += MARGIN_EXPORTED_DIAGRAM
+        //   height += MARGIN_EXPORTED_DIAGRAM
+        //   left -= MARGIN_EXPORTED_DIAGRAM / 2
+        //   top -= MARGIN_EXPORTED_DIAGRAM / 2
+        // }
+        if (currentRenderedDiagram.current) {
+          const data = await diagramRenderer.current?.exportDiagramSSR(
+            diagramListener,
+            currentRenderedDiagram.current,
+            diagramsThemeSettings,
             format,
-            enableRetinaScaling: true,
-            width,
-            height,
-            left,
-            top,
-          }),
-          format,
-        )
-          .then((pathExportedDiagram) =>
-            toast.success(
-              t('common.info.diagram_exported', { pathExportedDiagram }),
-            ),
           )
-          .catch((error: MinaError) => toast.success(error.msg))
-
-        // Restore the original viewport transform (with zoom and pan)
-        canvas.current.viewportTransform = originalTransform
+          if (data) {
+            await exportDiagramToFile(
+              currentRenderedDiagram.current.diagram_name,
+              currentRenderedDiagram.current.diagram_type,
+              data,
+              format,
+            )
+              .then((pathExportedDiagram) =>
+                toast.success(
+                  t('common.info.diagram_exported', { pathExportedDiagram }),
+                ),
+              )
+              .catch((error: MinaError) => toast.success(error.msg))
+          }
+        }
       }
     }
+
+    // function getUpdatedDiagramSpecOld(): DiagramSpec | undefined {
+    //   if (
+    //     currentRenderedDiagram.current &&
+    //     currentRenderedDiagram.current.diagram_plantuml &&
+    //     currentRenderedDiagram.current.diagram_spec &&
+    //     currentRenderedDiagram.current.diagram_name &&
+    //     currentRenderedDiagram.current.diagram_type
+    //   ) {
+    //     const autoLayoutEnabled =
+    //       canvas.current?.autoLayoutEnabled !== undefined
+    //         ? canvas.current.autoLayoutEnabled
+    //         : currentRenderedDiagram.current.diagram_spec.auto_layout_enabled
+
+    //     let updatedSpecs: DiagramElementSpec[] = []
+    //     if (!autoLayoutEnabled) {
+    //       updatedSpecs = updateDiagramElementsSpecsFromCanvas(canvas.current)
+    //     }
+
+    //     return {
+    //       ...currentRenderedDiagram.current.diagram_spec,
+    //       auto_layout_enabled: autoLayoutEnabled,
+    //       auto_layout_orientation:
+    //         canvas.current?.autoLayoutOrientation !== undefined
+    //           ? canvas.current.autoLayoutOrientation
+    //           : currentRenderedDiagram.current.diagram_spec
+    //               .auto_layout_orientation,
+    //       elements_specs: updatedSpecs,
+    //     }
+    //   }
+    // }
 
     function getUpdatedDiagramSpec(): DiagramSpec | undefined {
       if (
@@ -274,21 +340,21 @@ export const DiagramDesignView = forwardRef(
         currentRenderedDiagram.current.diagram_type
       ) {
         const autoLayoutEnabled =
-          canvas.current?.autoLayoutEnabled !== undefined
-            ? canvas.current.autoLayoutEnabled
+          c4DiagramRef.current?.getAutoLayoutEnabled() !== undefined
+            ? c4DiagramRef.current.getAutoLayoutEnabled()
             : currentRenderedDiagram.current.diagram_spec.auto_layout_enabled
 
         let updatedSpecs: DiagramElementSpec[] = []
         if (!autoLayoutEnabled) {
-          updatedSpecs = updateDiagramElementsSpecsFromCanvas(canvas.current)
+          updatedSpecs = c4DiagramRef.current?.getUpdatedDiagramSpec() ?? []
         }
 
         return {
           ...currentRenderedDiagram.current.diagram_spec,
           auto_layout_enabled: autoLayoutEnabled,
           auto_layout_orientation:
-            canvas.current?.autoLayoutOrientation !== undefined
-              ? canvas.current.autoLayoutOrientation
+            c4DiagramRef.current?.getAutoLayoutOrientation() !== undefined
+              ? c4DiagramRef.current.getAutoLayoutOrientation()!
               : currentRenderedDiagram.current.diagram_spec
                   .auto_layout_orientation,
           elements_specs: updatedSpecs,
