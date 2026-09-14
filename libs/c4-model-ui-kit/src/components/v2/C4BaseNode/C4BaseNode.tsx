@@ -1,3 +1,5 @@
+'use client'
+
 import { cloneDeep } from '@keadex/keadex-utils'
 import {
   NodeProps,
