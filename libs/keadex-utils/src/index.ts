@@ -2,6 +2,7 @@
 export { extractToOPFS } from './helper/archive-helper'
 export { getDataAttributes, isCSR } from './helper/component-helper'
 export { initConsole } from './helper/console-helper'
+export { debounce } from './helper/function-helper'
 export { roundToDecimalPlaces } from './helper/math-helper'
 export { cloneDeep, objectsAreEqual } from './helper/object-helper'
 export { longerString, unescape } from './helper/string-helper'
