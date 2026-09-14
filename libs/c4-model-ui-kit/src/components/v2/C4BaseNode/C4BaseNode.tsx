@@ -108,9 +108,17 @@ export function C4BaseNodeBuilder(
             z_index: node.zIndex ?? oldDiagramElementSpec.position?.z_index,
             angle: this.angle ?? oldDiagramElementSpec.position?.angle,
           }
+
+          // width and height must be saved unscaled, since they are scaled on the fly by the rendering system based on the scaleX and scaleY values.
           newDiagramElementSpec.size = {
-            width: node.width ?? oldDiagramElementSpec.size?.width,
-            height: node.height ?? oldDiagramElementSpec.size?.height,
+            width: node.width
+              ? node.width /
+                (this.scaleX ?? oldDiagramElementSpec.size?.scale_x ?? 1)
+              : oldDiagramElementSpec.size?.width,
+            height: node.height
+              ? node.height /
+                (this.scaleY ?? oldDiagramElementSpec.size?.scale_y ?? 1)
+              : oldDiagramElementSpec.size?.height,
             scale_x: this.scaleX ?? oldDiagramElementSpec.size?.scale_x,
             scale_y: this.scaleY ?? oldDiagramElementSpec.size?.scale_y,
           }
