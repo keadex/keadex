@@ -655,30 +655,30 @@ export const DiagramDesignView = forwardRef(
       subgraphOuterMargin,
     }))
 
-    useLayoutEffect(() => {
-      console.debug('Diagram Design View changed layout')
-      if (
-        canvasEl.current &&
-        parentDivEl.current?.clientWidth &&
-        parentDivEl.current?.clientHeight
-      ) {
-        console.debug('Canvas resize')
-        // Following is needed because if you calculate the new height without hiding
-        // the inner canvas, it will have the full height of the div, which is not correct.
-        // The real height takes also into account other divs before the canvas one.
-        if (canvasEl.current.parentElement)
-          canvasEl.current.parentElement.style.display = 'none'
-        canvas.current?.setWidth(
-          parentDivEl.current?.getBoundingClientRect().width,
-        )
-        canvas.current?.setHeight(
-          parentDivEl.current?.getBoundingClientRect().height,
-        )
-        if (canvasEl.current.parentElement)
-          canvasEl.current.parentElement.style.display = 'flex'
-        canvas.current?.renderAll()
-      }
-    })
+    // useLayoutEffect(() => {
+    //   console.debug('Diagram Design View changed layout')
+    //   if (
+    //     canvasEl.current &&
+    //     parentDivEl.current?.clientWidth &&
+    //     parentDivEl.current?.clientHeight
+    //   ) {
+    //     console.debug('Canvas resize')
+    //     // Following is needed because if you calculate the new height without hiding
+    //     // the inner canvas, it will have the full height of the div, which is not correct.
+    //     // The real height takes also into account other divs before the canvas one.
+    //     if (canvasEl.current.parentElement)
+    //       canvasEl.current.parentElement.style.display = 'none'
+    //     canvas.current?.setWidth(
+    //       parentDivEl.current?.getBoundingClientRect().width,
+    //     )
+    //     canvas.current?.setHeight(
+    //       parentDivEl.current?.getBoundingClientRect().height,
+    //     )
+    //     if (canvasEl.current.parentElement)
+    //       canvasEl.current.parentElement.style.display = 'flex'
+    //     canvas.current?.renderAll()
+    //   }
+    // })
 
     useEffect(() => {
       // Make sure to rerender the canvas after loading the custom font, since
