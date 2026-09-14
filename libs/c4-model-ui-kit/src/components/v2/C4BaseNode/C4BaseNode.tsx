@@ -1,6 +1,12 @@
 import { cloneDeep } from '@keadex/keadex-utils'
-import { NodeProps, NodeResizer } from '@xyflow/react'
-import { ComponentType, ForwardedRef } from 'react'
+import {
+  NodeProps,
+  NodeResizer,
+  OnResize,
+  OnResizeEnd,
+  OnResizeStart,
+} from '@xyflow/react'
+import { ComponentType, ForwardedRef, useRef } from 'react'
 import { v4 as uuidV4 } from 'uuid'
 
 import { editableNode } from '../../../helper/react-flow-helper'
@@ -18,12 +24,12 @@ export type C4BaseNodeProps = {
 }
 
 export type C4BaseNodeCoreData = {
-  node?: C4Node<C4BaseNodeData>
   scaleX?: number
   scaleY?: number
   angle?: number
   getUpdatedSpecs(
     c4DiagramCanvasInstance: ForwardedRef<C4DiagramCanvasCommands>,
+    node: C4Node<C4BaseNodeData, undefined>,
   ): DiagramElementSpec | undefined
 }
 
@@ -79,6 +85,7 @@ export function C4BaseNodeBuilder(
 
       getUpdatedSpecs(
         c4DiagramCanvasRef: ForwardedRef<C4DiagramCanvasCommands>,
+        node: C4Node<C4BaseNodeData, undefined>,
       ): DiagramElementSpec | undefined {
         let c4DiagramCanvasInstance:
           | C4DiagramCanvasCommands
@@ -94,15 +101,14 @@ export function C4BaseNodeBuilder(
         if (oldDiagramElementSpec) {
           const newDiagramElementSpec = cloneDeep(oldDiagramElementSpec)
           newDiagramElementSpec.position = {
-            left: this.node?.position.x ?? oldDiagramElementSpec.position?.left,
-            top: this.node?.position.y ?? oldDiagramElementSpec.position?.top,
-            z_index:
-              this.node?.zIndex ?? oldDiagramElementSpec.position?.z_index,
+            left: node.position.x ?? oldDiagramElementSpec.position?.left,
+            top: node.position.y ?? oldDiagramElementSpec.position?.top,
+            z_index: node.zIndex ?? oldDiagramElementSpec.position?.z_index,
             angle: this.angle ?? oldDiagramElementSpec.position?.angle,
           }
           newDiagramElementSpec.size = {
-            width: this.node?.width ?? oldDiagramElementSpec.size?.width,
-            height: this.node?.height ?? oldDiagramElementSpec.size?.height,
+            width: node.width ?? oldDiagramElementSpec.size?.width,
+            height: node.height ?? oldDiagramElementSpec.size?.height,
             scale_x: this.scaleX ?? oldDiagramElementSpec.size?.scale_x,
             scale_y: this.scaleY ?? oldDiagramElementSpec.size?.scale_y,
           }
@@ -126,7 +132,6 @@ export function C4BaseNodeBuilder(
     zIndex: props.diagramElementSpec?.position?.z_index ?? 1,
     ...editableNode(props.resizable),
   }
-  newNode.data.node = newNode
   return newNode
 }
 
@@ -137,8 +142,35 @@ export function withC4BaseNode<
   Component: ComponentType<NodeProps<C4Node<T, K>>>,
 ): ComponentType<NodeProps<C4Node<T, K>>> {
   return function C4BaseNode(node: NodeProps<C4Node<T, K>>) {
+    const naturalSizeRef = useRef<{ width: number; height: number } | null>(
+      null,
+    )
+
     const resizable =
       node.data.resizable === undefined || node.data.resizable === true
+
+    const onResizeStart: OnResizeStart = (event, params) => {
+      naturalSizeRef.current = {
+        width: (node.width ?? 1) / (node.data.scaleX ?? 1),
+        height: (node.height ?? 1) / (node.data.scaleY ?? 1),
+      }
+    }
+
+    const onResizeEnd: OnResizeEnd = (event, params) => {
+      naturalSizeRef.current = null
+    }
+
+    const onResize: OnResize = (event, params) => {
+      if (!naturalSizeRef.current) return // safety guard
+
+      // Compute the new scale from the anchor
+      const newScaleX = params.width / naturalSizeRef.current.width
+      const newScaleY = params.height / naturalSizeRef.current.height
+
+      node.data.scaleX = newScaleX
+      node.data.scaleY = newScaleY
+    }
+
     return (
       <>
         {resizable && (
@@ -146,6 +178,9 @@ export function withC4BaseNode<
             color="#ff0071"
             isVisible={node.selected}
             keepAspectRatio={true}
+            onResize={onResize}
+            onResizeStart={onResizeStart}
+            onResizeEnd={onResizeEnd}
           />
         )}
         <Component {...node} />

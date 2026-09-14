@@ -2,6 +2,7 @@
 
 import '@xyflow/react/dist/style.css'
 
+import { debounce } from '@keadex/keadex-utils'
 import {
   addEdge,
   applyEdgeChanges,
@@ -11,8 +12,10 @@ import {
   Connection,
   Controls,
   Edge as EdgeType,
+  EdgeChange,
   MiniMap,
   Node as NodeType,
+  NodeChange,
   OnEdgesChange,
   OnNodesChange,
   Panel,
@@ -29,6 +32,7 @@ import {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -94,6 +98,13 @@ export const C4DiagramCanvas = forwardRef(
       onMouseOut,
     } = props
 
+    const debouncedModified = useMemo(
+      () =>
+        debounce(() => {
+          if (onDiagramModified) onDiagramModified()
+        }, 300),
+      [onDiagramModified],
+    )
     const [rfInstance, setRfInstance] = useState<ReactFlowInstance<
       C4Node,
       C4Edge
@@ -117,6 +128,10 @@ export const C4DiagramCanvas = forwardRef(
     useEffect(() => {
       setViewport({ x: pan.x, y: pan.y, zoom })
     }, [pan, zoom])
+
+    useEffect(() => {
+      return () => debouncedModified.cancel()
+    }, [debouncedModified])
 
     //---- Start Ref implementation
     function setDiagramListener(newDiagramListener: DiagramListener) {
@@ -145,7 +160,7 @@ export const C4DiagramCanvas = forwardRef(
         // Diagram element specs should be generated only it the diagram element
         // has been customized (custom position, size, etc.), otherwise the rendering
         // system will use the generated auto layout
-        const updatedSpecs = node.data.getUpdatedSpecs(ref)
+        const updatedSpecs = node.data.getUpdatedSpecs(ref, node)
         console.log(updatedSpecs)
         if (updatedSpecs) {
           newDiagramElementsSpecs.push(updatedSpecs)
@@ -179,26 +194,48 @@ export const C4DiagramCanvas = forwardRef(
       [setEdges],
     )
 
+    const isDiagramModified = useCallback(
+      (
+        changeType: 'nodes' | 'edges',
+        changes: NodeChange<C4Node>[] | EdgeChange<C4Edge>[],
+      ) => {
+        let hasFinalChange = false
+        if (changeType === 'nodes') {
+          changes = changes as NodeChange<C4Node>[]
+          hasFinalChange = changes.some((change) => {
+            if (change.type === 'position') return change.dragging === false
+            if (change.type === 'dimensions') return change.resizing === false
+            // other change types (select, remove, add) don't have an in-progress phase
+            return false
+          })
+        } else {
+          changes = changes as EdgeChange<C4Edge>[]
+          // TODO: check if there is a way to detect if an edge change is in progress or not. For now, we will assume that any edge change is a final change.
+          hasFinalChange = true
+        }
+        return hasFinalChange
+      },
+      [],
+    )
+
     const onNodesChange: OnNodesChange<C4Node> = useCallback(
       (changes) => {
         setNodes((nds) => applyNodeChanges(changes, nds))
-        if (onDiagramModified) {
-          // TODO: this is always triggered, even on the first render, which is not what we want. We should only trigger it when the user actually modifies the diagram.
-          onDiagramModified()
+        if (isDiagramModified('nodes', changes)) {
+          debouncedModified()
         }
       },
-      [setNodes, onDiagramModified],
+      [setNodes, debouncedModified, isDiagramModified],
     )
 
     const onEdgesChange: OnEdgesChange<C4Edge> = useCallback(
       (changes) => {
         setEdges((eds) => applyEdgeChanges(changes, eds))
-        if (onDiagramModified) {
-          // TODO: this is always triggered, even on the first render, which is not what we want. We should only trigger it when the user actually modifies the diagram.
-          onDiagramModified()
+        if (isDiagramModified('edges', changes)) {
+          debouncedModified()
         }
       },
-      [setEdges, onDiagramModified],
+      [setEdges, debouncedModified, isDiagramModified],
     )
 
     const handleOnMouseOut: MouseEventHandler<HTMLDivElement> = useCallback(
@@ -222,7 +259,7 @@ export const C4DiagramCanvas = forwardRef(
     const onSave = useCallback(() => {
       if (rfInstance) {
         rfInstance.getNodes().forEach((node) => {
-          const updatedSpecs = node.data.getUpdatedSpecs(ref)
+          const updatedSpecs = node.data.getUpdatedSpecs(ref, node)
         })
         const flow = rfInstance.toObject()
         console.log('Flow saved:', flow)
