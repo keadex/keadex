@@ -1,4 +1,4 @@
-import { Node as NodeType } from '@xyflow/react'
+import { Node as NodeType, Edge as EdgeType } from '@xyflow/react'
 
 export function calculateScale(
   initialWidth: number,
@@ -16,13 +16,49 @@ export function calculateScale(
   return (scaleX + scaleY) / 2
 }
 
-export function editableNode(
+export function editableNode<T extends Record<string, unknown>>(
+  node: NodeType<T>,
   _editable?: boolean,
-): Pick<NodeType, 'draggable' | 'selectable' | 'connectable'> {
-  const editable = _editable !== undefined ? _editable : true
+): NodeType<T> {
+  const editable = _editable !== undefined ? _editable : true // Default to editable if not specified
+  // Return a new object with updated properties. In this way, we don't mutate the original object, which is important for React's state management and rendering.
   return {
+    ...node,
     draggable: editable,
     selectable: editable,
     connectable: editable,
+  }
+}
+
+export function readOnlyNode<T extends Record<string, unknown>>(
+  node: NodeType<T>,
+  readOnly?: boolean,
+): NodeType<T> {
+  // Default to readOnly false if not specified
+  if (readOnly === undefined) readOnly = false
+  // Return a new object with updated properties. In this way, we don't mutate the original object, which is important for React's state management and rendering.
+  return {
+    ...node,
+    draggable: !readOnly,
+    selectable: !readOnly,
+    connectable: !readOnly,
+    data: {
+      ...node.data,
+      readOnly,
+    },
+  }
+}
+
+export function readOnlyEdge<T extends Record<string, unknown>>(
+  edge: EdgeType<T>,
+  readOnly?: boolean,
+): EdgeType<T> {
+  // Default to readOnly false if not specified
+  if (readOnly === undefined) readOnly = false
+  // Return a new object with updated properties. In this way, we don't mutate the original object, which is important for React's state management and rendering.
+  return {
+    ...edge,
+    selectable: !readOnly,
+    reconnectable: !readOnly,
   }
 }

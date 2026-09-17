@@ -527,14 +527,12 @@ export const DiagramDesignView = forwardRef(
     function setCanvasMode() {
       if (
         currentRenderedDiagram.current?.diagram_spec &&
-        canvas.current &&
+        c4DiagramRef.current &&
         !props.readOnly
       ) {
-        if (currentRenderedDiagram.current?.diagram_spec.auto_layout_enabled) {
-          canvas.current.setReadOnly()
-        } else {
-          canvas.current.setReadAndWrite()
-        }
+        c4DiagramRef.current.setReadOnly(
+          currentRenderedDiagram.current?.diagram_spec.auto_layout_enabled,
+        )
       }
     }
 

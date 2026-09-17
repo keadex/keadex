@@ -96,6 +96,7 @@ export class DiagramRenderer {
         {
           diagramsThemeSettings,
           tags: diagram.diagram_plantuml?.tags,
+          readOnly: c4DiagramRef?.isReadOnly(),
           ssr,
         },
       )
@@ -167,6 +168,7 @@ export type RenderElementsOptions = {
   diagramsThemeSettings?: DiagramsThemeSettings | undefined
   tags?: Record<string, AddElementTag>
   ssr?: boolean
+  readOnly?: boolean
 }
 
 export const renderElements = (

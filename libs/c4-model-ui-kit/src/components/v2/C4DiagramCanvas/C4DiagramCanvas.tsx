@@ -2,6 +2,7 @@
 
 import '@xyflow/react/dist/style.css'
 
+import { readOnlyEdge, readOnlyNode } from '@keadex/c4-model-ui-kit'
 import { debounce } from '@keadex/keadex-utils'
 import {
   addEdge,
@@ -77,6 +78,7 @@ export type C4DiagramCanvasCommands = {
   setBackgroundColor: (color: string) => void
   setGridEnabled: (enabled: boolean) => void
   setReadOnly: (readOnly: boolean) => void
+  isReadOnly: () => boolean
   getAutoLayoutEnabled: () => boolean
   getAutoLayoutOrientation: () => DiagramOrientation | undefined
   setZoom: (zoom: number) => void
@@ -91,7 +93,7 @@ export type C4DiagramCanvasCommands = {
 export const C4DiagramCanvas = forwardRef(
   (props: C4DiagramCanvasProps, ref: ForwardedRef<C4DiagramCanvasCommands>) => {
     const {
-      readOnly: readOnlyProps,
+      readOnly: readOnlyProp,
       codingFeaturesEnabled,
       onDiagramModified,
       onMouseDown,
@@ -120,18 +122,10 @@ export const C4DiagramCanvas = forwardRef(
       DIAGRAM.COLOR.BG_COLOR,
     )
     const [gridEnabled, setGridEnabled] = useState(false)
-    const [readOnly, setReadOnly] = useState(readOnlyProps)
     const [zoom, setZoom] = useState(1)
     const [pan, setPan] = useState({ x: 0, y: 0 })
     const [viewport, setViewport] = useState({ x: pan.x, y: pan.y, zoom })
-
-    useEffect(() => {
-      setViewport({ x: pan.x, y: pan.y, zoom })
-    }, [pan, zoom])
-
-    useEffect(() => {
-      return () => debouncedModified.cancel()
-    }, [debouncedModified])
+    const [readOnlyGlobalFlag, setReadOnlyGlobalFlag] = useState(readOnlyProp)
 
     //---- Start Ref implementation
     function setDiagramListener(newDiagramListener: DiagramListener) {
@@ -161,13 +155,22 @@ export const C4DiagramCanvas = forwardRef(
         // has been customized (custom position, size, etc.), otherwise the rendering
         // system will use the generated auto layout
         const updatedSpecs = node.data.getUpdatedSpecs(ref, node)
-        console.log(updatedSpecs)
         if (updatedSpecs) {
           newDiagramElementsSpecs.push(updatedSpecs)
         }
       })
 
       return newDiagramElementsSpecs
+    }
+
+    function setReadOnly(readOnly: boolean) {
+      setReadOnlyGlobalFlag(readOnly)
+      setNodes((nds) => nds.map((node) => readOnlyNode(node, readOnly)))
+      setEdges((eds) => eds.map((edge) => readOnlyEdge(edge, readOnly)))
+    }
+
+    function isReadOnly() {
+      return readOnlyGlobalFlag ?? false
     }
 
     useImperativeHandle(ref, () => ({
@@ -177,6 +180,7 @@ export const C4DiagramCanvas = forwardRef(
       setBackgroundColor,
       setGridEnabled,
       setReadOnly,
+      isReadOnly,
       setZoom,
       setPan,
       setNodes,
@@ -188,6 +192,18 @@ export const C4DiagramCanvas = forwardRef(
       getUpdatedDiagramSpec,
     }))
     //---- End Ref implementation
+
+    useEffect(() => {
+      setViewport({ x: pan.x, y: pan.y, zoom })
+    }, [pan, zoom])
+
+    useEffect(() => {
+      return () => debouncedModified.cancel()
+    }, [debouncedModified])
+
+    useEffect(() => {
+      setReadOnly(readOnlyProp ?? false)
+    }, [readOnlyProp])
 
     const onConnect = useCallback(
       (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -266,6 +282,11 @@ export const C4DiagramCanvas = forwardRef(
       }
     }, [rfInstance])
 
+    function test() {
+      getUpdatedDiagramSpec()
+      setReadOnly(!isReadOnly())
+    }
+
     // panActivationKeyCode={null} -> see https://github.com/xyflow/xyflow/discussions/5690
     return (
       <ReactFlow
@@ -284,13 +305,14 @@ export const C4DiagramCanvas = forwardRef(
         onMouseDownCapture={handleOnMouseDown}
         viewport={viewport}
         onViewportChange={(viewport) => setViewport(viewport)}
+        deleteKeyCode={null}
       >
         <MiniMap />
         <Controls />
         <Background variant={BackgroundVariant.Dots} />
         <Panel position="top-right">
-          <button className="xy-theme__button" onClick={getUpdatedDiagramSpec}>
-            save
+          <button className="xy-theme__button" onClick={test}>
+            test
           </button>
         </Panel>
       </ReactFlow>
