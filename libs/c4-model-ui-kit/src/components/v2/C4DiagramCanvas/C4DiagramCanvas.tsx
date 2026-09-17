@@ -67,8 +67,8 @@ export type C4DiagramCanvasProps = {
   readOnly?: boolean
   codingFeaturesEnabled?: boolean
   onDiagramModified?: () => void
-  onMouseDown?: (event?: MouseEvent) => void
-  onMouseOut?: (event?: MouseEvent) => void
+  onMouseEnter?: (event?: MouseEvent) => void
+  onMouseLeave?: (event?: MouseEvent) => void
 }
 
 export type C4DiagramCanvasCommands = {
@@ -96,8 +96,8 @@ export const C4DiagramCanvas = forwardRef(
       readOnly: readOnlyProp,
       codingFeaturesEnabled,
       onDiagramModified,
-      onMouseDown,
-      onMouseOut,
+      onMouseEnter,
+      onMouseLeave,
     } = props
 
     const debouncedModified = useMemo(
@@ -254,22 +254,22 @@ export const C4DiagramCanvas = forwardRef(
       [setEdges, debouncedModified, isDiagramModified],
     )
 
-    const handleOnMouseOut: MouseEventHandler<HTMLDivElement> = useCallback(
+    const handleOnMouseEnter: MouseEventHandler<HTMLDivElement> = useCallback(
       (e) => {
-        if (onMouseOut) {
-          onMouseOut(e)
+        if (onMouseEnter) {
+          onMouseEnter(e)
         }
       },
-      [onMouseOut],
+      [onMouseEnter],
     )
 
-    const handleOnMouseDown: MouseEventHandler<HTMLDivElement> = useCallback(
+    const handleOnMouseLeave: MouseEventHandler<HTMLDivElement> = useCallback(
       (e) => {
-        if (onMouseDown) {
-          onMouseDown(e)
+        if (onMouseLeave) {
+          onMouseLeave(e)
         }
       },
-      [onMouseDown],
+      [onMouseLeave],
     )
 
     const onSave = useCallback(() => {
@@ -301,8 +301,8 @@ export const C4DiagramCanvas = forwardRef(
         style={{ backgroundColor }}
         panActivationKeyCode={null}
         autoPanOnNodeDrag={false}
-        onMouseOut={handleOnMouseOut}
-        onMouseDownCapture={handleOnMouseDown}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
         viewport={viewport}
         onViewportChange={(viewport) => setViewport(viewport)}
         deleteKeyCode={null}
