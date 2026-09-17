@@ -414,7 +414,7 @@ export const DiagramDesignView = forwardRef(
       subgraphInnerMargin: number,
       subgraphOuterMargin: number,
     ) {
-      if (canvas.current && currentRenderedDiagram.current && !readOnly) {
+      if (c4DiagramRef.current && currentRenderedDiagram.current && !readOnly) {
         showModal({
           id: `showAutoLayoutConfigurationModal`,
           title: `${t('diagram_editor.configure_auto_layout')}`,
@@ -436,12 +436,12 @@ export const DiagramDesignView = forwardRef(
                 subgraphOuterMargin,
               ) => {
                 if (
-                  canvas.current &&
+                  c4DiagramRef.current &&
                   currentRenderedDiagram.current &&
                   !readOnly
                 ) {
-                  canvas.current.autoLayoutEnabled = enabled
-                  canvas.current.autoLayoutOrientation = orientation
+                  c4DiagramRef.current.setAutoLayoutEnabled(enabled)
+                  c4DiagramRef.current.setAutoLayoutOrientation(orientation)
 
                   // On saving, diagram_spec are retrieved from the DiagramDesignView
                   // (check handleSaveDiagram() in DiagramEditor). So it's ok changing the
@@ -483,7 +483,7 @@ export const DiagramDesignView = forwardRef(
     ) {
       if (
         settings &&
-        canvas.current &&
+        c4DiagramRef.current &&
         currentRenderedDiagram.current &&
         !readOnly
       ) {
@@ -496,15 +496,13 @@ export const DiagramDesignView = forwardRef(
               hideModal={hideModal}
               onSettingsChanged={(settings) => {
                 if (
-                  canvas.current &&
+                  c4DiagramRef.current &&
                   currentRenderedDiagram.current &&
                   !readOnly
                 ) {
-                  if (settings.gridEnabled) {
-                    canvas.current.enableGrid()
-                  } else {
-                    canvas.current.disableGrid()
-                  }
+                  c4DiagramRef.current.setGridEnabled(
+                    settings.gridEnabled ?? false,
+                  )
 
                   // On saving, diagram_spec are retrieved from the DiagramDesignView
                   // (check handleSaveDiagram() in DiagramEditor). So it's ok changing the
@@ -573,7 +571,7 @@ export const DiagramDesignView = forwardRef(
           )
         else console.error('DiagramRenderer not initialized')
 
-        canvas.current?.renderAll()
+        // canvas.current?.renderAll()
         isDiagramChanged.current = true
         console.debug('Load history completed')
       }
@@ -678,24 +676,24 @@ export const DiagramDesignView = forwardRef(
     //   }
     // })
 
-    useEffect(() => {
-      // Make sure to rerender the canvas after loading the custom font, since
-      // it could happen the font is not ready before rendering the canvas.
-      // Without rerendering it, the canvas will render only the wrong font.
-      const myfont = new FontFaceObserver(ELEMENT.FONT.FAMILY)
-      myfont.load(null, 360000).then(function () {
-        if (canvas.current) {
-          invalidateCanvasCache(canvas.current)
-          canvas.current.renderAll()
-        }
-      })
-      if (canvasEl.current && !canvas.current) {
-        createCanvas()
-      }
-      return () => {
-        destroyCanvas()
-      }
-    }, [])
+    // useEffect(() => {
+    //   // Make sure to rerender the canvas after loading the custom font, since
+    //   // it could happen the font is not ready before rendering the canvas.
+    //   // Without rerendering it, the canvas will render only the wrong font.
+    //   const myfont = new FontFaceObserver(ELEMENT.FONT.FAMILY)
+    //   myfont.load(null, 360000).then(function () {
+    //     if (canvas.current) {
+    //       invalidateCanvasCache(canvas.current)
+    //       canvas.current.renderAll()
+    //     }
+    //   })
+    //   if (canvasEl.current && !canvas.current) {
+    //     createCanvas()
+    //   }
+    //   return () => {
+    //     destroyCanvas()
+    //   }
+    // }, [])
 
     useEffect(() => {
       function handle(e: KeyboardEvent) {
@@ -733,7 +731,7 @@ export const DiagramDesignView = forwardRef(
           currentRenderedDiagram.current,
           diagramsThemeSettings,
         )
-        canvas.current?.renderAll()
+        // canvas.current?.renderAll()
         isDiagramChanged.current = false
         historyProcessing.current = false
         if (!readOnly) initHistory()
@@ -756,12 +754,12 @@ export const DiagramDesignView = forwardRef(
       initDiagramRenderer()
     }, [])
 
-    useHotkeys([Key.Escape], (e) => {
-      if (canvas.current) {
-        e.preventDefault()
-        canvas.current?.discardActiveObject()
-      }
-    })
+    // useHotkeys([Key.Escape], (e) => {
+    //   if (canvas.current) {
+    //     e.preventDefault()
+    //     canvas.current?.discardActiveObject()
+    //   }
+    // })
 
     return (
       <div className="relative h-full w-full" ref={rootDiv}>
@@ -792,8 +790,8 @@ export const DiagramDesignView = forwardRef(
             readOnly={readOnly}
             codingFeaturesEnabled={props.target === 'desktop'}
             onDiagramModified={canvasModifiedCallback}
-            onMouseDown={() => (mouseOnCanvas.current = true)}
-            onMouseOut={() => (mouseOnCanvas.current = false)}
+            onMouseEnter={() => (mouseOnCanvas.current = true)}
+            onMouseLeave={() => (mouseOnCanvas.current = false)}
           />
         </div>
       </div>
