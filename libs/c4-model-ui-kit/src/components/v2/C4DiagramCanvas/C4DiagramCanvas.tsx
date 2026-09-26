@@ -63,6 +63,17 @@ export type C4DiagramCanvasState = {
   pan: { x: number; y: number }
 }
 
+export type C4DiagramCanvasConfig = {
+  autoLayoutEnabled: boolean
+  autoLayoutOrientation?: DiagramOrientation
+  backgroundColor: string
+  gridEnabled: boolean
+  zoom: number
+  pan: { x: number; y: number }
+  viewport: { x: number; y: number; zoom: number }
+  readOnlyGlobalFlag?: boolean
+}
+
 export type C4DiagramCanvasProps = {
   readOnly?: boolean
   codingFeaturesEnabled?: boolean
@@ -114,18 +125,31 @@ export const C4DiagramCanvas = forwardRef(
     const [nodes, setNodes] = useNodesState<C4Node>([])
     const [edges, setEdges] = useEdgesState<C4Edge>([])
     const diagramListener = useRef<DiagramListener | null>(null)
-    const [autoLayoutEnabled, setAutoLayoutEnabled] = useState(true)
-    const [autoLayoutOrientation, setAutoLayoutOrientation] = useState<
-      DiagramOrientation | undefined
-    >('TopToBottom')
-    const [backgroundColor, setBackgroundColor] = useState(
+
+    //---- Start configs
+    const config = useRef<C4DiagramCanvasConfig>({
+      autoLayoutEnabled: true,
+      autoLayoutOrientation: 'TopToBottom',
+      backgroundColor: DIAGRAM.COLOR.BG_COLOR,
+      gridEnabled: false,
+      zoom: 1,
+      pan: { x: 0, y: 0 },
+      viewport: { x: 0, y: 0, zoom: 1 },
+      readOnlyGlobalFlag: readOnlyProp,
+    })
+
+    const [backgroundColor, _setBackgroundColor] = useState(
       DIAGRAM.COLOR.BG_COLOR,
     )
-    const [gridEnabled, setGridEnabled] = useState(false)
-    const [zoom, setZoom] = useState(1)
-    const [pan, setPan] = useState({ x: 0, y: 0 })
-    const [viewport, setViewport] = useState({ x: pan.x, y: pan.y, zoom })
-    const [readOnlyGlobalFlag, setReadOnlyGlobalFlag] = useState(readOnlyProp)
+    const [zoom, _setZoom] = useState(1)
+    const [pan, _setPan] = useState({ x: 0, y: 0 })
+    const [viewport, _setViewport] = useState({ x: pan.x, y: pan.y, zoom })
+    //---- End configs
+
+    function setViewport(viewport: { x: number; y: number; zoom: number }) {
+      _setViewport(viewport)
+      config.current.viewport = viewport
+    }
 
     //---- Start Ref implementation
     function setDiagramListener(newDiagramListener: DiagramListener) {
@@ -133,19 +157,19 @@ export const C4DiagramCanvas = forwardRef(
     }
 
     function getAutoLayoutEnabled() {
-      return autoLayoutEnabled
+      return config.current.autoLayoutEnabled
     }
 
     function getAutoLayoutOrientation() {
-      return autoLayoutOrientation
+      return config.current.autoLayoutOrientation
     }
 
     function getZoom() {
-      return viewport.zoom
+      return config.current.viewport.zoom
     }
 
     function getPan() {
-      return { x: viewport.x, y: viewport.y }
+      return { x: config.current.viewport.x, y: config.current.viewport.y }
     }
 
     function getUpdatedDiagramSpec(): Array<DiagramElementSpec> {
@@ -163,6 +187,10 @@ export const C4DiagramCanvas = forwardRef(
       return newDiagramElementsSpecs
     }
 
+    function setReadOnlyGlobalFlag(readOnlyGlobalFlag: boolean) {
+      config.current.readOnlyGlobalFlag = readOnlyGlobalFlag
+    }
+
     function setReadOnly(readOnly: boolean) {
       setReadOnlyGlobalFlag(readOnly)
       setNodes((nds) => nds.map((node) => readOnlyNode(node, readOnly)))
@@ -170,7 +198,36 @@ export const C4DiagramCanvas = forwardRef(
     }
 
     function isReadOnly() {
-      return readOnlyGlobalFlag ?? false
+      return config.current.readOnlyGlobalFlag ?? false
+    }
+
+    function setAutoLayoutEnabled(autoLayoutEnabled: boolean) {
+      config.current.autoLayoutEnabled = autoLayoutEnabled
+    }
+
+    function setAutoLayoutOrientation(
+      autoLayoutOrientation?: DiagramOrientation,
+    ) {
+      config.current.autoLayoutOrientation = autoLayoutOrientation
+    }
+
+    function setBackgroundColor(backgroundColor: string) {
+      _setBackgroundColor(backgroundColor)
+      config.current.backgroundColor = backgroundColor
+    }
+
+    function setGridEnabled(gridEnabled: boolean) {
+      config.current.gridEnabled = gridEnabled
+    }
+
+    function setZoom(zoom: number) {
+      _setZoom(zoom)
+      config.current.zoom = zoom
+    }
+
+    function setPan(pan: { x: number; y: number }) {
+      _setPan(pan)
+      config.current.pan = pan
     }
 
     useImperativeHandle(ref, () => ({
