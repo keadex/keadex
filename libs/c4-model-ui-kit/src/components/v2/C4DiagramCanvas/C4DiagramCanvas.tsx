@@ -138,6 +138,7 @@ export const C4DiagramCanvas = forwardRef(
       readOnlyGlobalFlag: readOnlyProp,
     })
 
+    const [gridEnabled, _setGridEnabled] = useState(false)
     const [backgroundColor, _setBackgroundColor] = useState(
       DIAGRAM.COLOR.BG_COLOR,
     )
@@ -217,6 +218,7 @@ export const C4DiagramCanvas = forwardRef(
     }
 
     function setGridEnabled(gridEnabled: boolean) {
+      _setGridEnabled(gridEnabled)
       config.current.gridEnabled = gridEnabled
     }
 
@@ -366,7 +368,7 @@ export const C4DiagramCanvas = forwardRef(
       >
         <MiniMap />
         <Controls />
-        <Background variant={BackgroundVariant.Dots} />
+        {gridEnabled && <Background variant={BackgroundVariant.Dots} />}
         <Panel position="top-right">
           <button className="xy-theme__button" onClick={test}>
             test
