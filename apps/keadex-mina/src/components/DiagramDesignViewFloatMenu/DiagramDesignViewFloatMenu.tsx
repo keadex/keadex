@@ -9,13 +9,14 @@ import {
   faMagnifyingGlassPlus,
   faRotateLeft,
 } from '@fortawesome/free-solid-svg-icons'
-import { IconButton, KeadexCanvas } from '@keadex/keadex-ui-kit/cross'
+import { C4DiagramCanvasCommands } from '@keadex/c4-model-ui-kit'
+import { IconButton } from '@keadex/keadex-ui-kit/cross'
 import type { Dispatch, SetStateAction } from 'react'
 import { memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export interface DiagramDesignViewFloatMenuProps {
-  canvas?: KeadexCanvas
+  c4DiagramRef?: C4DiagramCanvasCommands | null
   readOnly?: boolean
   diagramInfoPanelVisible: boolean
   setDiagramInfoPanelVisible: Dispatch<SetStateAction<boolean>>
@@ -29,7 +30,7 @@ const styleCenterButtons = `text-2xl text-dark-primary hover:text-third`
 export const DiagramDesignViewFloatMenu = memo(
   (props: DiagramDesignViewFloatMenuProps) => {
     const {
-      canvas,
+      c4DiagramRef,
       readOnly,
       diagramInfoPanelVisible,
       setDiagramInfoPanelVisible,
@@ -77,46 +78,46 @@ export const DiagramDesignViewFloatMenu = memo(
           <IconButton
             className={twMerge(styleButton, `my-auto!`)}
             icon={faCaretLeft}
-            onClick={() => canvas?.panLeft()}
+            onClick={() => c4DiagramRef?.panLeft()}
           />
         </div>
         <div className="flex flex-col">
           <IconButton
             className={styleButton}
             icon={faCaretUp}
-            onClick={() => canvas?.panDown()}
+            onClick={() => c4DiagramRef?.panDown()}
           />
           <div>
             <IconButton
               className={twMerge(styleCenterButtons, `ml-1`)}
               icon={faMagnifyingGlassPlus}
-              onClick={() => canvas?.zoomIn()}
+              onClick={() => c4DiagramRef?.zoomIn()}
             />
             <IconButton
               className={twMerge(styleCenterButtons, `mx-2 text-xl!`)}
               icon={faRotateLeft}
               onClick={() => {
-                canvas?.resetZoom()
-                canvas?.resetPan()
+                c4DiagramRef?.resetZoom()
+                c4DiagramRef?.resetPan()
               }}
             />
             <IconButton
               className={twMerge(styleCenterButtons, `mr-1`)}
               icon={faMagnifyingGlassMinus}
-              onClick={() => canvas?.zoomOut()}
+              onClick={() => c4DiagramRef?.zoomOut()}
             />
           </div>
           <IconButton
             className={styleButton}
             icon={faCaretDown}
-            onClick={() => canvas?.panUp()}
+            onClick={() => c4DiagramRef?.panUp()}
           />
         </div>
         <div className="flex flex-col">
           <IconButton
             className={twMerge(styleButton, `my-auto!`)}
             icon={faCaretRight}
-            onClick={() => canvas?.panRight()}
+            onClick={() => c4DiagramRef?.panRight()}
           />
         </div>
       </div>

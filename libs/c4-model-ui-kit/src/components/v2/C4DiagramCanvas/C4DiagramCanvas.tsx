@@ -10,7 +10,6 @@ import {
   Background,
   BackgroundVariant,
   Connection,
-  Controls,
   Edge as EdgeType,
   EdgeChange,
   MiniMap,
@@ -47,6 +46,8 @@ import {
   C4Legend,
   NODE_TYPE as C4_LEGEND_NODE_TYPE,
 } from '../C4Legend/C4Legend'
+
+const PAN_STEP = 50 // pixels, tune to taste
 
 export type C4Node<
   T extends Record<string, unknown> & C4BaseNodeData = C4BaseNodeData,
@@ -99,6 +100,15 @@ export type C4DiagramCanvasCommands = {
   setNodes: (nodes: C4Node[]) => void
   setEdges: (edges: C4Edge[]) => void
   getUpdatedDiagramSpec: () => Array<DiagramElementSpec>
+  panBy: (dx: number, dy: number) => void
+  panLeft: () => void
+  panRight: () => void
+  panUp: () => void
+  panDown: () => void
+  resetPan: () => void
+  resetZoom: () => void
+  zoomIn: () => void
+  zoomOut: () => void
 }
 
 export const C4DiagramCanvas = forwardRef(
@@ -232,6 +242,42 @@ export const C4DiagramCanvas = forwardRef(
       config.current.pan = pan
     }
 
+    function panBy(dx: number, dy: number) {
+      const { x, y, zoom } = config.current.viewport
+      setViewport({ x: x + dx, y: y + dy, zoom })
+    }
+
+    function panLeft() {
+      panBy(PAN_STEP, 0)
+    }
+    function panRight() {
+      panBy(-PAN_STEP, 0)
+    }
+    function panUp() {
+      panBy(0, PAN_STEP)
+    }
+    function panDown() {
+      panBy(0, -PAN_STEP)
+    }
+
+    function resetPan() {
+      const { zoom } = config.current.viewport
+      setViewport({ x: 0, y: 0, zoom })
+    }
+
+    function resetZoom() {
+      const { x, y } = config.current.viewport
+      setViewport({ x, y, zoom: 1 })
+    }
+
+    function zoomIn() {
+      rfInstance?.zoomIn()
+    }
+
+    function zoomOut() {
+      rfInstance?.zoomOut()
+    }
+
     useImperativeHandle(ref, () => ({
       setDiagramListener,
       setAutoLayoutEnabled,
@@ -249,6 +295,15 @@ export const C4DiagramCanvas = forwardRef(
       getZoom,
       getPan,
       getUpdatedDiagramSpec,
+      panBy,
+      panLeft,
+      panRight,
+      panUp,
+      panDown,
+      resetPan,
+      resetZoom,
+      zoomIn,
+      zoomOut,
     }))
     //---- End Ref implementation
 
@@ -366,8 +421,7 @@ export const C4DiagramCanvas = forwardRef(
         onViewportChange={(viewport) => setViewport(viewport)}
         deleteKeyCode={null}
       >
-        <MiniMap />
-        <Controls />
+        <MiniMap position="bottom-right" />
         {gridEnabled && <Background variant={BackgroundVariant.Dots} />}
         <Panel position="top-right">
           <button className="xy-theme__button" onClick={test}>

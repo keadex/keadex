@@ -11,27 +11,21 @@ import {
   DiagramRendererV2 as DiagramRenderer,
   DiagramSpec,
   DiagramsThemeSettings,
-  ELEMENT,
-  invalidateCanvasCache,
 } from '@keadex/c4-model-ui-kit'
 import { KeadexCanvas, useModal } from '@keadex/keadex-ui-kit/cross'
 import { objectsAreEqual } from '@keadex/keadex-utils'
-import FontFaceObserver from 'fontfaceobserver'
 import {
   forwardRef,
   Ref,
   RefObject,
   useEffect,
   useImperativeHandle,
-  useLayoutEffect,
   useRef,
   useState,
 } from 'react'
-import { useHotkeys } from 'react-hotkeys-hook'
 import { useTranslation } from 'react-i18next'
 import { useResizeDetector } from 'react-resize-detector'
 import { toast } from 'react-toastify'
-import { Key } from 'ts-key-enum'
 
 import DiagramCodePanel from '../../../components/DiagramCodePanel/DiagramCodePanel'
 import DiagramDesignViewFloatMenu from '../../../components/DiagramDesignViewFloatMenu/DiagramDesignViewFloatMenu'
@@ -766,7 +760,7 @@ export const DiagramDesignView = forwardRef(
         {modal}
         <DiagramDesignViewFloatMenu
           // eslint-disable-next-line react-hooks/refs
-          canvas={canvas.current}
+          c4DiagramRef={c4DiagramRef.current}
           readOnly={readOnly}
           diagramInfoPanelVisible={diagramInfoPanelVisible}
           setDiagramInfoPanelVisible={setDiagramInfoPanelVisible}
