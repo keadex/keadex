@@ -73,11 +73,12 @@ export type C4DiagramCanvasConfig = {
   pan: { x: number; y: number }
   viewport: { x: number; y: number; zoom: number }
   readOnlyGlobalFlag?: boolean
+  codingFeaturesEnabled: boolean
 }
 
 export type C4DiagramCanvasProps = {
   readOnly?: boolean
-  codingFeaturesEnabled?: boolean
+  codingFeaturesEnabled: boolean
   onDiagramModified?: () => void
   onMouseEnter?: (event?: MouseEvent) => void
   onMouseLeave?: (event?: MouseEvent) => void
@@ -109,13 +110,15 @@ export type C4DiagramCanvasCommands = {
   resetZoom: () => void
   zoomIn: () => void
   zoomOut: () => void
+  getCodingFeaturesEnabled: () => boolean
+  setCodingFeaturesEnabled: (enabled: boolean) => void
 }
 
 export const C4DiagramCanvas = forwardRef(
   (props: C4DiagramCanvasProps, ref: ForwardedRef<C4DiagramCanvasCommands>) => {
     const {
       readOnly: readOnlyProp,
-      codingFeaturesEnabled,
+      codingFeaturesEnabled: codingFeaturesEnabledProp,
       onDiagramModified,
       onMouseEnter,
       onMouseLeave,
@@ -146,6 +149,7 @@ export const C4DiagramCanvas = forwardRef(
       pan: { x: 0, y: 0 },
       viewport: { x: 0, y: 0, zoom: 1 },
       readOnlyGlobalFlag: readOnlyProp,
+      codingFeaturesEnabled: codingFeaturesEnabledProp,
     })
 
     const [gridEnabled, _setGridEnabled] = useState(false)
@@ -278,6 +282,14 @@ export const C4DiagramCanvas = forwardRef(
       rfInstance?.zoomOut()
     }
 
+    function getCodingFeaturesEnabled() {
+      return config.current.codingFeaturesEnabled
+    }
+
+    function setCodingFeaturesEnabled(enabled: boolean) {
+      config.current.codingFeaturesEnabled = enabled
+    }
+
     useImperativeHandle(ref, () => ({
       setDiagramListener,
       setAutoLayoutEnabled,
@@ -304,6 +316,8 @@ export const C4DiagramCanvas = forwardRef(
       resetZoom,
       zoomIn,
       zoomOut,
+      getCodingFeaturesEnabled,
+      setCodingFeaturesEnabled,
     }))
     //---- End Ref implementation
 
@@ -318,6 +332,10 @@ export const C4DiagramCanvas = forwardRef(
     useEffect(() => {
       setReadOnly(readOnlyProp ?? false)
     }, [readOnlyProp])
+
+    useEffect(() => {
+      setCodingFeaturesEnabled(codingFeaturesEnabledProp)
+    }, [codingFeaturesEnabledProp])
 
     const onConnect = useCallback(
       (params: Connection) => setEdges((eds) => addEdge(params, eds)),
