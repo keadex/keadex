@@ -43,11 +43,6 @@ function C4LegendComponent(node: NodeProps<C4LegendNode>) {
   const scaledWidth = node.width
   const scaledHeight = node.height
   const strokeWidth = 1
-  const initialWidth = LEGEND.SIZES.WIDTH - strokeWidth
-  // const scaleX = calculateScale(
-  //   initialWidth,
-  //   scaledWidth && scaledWidth !== 0 ? scaledWidth : initialWidth,
-  // )
   const scaleX = node.data.scaleX ?? 1
 
   function renderItem(
