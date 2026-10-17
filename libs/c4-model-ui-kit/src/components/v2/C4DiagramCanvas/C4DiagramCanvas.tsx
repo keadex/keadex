@@ -43,9 +43,15 @@ import { DIAGRAM } from '../../../styles/style-constants'
 import { DiagramListener } from '../../C4BaseComponent'
 import { C4BaseNodeData } from '../C4BaseNode/C4BaseNode'
 import {
-  C4Legend,
-  NODE_TYPE as C4_LEGEND_NODE_TYPE,
-} from '../C4Legend/C4Legend'
+  COMPONENT_DB_EXT_NODE_TYPE,
+  COMPONENT_DB_NODE_TYPE,
+  COMPONENT_EXT_NODE_TYPE,
+  COMPONENT_NODE_TYPE,
+  COMPONENT_QUEUE_EXT_NODE_TYPE,
+  COMPONENT_QUEUE_NODE_TYPE,
+} from '../C4Component/C4ComponentNodeBuilder'
+import { C4Legend, NODE_TYPE as LEGEND_NODE_TYPE } from '../C4Legend/C4Legend'
+import { C4BaseBox } from '../C4Shapes/C4BaseBox'
 
 const PAN_STEP = 50 // pixels, tune to taste
 
@@ -55,8 +61,14 @@ export type C4Node<
 > = NodeType<T, K>
 export type C4Edge = EdgeType & {}
 
-const nodeTypes = {
-  [C4_LEGEND_NODE_TYPE]: C4Legend,
+export const NODE_TYPES = {
+  [LEGEND_NODE_TYPE]: C4Legend,
+  [COMPONENT_NODE_TYPE]: C4BaseBox,
+  [COMPONENT_EXT_NODE_TYPE]: C4BaseBox,
+  [COMPONENT_DB_NODE_TYPE]: C4BaseBox, // TODO
+  [COMPONENT_DB_EXT_NODE_TYPE]: C4BaseBox, // TODO
+  [COMPONENT_QUEUE_NODE_TYPE]: C4BaseBox, // TODO
+  [COMPONENT_QUEUE_EXT_NODE_TYPE]: C4BaseBox, // TODO
 }
 
 export type C4DiagramCanvasState = {
@@ -425,7 +437,7 @@ export const C4DiagramCanvas = forwardRef(
         colorMode="light"
         nodes={nodes}
         edges={edges}
-        nodeTypes={nodeTypes}
+        nodeTypes={NODE_TYPES}
         onInit={(rfInstance) => setRfInstance(rfInstance)}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
