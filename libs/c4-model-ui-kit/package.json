@@ -7,7 +7,9 @@
   "license": "MIT",
   "version": "1.0.0",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.1",
     "@hpcc-js/wasm-graphviz": "^1.21.0",
     "@xyflow/react": "^12.1.1",
     "change-case": "^5.4.4",
