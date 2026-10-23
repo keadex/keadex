@@ -60,7 +60,7 @@ export function C4ComponentNodeBuilder(
       diagramSpec,
     )
 
-    const renderingOptions: C4BaseNodeRenderingOptions = {
+    const internalRenderingOptions: C4BaseNodeRenderingOptions = {
       bgColor:
         renderElementsOptions?.diagramsThemeSettings?.bg_color_component ??
         BOX.COLORS.BG_COLOR_COMPONENT,
@@ -72,6 +72,19 @@ export function C4ComponentNodeBuilder(
         BOX.COLORS.TEXT_COLOR_COMPONENT,
     }
 
+    const externalRenderingOptions: C4BaseNodeRenderingOptions = {
+      bgColor:
+        renderElementsOptions?.diagramsThemeSettings?.bg_color_component_ext ??
+        BOX.COLORS.BG_COLOR_COMPONENT_EXT,
+      borderColor:
+        renderElementsOptions?.diagramsThemeSettings
+          ?.border_color_component_ext ?? BOX.COLORS.BORDER_COLOR_COMPONENT_EXT,
+      textColor:
+        renderElementsOptions?.diagramsThemeSettings
+          ?.text_color_component_ext ?? BOX.COLORS.TEXT_COLOR_COMPONENT_EXT,
+    }
+
+    let renderingOptions: C4BaseNodeRenderingOptions | undefined
     let nodeType:
       | 'c4Component'
       | 'c4ComponentDb'
@@ -82,21 +95,27 @@ export function C4ComponentNodeBuilder(
     switch (diagramElementData.component_type) {
       case 'Component':
         nodeType = COMPONENT_NODE_TYPE
+        renderingOptions = internalRenderingOptions
         break
       case 'ComponentDb':
         nodeType = COMPONENT_DB_NODE_TYPE
+        renderingOptions = internalRenderingOptions
         break
       case 'ComponentQueue':
         nodeType = COMPONENT_QUEUE_NODE_TYPE
+        renderingOptions = internalRenderingOptions
         break
       case 'Component_Ext':
         nodeType = COMPONENT_EXT_NODE_TYPE
+        renderingOptions = externalRenderingOptions
         break
       case 'ComponentDb_Ext':
         nodeType = COMPONENT_DB_EXT_NODE_TYPE
+        renderingOptions = externalRenderingOptions
         break
       case 'ComponentQueue_Ext':
         nodeType = COMPONENT_QUEUE_EXT_NODE_TYPE
+        renderingOptions = externalRenderingOptions
         break
     }
 
