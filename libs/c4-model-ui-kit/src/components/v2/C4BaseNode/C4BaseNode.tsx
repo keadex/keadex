@@ -28,14 +28,20 @@ import {
   C4Node,
 } from '../C4DiagramCanvas/C4DiagramCanvas'
 
-export type DiagramElementData =
-  | Boundary
-  | Container
-  | Component
-  | DeploymentNode
-  | Person
-  | Relationship
-  | SoftwareSystem
+export type DiagramElementData = Pick<Boundary, 'base_data'> &
+  Pick<Container, 'base_data'> &
+  Pick<Component, 'base_data'> &
+  Pick<DeploymentNode, 'base_data'> &
+  Pick<Person, 'base_data'> &
+  Pick<Relationship, 'base_data'> &
+  Pick<SoftwareSystem, 'base_data'> &
+  Partial<Boundary> &
+  Partial<Container> &
+  Partial<Component> &
+  Partial<DeploymentNode> &
+  Partial<Person> &
+  Partial<Relationship> &
+  Partial<SoftwareSystem>
 
 export type C4BaseNodeRenderingOptions = {
   bgColor: string
