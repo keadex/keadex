@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useCallback, useState } from 'react'
-import { IEvent } from 'fabric/fabric-impl'
 import { DropdownMenuItemProps } from '@keadex/keadex-ui-kit/cross'
+import { IEvent } from 'fabric/fabric-impl'
+import { useCallback, useEffect, useState } from 'react'
 
 export interface KeadexContextMenuEvent {
-  sourceEvent: IEvent<Event>
+  sourceEvent: IEvent<Event> | React.MouseEvent // TODO: keep IEvent<Event> only for backward compatibility, remove it in the future
   pageX: number
   pageY: number
   menuItems: DropdownMenuItemProps[]
