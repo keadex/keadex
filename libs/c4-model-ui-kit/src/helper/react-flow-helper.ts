@@ -1,4 +1,7 @@
-import { Node as NodeType, Edge as EdgeType } from '@xyflow/react'
+import { Edge as EdgeType, Node as NodeType } from '@xyflow/react'
+import { ForwardedRef } from 'react'
+
+import { C4DiagramCanvasCommands } from '../components/v2/C4DiagramCanvas/C4DiagramCanvas'
 
 export function calculateScale(
   initialWidth: number,
@@ -61,4 +64,16 @@ export function readOnlyEdge<T extends Record<string, unknown>>(
     selectable: !readOnly,
     reconnectable: !readOnly,
   }
+}
+
+export function canvasRefToInstance(
+  c4DiagramCanvasRef: ForwardedRef<C4DiagramCanvasCommands>,
+) {
+  let c4DiagramCanvasInstance: C4DiagramCanvasCommands | null | undefined = null
+  if (typeof c4DiagramCanvasRef === 'function') {
+    throw new Error('C4DiagramCanvas not initialized yet')
+  } else {
+    c4DiagramCanvasInstance = c4DiagramCanvasRef?.current
+  }
+  return c4DiagramCanvasInstance
 }

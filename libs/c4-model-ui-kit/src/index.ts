@@ -120,6 +120,7 @@ export {
 } from './helper/graphviz-helper'
 export {
   calculateScale,
+  canvasRefToInstance,
   editableNode,
   readOnlyEdge,
   readOnlyNode,

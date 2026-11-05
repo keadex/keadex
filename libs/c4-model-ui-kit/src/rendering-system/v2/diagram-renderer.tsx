@@ -5,11 +5,11 @@ import { toast } from 'react-toastify'
 import { render as takumiRender } from 'takumi-js'
 import { googleFonts } from 'takumi-js/helpers'
 
-import { DiagramListener } from '../../components/C4BaseComponent'
 import { C4BaseNodePropsSSRBuilder } from '../../components/v2/C4BaseNode/C4BaseNode'
 import { C4ComponentNodeBuilder } from '../../components/v2/C4Component/C4ComponentNodeBuilder'
 import {
   C4DiagramCanvasCommands,
+  C4DiagramCanvasListener,
   C4Edge,
   C4Node,
   NODE_TYPES,
@@ -54,23 +54,25 @@ export class DiagramRenderer {
   }
 
   renderDiagram(
-    c4DiagramRef: C4DiagramCanvasCommands | null,
-    diagramListener: DiagramListener,
+    c4DiagramCanvasInstance: C4DiagramCanvasCommands | undefined,
+    diagramListener: C4DiagramCanvasListener,
     diagram: Diagram | undefined,
     diagramsThemeSettings: DiagramsThemeSettings | undefined,
     ssr = false,
   ): DiagramRendererOutput {
     let result: DiagramRendererOutput = { nodes: [], edges: [], components: [] }
     if (diagram) {
-      c4DiagramRef?.setDiagramListener(diagramListener)
-      c4DiagramRef?.setAutoLayoutEnabled(
+      c4DiagramCanvasInstance?.setDiagramListener(diagramListener)
+      c4DiagramCanvasInstance?.setAutoLayoutEnabled(
         !!diagram.diagram_spec?.auto_layout_enabled,
       )
-      c4DiagramRef?.setGridEnabled(!!diagram.diagram_spec?.grid_enabled)
-      c4DiagramRef?.setAutoLayoutOrientation(
+      c4DiagramCanvasInstance?.setGridEnabled(
+        !!diagram.diagram_spec?.grid_enabled,
+      )
+      c4DiagramCanvasInstance?.setAutoLayoutOrientation(
         diagram.diagram_spec?.auto_layout_orientation,
       )
-      c4DiagramRef?.setBackgroundColor(
+      c4DiagramCanvasInstance?.setBackgroundColor(
         diagramsThemeSettings?.bg_color_diagram ?? DIAGRAM.COLOR.BG_COLOR,
       )
 
@@ -95,14 +97,14 @@ export class DiagramRenderer {
       }
 
       result = renderElements(
-        c4DiagramRef,
+        c4DiagramCanvasInstance,
         diagram.diagram_plantuml?.elements,
         diagram.diagram_spec,
         diagram.auto_layout ?? {},
         {
           diagramsThemeSettings,
           tags: diagram.diagram_plantuml?.tags,
-          readOnly: c4DiagramRef?.isReadOnly(),
+          readOnly: c4DiagramCanvasInstance?.isReadOnly(),
           ssr,
         },
       )
@@ -130,7 +132,7 @@ export class DiagramRenderer {
   }
 
   async exportDiagramSSR(
-    diagramListener: DiagramListener,
+    diagramListener: C4DiagramCanvasListener,
     diagram: Diagram,
     diagramsThemeSettings: DiagramsThemeSettings | undefined,
     format: 'jpeg' | 'png' = 'png',
@@ -149,7 +151,7 @@ export class DiagramRenderer {
 
     // Render the diagram server side
     const ssr = this.renderDiagram(
-      null,
+      undefined,
       diagramListener,
       diagram,
       diagramsThemeSettings,
@@ -176,7 +178,7 @@ export type RenderElementsOptions = {
 }
 
 export const renderElements = (
-  c4DiagramRef: C4DiagramCanvasCommands | null,
+  c4DiagramCanvasInstance: C4DiagramCanvasCommands | undefined,
   diagramElements: DiagramElementType[] | undefined,
   diagramSpec: DiagramSpec | undefined,
   autoLayout: Record<string, ElementData>,
@@ -191,6 +193,7 @@ export const renderElements = (
     const node = C4LegendNodeBuilder({
       diagramSpec,
       autoLayout,
+      c4DiagramCanvasInstance,
       diagramElementSpec: getElementSpecByAlias(
         LEGEND_ALIAS,
         undefined,
@@ -212,6 +215,7 @@ export const renderElements = (
           const node = C4ComponentNodeBuilder({
             diagramSpec,
             autoLayout,
+            c4DiagramCanvasInstance,
             renderElementsOptions: options,
             diagramElementData: componentDiagramElement(element) as Component,
           })
@@ -230,8 +234,8 @@ export const renderElements = (
     }
   }
 
-  c4DiagramRef?.setNodes(nodes)
-  c4DiagramRef?.setEdges(edges)
+  c4DiagramCanvasInstance?.setNodes(nodes)
+  c4DiagramCanvasInstance?.setEdges(edges)
   return { nodes, edges, components }
 }
 // export const renderElements = (

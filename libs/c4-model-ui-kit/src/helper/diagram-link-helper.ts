@@ -1,4 +1,5 @@
 import { C4BaseComponentData } from '../components/C4BaseComponent'
+import { DiagramElementData } from '../components/v2/C4BaseNode/C4BaseNode'
 import {
   DIAGRAM_EXTERNAL_LINK_PROTOCOLS,
   DiagramExternalLinkVariables,
@@ -39,7 +40,7 @@ export function externalLinkVariableToPlaceholder(
 
 export function replaceExternalLinkVariables(
   diagramLink: string,
-  rawData?: C4BaseComponentData,
+  rawData?: DiagramElementData | C4BaseComponentData, // TODO: C4BaseComponentData only for backward compatibility, should be removed in the future
 ) {
   let newDiagramLink = `${diagramLink}`
   for (const variable in DiagramExternalLinkVariables) {

@@ -1,5 +1,10 @@
 'use client'
 
+import {
+  DropdownMenuItemProps,
+  GENERIC_EVENTS,
+  KeadexContextMenuEvent,
+} from '@keadex/keadex-ui-kit/cross'
 import { cloneDeep } from '@keadex/keadex-utils'
 import {
   NodeProps,
@@ -8,7 +13,7 @@ import {
   OnResizeEnd,
   OnResizeStart,
 } from '@xyflow/react'
-import { ComponentType, ForwardedRef, useRef } from 'react'
+import { ComponentType, useCallback, useRef } from 'react'
 import { v4 as uuidV4 } from 'uuid'
 
 import { editableNode, readOnlyNode } from '../../../helper/react-flow-helper'
@@ -27,6 +32,7 @@ import {
   C4DiagramCanvasCommands,
   C4Node,
 } from '../C4DiagramCanvas/C4DiagramCanvas'
+import { createBaseContextMenuItems } from './context-menu'
 
 export type DiagramElementData = Pick<Boundary, 'base_data'> &
   Pick<Container, 'base_data'> &
@@ -50,6 +56,13 @@ export type C4BaseNodeRenderingOptions = {
   strokeDashArray?: number[]
 }
 
+export type ContextMenuHandler = (
+  c4DiagramCanvasInstance: C4DiagramCanvasCommands | undefined,
+  event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  node: C4Node<C4BaseNodeData, undefined>,
+  contextMenuItems?: DropdownMenuItemProps[],
+) => void
+
 export type C4BaseNodeProps = {
   diagramSpec: DiagramSpec
   autoLayout: Record<string, ElementData>
@@ -58,6 +71,8 @@ export type C4BaseNodeProps = {
   renderElementsOptions?: RenderElementsOptions
   resizable?: boolean
   renderingOptions?: C4BaseNodeRenderingOptions
+  c4DiagramCanvasInstance?: C4DiagramCanvasCommands
+  contextMenuHandler?: ContextMenuHandler
 }
 
 export type C4BaseNodeCoreData = {
@@ -65,7 +80,6 @@ export type C4BaseNodeCoreData = {
   scaleY?: number
   angle?: number
   getUpdatedSpecs(
-    c4DiagramCanvasInstance: ForwardedRef<C4DiagramCanvasCommands>,
     node: C4Node<C4BaseNodeData, undefined>,
   ): DiagramElementSpec | undefined
 }
@@ -125,19 +139,8 @@ export function C4BaseNodeBuilder(
       angle: props.diagramElementSpec?.position?.angle ?? 0,
 
       getUpdatedSpecs(
-        c4DiagramCanvasRef: ForwardedRef<C4DiagramCanvasCommands>,
         node: C4Node<C4BaseNodeData, undefined>,
       ): DiagramElementSpec | undefined {
-        let c4DiagramCanvasInstance:
-          | C4DiagramCanvasCommands
-          | null
-          | undefined = null
-        if (typeof c4DiagramCanvasRef === 'function') {
-          throw new Error('C4DiagramCanvas not initialized yet')
-        } else {
-          c4DiagramCanvasInstance = c4DiagramCanvasRef?.current
-        }
-
         const oldDiagramElementSpec = this.diagramElementSpec
         if (oldDiagramElementSpec) {
           const newDiagramElementSpec = cloneDeep(oldDiagramElementSpec)
@@ -167,6 +170,30 @@ export function C4BaseNodeBuilder(
         }
         return
       },
+
+      contextMenuHandler:
+        props.contextMenuHandler ??
+        ((c4DiagramCanvasInstance, event, node, contextMenuItems?) => {
+          const pointer = { x: event.clientX, y: event.clientY }
+          const newEvent = new CustomEvent<KeadexContextMenuEvent>(
+            GENERIC_EVENTS.CONTEXT_MENU,
+            {
+              detail: {
+                sourceEvent: event,
+                pageX: pointer.x,
+                pageY: pointer.y,
+                menuItems:
+                  contextMenuItems ??
+                  createBaseContextMenuItems(
+                    c4DiagramCanvasInstance,
+                    event,
+                    node,
+                  ),
+              },
+            },
+          )
+          document.dispatchEvent(newEvent)
+        }),
     },
     position: {
       x:
@@ -225,8 +252,27 @@ export function withC4BaseNode<
       node.data.scaleY = newScaleY
     }
 
+    const handleContextMenu = useCallback(
+      (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (node.data.contextMenuHandler) {
+          console.log('C4BaseNode handleContextMenu', { node, event })
+          node.data.contextMenuHandler?.(
+            node.data.c4DiagramCanvasInstance,
+            event,
+            node as unknown as C4Node<C4BaseNodeData, undefined>,
+          )
+        } else {
+          console.warn(
+            'C4BaseNode handleContextMenu: No contextMenuHandler defined for node',
+            node,
+          )
+        }
+      },
+      [node],
+    )
+
     return (
-      <>
+      <div onContextMenu={handleContextMenu}>
         {!readOnly && resizable && (
           <NodeResizer
             color="#ff0071"
@@ -238,7 +284,7 @@ export function withC4BaseNode<
           />
         )}
         <Component {...node} />
-      </>
+      </div>
     )
   }
 }
