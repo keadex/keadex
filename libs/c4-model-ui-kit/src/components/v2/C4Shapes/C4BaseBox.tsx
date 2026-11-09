@@ -45,12 +45,6 @@ function C4BaseBoxComponent<T extends C4BaseNodeData>(
   const scaledFontSizeTypeTechnology = BOX.FONT.SIZE_TYPE_TECHNOLOGY * scaleX
   const scaledBorderRadius = BOX.SIZES.BORDER_RADIUS * scaleX
 
-  console.log('C4BaseBoxComponent', {
-    scaledWidth,
-    scaledHeight,
-    scaleX,
-    scaleY,
-  })
   const customTagsStyle = getCustomTagsStyle(
     parseTags(diagramElementData?.base_data?.tags),
     renderElementsOptions?.tags,
