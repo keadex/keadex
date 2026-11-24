@@ -122,8 +122,10 @@ export {
   calculateScale,
   canvasRefToInstance,
   editableNode,
+  getAbsolutePosition,
   readOnlyEdge,
   readOnlyNode,
+  toRelativePosition,
 } from './helper/react-flow-helper'
 export { getSupportedBorderStyle } from './helper/style-helper'
 export {
