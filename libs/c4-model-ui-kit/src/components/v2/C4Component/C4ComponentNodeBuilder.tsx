@@ -9,9 +9,9 @@ import {
   C4BaseNodeBuilder,
   C4BaseNodeData,
   C4BaseNodeProps,
-  C4BaseNodeRenderingOptions,
 } from '../C4BaseNode/C4BaseNode'
 import { C4Node } from '../C4DiagramCanvas/C4DiagramCanvas'
+import { C4BaseBoxNodeRenderingOptions } from '../C4Shapes/C4BaseBox'
 
 export const COMPONENT_NODE_TYPE = 'c4Component'
 export const COMPONENT_DB_NODE_TYPE = 'c4ComponentDb'
@@ -60,7 +60,7 @@ export function C4ComponentNodeBuilder(
       diagramSpec,
     )
 
-    const internalRenderingOptions: C4BaseNodeRenderingOptions = {
+    const internalRenderingOptions: C4BaseBoxNodeRenderingOptions = {
       bgColor:
         renderElementsOptions?.diagramsThemeSettings?.bg_color_component ??
         BOX.COLORS.BG_COLOR_COMPONENT,
@@ -72,7 +72,7 @@ export function C4ComponentNodeBuilder(
         BOX.COLORS.TEXT_COLOR_COMPONENT,
     }
 
-    const externalRenderingOptions: C4BaseNodeRenderingOptions = {
+    const externalRenderingOptions: C4BaseBoxNodeRenderingOptions = {
       bgColor:
         renderElementsOptions?.diagramsThemeSettings?.bg_color_component_ext ??
         BOX.COLORS.BG_COLOR_COMPONENT_EXT,
@@ -84,7 +84,7 @@ export function C4ComponentNodeBuilder(
           ?.text_color_component_ext ?? BOX.COLORS.TEXT_COLOR_COMPONENT_EXT,
     }
 
-    let renderingOptions: C4BaseNodeRenderingOptions | undefined
+    let renderingOptions: C4BaseBoxNodeRenderingOptions | undefined
     let nodeType:
       | 'c4Component'
       | 'c4ComponentDb'
