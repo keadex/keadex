@@ -555,7 +555,7 @@ export const DiagramDesignView = forwardRef(
         setCanvasMode()
         if (diagramRenderer)
           diagramRenderer.current?.renderDiagram(
-            c4DiagramRef.current,
+            c4DiagramRef,
             diagramListener,
             {
               ...currentRenderedDiagram.current,
@@ -720,7 +720,7 @@ export const DiagramDesignView = forwardRef(
         console.debug('Rendering the diagram')
         setCanvasMode()
         diagramRenderer.current?.renderDiagram(
-          c4DiagramRef.current,
+          c4DiagramRef,
           diagramListener,
           currentRenderedDiagram.current,
           diagramsThemeSettings,
