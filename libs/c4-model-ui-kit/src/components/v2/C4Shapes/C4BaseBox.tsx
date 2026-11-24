@@ -14,10 +14,7 @@ import {
 } from '../C4BaseNode/C4BaseNode'
 import { C4Node } from '../C4DiagramCanvas/C4DiagramCanvas'
 
-export interface C4BaseBoxNodeRenderingOptions
-  extends C4BaseNodeRenderingOptions {
-  widthBox?: number
-  widthDescription?: number
+export type C4BaseBoxNodeRenderingOptions = C4BaseNodeRenderingOptions & {
   borderRadius?: number
 }
 
@@ -29,12 +26,7 @@ function C4BaseBoxComponent<T extends C4BaseNodeData>(
   const baseBoxRenderingOptions =
     renderingOptions as C4BaseBoxNodeRenderingOptions
   const scaledWidth =
-    node.width && node.width !== 0
-      ? node.width
-      : baseBoxRenderingOptions?.widthBox &&
-          baseBoxRenderingOptions?.widthBox !== 0
-        ? baseBoxRenderingOptions?.widthBox
-        : BOX.SIZES.WIDTH
+    node.width && node.width !== 0 ? node.width : BOX.SIZES.WIDTH
   const scaledHeight =
     node.height && node.height !== 0 ? node.height : BOX.SIZES.MIN_HEIGHT
   const scaleX = node.data.scaleX ?? 1
@@ -118,7 +110,7 @@ function C4BaseBoxComponent<T extends C4BaseNodeData>(
   }
 
   function renderDescription() {
-    const width = baseBoxRenderingOptions?.widthDescription ?? scaledWidth
+    const width = scaledWidth
     return (
       <div
         style={{
@@ -175,8 +167,6 @@ function C4BaseBoxComponent<T extends C4BaseNodeData>(
           background: `${customTagsStyle?.bg_color ?? baseBoxRenderingOptions?.bgColor}`,
           borderColor: `${customTagsStyle?.border_color ?? baseBoxRenderingOptions?.borderColor}`,
           borderWidth: scaledBorderWidth,
-          left: ELEMENT.SIZES.DEFAULT_LEFT,
-          top: ELEMENT.SIZES.DEFAULT_TOP,
           borderRadius:
             baseBoxRenderingOptions?.borderRadius ?? scaledBorderRadius,
           paddingBottom: BOX.SIZES.PADDING_BOTTOM * scaleY,
@@ -196,9 +186,8 @@ function C4BaseBoxComponent<T extends C4BaseNodeData>(
     <div
       className="flex flex-col leading-none"
       style={{
-        width:
-          baseBoxRenderingOptions?.widthBox ?? scaledWidth ?? BOX.SIZES.WIDTH,
-        minHeight: scaledHeight ?? BOX.SIZES.MIN_HEIGHT,
+        width: scaledWidth,
+        minHeight: scaledHeight,
       }}
     >
       {renderBox()}
