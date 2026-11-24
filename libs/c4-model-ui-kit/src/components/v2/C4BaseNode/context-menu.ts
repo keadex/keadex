@@ -14,7 +14,7 @@ import {
 import { C4BaseNodeData } from './C4BaseNode'
 
 export function createBaseContextMenuItems(
-  c4DiagramCanvasInstance: C4DiagramCanvasCommands | undefined,
+  c4DiagramCanvasInstance: C4DiagramCanvasCommands | undefined | null,
   event: React.MouseEvent,
   _node: C4Node<C4BaseNodeData, undefined>,
   asSubMenu = true,
@@ -31,6 +31,7 @@ export function createBaseContextMenuItems(
   const isCanvasReadOnly = c4DiagramCanvasInstance?.isReadOnly()
   const codingFeaturesEnabled =
     c4DiagramCanvasInstance?.getCodingFeaturesEnabled()
+
   const canOpenDiagramLink =
     elementType !== undefined &&
     diagramLinks &&
@@ -79,6 +80,7 @@ export function createBaseContextMenuItems(
       }
     })
   }
+
   if (
     codingFeaturesEnabled &&
     nodeData?.diagramElementData &&
