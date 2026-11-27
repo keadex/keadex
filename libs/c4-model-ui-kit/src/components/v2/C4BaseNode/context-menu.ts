@@ -16,13 +16,13 @@ import { C4BaseNodeData } from './C4BaseNode'
 export function createBaseContextMenuItems(
   c4DiagramCanvasInstance: C4DiagramCanvasCommands | undefined | null,
   event: React.MouseEvent,
-  _node: C4Node<C4BaseNodeData, undefined>,
+  node: C4Node<C4BaseNodeData, undefined>,
   asSubMenu = true,
 ): DropdownMenuItemProps[] {
   const baseContextMenuItems = []
-  const node = _node.parentId
-    ? c4DiagramCanvasInstance?.findNodeById(_node.parentId)
-    : _node
+  // const node = _node.parentId
+  //   ? c4DiagramCanvasInstance?.findNodeById(_node.parentId)
+  //   : _node
   const nodeData = node?.data
   const elementType = nodeData?.diagramElementSpec?.element_type
   const diagramLinks = nodeData?.diagramElementData?.base_data?.link?.split(
